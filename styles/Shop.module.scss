@@ -1,0 +1,8 @@
+@import "placeholders";
+@import "variables";
+
+.product {
+  @extend %box;
+  @extend %flex_center;
+  margin: 1rem;
+}

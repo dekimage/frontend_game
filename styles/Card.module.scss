@@ -1,0 +1,135 @@
+@import "variables";
+@import "placeholders";
+
+.link {
+  position: relative;
+}
+.card {
+  height: 250px;
+  width: auto;
+  background-color: $actionize_black;
+  border-radius: 10px;
+  @extend %flex_center;
+  flex-direction: column;
+  position: relative;
+  overflow-x: clip;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: var(--background);
+}
+
+.curve {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+}
+.curve::before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 50px;
+  width: 60%;
+  border-radius: 100% 35%;
+  background-color: $actionize_black;
+
+  transform: translate(75%, 60%);
+}
+.curve::after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 50px;
+  width: 60%;
+  border-radius: 100% 35%;
+  background-color: var(--background);
+
+  transform: translate(-10%, 43%);
+  // z-index: -1;
+}
+
+.image {
+  z-index: 5;
+  margin-bottom: 0.5rem;
+  img {
+    height: 125px;
+  }
+}
+
+.card_body {
+  @extend %flex_center;
+  flex-direction: column;
+}
+
+.lock {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  img {
+    height: 1rem;
+  }
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+.rarity_center {
+  @extend %flex_center;
+  margin-bottom: 0.5rem;
+}
+.rarity {
+  color: white;
+  background-color: $actionize_gray;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 10px;
+  margin: 0 0.2rem;
+}
+
+.progress_box {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.progress_text {
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.type {
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 0.2rem 0.6rem;
+
+  &.free {
+    background-color: $primary;
+    // box-shadow: 0px 4px 0px -0.5px darken($primary, 30%);
+  }
+
+  &.premium {
+    background-color: $tertiary;
+    // box-shadow: 0px 4px 0px -0.5px darken($tertiary, 30%);
+  }
+
+  &.special {
+    background-color: $secondary;
+    // box-shadow: 0px 4px 0px -0.5px darken($secondary, 30%);
+  }
+}

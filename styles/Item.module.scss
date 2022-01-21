@@ -1,0 +1,150 @@
+// TEST CSS
+$legendary: rgb(255, 179, 38);
+$legendary_shadow: rgb(189, 126, 9);
+$legendary_background: rgb(255, 244, 196);
+
+$epic: rgb(178, 62, 255);
+$epic_shadow: rgb(108, 27, 139);
+$epic_background: rgb(246, 200, 255);
+
+$rare: rgb(101, 101, 238);
+$rare_shadow: rgb(61, 61, 143);
+$rare_background: rgb(200, 194, 255);
+
+.item_border {
+  cursor: pointer;
+  margin: 1rem;
+  display: inline-block;
+  border: 0px solid transparent;
+  border-radius: 10px;
+
+  &.epic {
+    box-shadow: 0px 5px 0px -0.5px $epic_shadow;
+  }
+
+  &.rare {
+    box-shadow: 0px 5px 0px -0.5px $rare_shadow;
+  }
+
+  &.legendary {
+    box-shadow: 0px 5px 0px -0.5px $legendary_shadow;
+    // box-shadow: 0px 0px 10px 5px $legendary_shadow;
+  }
+}
+
+.item {
+  display: flex;
+  border-radius: 10px;
+
+  width: 100px;
+  height: 100px;
+
+  &.epic {
+    box-shadow: 0px 2px 2px 3px $epic_shadow inset;
+    background-color: $epic_background;
+    border: 8px solid $epic;
+  }
+
+  &.rare {
+    box-shadow: 0px 2px 2px 3px $rare_shadow inset;
+    background-color: $rare_background;
+    border: 8px solid $rare;
+  }
+
+  &.legendary {
+    box-shadow: 0px 2px 2px 3px $legendary_shadow inset;
+    background-color: $legendary_background;
+    border: 8px solid $legendary;
+  }
+}
+.item_label {
+  margin-bottom: 0.3rem;
+  margin-top: 1rem;
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: uppercase;
+  -webkit-text-fill-color: #b9ace2;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: black;
+}
+
+.item_row {
+  background-color: #554688;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.5rem;
+  padding-right: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+
+  font-size: 20px;
+  font-weight: 900;
+  text-transform: uppercase;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+
+  &__img {
+    margin-right: 0.5rem;
+    height: 30px;
+    width: 30px;
+
+    img {
+      max-height: 100%;
+    }
+  }
+}
+
+.item_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+  &__name {
+    font-size: 20px;
+  }
+
+  &.rare {
+    -webkit-text-fill-color: $rare;
+  }
+
+  &.epic {
+    -webkit-text-fill-color: $epic;
+  }
+
+  &.legendary {
+    -webkit-text-fill-color: $legendary;
+  }
+}
+
+.button_section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.button_primary {
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  font-size: 22px;
+  font-weight: 900;
+
+  // display: inline-block;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
+
+  background-color: rgb(255, 186, 36);
+  border-top: 4px solid rgb(255, 225, 92);
+  border-bottom: 2px solid rgb(255, 148, 26);
+  border-radius: 10px;
+  box-shadow: 0px 5px 0px -0.5px $legendary_shadow;
+}

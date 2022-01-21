@@ -1,0 +1,21 @@
+@import "variables";
+
+.empty {
+  margin-top: 0.2rem;
+  background-color: $actionize_black;
+  position: relative;
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 0.75rem;
+}
+.filled {
+  content: "";
+  background-color: $primary;
+  position: absolute;
+  width: calc(var(--progress, 0) * 1%);
+  border-radius: 0.5rem;
+  height: 0.75rem;
+  &.action {
+    background-color: $secondary;
+  }
+}

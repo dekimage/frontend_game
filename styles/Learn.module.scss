@@ -1,0 +1,43 @@
+@import "variables";
+@import "placeholders";
+.realm {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 112px;
+  margin-bottom: 24px;
+  background-color: $actionize_gray;
+  color: white;
+  // border: 1px solid $optimzeColor;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.realm_body {
+  width: 336px;
+  padding: 24px;
+}
+
+.realm_name {
+  font-size: 20px;
+  font-weight: 500;
+  // color: $gray_headspace;
+  color: white;
+}
+
+.realm_description {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.realm_image {
+  width: 112px;
+  height: 112px;
+  @extend %flex_center;
+  img {
+    height: 65px;
+  }
+}
+.progress {
+  font-size: 12px;
+}

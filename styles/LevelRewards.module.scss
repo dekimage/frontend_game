@@ -1,0 +1,95 @@
+@import "variables";
+@import "placeholders";
+
+.header {
+  @extend %flex_center;
+  border-bottom: 12px solid $actionize_gray;
+  background-color: $actionize_black;
+  flex-direction: column;
+  color: white;
+  padding: 1rem;
+  padding-bottom: 2rem;
+  &_ctabox {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+.levelRewardsGrid {
+  display: grid;
+  grid-template-columns: 1fr 4rem 1fr;
+  background-color: $actionize_black;
+}
+
+.levelRewardsColumn {
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 80px);
+  gap: 1.5rem;
+}
+
+.levelReward {
+  padding: 1rem;
+  @extend %flex_center;
+}
+.levelRewardLevel {
+  @extend %flex_center;
+  position: relative;
+
+  &__text {
+    @extend %flex_center;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 50%;
+    background-color: $actionize_gray;
+    width: 2.25rem;
+    height: 2.25rem;
+    z-index: 5;
+    color: white;
+    &.passed {
+      background-color: $primary;
+    }
+  }
+  &__stripe {
+    background-color: $actionize_gray;
+    position: absolute;
+    width: 10px;
+    height: 104px;
+    &.passed {
+      background-color: $primary;
+    }
+  }
+}
+
+.footer {
+  border-top: 12px solid $actionize_gray;
+  background-color: $actionize_black;
+  width: 100%;
+  @extend %flex_center;
+  flex-direction: row;
+  &_reward {
+    position: relative;
+  }
+  &_label {
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    background-color: $actionize_gray;
+    padding: 1rem;
+    margin-left: 2rem;
+  }
+  &_requiredLevel {
+    position: absolute;
+    background-color: $actionize_gray;
+    border: 2px solid $primary;
+    color: white;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    padding: 0.2rem;
+    right: 0;
+    top: 0;
+  }
+}

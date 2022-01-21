@@ -1,0 +1,6 @@
+@import "placeholders";
+@import "variables";
+
+.buddy {
+  @extend %box;
+}

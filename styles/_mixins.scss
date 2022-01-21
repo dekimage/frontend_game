@@ -1,0 +1,11 @@
+@mixin media_bg {
+  @media (min-width: #{$screen_bg_min}) {
+    @content;
+  }
+}
+
+@mixin media_sm {
+  @media (max-width: #{$screen_bg_min}) {
+    @content;
+  }
+}
