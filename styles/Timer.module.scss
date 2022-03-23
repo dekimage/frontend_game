@@ -1,19 +1,33 @@
+@import "variables";
+@import "placeholders";
 .section {
-  display: flex;
+  @extend %flex_center;
   flex-direction: column;
 }
 
 .timer {
+  background-color: $actionize_gray_light;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0.75rem 0.5rem;
-
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  padding: 0.75rem 1rem;
   border-radius: 6px;
+  width: fit-content;
 }
 .count {
   padding-left: 0.5rem;
   font-size: 22px;
   font-weight: bold;
+}
+
+.icon {
+  @extend %flex_center;
+}
+
+.btnPlay {
+  @extend %btn_play;
+  background-color: $primary;
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: 1.2rem;
 }

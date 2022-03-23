@@ -12,7 +12,7 @@
 
 %box_dark {
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 25px;
+  border-radius: 1rem;
   padding: 1rem;
 }
 
@@ -22,8 +22,28 @@
   align-items: center;
 }
 
+%flex_between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+%flex_around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 %text--m {
   font-size: 1rem;
   font-weight: 700;
   line-height: 150%;
+}
+
+%btn_play {
+  @extend %flex_center;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  cursor: pointer;
 }

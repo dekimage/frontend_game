@@ -1,0 +1,183 @@
+@import "variables.scss";
+@import "placeholders.scss";
+.backButton {
+  @extend %flex_center;
+  padding: 0 0.5rem;
+}
+.searchBox {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-width: 20rem;
+  background-color: $actionize_gray;
+  border-radius: 15px;
+  padding: 0.25rem 0;
+  position: relative;
+  z-index: 1000;
+  margin-bottom: 1rem;
+
+  input {
+    color: $gray_lighter;
+    background-color: transparent;
+    border: 2px solid transparent;
+    outline: none;
+    height: 2.5rem;
+    width: 100%;
+    font-size: 22px;
+  }
+  ::placeholder {
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0.5rem;
+    padding-left: 0;
+    color: $gray_lighter;
+  }
+}
+
+.searchDescription {
+  margin-top: 0.5rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: gray;
+  width: 12rem;
+}
+
+.noResults {
+  @extend %flex_center;
+  flex-direction: column;
+  font-size: 24px;
+  margin: 10rem 0;
+}
+
+.isSearching {
+  margin-bottom: 1rem;
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
+}
+
+.btn_search {
+  background-color: transparent;
+  width: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 0 1rem;
+  &.clear {
+    cursor: pointer;
+  }
+}
+.search_background {
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 4.5rem;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 500;
+  background-color: rgba(85, 85, 85, 0.151);
+  cursor: pointer;
+}
+.search_label {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid $optimzeColor;
+  box-shadow: $optimzeShadow;
+}
+.lockedCardsLabel {
+  padding: 0.5rem;
+  border-bottom: 1px solid $optimzeColor;
+  background-color: $optimzeColorLight;
+}
+.searchResult_scrollable {
+  // max-height: 750px;
+  overflow-y: auto;
+}
+.searchResult_box {
+  font-size: 18px;
+  font-weight: 500;
+  width: 100%;
+  top: 1rem;
+  left: 0;
+  margin-top: 4rem;
+  position: absolute;
+  z-index: 1000;
+  border-radius: 15px;
+
+  @media (max-width: 480px) {
+    position: fixed;
+    min-width: 95vw;
+    margin-top: 5rem;
+  }
+
+  &--item {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid $optimzeColor;
+    cursor: pointer;
+    padding: 0.3rem;
+    &:hover {
+      background-color: $optimzeColorLight;
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      padding: 0.3rem;
+      flex-grow: 1;
+    }
+    &__image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.search_tags {
+  font-size: 0.7rem;
+}
+.play-icon {
+  display: flex;
+}
+.locker-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0.3rem;
+  // border: 1px solid $optimzeColor;
+
+  &--locker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    // border: 1px solid $optimzeColor;
+    border-radius: 5px;
+    &:hover {
+      border: 1px solid $optimzeColor;
+      box-shadow: $optimzeShadowHover;
+    }
+    img {
+      height: 40px;
+    }
+  }
+}
+
+// SEARCH CARD COMPONENT
+.searchCard {
+  background-color: $actionize_gray;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 20px;
+  @extend %flex_between;
+  justify-content: flex-start;
+}
+.image {
+  margin-right: 1rem;
+  height: 60px;
+}

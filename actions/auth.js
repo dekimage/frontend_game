@@ -10,6 +10,7 @@ export const signup = (dispatch, username, email, password) => {
       console.log(data);
       dispatch({ type: "FETCH_USER", data: data.user });
       Cookie.set("token", data.jwt);
+      Cookie.set("userId", data.user.id);
       Router.push("/");
     })
     .catch((err) => {
@@ -23,6 +24,7 @@ export const login = (dispatch, identifier, password) => {
     .then(({ data }) => {
       dispatch({ type: "FETCH_USER", data: data.user });
       Cookie.set("token", data.jwt);
+      Cookie.set("userId", data.user.id);
       Router.push("/");
     })
     .catch((err) => {

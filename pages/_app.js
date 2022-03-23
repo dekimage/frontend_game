@@ -20,6 +20,7 @@ const MyApp = ({ Component, pageProps }) => {
     <Store>
       <Head>
         <title>App Title</title>
+        {/* <link href="../public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
         <script
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"

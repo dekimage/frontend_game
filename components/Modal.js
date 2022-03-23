@@ -1,13 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const Modal = ({ isShowing, openModal, closeModal, jsx }) =>
+const Modal = ({
+  isShowing,
+  openModal,
+  closeModal,
+  jsx,
+  showCloseButton = true,
+}) =>
   isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div
-            className="modal-wrapper"
+            className="modal-wrapper slideInAnimation"
             aria-modal
             aria-hidden
             tabIndex={-1}
@@ -15,17 +21,19 @@ const Modal = ({ isShowing, openModal, closeModal, jsx }) =>
           >
             <div className="modal">
               <div className="modal-header">
-                <button
-                  type="button"
-                  className="modal-close-button"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  onClick={closeModal}
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                {showCloseButton && (
+                  <button
+                    type="button"
+                    className="modal-close-button"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    onClick={closeModal}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                )}
               </div>
-              <p>{jsx}</p>
+              <div>{jsx}</div>
             </div>
           </div>
         </React.Fragment>,

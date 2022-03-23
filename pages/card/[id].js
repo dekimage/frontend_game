@@ -29,30 +29,12 @@ const GET_CARD_ID = gql`
       description
       type
       rarity
-      duration
       realm {
         color
         name
       }
       image {
         url
-      }
-      slides {
-        id
-        title
-        type
-        image {
-          url
-        }
-        content
-        tips
-        examples
-        step
-        timer
-        card {
-          id
-          name
-        }
       }
     }
   }
@@ -82,14 +64,15 @@ const CardPage = ({ card, dispatch }) => {
     is_new: true,
     is_favorite: false,
   };
-  const addFavoriteCard = (id) => {
-    console.log(`Card with ID:${id} is now your favorite!`);
-  };
 
   const [selectedLevel, setSelectedLevel] = useState(proxyCard.completed);
+  const router = useRouter();
   return (
-    <div className="section">
+    <div className="section_container">
       <div className={styles.card}>
+        <div className={styles.backButton} onClick={() => router.back()}>
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </div>
         <img
           className={styles.image}
           src={`http://localhost:1337${card.image.url}`}
@@ -248,8 +231,11 @@ const CardPage = ({ card, dispatch }) => {
           className={cx(
             selectedLevel == proxyCard.completed ? "btn btn-action" : "btn"
           )}
+          onClick={() => {
+            router.push(`http://localhost:3000/card/player/${card.id}`);
+          }}
         >
-          <ion-icon name="play"></ion-icon> Play Level {selectedLevel}
+          <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
         </div>
       </div>
     </div>

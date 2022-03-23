@@ -4,7 +4,16 @@ import * as api from "../api";
 import Cookie from "js-cookie";
 
 const AUTH_TOKEN = Cookie.get("token");
-const initialState = { isAuthenticated: false, user: {} };
+
+const initialState = {
+  isAuthenticated: false,
+  response: "",
+  user: {},
+  rewardsModal: {
+    isOpen: false,
+    results: [],
+  },
+};
 
 const Store = ({ children }) => {
   const [store, dispatch] = useReducer(Reducer, initialState);
@@ -13,6 +22,7 @@ const Store = ({ children }) => {
       api
         .fetchUserApi()
         .then((response) => {
+          console.log(response.data);
           dispatch({ type: "FETCH_USER", data: response.data });
         })
         .catch((err) => {

@@ -9,9 +9,11 @@ import Link from "next/link";
 import RewardImage from "../components/RewardImage";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
+import clseIcon from "../assets/close.svg";
+import settingsIcon from "../assets/menu-settings-dark.svg";
 
 // *** ACTIONS ***
-import { levelUp } from "../actions/action";
+import { purchaseProduct } from "../actions/action";
 
 // *** STYLES ***
 import cx from "classnames";
@@ -21,51 +23,38 @@ const Template = () => {
   const [store, dispatch] = useContext(Context);
 
   return (
-    <div className="section">
-      <Header />
-      <div>stats</div>
-      <div>62% completed cards</div>
-      <div>92% discovered cards</div>
-      <div>FREE member</div>
-      <div>LAST DISCOVERED</div>
-      <div>card 1</div>
-      <div>card 2</div>
-      <div>card 3</div>
-      <div>LAST COMPLETED</div>
-      <div>card 1</div>
-      <div>card 2</div>
-      <div>card 3</div>
-      <div>buddies</div>
-      <div className={styles.buddy}>
-        <div>img</div>
-        <div>19lvl</div>
-        <div>Predo Medro</div>
-        <button>send love</button>
+    <div className="background_dark">
+      {/* <Header /> */}
+      <div className="section_container">
+        <div className={styles.profileHeader}>
+          <div className={styles.escape}>
+            <img src={clseIcon} height="25px" />
+          </div>
+          <div className={styles.profileHeader_box}>
+            <div className={styles.avatarBox}>
+              <div className={styles.avatar}>img</div>
+              <div className={styles.level}>25</div>
+              <div className={styles.xp}>XP 230/400</div>
+            </div>
+          </div>
+          <div className={styles.settings}>
+            <img src={settingsIcon} height="25px" />
+          </div>
+        </div>
+
+        <div className={styles.tabs}>
+          <div className={styles.tabsButton}>Stats</div>
+          <div className={styles.tabsButton}>Buddies</div>
+        </div>
       </div>
-      <div className={styles.buddy}>
-        <div>img</div>
-        <div>19lvl</div>
-        <div>Smiki miki</div>
-        <button>send love</button>
+
+      <div className={styles.stats}>
+        <div className={styles.statsBox}>
+          <div className={styles.statsBox_img}>img</div>
+          <div className={styles.statsBox_stats}>35/100</div>
+          <div className={styles.statsBox_text}>Completed Cards</div>
+        </div>
       </div>
-      <div className={styles.buddy}>
-        <div>img</div>
-        <div>19lvl</div>
-        <div>Poki koki</div>
-        <div>cta icon</div>
-      </div>
-      <div className={styles.buddy}>
-        <div>img</div>
-        <div>19lvl</div>
-        <div>Kris mis</div>
-        <div>cta icon</div>
-      </div>
-      <button>Share Buddy Link</button>
-      <div>collection</div>
-      <div>Filter 1</div>
-      <div>Filter 2</div>
-      <div>Filter 3</div>
-      <div>c1, c2, c3</div>
       <Navbar />
     </div>
   );

@@ -35,7 +35,9 @@ const RewardImage = ({
       )}
 
       <div className={styles.reward_image}>
-        {reward == "stars" && <img src={starIcon} />}
+        {reward == "stars" && (
+          <img height="8px" src="http://localhost:1337/star.png" />
+        )}
         {reward == "gems" && <img src={gemIcon} />}
       </div>
 

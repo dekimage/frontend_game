@@ -1,0 +1,198 @@
+@import "variables";
+@import "placeholders";
+
+.title {
+  padding: 1rem 0;
+  @extend %flex_center;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.contentTheory {
+  height: 600px;
+  position: relative;
+}
+
+.theoryText {
+  padding: 1rem 0;
+  font-size: 20px;
+  font-weight: 500;
+  position: relative;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  &::before {
+    background-color: $actionize_black;
+    animation: typewritter 1.5s steps(24) forwards;
+  }
+  @keyframes typewritter {
+    to {
+      left: 100%;
+    }
+  }
+}
+
+.ctaBox {
+  height: 12rem;
+  @extend %flex_center;
+  flex-direction: column;
+}
+
+.contentQuestion {
+  position: relative;
+  height: 600px;
+}
+
+.answer {
+  @extend %flex_between;
+  width: 95%;
+  font-size: 20px;
+  font-weight: 700;
+  background-color: $primary;
+  margin: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  &_selected {
+    border: 3px solid white;
+  }
+  &_upcoming {
+    background-color: $actionize_gray_light;
+  }
+  &_completed {
+    background-color: $actionize_green;
+    opacity: 50%;
+  }
+}
+.answerIndex {
+  padding: 1rem;
+}
+.answerText {
+  padding: 1rem;
+  width: 100%;
+  border-radius: 10px;
+  background-color: $actionize_gray;
+  border: 1px solid $actionize_gray;
+}
+
+.dimScreen {
+  background-color: rgba(0, 0, 0, 0.507);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  @extend %flex_center;
+}
+
+.playerModal {
+  width: 100%;
+  background-color: $actionize_gray;
+  padding: 1rem;
+  height: auto;
+  border-radius: 2rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  @include media_bg {
+    max-width: 36rem;
+    padding: 1.5rem;
+    min-width: 510px;
+  }
+  &_Wrapper {
+    width: 100%;
+  }
+  &_section {
+    @extend %flex_center;
+    padding: 1rem 0.5rem;
+  }
+  &_titleBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+  &_title {
+    font-size: 18px;
+    font-weight: 500;
+    width: 100%;
+    @extend %flex_center;
+  }
+  &_back {
+    cursor: pointer;
+  }
+  &_redBackground {
+    background-color: $eggHeadRed;
+    border-radius: 20px;
+    padding: 1.5rem;
+  }
+  &_greenBackground {
+    background-color: $actionize_green;
+    border-radius: 20px;
+    padding: 1.5rem;
+  }
+}
+
+.sliderProgress {
+  @extend %flex_center;
+  justify-content: space-around;
+  background-color: $actionize_black;
+  padding: 1rem;
+}
+
+.sliderBar {
+  background-color: $actionize_gray_light;
+  content: "";
+  padding: 0.2rem 0;
+  margin: 0 0.5rem;
+  border-radius: 10px;
+  width: 50px;
+  &_filled {
+    background-color: white;
+  }
+}
+
+.sliderHeader {
+  @extend %flex_between;
+  color: white;
+  padding: 1rem 0;
+}
+
+.grayBubble {
+  border-radius: 15px;
+  padding: 0.2rem 1rem;
+  background-color: $actionize_gray_light;
+  @extend %flex_center;
+  font-weight: 700;
+  width: auto;
+  &_rewards {
+    @extend %flex_between;
+    width: 100%;
+  }
+}
+
+div.grayBubble_rewards * {
+  padding: 0 0.25rem;
+}
+
+//DUPLICATE from REALM css
+.back {
+  @extend %flex_center;
+  cursor: pointer;
+  border-radius: 10px;
+  left: 0;
+  &:hover {
+    background-color: $actionize_gray_light;
+  }
+}

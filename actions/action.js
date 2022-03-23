@@ -1,5 +1,16 @@
 import * as api from "../api";
 
+export const purchaseLootBox = (dispatch, boxId) => {
+  api
+    .purchaseLootBoxApi(boxId)
+    .then(({ data }) => {
+      dispatch({ type: "PURCHASE_BOX", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const updateCard = (dispatch, cardId, action) => {
   api
     .updateCardApi(cardId, action)
@@ -72,8 +83,15 @@ export const achievementTest = (dispatch, itemId, action) => {
   // });
 };
 
-export const levelUp = (dispatch, xp, increase) => {
-  dispatch({ type: "UPDATE_USER_XP", data: { xp, increase } });
+export const purchaseProduct = (dispatch, product_type, productId) => {
+  api
+    .purchaseProductApi(productId, product_type)
+    .then(({ data }) => {
+      dispatch({ type: "DEV_TEST", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // DEVELOPER API
@@ -86,4 +104,9 @@ export const developerModeApi = (dispatch, job) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+// STATIC ACTIONS - NO API
+export const closeRewardsModal = (dispatch) => {
+  dispatch({ type: "CLOSE_REWARDS_MODAL" });
 };

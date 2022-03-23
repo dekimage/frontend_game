@@ -9,7 +9,7 @@ import Link from "next/link";
 import RewardImage from "../components/RewardImage";
 
 // *** ACTIONS ***
-import { levelUp } from "../actions/action";
+import { purchaseProduct } from "../actions/action";
 
 // *** STYLES ***
 import cx from "classnames";

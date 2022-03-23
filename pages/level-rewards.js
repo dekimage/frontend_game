@@ -9,7 +9,7 @@ import Link from "next/link";
 import RewardImage from "../components/RewardImage";
 
 // *** ACTIONS ***
-import { levelUp } from "../actions/action";
+import { purchaseProduct } from "../actions/action";
 
 // *** DATA ***
 import { levelRewards } from "../data/rewards";
@@ -62,8 +62,8 @@ const LevelRewardsTower = () => {
   };
   const proxyNextReward = joinArrays(levelRewards)[4];
   return (
-    <div className="background">
-      <div className="section">
+    <div className="background_dark">
+      <div className="section_container">
         <div className={styles.header}>
           <h1>Rewards Tower</h1>
           <h3>Collect rewards for leveling up!</h3>

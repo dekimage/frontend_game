@@ -1,6 +1,24 @@
 @import "variables";
 @import "placeholders";
 
+.backButton {
+  @extend %flex_center;
+  position: absolute;
+  height: 2.5rem;
+  width: 2.5rem;
+
+  top: 1rem;
+  left: 0.5rem;
+  background-color: black;
+
+  z-index: 1000000;
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    background-color: $optimzeColor;
+  }
+}
+
 .fixed {
   position: fixed;
   background-color: $actionize_black;
@@ -31,11 +49,14 @@
 .card {
   width: auto;
   background-color: $actionize_black;
+  border-radius: 10px;
   @extend %flex_center;
   flex-direction: column;
   position: relative;
   overflow-x: clip;
   padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 8px 4px, black 0px 7px 13px -3px,
+    black 0px -3px 0px inset;
 }
 
 .background {
@@ -148,14 +169,6 @@
   flex-direction: column;
   color: white;
   font-size: 12px;
-}
-
-%btn_play {
-  @extend %flex_center;
-  height: 3rem;
-  width: 3rem;
-  border-radius: 50%;
-  cursor: pointer;
 }
 
 .btn_play_passed {

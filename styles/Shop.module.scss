@@ -1,8 +1,177 @@
 @import "placeholders";
 @import "variables";
 
-.product {
-  @extend %box;
+.boxes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 2fr));
+  grid-template-rows: repeat(2, minmax(150px, 2fr));
+}
+
+.box {
   @extend %flex_center;
+  cursor: pointer;
+  max-width: 300px;
+  border-radius: 20px;
+  flex-direction: column;
+  background-color: $actionize_gray;
+  color: white;
   margin: 1rem;
+  &_cta {
+    border-radius: 20px;
+    font-weight: 500;
+    padding: 0.5rem;
+    background-color: $primary;
+    width: 100%;
+    @extend %flex_center;
+  }
+  &_cta > *:first-child {
+    margin-right: 0.25rem;
+  }
+}
+
+// BOX MODAL
+
+.boxModal {
+  @extend %flex_center;
+  color: white;
+  flex-direction: column;
+  background-color: $actionize_black;
+  &_name {
+    font-size: 28px;
+    font-weight: 500;
+  }
+  &_label {
+    color: $actionize_gray_light;
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
+
+//DROP LABEL
+.dropLabel {
+  margin: 1rem 0;
+  @extend %flex_center;
+  background-color: black;
+  border-radius: 15px;
+  justify-content: space-around;
+  width: 100%;
+  padding: 1rem 4rem;
+  &_item {
+    font-weight: 500;
+    @extend %flex_center;
+    img {
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+.counter {
+  background-color: $eggHeadRed;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 1rem;
+}
+.duplicateLabel {
+  margin: 1rem 0;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: $actionize_gray;
+  padding: 0.3rem 0.5rem;
+  border-radius: 12px;
+}
+.rarityLabel {
+  text-transform: capitalize;
+}
+// ANIMATIONS EXPERIMENTAL
+
+.flip-vertical-right {
+  -webkit-animation: flipAnimation 0.1s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    8 both;
+  animation: flipAnimation 0.1s cubic-bezier(0.455, 0.03, 0.515, 0.955) 8 both;
+}
+@-webkit-keyframes flipAnimation {
+  0% {
+    -webkit-transform: rotateY(0);
+    transform: rotateY(0);
+  }
+  100% {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+  }
+}
+@keyframes fflipAnimation {
+  0% {
+    -webkit-transform: rotateY(0);
+    transform: rotateY(0);
+  }
+  100% {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+  }
+}
+
+.wobbleAnimation:active {
+  -webkit-animation: wobbleAnimation 1.6s infinite both;
+  animation: wobbleAnimation 1.6s infinite both;
+}
+
+@-webkit-keyframes wobbleAnimation {
+  0%,
+  100% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+  }
+  15% {
+    -webkit-transform: translateX(-30px) rotate(-6deg);
+    transform: translateX(-30px) rotate(-6deg);
+  }
+  30% {
+    -webkit-transform: translateX(15px) rotate(6deg);
+    transform: translateX(15px) rotate(6deg);
+  }
+  45% {
+    -webkit-transform: translateX(-15px) rotate(-3.6deg);
+    transform: translateX(-15px) rotate(-3.6deg);
+  }
+  60% {
+    -webkit-transform: translateX(9px) rotate(2.4deg);
+    transform: translateX(9px) rotate(2.4deg);
+  }
+  75% {
+    -webkit-transform: translateX(-6px) rotate(-1.2deg);
+    transform: translateX(-6px) rotate(-1.2deg);
+  }
+}
+@keyframes wobbleAnimation {
+  0%,
+  100% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+  }
+  15% {
+    -webkit-transform: translateX(-30px) rotate(-6deg);
+    transform: translateX(-30px) rotate(-6deg);
+  }
+  30% {
+    -webkit-transform: translateX(15px) rotate(6deg);
+    transform: translateX(15px) rotate(6deg);
+  }
+  45% {
+    -webkit-transform: translateX(-15px) rotate(-3.6deg);
+    transform: translateX(-15px) rotate(-3.6deg);
+  }
+  60% {
+    -webkit-transform: translateX(9px) rotate(2.4deg);
+    transform: translateX(9px) rotate(2.4deg);
+  }
+  75% {
+    -webkit-transform: translateX(-6px) rotate(-1.2deg);
+    transform: translateX(-6px) rotate(-1.2deg);
+  }
 }

@@ -13,6 +13,9 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
 // API
 export const fetchUserApi = () => axios.get("/users/me");
 
+export const purchaseLootBoxApi = (boxId) =>
+  axios.put(`/users-permissions/users/purchase-box/${boxId}`);
+
 export const updateCardApi = (cardId, action) =>
   axios.put(`/users-permissions/users/update-card/${cardId}`, {
     action,
@@ -45,6 +48,10 @@ export const claimObjectiveApi = (objectiveId) =>
 export const claimObjectiveCounterApi = (objectiveId, temporal_type) =>
   axios.put(`${userUrl}/collect-objective-counter-reward/${objectiveId}`, {
     temporal_type,
+  });
+export const purchaseProductApi = (productId, product_type) =>
+  axios.put(`${userUrl}/purchase-product/${productId}`, {
+    product_type,
   });
 
 export const achievementTestApi = () => axios.get(`${userUrl}/achievement`);

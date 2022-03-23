@@ -14,6 +14,7 @@
     "apollo-link-context": "^1.0.20",
     "axios": "^0.21.4",
     "classnames": "^2.3.1",
+    "debounce": "^1.2.1",
     "graphql": "^15.5.0",
     "i": "^0.3.7",
     "isomorphic-fetch": "^3.0.0",
@@ -30,6 +31,7 @@
     "react-dom": "17.0.2",
     "react-query": "^3.31.0",
     "react-timer-hook": "^3.0.5",
-    "sass": "^1.33.0"
+    "sass": "^1.33.0",
+    "strapi-sdk-javascript": "^0.3.3"
   }
 }

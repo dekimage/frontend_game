@@ -3,11 +3,13 @@
 
 .reward {
   color: white;
-  border: 2px solid $primary;
-  background-color: $actionize_gray;
+  // border: 2px solid $primary;
+  background-color: $actionize_black;
   position: relative;
   cursor: pointer;
   min-width: 4rem;
+  height: 100%;
+  width: 100%;
   border-radius: 1rem;
   @extend %flex_center;
   flex-direction: column;
