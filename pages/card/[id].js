@@ -1,13 +1,6 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import {
-  useState,
-  useEffect,
-  useContext,
-  forwardRef,
-  useRef,
-  useImperativeHandle,
-} from "react";
+import { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/store";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -15,11 +8,141 @@ import _ from "lodash";
 import styles from "../../styles/CardPage.module.scss";
 import ProgressBar from "../../components/ProgressBar";
 import cx from "classnames";
-import { updateCard } from "../../actions/action";
+import {
+  updateCard,
+  completeAction,
+  interactCommunityAction,
+  deleteCommunityAction,
+  createCommunityAction,
+} from "../../actions/action";
+
+import iconCommon from "../../assets/common-rarity.svg";
+import iconRare from "../../assets/rare-rarity.svg";
+import iconEpic from "../../assets/epic-rarity.svg";
+import iconLegendary from "../../assets/legendary-rarity.svg";
+import arrowDown from "../../assets/arrow-down-white.png";
+import checkmark1 from "../../assets/checkmark-fill.svg";
 
 // import styles from "../../styles/card.module.scss";
 // REMOVE SECOND STYLE - FIGURE OUT WAY FOR DOUBLE MODULES
 // import styles_2 from "../../styles/Item.module.scss";
+
+const getMaxQuantity = (level) => {
+  const data = {
+    1: 2,
+    2: 4,
+    3: 6,
+    4: 8,
+    5: 10,
+  };
+  return data[level];
+};
+
+const GET_USERCARDS_QUERY = gql`
+  query ($id: ID!) {
+    usercard(id: $id) {
+      card {
+        id
+        name
+        description
+        type
+        rarity
+        expansion {
+          id
+          name
+        }
+        isOpen
+        actions {
+          id
+          name
+          type
+          level
+          duration
+          steps {
+            content
+          }
+        }
+        community_actions {
+          id
+          name
+          type
+          duration
+          steps {
+            content
+          }
+          votes
+          reports
+          user {
+            id
+            username
+          }
+        }
+        realm {
+          color
+          name
+          background {
+            url
+          }
+        }
+        image {
+          url
+        }
+      }
+      is_favorite
+      level
+      completed
+      quantity
+      is_new
+      glory_points
+
+      isUnlocked
+      completed_actions {
+        id
+      }
+
+      community_actions_claimed {
+        id
+        user {
+          id
+          username
+        }
+        type
+        votes
+        reports
+        name
+        duration
+        steps {
+          content
+        }
+      }
+      my_community_actions {
+        id
+        user {
+          id
+          username
+        }
+        type
+        votes
+        reports
+        name
+        duration
+        steps {
+          content
+        }
+        isPrivate
+      }
+      upvoted_actions {
+        id
+      }
+      community_actions_completed {
+        id
+      }
+      reported_actions {
+        id
+      }
+    }
+  }
+`;
 
 const GET_CARD_ID = gql`
   query ($id: ID!) {
@@ -29,9 +152,46 @@ const GET_CARD_ID = gql`
       description
       type
       rarity
+      expansion {
+        id
+        name
+      }
+      isOpen
+      expansion {
+        id
+        name
+      }
+      community_actions {
+        id
+        name
+        type
+        duration
+        steps {
+          content
+        }
+        votes
+        reports
+        user {
+          id
+          username
+        }
+      }
+      actions {
+        id
+        name
+        type
+        level
+        duration
+        steps {
+          content
+        }
+      }
       realm {
         color
         name
+        background {
+          url
+        }
       }
       image {
         url
@@ -40,33 +200,341 @@ const GET_CARD_ID = gql`
   }
 `;
 
+const CommunityAction = ({ action, type }) => {
+  const [open, setOpen] = useState(false);
+  const [store, dispatch] = useContext(Context);
+  const router = useRouter();
+  return (
+    <div className={styles.action}>
+      <div className={styles.action_closed} onClick={() => setOpen(!open)}>
+        <div className={styles.action_img}>{action.votes}</div>
+        <div
+          className={styles.upvoteBtn}
+          onClick={() =>
+            interactCommunityAction(
+              dispatch,
+              action.id,
+              action.isUpvoted ? "remove_vote" : "vote"
+            )
+          }
+        >
+          {action.isUpvoted ? "Remove Vote" : "Upvote"}
+        </div>
+        <div
+          className={styles.reportBtn}
+          onClick={() =>
+            interactCommunityAction(
+              dispatch,
+              action.id,
+              action.isReported ? "remove_report" : "report"
+            )
+          }
+        >
+          {action.isReported ? "Remove Report" : "Report"}
+        </div>
+        <div className={styles.action_box}>
+          <div className={styles.action_header}>
+            <div className={styles.action_name}>{action.name}</div>
+            <div className={styles.action_grouper}></div>
+          </div>
+          <div className={styles.action_header}>
+            <div className={styles.action_grouper}>
+              <div className={styles.action_type}>{action.type}</div>
+              <div className={styles.action_duration}>
+                {action.duration} min
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.action_arrow}>
+          <img src={arrowDown} height="20px" />
+        </div>
+        {action.isCompleted && (
+          <div className={styles.action_checkmark}>
+            <img src={checkmark1} height="25px" />
+          </div>
+        )}
+      </div>
+
+      {open && (
+        <div className={styles.action_open}>
+          {action.steps.map((step, i) => {
+            return (
+              <div className={styles.action_open_step} key={i}>
+                <div className={styles.action_open_stepLabel}>Step {i + 1}</div>
+                {step.content}
+              </div>
+            );
+          })}
+
+          {type === "community" && (
+            <>
+              <div
+                className={styles.action_open_complete}
+                onClick={() =>
+                  interactCommunityAction(
+                    dispatch,
+                    action.id,
+                    action.isClaimed ? "remove_add" : "add"
+                  )
+                }
+              >
+                <img src={checkmark1} height="30px" className="mr1" />
+                {action.isClaimed
+                  ? "Remove from My Actions"
+                  : "Add to My Actions"}
+              </div>
+            </>
+          )}
+
+          {type === "my" && (
+            <>
+              <div
+                className={styles.action_open_complete}
+                onClick={() =>
+                  interactCommunityAction(
+                    dispatch,
+                    action.id,
+                    action.isClaimed ? "remove_add" : "add"
+                  )
+                }
+              >
+                <img src={checkmark1} height="30px" className="mr1" />
+                {action.isClaimed
+                  ? "Remove from My Actions"
+                  : "Add to My Actions"}
+              </div>
+              <div
+                className={styles.reportBtn}
+                onClick={() => deleteCommunityAction(dispatch, action.id)}
+              >
+                Delete
+              </div>
+            </>
+          )}
+
+          {type === "added" && (
+            <>
+              <div
+                className={styles.action_open_complete}
+                onClick={() =>
+                  interactCommunityAction(dispatch, action.id, "remove_add")
+                }
+              >
+                <img src={checkmark1} height="30px" className="mr1" />
+                Remove from My Actions
+              </div>
+              <div
+                className={styles.action_open_complete}
+                onClick={() => {
+                  action.isCompleted
+                    ? interactCommunityAction(
+                        dispatch,
+                        action.id,
+                        "remove_complete"
+                      )
+                    : interactCommunityAction(dispatch, action.id, "complete");
+                }}
+              >
+                <img src={checkmark1} height="30px" className="mr1" />
+                {action.isCompleted ? "Completed" : "Mark as Complete"}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const Action = ({ action }) => {
+  const [open, setOpen] = useState(false);
+  const [store, dispatch] = useContext(Context);
+  const router = useRouter();
+  return (
+    <div className={styles.action}>
+      <div className={styles.action_closed} onClick={() => setOpen(!open)}>
+        <div className={styles.action_img}></div>
+        <div className={styles.action_box}>
+          <div className={styles.action_header}>
+            <div className={styles.action_name}>{action.name}</div>
+            <div className={styles.action_grouper}></div>
+          </div>
+          <div className={styles.action_header}>
+            <div className={styles.action_grouper}>
+              <div className={styles.action_type}>{action.type}</div>
+              <div className={styles.action_duration}>
+                {action.duration} min
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.action_arrow}>
+          <img src={arrowDown} height="20px" />
+        </div>
+        <div className={styles.action_checkmark}>
+          <img src={checkmark1} height="25px" />
+        </div>
+      </div>
+
+      {open && (
+        <div className={styles.action_open}>
+          {action.steps.map((step, i) => {
+            return (
+              <div className={styles.action_open_step} key={i}>
+                <div className={styles.action_open_stepLabel}>Step {i + 1}</div>
+                {step.content}
+              </div>
+            );
+          })}
+
+          <div
+            className={styles.action_open_complete}
+            onClick={() => {
+              action.isCompleted
+                ? completeAction(dispatch, action.id, "remove_complete")
+                : completeAction(dispatch, action.id, "complete");
+            }}
+          >
+            <img src={checkmark1} height="30px" className="mr1" />
+            {action.isCompleted ? "Completed" : "Mark as Complete"}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const static_levels = [
   { lvl: 1, required: 1 },
-  { lvl: 2, required: 1 },
-  { lvl: 3, required: 1 },
-  { lvl: 4, required: 1 },
-  { lvl: 5, required: 2 },
-  { lvl: 6, required: 2 },
-  { lvl: 7, required: 2 },
-  { lvl: 8, required: 3 },
-  { lvl: 9, required: 3 },
-  { lvl: 10, required: 3 },
+  { lvl: 2, required: 2 },
+  { lvl: 3, required: 3 },
+  { lvl: 4, required: 4 },
+  { lvl: 5, required: 5 },
 ];
 
-const CardPage = ({ card, dispatch }) => {
-  const proxyCard = {
-    level: 2,
-    completed: 4,
-    totalProgress: 4,
-    completed_at: "date-2022-22-22",
-    obtained_at: "date-2022-22-22",
-    quantity: 2,
-    is_new: true,
-    is_favorite: false,
+const CreateActionModal = ({ card }) => {
+  const [store, dispatch] = useContext(Context);
+  const [data, updateData] = useState({
+    action: "",
+    duration: 1,
+    name: "",
+    type: "challenge",
+    card: card.id,
+    isPrivate: false,
+  });
+
+  const onChange = (event) => {
+    updateData({ ...data, [event.target.name]: event.target.value });
   };
 
-  const [selectedLevel, setSelectedLevel] = useState(proxyCard.completed);
+  return (
+    <div className={styles.createActionModal}>
+      <form action="">
+        <label>Name:</label>
+
+        <input onChange={(event) => onChange(event)} type="text" name="name" />
+
+        <label>Action: (Max 500 words.)</label>
+
+        <input
+          onChange={(event) => onChange(event)}
+          type="text"
+          name="action"
+        />
+        <div
+          onClick={() => updateData({ ...data, isPrivate: !data.isPrivate })}
+        >
+          {data.isPrivate ? "Private" : "Public"}
+        </div>
+        {data.isPrivate &&
+          "Warning! Only you can see this action and other member will not benefit from your knowledge."}
+        <label>Duration (minutes):</label>
+
+        <input
+          onChange={(event) => onChange(event)}
+          type="number"
+          name="duration"
+        />
+      </form>
+      <div
+        className="btn btn-primary"
+        onClick={() => createCommunityAction(dispatch, data)}
+      >
+        Create
+      </div>
+    </div>
+  );
+};
+
+const CardPage = ({ dataUserCard, dataCard }) => {
+  const proxyUserCard = {
+    level: 1,
+    completed: 0,
+    quantity: 0,
+  };
+  const [store, dispatch] = useContext(Context);
+
+  const usercard = dataUserCard ? dataUserCard : proxyUserCard;
+  const maxQuantity = getMaxQuantity(usercard.level) || 10;
+  const [selectedLevel, setSelectedLevel] = useState(
+    usercard && usercard.completed + 1
+  );
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("community");
   const router = useRouter();
+  const card = usercard.card || dataCard.card;
+
+  const isCardOpen = card.isOpen || card.isUnlocked;
+  const isPremiumLocked =
+    card.expansion.name === "Pro" &&
+    store.user.expansions.filter((e) => e.name === "Pro").length === 0;
+
+  const mergeActions = (usercard, actions, checkingArray, keyword) => {
+    const result = actions.map((action) => {
+      return {
+        ...action,
+        [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
+        isReported: !!usercard.reported_actions.filter(
+          (a) => a.id === action.id
+        )[0],
+        isUpvoted: !!usercard.upvoted_actions.filter(
+          (a) => a.id === action.id
+        )[0],
+      };
+    });
+    return result;
+  };
+
+  const isLevelUnlocked = usercard.completed >= selectedLevel;
+
+  const communityActions =
+    dataUserCard &&
+    mergeActions(
+      usercard,
+      card.community_actions,
+      usercard.community_actions_claimed,
+      "isClaimed"
+    );
+
+  const addedActions =
+    dataUserCard &&
+    mergeActions(
+      usercard,
+      usercard.community_actions_claimed,
+      usercard.community_actions_completed,
+      "isCompleted"
+    );
+
+  const myActions =
+    dataUserCard &&
+    mergeActions(
+      usercard,
+      usercard.my_community_actions,
+      usercard.community_actions_claimed,
+      "isClaimed"
+    );
+
   return (
     <div className="section_container">
       <div className={styles.card}>
@@ -86,10 +554,18 @@ const CardPage = ({ card, dispatch }) => {
           style={{ "--background": card.realm.color }}
         ></div>
         <div className={styles.section_name}>
-          <div className={styles.name}>{card.name}</div>
+          <div className={styles.name}>
+            <div className={styles.realmLogo}>
+              <img
+                src={`http://localhost:1337${card.realm.background.url}`}
+                height="36px"
+              />
+            </div>
+            {card.name}
+          </div>
           <div className={styles.favorite}>
-            <div onClick={() => addFavoriteCard(card.id)}>
-              {proxyCard.is_favorite ? (
+            <div onClick={() => updateCard(dispatch, card.id, "favorite")}>
+              {usercard.is_favorite ? (
                 <ion-icon name="heart-outline"></ion-icon>
               ) : (
                 <ion-icon name="heart-half-outline"></ion-icon>
@@ -100,75 +576,73 @@ const CardPage = ({ card, dispatch }) => {
 
         <div className={styles.section_level}>
           <div className={styles.level}>
-            <span style={{ fontSize: "40px" }}>{proxyCard.level}</span> lvl
+            <span style={{ fontSize: "40px" }}>{usercard.level}</span> lvl
           </div>
           <div className={styles.progress_box}>
             <span>
-              {proxyCard.quantity}/{proxyCard.totalProgress}
+              {usercard.quantity}/{maxQuantity}
             </span>
             <ProgressBar
-              progress={proxyCard.quantity}
-              max={proxyCard.totalProgress}
+              progress={usercard.quantity}
+              max={maxQuantity}
+              isReadyToClaim={usercard.quantity >= maxQuantity}
             />
           </div>
-          {proxyCard.quantity >= proxyCard.totalProgress ? (
-            <div className="btn btn-action">Upgrade</div>
+          {usercard.quantity >= maxQuantity ? (
+            <div
+              className="btn btn-action"
+              onClick={() => updateCard(dispatch, card.id, "upgrade")}
+            >
+              Upgrade
+            </div>
           ) : (
             <div className="btn btn-disabled">Upgrade</div>
           )}
         </div>
 
-        <div className={styles.section_stats}>
-          <div className={styles.stats_component}>
-            <div className={styles.stats_component__label}>Category:</div>
-            <div className={styles.stats_component__label}>Health</div>
-          </div>
-          <div className={styles.stats_component}>
-            <div className={styles.stats_component__label}>Rarity:</div>
-            <div className={styles.stats_component__label}>Epic</div>
-          </div>
-          <div className={styles.stats_component}>
-            <div className={styles.stats_component__label}>Type:</div>
-            <div className={styles.stats_component__label}>Collectable</div>
-          </div>
-          <div className={styles.stats_component}>
-            <div className={styles.stats_component__label}>Tier:</div>
-            <div className={styles.stats_component__label}>Free</div>
-          </div>
-        </div>
+        <div className={styles.description}>{card.description}</div>
 
-        <div className="section">
-          <hr className="seperator" />
+        <div className={styles.titleProgress}>
+          <div className="title">Progress</div>
+          <div className="title">{usercard.completed}/5</div>
         </div>
 
         <div className={styles.section_levels}>
           {static_levels.map((level, i) => {
             return (
               <div className={styles.level_box} key={i}>
-                {level.lvl < proxyCard.completed && (
+                {level.lvl < usercard.completed + 1 && (
                   <div
-                    className={styles.btn_play_passed}
+                    className={cx(styles.btn_play_passed, {
+                      [styles.btn_play_active]: selectedLevel === level.lvl,
+                    })}
                     onClick={() => setSelectedLevel(level.lvl)}
                   >
                     <ion-icon name="play"></ion-icon>
                   </div>
                 )}
-                {level.lvl == proxyCard.completed && (
+                {level.lvl == usercard.completed + 1 && (
                   <div
-                    className={styles.btn_play_orange}
+                    className={cx(styles.btn_play_orange, {
+                      [styles.btn_play_active]: selectedLevel === level.lvl,
+                    })}
                     onClick={() => setSelectedLevel(level.lvl)}
                   >
                     <ion-icon name="play"></ion-icon>
                   </div>
                 )}
-                {level.lvl > proxyCard.completed &&
-                  proxyCard.level >= level.required && (
-                    <div className={styles.btn_play_grayopen}>
+                {level.lvl > usercard.completed + 1 &&
+                  usercard.level >= level.required && (
+                    <div
+                      className={cx(styles.btn_play_grayopen, {
+                        [styles.btn_play_active]: selectedLevel === level.lvl,
+                      })}
+                    >
                       <ion-icon name="play"></ion-icon>
                     </div>
                   )}
-                {level.lvl > proxyCard.completed &&
-                  proxyCard.level < level.required && (
+                {level.lvl > usercard.completed + 1 &&
+                  usercard.level < level.required && (
                     <div className={styles.btn_play_graylocked}>
                       <ion-icon name="lock-closed-outline"></ion-icon>
                     </div>
@@ -178,65 +652,238 @@ const CardPage = ({ card, dispatch }) => {
             );
           })}
         </div>
-        <div className="section">
-          <hr className="seperator" />
+
+        <div className={styles.titleProgress}>
+          <div className="title mb1">Ideas</div>
         </div>
+
+        <div className={styles.ideaPlayer}>
+          <div className="">
+            <div className="title">Player</div>
+            <div className={styles.ideaPlayer_group}>
+              <div className="description mr1">6 Slides</div>
+              <div className="description">2 Questions</div>
+            </div>
+          </div>
+          <div
+            className={styles.btn_play_passed}
+            onClick={() => {
+              router.push(`http://localhost:3000/card/player/${card.id}`);
+            }}
+          >
+            <ion-icon name="play"></ion-icon>
+          </div>
+        </div>
+        <div className={styles.titleProgress}>
+          <div className="title mb1">Actions (Level {selectedLevel})</div>
+        </div>
+
+        {isLevelUnlocked ? (
+          card.actions &&
+          dataUserCard &&
+          mergeActions(
+            usercard,
+            card.actions,
+            usercard.completed_actions,
+            "isCompleted"
+          )
+            .filter((a) => a.level === selectedLevel)
+            .map((action, i) => {
+              return <Action action={action} key={i} />;
+            })
+        ) : (
+          <div>Complete the Theory for this level to unlock Actions.</div>
+        )}
+
+        <div className={styles.titleProgress}>
+          <div className="title mb1">Added Actions</div>
+        </div>
+        {addedActions?.length > 0 ? (
+          addedActions.map((action, i) => {
+            return <CommunityAction action={action} type={"added"} key={i} />;
+          })
+        ) : (
+          <div style={{ color: "white" }}>
+            You don't have any added actions yet.
+          </div>
+        )}
+
+        {dataUserCard && (
+          <div className={styles.tabs}>
+            <div
+              className={styles.tab}
+              onClick={() => setActiveTab("community")}
+            >
+              Community {card.community_actions.length}
+            </div>
+
+            <div className={styles.tab} onClick={() => setActiveTab("my")}>
+              Create + {usercard.my_community_actions.length}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "community" && (
+          <>
+            <div className={styles.titleProgress}>
+              <div className="title mb1">Community Actions</div>
+            </div>
+            {communityActions?.length > 0 ? (
+              communityActions.map((action, i) => {
+                return (
+                  <CommunityAction action={action} type={"community"} key={i} />
+                );
+              })
+            ) : (
+              <div style={{ color: "white" }}>
+                Be the first one to create a community action.
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === "my" && (
+          <>
+            <div className={styles.titleProgress}>
+              <div className="title mb1">My Actions</div>
+            </div>
+            <div
+              className="btn btn-primary"
+              onClick={() => setCreateModalOpen(true)}
+            >
+              Create Action +
+            </div>
+            {myActions?.length > 0 ? (
+              myActions.map((action, i) => {
+                return <CommunityAction action={action} type={"my"} key={i} />;
+              })
+            ) : (
+              <div style={{ color: "white" }}>
+                You haven't created any actions for this card. <br />
+                Create your first action!
+              </div>
+            )}
+          </>
+        )}
+
+        {createModalOpen && (
+          <CreateActionModal
+            setCreateModalOpen={setCreateModalOpen}
+            card={card}
+          />
+        )}
+
+        <div className="margin">...</div>
       </div>
-      <div>
+
+      {/* ACTIONS BUTTONS */}
+      {/* <div>
+  
         <div
-          className="btn btn-secondary margin"
-          onClick={() => updateCard(dispatch, card.id, "favorite")}
-        >
-          Favorite Card
-        </div>
-        <div
-          className="btn btn-secondary margin"
+          className="btn btn-dev-done margin"
           onClick={() => updateCard(dispatch, card.id, "new_disable")}
         >
           Make this card Not New
         </div>
         <div
-          className="btn btn-secondary margin"
+          className="btn btn-dev-done margin"
           onClick={() => updateCard(dispatch, card.id, "new_activate")}
         >
           Make this Card New
         </div>
         <div
-          className="btn btn-secondary margin"
+          className="btn btn-dev-done margin"
           onClick={() => updateCard(dispatch, card.id, "complete")}
         >
           Complete Card
         </div>
+   
+
         <div
           className="btn btn-secondary margin"
-          onClick={() => updateCard(dispatch, card.id, "upgrade")}
+          onClick={() => updateCard(dispatch, card.id, "play")}
         >
-          Upgrade Card
+          Play Card (energy cost)
         </div>
+
         <div
           className="btn btn-secondary margin"
-          onClick={() => updateCard(dispatch, card.id, "obtain")}
+          onClick={() => updateCard(dispatch, card.id, "unlock")}
         >
-          Obtain Random Card
+          Unlock Card (10/10)
         </div>
-        <div className="margin">...</div>
-      </div>
+
+        <div
+          className="btn btn-secondary margin"
+          onClick={() =>
+            updateCard(dispatch, card.id, "complete_action", "action_id")
+          }
+        >
+          Complete Action
+        </div> */}
+
+      {/* <div className="margin">...</div>
+      </div> */}
+
       {/* <div>{card.level || 1}</div>
       <div>{card.completed || 1}</div>
       <div>{card.quantity || 0}</div>
       <div>{card.is_new || false}</div> */}
 
       <div className={styles.fixed}>
-        <div
-          className={cx(
-            selectedLevel == proxyCard.completed ? "btn btn-action" : "btn"
-          )}
-          onClick={() => {
-            router.push(`http://localhost:3000/card/player/${card.id}`);
-          }}
-        >
-          <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
-        </div>
+        {isCardOpen && isLevelUnlocked ? (
+          <div
+            className={cx(
+              selectedLevel == card.completed + 1 ? "btn btn-action" : "btn"
+            )}
+            onClick={() => {
+              dispatch({
+                type: "OPEN_PLAYER",
+                data: { level: usercard.level, selectedLevel },
+              });
+              router.push(`http://localhost:3000/card/player/${card.id}`);
+            }}
+          >
+            <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
+          </div>
+        ) : (
+          <div
+            className={cx(
+              usercard.quantity >= maxQuantity
+                ? "btn btn-action"
+                : "btn btn-disabled"
+            )}
+            onClick={() => {
+              usercard.quantity >= maxQuantity &&
+                updateCard(dispatch, card.id, "upgrade");
+            }}
+          >
+            <ion-icon name="play"></ion-icon> Upgrade Card {usercard.quantity}/
+            {maxQuantity}
+          </div>
+        )}
+        {!isCardOpen && !isPremiumLocked && (
+          <div
+            className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
+            onClick={() => {
+              router.push(`http://localhost:3000/card/player/${card.id}`);
+            }}
+          >
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            {usercard.quantity >= 10 ? "Unlock ->" : "Collect 10 to Unlock"}
+          </div>
+        )}
+        {!isCardOpen && isPremiumLocked && (
+          <div
+            className="btn"
+            onClick={() => {
+              router.push(`http://localhost:3000/shop`);
+            }}
+          >
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            Purchase Expansion
+          </div>
+        )}
       </div>
     </div>
   );
@@ -245,29 +892,61 @@ const CardPage = ({ card, dispatch }) => {
 const Card = () => {
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
-  const { data, loading, error } = useQuery(GET_CARD_ID, {
+  const {
+    data: card,
+    loading: cardLoading,
+    error: cardError,
+  } = useQuery(GET_CARD_ID, {
     variables: { id: router.query.id },
   });
-  const joinCard = (card, collection_json) => {
-    let collectionCard = collection_json[card.id];
-    if (collectionCard) {
-      return _.merge(card, collectionCard);
-    }
-    console.log("collection", collection_json);
-    console.log("card - updated", card);
-    return card;
-  };
+  const [getUserCard, { data, loading, error }] =
+    useLazyQuery(GET_USERCARDS_QUERY);
+  useEffect(() => {
+    if (store.user.usercards) {
+      const usercard = store.user.usercards.filter((uc) => {
+        return uc.card === parseInt(router.query.id);
+      })[0];
 
-  console.log(store.user);
+      if (!usercard) {
+        return;
+      }
+      getUserCard({ variables: { id: usercard.id } });
+    }
+  }, [store.user]);
+
+  // const joinCard = (card, usercards) => {
+  //   let collectionCard = usercards.filter(
+  //     (c) => c.card === parseInt(card.id)
+  //   )[0];
+
+  //   if (collectionCard) {
+  //     const mergedCard = {
+  //       ...collectionCard,
+  //       id: card.id,
+  //       image: card.image,
+  //       isOpen: card.isOpen,
+  //       rarity: card.rarity,
+  //       type: card.type,
+  //       realm: card.realm,
+  //       name: card.name,
+  //       actions: card.actions,
+  //     };
+
+  //     return mergedCard;
+  //   }
+
+  //   return card;
+  // };
 
   return (
     <div className="background_dark">
-      {error && <div>Error: {error}</div>}
-      {loading && <div>Loading...</div>}
-      {data && store.user && (
+      {error || (cardError && <div>Error: {error}</div>)}
+      {loading || (cardLoading && <div>Loading...</div>)}
+      {card && store.user && store.user.usercards && (
         <CardPage
-          card={joinCard(data.card, store.user.collection_json || {})}
-          dispatch={dispatch}
+          // card={joinCard(data.card, store.user.usercards || {})}
+          dataCard={card}
+          dataUserCard={data && data.usercard}
         />
       )}
     </div>

@@ -42,7 +42,11 @@ const Objective = ({
         >
           {name}
         </div>
-        <div className={styles.objective_description}>{requirement}</div>
+        {/* <div className={styles.objective_description}>{requirement}</div> */}
+        <div className={styles.objective_description}>
+          {progress}/{requirement_amount}
+        </div>
+
         {/* COMPONENT PROGRESS */}
 
         <div style={{ fontWeight: "500", fontSize: "18px" }}>
@@ -51,6 +55,7 @@ const Objective = ({
             isReadyToClaim={progress >= requirement_amount && !isCollected}
             max={requirement_amount}
           />
+
           {/* {progress == requirement_amount && !isCollected && "Ready to CLAIM!"} */}
         </div>
       </div>
@@ -61,7 +66,6 @@ const Objective = ({
       >
         <div className={styles.progressCounter}></div>
         {/* {isCollected ? "COLLECTED" : "NOT COLLECTED"} */}
-
         {isCollected ? (
           <img
             src={isCollected ? iconCheckmark : iconCheckmarkFill}

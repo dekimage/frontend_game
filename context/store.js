@@ -6,9 +6,12 @@ import Cookie from "js-cookie";
 const AUTH_TOKEN = Cookie.get("token");
 
 const initialState = {
+  player: {},
   isAuthenticated: false,
-  response: "",
+  response: {},
   user: {},
+  modals: [],
+  toasts: [],
   rewardsModal: {
     isOpen: false,
     results: [],
@@ -22,7 +25,7 @@ const Store = ({ children }) => {
       api
         .fetchUserApi()
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           dispatch({ type: "FETCH_USER", data: response.data });
         })
         .catch((err) => {

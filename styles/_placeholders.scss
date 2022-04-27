@@ -10,6 +10,13 @@
   background-color: white;
 }
 
+%box_duo {
+  border: 3px solid $actionize_gray;
+  padding: 1rem;
+  display: flex;
+  border-radius: 15px;
+}
+
 %box_dark {
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 1rem;

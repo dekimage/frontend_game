@@ -15,6 +15,9 @@ const GET_REALM_ID = gql`
       id
       name
       description
+      background {
+        url
+      }
       cards {
         id
         name
@@ -24,6 +27,10 @@ const GET_REALM_ID = gql`
         isOpen
         image {
           url
+        }
+        expansion {
+          id
+          name
         }
         realm {
           name
@@ -43,6 +50,7 @@ const Cards = () => {
   const { data, loading, error } = useQuery(GET_REALM_ID, {
     variables: { id: router.query.id },
   });
+
   const usercards = store.user && store.user.usercards;
   const joinCards = (cards, usercards) => {
     const joinedCards = cards.map((card) => {
@@ -50,7 +58,18 @@ const Cards = () => {
         (c) => c.card === parseInt(card.id)
       );
       if (collectionCard) {
-        return _.merge(card, collectionCard[0]);
+        const mergedCard = {
+          ...collectionCard[0],
+          id: card.id,
+          image: card.image,
+          isOpen: card.isOpen,
+          rarity: card.rarity,
+          type: card.type,
+          realm: card.realm,
+          name: card.name,
+          expansion: card.expansion,
+        };
+        return mergedCard;
       }
       return card;
     });
@@ -64,11 +83,19 @@ const Cards = () => {
         {loading && <div>Loading...</div>}
         {data && (
           <div className={styles.header}>
-            <div className={styles.back} onClick={() => router.back()}>
-              <ion-icon name="chevron-back-outline"></ion-icon>
+            <Link href="/learn">
+              <div className={styles.back}>
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </div>
+            </Link>
+            <div className={styles.realmLogo}>
+              <img
+                src={`http://localhost:1337${data.realm.background.url}`}
+                height="24px"
+                className="mr1"
+              />
+              {data.realm.name}
             </div>
-
-            {data.realm.name}
           </div>
         )}
         <div className={styles.grid}>

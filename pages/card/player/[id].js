@@ -11,6 +11,8 @@ import clseIcon from "../../../assets/close.svg";
 import _ from "lodash";
 import cx from "classnames";
 
+import { updateCard } from "../../../actions/action";
+
 const GET_CARD_ID = gql`
   query ($id: ID!) {
     card(id: $id) {
@@ -54,9 +56,10 @@ const GET_CARD_ID = gql`
 const SliderProgress = ({ maxSlides, currentSlide }) => {
   return (
     <div className={styles.sliderProgress}>
-      {Array.from(Array(maxSlides).keys()).map((bar) => {
+      {Array.from(Array(maxSlides).keys()).map((bar, i) => {
         return (
           <div
+            key={i}
             className={cx([styles.sliderBar], {
               [styles.sliderBar_filled]: bar <= currentSlide,
             })}
@@ -98,7 +101,8 @@ const SliderHeader = ({ type, rewards, goBack, setIsWarningModalOpen }) => {
 
 const ContentTheory = ({ ideas, goNext }) => {
   const [openIdeas, setOpenIdeas] = useState([ideas[0]]);
-  const [isLastIdea, setIsLastIdea] = useState(false);
+  const isFirstSlideFinal = openIdeas.length === ideas.length;
+  const [isLastIdea, setIsLastIdea] = useState(isFirstSlideFinal);
 
   const openNextIdea = () => {
     const index = openIdeas.length;
@@ -112,7 +116,9 @@ const ContentTheory = ({ ideas, goNext }) => {
   return (
     <div className={styles.contentTheory}>
       {openIdeas.map((idea, i) => (
-        <div className={styles.theoryText}>{idea.rich_text}</div>
+        <div className={styles.theoryText} key={i}>
+          {idea.rich_text}
+        </div>
       ))}
       <div className="absolute_bottom">
         <div className={styles.ctaBox}>
@@ -283,8 +289,6 @@ const ContentAction = ({
       setCurrentAction(actions[index + 1]);
     }
   };
-  console.log(currentAction);
-  console.log(completedActions);
 
   return (
     <div>
@@ -348,6 +352,7 @@ const ModalAction = ({ currentAction, setIsModalOpen, goNextAction }) => {
   const onExpire = () => {
     setIsTimerCompleted(true);
   };
+
   const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
     expiryTimestamp,
     autoStart: false,
@@ -405,6 +410,40 @@ const WarningModal = ({ setIsWarningModalOpen, closePlayer }) => {
   );
 };
 
+const GoBackModal = ({ closePlayer }) => {
+  return (
+    <div>
+      <button onClick={closePlayer}>Stay</button>
+    </div>
+  );
+};
+
+const SuccessModal = ({ closePlayer, card, isLatestLevel }) => {
+  const [store, dispatch] = useContext(Context);
+  return (
+    <div>
+      {isLatestLevel ? (
+        <div>
+          Congratualations!! You have completed the theory check-in! Now, it's
+          time for you to do some Actions!
+          <button
+            onClick={() => {
+              closePlayer();
+              updateCard(dispatch, card.id, "complete");
+            }}
+          >
+            Mark as Complete!
+          </button>
+        </div>
+      ) : (
+        <div>
+          <button onClick={closePlayer}>Back to Card</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Card = () => {
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
@@ -414,7 +453,7 @@ const Card = () => {
 
   useEffect(() => {
     if (!loading && data) {
-      setSlide(data.card.slides[0]);
+      setSlide(data.card.slides[5]);
       setSlides(data.card.slides);
     }
   }, [data, loading]);
@@ -434,6 +473,8 @@ const Card = () => {
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [skippedActions, setSkippedActions] = useState([]);
+
+  const isLatestLevel = store.player.level + 1 === store.player.selectedLevel;
 
   const updateRewards = (currency, amount) => {
     setRewards({ ...rewards, [currency]: rewards[currency] + amount });
@@ -549,9 +590,10 @@ const Card = () => {
             />
           )}
           {isSuccessModalOpen && (
-            <WarningModal
-              setIsWarningModalOpen={setIsSuccessModalOpen}
+            <SuccessModal
               closePlayer={closePlayer}
+              card={data.card}
+              isLatestLevel={isLatestLevel}
             />
           )}
         </div>

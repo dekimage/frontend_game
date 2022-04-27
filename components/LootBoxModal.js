@@ -11,6 +11,7 @@ const LootBoxModal = () => {
   const box = store.rewardsModal.box;
   const [position, setPosition] = useState(0);
   const [card, setCard] = useState(results[position]);
+
   const [page, setPage] = useState("box");
   const [counter, setCounter] = useState(results.length);
 
@@ -29,6 +30,8 @@ const LootBoxModal = () => {
     }
   };
 
+  console.log(store.rewardsModal && store.rewardsModal);
+
   return (
     <div className={styles.boxModal}>
       <div className="text__b">
@@ -40,7 +43,7 @@ const LootBoxModal = () => {
       </div>
       {page === "cards" && (
         <div className={styles.duplicateLabel}>
-          {card.is_new ? "New" : "Duplicate"}
+          {card.isNew ? "New" : "Duplicate"}
         </div>
       )}
 
@@ -51,13 +54,19 @@ const LootBoxModal = () => {
       )}
       {page === "cards" && (
         <div className={styles.wobbleAnimation}>
-          <Card card={card.card} />{" "}
+          <Card card={card.card} /> Qty: {card.quantity}
         </div>
       )}
       {page === "results" && (
         <div>
           {results.map((c, i) => (
-            <Card card={c.card} key={i} />
+            <div key={i}>
+              <div className={styles.duplicateLabel}>
+                {card.isNew ? "New" : "Duplicate"}
+              </div>
+              <Card card={c.card} key={i} />
+              Qty: {card.quantity}
+            </div>
           ))}
         </div>
       )}

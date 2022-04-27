@@ -1,34 +1,48 @@
 import * as api from "../api";
 
-export const purchaseLootBox = (dispatch, boxId) => {
-  api
-    .purchaseLootBoxApi(boxId)
+// ACTION FACTORY
+export const actionCreator = (dispatch, apiFunc, type, data) => {
+  api[apiFunc](data)
     .then(({ data }) => {
-      dispatch({ type: "PURCHASE_BOX", data });
+      dispatch({ type: type, data });
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-export const updateCard = (dispatch, cardId, action) => {
+// TESTING DEV MODE
+export const developerModeApi = (dispatch, job) => {
   api
-    .updateCardApi(cardId, action)
+    .developerModeApi(job)
     .then(({ data }) => {
-      dispatch({ type: "UPDATE_CARD", data });
-      console.log("UPDATE CARD", data);
+      dispatch({ type: "UPDATE_USER_GLOBAL", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const achievementTest = (dispatch, itemId, action) => {
+  api.achievementTestApi(itemId, action);
+};
+
+// 1. HOME PAGE
+export const startQuiz = (dispatch) => {
+  api
+    .startQuizApi()
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_STREAK_REWARDS", data });
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-export const collectLevelReward = (dispatch, level) => {
+export const submitQuiz = (dispatch, data) => {
   api
-    .collectLevelRewardApi(level)
+    .submitQuizApi(data)
     .then(({ data }) => {
-      dispatch({ type: "UPDATE_LEVEL_REWARDS", data });
-      console.log("COLLECT LEVEL REWARD RESPONSE DATA:", data);
+      dispatch({ type: "UPDATE_STREAK_REWARDS", data });
     })
     .catch((err) => {
       console.log(err);
@@ -41,7 +55,6 @@ export const claimObjective = (dispatch, objectiveId) => {
     .then(({ data }) => {
       console.log(dispatch);
       dispatch({ type: "CLAIM_OBJECTIVE", data });
-      console.log("COLLECT LEVEL REWARD RESPONSE DATA:", data);
     })
     .catch((err) => {
       console.log(err);
@@ -53,53 +66,224 @@ export const claimObjectiveCounter = (dispatch, objectiveId, temporal_type) => {
     .then(({ data }) => {
       console.log(dispatch);
       dispatch({ type: "CLAIM_OBJECTIVE_COUNTER", data });
-      console.log("COLLECT LEVEL REWARD RESPONSE DATA:", data);
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
+export const claimLevelReward = (dispatch, id) => {
+  api
+    .collectLevelRewardApi(id)
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_LEVEL_REWARDS", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const claimUserReward = (dispatch, userCount) => {
+  api
+    .claimUserRewardApi(userCount)
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_USER_REWARDS", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const claimStreakReward = (dispatch, rewardCount) => {
+  api
+    .claimStreakRewardApi(rewardCount)
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_STREAK_REWARDS", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// ------
+
+// 2. SHOP PAGE
+
+export const purchaseLootBox = (dispatch, boxId) => {
+  api
+    .purchaseLootBoxApi(boxId)
+    .then(({ data }) => {
+      const upData = { ...data, boxId };
+      dispatch({ type: "PURCHASE_BOX", upData });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const purchaseProduct = (dispatch, productId, payment_env) => {
+  api
+    .purchaseProductApi(productId, payment_env)
+    .then(({ data }) => {
+      dispatch({ type: data.notification, data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const purchaseExpansion = (dispatch, expansionId) => {
+  api
+    .purchaseExpansionApi(expansionId)
+    .then(({ data }) => {
+      dispatch({ type: "PURCHASE_EXPANSION", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const openPack = (dispatch, boxId) => {
+  api
+    .openPackApi(boxId)
+    .then(({ data }) => {
+      dispatch({ type: "OPEN_BOX", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// ------
+
+// 3. CARD PAGE
+// updateCard: new_disable, favorite, complete, upgrade, play, unlock, complete_action (action_id)
+export const updateCard = (dispatch, cardId, action) => {
+  api
+    .updateCardApi(cardId, action)
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_CARD", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// 4. PROFILE PAGE
+export const resetEnergy = (dispatch) => {
+  api
+    .resetEnergyApi()
+    .then(({ data }) => {
+      dispatch({ type: "RESET_ENERGY", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const generateBuddyLink = (dispatch) => {
+  api
+    .generateBuddyLinkApi()
+    .then(({ data }) => {
+      dispatch({ type: "GENERATE_LINK", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const updateSettings = (dispatch, data) => {
+  api
+    .updateSettingsApi(data)
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_SETTINGS", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const followBuddy = (dispatch, userId) => {
+  api
+    .followBuddyApi(userId)
+    .then(({ data }) => {
+      dispatch({ type: "FOLLOW_BUDDY", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const cancelSubscription = (dispatch) => {
+  api
+    .cancelSubscriptionApi()
+    .then(({ data }) => {
+      dispatch({ type: "CANCEL_SUBSCRIPTION", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const restorePurchase = (dispatch) => {
+  api
+    .restorePurchaseApi()
+    .then(({ data }) => {
+      dispatch({ type: "RESTORE_PURCHASE", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// 5. COMMUNITY ACTIONS
+export const createCommunityAction = (dispatch, dataForm) => {
+  api
+    .createCommunityActionApi(dataForm)
+    .then(({ data }) => {
+      dispatch({ type: "CREATE_COMMUNITY_ACTION", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const deleteCommunityAction = (dispatch, actionId) => {
+  api
+    .deleteCommunityActionApi(actionId)
+    .then(({ data }) => {
+      dispatch({ type: "DELETE_COMMUNITY_ACTION", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+export const interactCommunityAction = (dispatch, actionId, intent) => {
+  api
+    .interactCommunityActionApi(actionId, intent)
+    .then(({ data }) => {
+      dispatch({ type: "INTERACT_COMMUNITY_ACTION", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// 6. ACTIONS FROM CARD ORIGINAL
+export const completeAction = (dispatch, actionId, intent) => {
+  api
+    .completeActionApi(actionId, intent)
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_ACTION", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// ARCHIVE OLD APIS
 export const updateItem = (dispatch, itemId, action) => {
   api
     .updateItemApi(itemId, action)
     .then(({ data }) => {
       dispatch({ type: "EQUIP_ITEM", data });
       console.log("data", data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-export const achievementTest = (dispatch, itemId, action) => {
-  api.achievementTestApi(itemId, action);
-  // .then(({ data }) => {
-  //   dispatch({ type: "EQUIP_ITEM", data });
-  //   console.log("data", data);
-  // })
-  // .catch((err) => {
-  //   console.log(err);
-  // });
-};
-
-export const purchaseProduct = (dispatch, product_type, productId) => {
-  api
-    .purchaseProductApi(productId, product_type)
-    .then(({ data }) => {
-      dispatch({ type: "DEV_TEST", data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-// DEVELOPER API
-export const developerModeApi = (dispatch, job) => {
-  api
-    .developerModeApi(job)
-    .then(({ data }) => {
-      dispatch({ type: "UPDATE_USER_GLOBAL", data });
     })
     .catch((err) => {
       console.log(err);

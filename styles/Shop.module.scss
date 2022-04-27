@@ -1,6 +1,37 @@
 @import "placeholders";
 @import "variables";
 
+.subscription {
+  @extend %box_duo;
+  @extend %flex_center;
+  width: 100%;
+  justify-content: flex-start;
+  flex-direction: column;
+  &_body {
+    @extend %flex_center;
+    flex-direction: column;
+  }
+  &_name {
+    font-weight: 500;
+    font-size: 20px;
+  }
+  &_reward {
+    padding: 0.5rem;
+  }
+  &_price {
+    background-color: $primary;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+  &_monthly {
+    padding-top: 0.5rem;
+    color: $actionize_gray_light;
+    font-weight: 500;
+  }
+}
+
 .boxes {
   display: grid;
   grid-template-columns: repeat(2, minmax(150px, 2fr));
@@ -8,14 +39,36 @@
 }
 
 .box {
+  position: relative;
   @extend %flex_center;
+  @extend %box_duo;
   cursor: pointer;
   max-width: 300px;
   border-radius: 20px;
   flex-direction: column;
-  background-color: $actionize_gray;
+  // background-color: $actionize_gray;
   color: white;
   margin: 1rem;
+  &_quantity {
+    @extend %flex_center;
+    position: absolute;
+    background-color: $actionize_gray;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    top: -5px;
+    right: -5px;
+  }
+  &_expansion {
+    @extend %flex_center;
+    position: absolute;
+    // background-color: $eggHeadRed;
+    // border: 3px solid $eggHeadRed;
+    border-radius: 10px;
+    padding: 0.25rem 0.5rem;
+    top: -5px;
+    left: 40%;
+  }
   &_cta {
     border-radius: 20px;
     font-weight: 500;

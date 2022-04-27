@@ -115,7 +115,7 @@ const Home = () => {
     const type = sortBy.label;
     let array = sortBy.sortBy;
     array = isSortAsc ? array.reverse() : array.reverse();
-    console.log("array AFTER REVERSE", array);
+    // console.log("array AFTER REVERSE", array);
     if (type === "realm") {
       return arr.sort((a, b) => {
         return array.indexOf(a.realm.name) - array.indexOf(b.realm.name);

@@ -14,10 +14,14 @@ import Modal from "../components/Modal";
 import LootBoxModal from "../components/LootBoxModal";
 
 // *** ACTIONS ***
-import { purchaseLootBox } from "../actions/action";
+import {
+  openPack,
+  purchaseLootBox,
+  purchaseExpansion,
+  purchaseProduct,
+} from "../actions/action";
 
 // *** DATA ***
-import { boxes, gems } from "../data/rewards";
 import starIcon from "../assets/xp.svg";
 import gemIcon from "../assets/diamond-currency.svg";
 
@@ -41,10 +45,32 @@ const GET_BOXES = gql`
         url
       }
       drop_rates
-      cards {
-        id
+      expansion {
         name
       }
+    }
+    products {
+      id
+      name
+      description
+      price
+      discount
+      type
+      image {
+        url
+      }
+      googleID
+      appleID
+      isDisabled
+      amount
+      bonusAmount
+    }
+    expansion(id: 2) {
+      id
+      name
+      description
+      price
+      discountPrice
     }
   }
 `;
@@ -68,22 +94,55 @@ const DropLabel = ({}) => {
   );
 };
 
-const BoxModal = ({ box, closeModal }) => {
-  const [, dispatch] = useContext(Context);
+const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
+  const {
+    amount,
+    appleID,
+    googleID,
+    bonusAmount,
+    description,
+    discount,
+    image,
+    name,
+    price,
+  } = gems;
   return (
-    <div className={styles.boxModal}>
-      <div className={styles.boxModal_name}>{box.name}</div>
-      <ImageUI imgUrl={box.image.url} height="250px" />
-      <div className={styles.boxModal_label}>Chance to contain:</div>
-      <DropLabel />
+    <div
+      className={styles.box}
+      onClick={() => {
+        setSelectedProduct(gems);
+        openModal(true);
+      }}
+    >
+      <div className={styles.box_quantity}>
+        {amount} + {bonusAmount}
+      </div>
+      <div className={styles.box_expansion}>{name}</div>
+      <ImageUI imgUrl={image.url} height="50px" />
       <div
-        className="btn btn-primary"
-        onClick={() => {
-          purchaseLootBox(dispatch, box.id);
-          closeModal();
-        }}
+        className={styles.box_cta}
+        onClick={() => purchaseProduct(dispatch, 2)}
       >
-        {" "}
+        ${price}
+      </div>
+    </div>
+  );
+};
+
+const BoxProduct = ({ box, setSelectedProduct, openModal }) => {
+  const [store, dispatch] = useContext(Context);
+  return (
+    <div
+      className={styles.box}
+      onClick={() => {
+        setSelectedProduct(box);
+        openModal(true);
+      }}
+    >
+      <div className={styles.box_quantity}>{store.user.boxes[box.id]}</div>
+      <div className={styles.box_expansion}>{box.expansion.name}</div>
+      <ImageUI imgUrl={box.image.url} height="125px" />
+      <div className={styles.box_cta}>
         {box.price_type == "stars" && (
           <img height="18px" src="http://localhost:1337/star.png" />
         )}
@@ -96,47 +155,134 @@ const BoxModal = ({ box, closeModal }) => {
   );
 };
 
+const BoxModal = ({ product, closeModal }) => {
+  const box = product.type !== "gems" && product;
+  const gems = product.type === "gems" && product;
+  const [store, dispatch] = useContext(Context);
+
+  return (
+    <div>
+      {box && (
+        <div className={styles.boxModal}>
+          <div className={styles.boxModal_name}>{box.name}</div>
+          <ImageUI imgUrl={box.image.url} height="250px" />
+          <div className={styles.boxModal_label}>Chance to contain:</div>
+          <DropLabel />
+          <div>Quantity: {store.user.boxes[box.id]}</div>
+          {store.user.boxes[box.id] > 0 ? (
+            <div
+              className="btn btn-primary"
+              onClick={() => {
+                openPack(dispatch, box.id);
+                closeModal();
+              }}
+            >
+              Open
+            </div>
+          ) : (
+            <div
+              className="btn btn-primary"
+              onClick={() => {
+                purchaseLootBox(dispatch, box.id);
+                closeModal();
+              }}
+            >
+              {box.price_type == "stars" && (
+                <img height="18px" src="http://localhost:1337/star.png" />
+              )}
+              {box.price_type == "gems" && (
+                <img height="18px" src="http://localhost:1337/gems.png" />
+              )}
+              {box.price}
+            </div>
+          )}
+        </div>
+      )}
+      {gems && (
+        <div className={styles.boxModal}>
+          <div className={styles.boxModal_name}>{gems.name}</div>
+          <ImageUI imgUrl={gems.image.url} height="100px" />
+          <div>
+            x{gems.amount} + {gems.bonusAmount}
+          </div>
+          <div
+            className="btn btn-primary"
+            onClick={() => {
+              purchaseProduct(dispatch, gems.id, "android");
+              closeModal();
+            }}
+          >
+            ${gems.price}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Shop = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_BOXES);
   const { isShowing, openModal, closeModal } = useModal();
-  const [selectedBox, setSelectedBox] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const hasExpansion = (expansionId) => {
+    return (
+      store.user.expansions.filter((e) => e.id === expansionId).length === 1
+    );
+  };
+
+  const getGems = (products) => {
+    return products.filter((p) => p.type === "gems");
+  };
 
   return (
     <div className="background_dark">
       <Header />
+      <div className="section">
+        <div className={styles.subscription}>
+          <div className={styles.subscription_name}>Premium Subscription</div>
+          <div className={styles.subscription_body}>
+            <div className={styles.subscription_reward}>
+              Gain progress faster!
+            </div>
+
+            <div className={styles.subscription_reward}>Energy x2 </div>
+            <div className={styles.subscription_reward}>Stars x2 </div>
+            <div className={styles.subscription_reward}>30 Gems</div>
+            <div className={styles.subscription_reward}>Premium Rewards</div>
+
+            <div
+              className={styles.subscription_price}
+              onClick={() => purchaseProduct(dispatch, 1, "android")}
+            >
+              $ 4.99
+            </div>
+            <div className={styles.subscription_monthly}>Billed Monthly.</div>
+          </div>
+        </div>
+      </div>
 
       <div className="section">
+        <div>BOXES</div>
         <div className={styles.boxes}>
           {data &&
-            data.boxes.map((box) => {
+            data.boxes.map((box, i) => {
               return (
-                <div
-                  className={styles.box}
-                  key={box.id}
-                  onClick={() => {
-                    setSelectedBox(box);
-                    openModal(true);
-                  }}
-                >
-                  <ImageUI imgUrl={box.image.url} height="125px" />
-                  <div className={styles.box_cta}>
-                    {box.price_type == "stars" && (
-                      <img height="18px" src="http://localhost:1337/star.png" />
-                    )}
-                    {box.price_type == "gems" && (
-                      <img height="18px" src="http://localhost:1337/gems.png" />
-                    )}
-                    {box.price}
-                  </div>
-                </div>
+                <BoxProduct
+                  box={box}
+                  key={i}
+                  setSelectedProduct={setSelectedProduct}
+                  openModal={openModal}
+                />
               );
             })}
         </div>
+
         <Modal
           isShowing={isShowing}
           closeModal={closeModal}
-          jsx={<BoxModal box={selectedBox} closeModal={closeModal} />}
+          jsx={<BoxModal product={selectedProduct} closeModal={closeModal} />}
         />
         <Modal
           isShowing={store.rewardsModal.isOpen}
@@ -146,44 +292,53 @@ const Shop = () => {
         />
       </div>
 
-      {/* <div>GEMS</div>
-      <div>
-        {gems.map((gems) => {
-          return (
-            <div className={styles.product}>
-              {gems.id}
-              {gems.name}
-              {gems.price_amount}
-              {gems.price_type}
-              {gems.reward_amount}
-              {gems.description}
+      <div className="section">
+        <div>GEMS</div>
+        {data &&
+          getGems(data.products).map((gems, i) => {
+            return (
+              <GemsProduct
+                gems={gems}
+                setSelectedProduct={setSelectedProduct}
+                openModal={openModal}
+                key={i}
+              />
+            );
+          })}
+      </div>
+
+      {data && store.user && (
+        <div className="section">
+          <div>EXPANSIONS</div>
+          <div className={styles.subscription}>
+            <div className={styles.subscription_name}>
+              {data.expansion.name}
             </div>
-          );
-        })}
-      </div>
-      <div>EXPANSIONS</div>
-      <div className={styles.product}>
-        <div>Premium Expansion </div>
-        <div>+ 30 new cards</div>
-        <div> + 25 new collectable cards</div>
-        <div> + 100 gems ** promo ** </div>
-        <div> + 10 packs ** promo 2 **</div>
-        <div>timer component: 19h: 33m: 12s</div>
-        <div>* includes 3 months coaching worth of wisdom *</div>
-        <button>Buy 47$</button>
-        <button>Learn More</button>
-      </div>
-      <div>COACHING 1:1</div>
-      <div className={styles.product}>
-        <div>Premium Expansion </div>
-        <div>1 session = 1 hour</div>
-        <div> x 12 total sessions</div>
-        <div> guided live calls</div>
-        <div> live actions & tutoring</div>
-        <div>live on camera sessions</div>
-        <div>* includes premium access *</div>
-        <button>Apply Now 999$</button>
-      </div> */}
+            <div className={styles.subscription_body}>
+              <div className={styles.subscription_reward}>
+                {data.expansion.description}
+              </div>
+              {hasExpansion(data.expansion.id) ? (
+                <div
+                  className={styles.subscription_price}
+                  onClick={() => {
+                    store.user.gems >= data.expansion.price &&
+                      purchaseExpansion(dispatch, data.expansion.id);
+                  }}
+                >
+                  <img height="18px" src="http://localhost:1337/gems.png" />
+                  {data.expansion.price}
+                </div>
+              ) : (
+                <div className={styles.subscription_price}>
+                  Already Purchased
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <Navbar />
     </div>
   );

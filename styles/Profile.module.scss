@@ -55,6 +55,7 @@
   padding: 1rem;
 }
 .tabsButton {
+  cursor: pointer;
   @extend %flex_center;
   font-size: 20px;
   font-weight: 500;
@@ -72,10 +73,47 @@
   @extend %flex_center;
 }
 .statsBox {
+  @extend %flex_center;
   padding: 1rem;
-  background-color: $actionize_gray;
-  border-radius: 10px;
-  border: 1px solid black;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 8px 4px, black 0px 7px 13px -3px,
-    black 0px -3px 0px inset;
+  margin: 1rem 0.5rem;
+  font-weight: 500;
+  // background-color: $actionize_gray;
+  border-radius: 15px;
+  border: 2px solid $actionize_gray;
+  // box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 8px 4px, black 0px 7px 13px -3px,
+  //   black 0px -3px 0px inset;
+  &_img {
+    margin: 0 0.35rem;
+  }
+  &_number {
+    margin-right: 0.35rem;
+    font-size: 20px;
+  }
+}
+
+.activityBox {
+  border: 2px solid $actionize_gray;
+  border-radius: 15px;
+  margin: 1rem 0;
+  padding: 1rem;
+  cursor: pointer;
+  @extend %flex_center;
+  justify-content: flex-start;
+  position: relative;
+  font-weight: 500;
+  &_text {
+    margin-left: 1rem;
+  }
+  &_notification {
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    background-color: red;
+    font-weight: 700;
+    color: white;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    @extend %flex_center;
+  }
 }

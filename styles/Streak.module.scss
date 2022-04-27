@@ -1,0 +1,18 @@
+@import "variables";
+@import "placeholders";
+
+.streak {
+  @extend %box_duo;
+  margin: 1rem 0;
+}
+
+.image {
+  background-color: black;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  img {
+    width: 65px;
+    height: 65px;
+  }
+}

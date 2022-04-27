@@ -22,7 +22,8 @@
 .fixed {
   position: fixed;
   background-color: $actionize_black;
-  background: linear-gradient(rgba(0, 0, 0, 0) 0%, $actionize_black 70%);
+  border-top: 2px solid $actionize_gray;
+  // background: linear-gradient(rgba(0, 0, 0, 0) 0%, $actionize_black 70%);
 
   bottom: 0;
   width: 100%;
@@ -36,14 +37,21 @@
 .image {
   z-index: 5;
   margin-bottom: 0.5rem;
-  height: 300px;
+  height: 250px;
 }
 
 .name {
+  @extend %flex_center;
+  align-items: center;
   font-size: 2rem;
   font-weight: 700;
   color: white;
   margin-bottom: 0.5rem;
+}
+
+.realmLogo {
+  @extend %flex_center;
+  margin-right: 1rem;
 }
 
 .card {
@@ -101,7 +109,7 @@
   @extend %flex_center;
   position: relative;
   width: 100%;
-  margin-bottom: 1rem;
+  padding: 0.5rem 0;
 }
 .favorite {
   position: absolute;
@@ -113,16 +121,19 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
 }
 .level {
-  background-color: $actionize_gray;
-  color: white;
+  padding: 0 0.5rem;
+  // background-color: $actionize_gray;
+  // color: white;
   font-size: 20px;
-  font-weight: 700;
-  border-radius: 10px;
-  padding: 0 0.75rem;
+  // font-weight: 700;
+  // border-radius: 10px;
+  width: 5rem;
+  @extend %box_duo;
 }
 
 .progress_box {
@@ -135,40 +146,23 @@
   font-weight: 700;
 }
 
-.section_stats {
-  @extend %flex_center;
-  flex-direction: column;
-  width: 100%;
-}
-
-.stats_component {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  background-color: $actionize_gray;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  margin-bottom: 0.75rem;
-
-  &__label {
-    color: white;
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-}
-
 .section_levels {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
+  @extend %box_duo;
 }
 .level_box {
   @extend %flex_center;
   flex-direction: column;
   color: white;
   font-size: 12px;
+}
+
+.btn_play_active {
+  border: 3px solid white;
 }
 
 .btn_play_passed {
@@ -188,6 +182,132 @@
 .btn_play_graylocked {
   @extend %btn_play;
   background-color: transparent;
-  border: 2px solid $actionize_gray;
+  border: 3px solid $actionize_gray;
   cursor: not-allowed;
+}
+
+.titleProgress {
+  padding-top: 1rem;
+  width: 100%;
+  @extend %flex_between;
+  justify-content: space-between;
+  // flex-direction: row;
+}
+
+.ideaPlayer {
+  width: 100%;
+  @extend %box_duo;
+  align-items: center;
+  justify-content: space-between;
+  &_group {
+    display: flex;
+  }
+}
+
+.description {
+  padding-top: 1rem;
+}
+
+.action {
+  margin-bottom: 1rem;
+  position: relative;
+  @extend %box_duo;
+  @extend %flex_between;
+  flex-direction: column;
+  width: 100%;
+  &_closed {
+    @extend %flex_between;
+    width: 100%;
+    cursor: pointer;
+  }
+  &_open {
+    width: 100%;
+    margin-top: 1rem;
+    &_step {
+      display: flex;
+      flex-grow: 1;
+      margin: 1rem 0;
+    }
+    &_stepLabel {
+      background-color: $actionize_gray;
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+      margin-right: 0.75rem;
+      height: 100%;
+      font-weight: 500;
+      font-size: 12px;
+      min-width: 3.5rem;
+      @extend %flex_center;
+    }
+    &_complete {
+      margin-top: 1rem;
+      @extend %flex_center;
+      font-weight: 500;
+      font-size: 20px;
+      @extend %box_duo;
+      cursor: pointer;
+    }
+  }
+  &_box {
+    width: 100%;
+  }
+  &_header {
+    @extend %flex_between;
+  }
+  &_grouper {
+    @extend %flex_center;
+    margin-top: 0.25rem;
+  }
+  &_type {
+    background-color: $primary;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 10px;
+    padding: 0.02rem 0.5rem;
+    padding-bottom: 0.1rem;
+    margin-right: 0.5rem;
+  }
+  &_duration {
+    font-weight: 500;
+    font-size: 14px;
+  }
+  &_name {
+    font-size: 21px;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+  &_img {
+    height: 60px;
+    width: 80px;
+    border: 3px solid $actionize_gray;
+    margin-right: 1rem;
+    border-radius: 10px;
+  }
+  &_checkmark {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    @extend %flex_center;
+  }
+  &_arrow {
+    @extend %flex_center;
+    margin-right: 1rem;
+  }
+}
+
+.tabs {
+  // @extend %box_duo;
+  margin: 1rem 0;
+  width: 100%;
+  @extend %flex_around;
+  font-weight: 500;
+  font-size: 16px;
+}
+.tab {
+  padding: 0.5rem 0;
+  border-bottom: 4px solid $actionize_gray;
+}
+
+.createActionModal {
+  border: 3px solid green;
 }

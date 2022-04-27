@@ -6,20 +6,24 @@
 }
 .card {
   cursor: pointer;
-  height: 275px;
+  height: 300px;
   width: auto;
-  min-width: 200px;
-  background-color: #1f1f1f;
+  min-width: 165px;
+
+  // background-color: #1f1f1f;
   border-radius: 10px;
   @extend %flex_center;
   flex-direction: column;
   position: relative;
   // overflow-x: clip;
-  max-width: 165px;
-  // border: 1px solid $actionize_gray;
+
+  // border: 2px solid var(--background);
+  border: 3px solid $actionize_gray;
+  background-color: $actionize_black;
+  padding: 1rem;
 
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 8px 4px, black 0px 7px 13px -3px,
-    black 0px -3px 0px inset;
+    black 0px -3px 0px;
   &.notCollected {
     opacity: 80%;
   }
@@ -29,14 +33,14 @@
   // }
 }
 
-.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  // background-color: var(--background);
-}
+// .background {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 30px;
+//   background-color: var(--background);
+// }
 
 // .curve {
 //   position: absolute;
@@ -50,7 +54,7 @@
 //   height: 50px;
 //   width: 60%;
 //   border-radius: 100% 35%;
-//   background-color: $actionize_black;
+//   background-color: #1f1f1f;
 
 //   transform: translate(75%, 60%);
 // }
@@ -61,14 +65,14 @@
 //   height: 50px;
 //   width: 60%;
 //   border-radius: 100% 35%;
-//   // background-color: var(--background);
+//   background-color: var(--background);
 
 //   transform: translate(-10%, 43%);
 //   // z-index: -1;
 // }
 
 .image {
-  // z-index: 5;
+  z-index: 5;
   margin-bottom: 0.5rem;
 
   img {
@@ -84,9 +88,13 @@
 }
 
 .lock {
+  background-color: $actionize_gray;
+  padding: 0.5rem 0.75rem;
+  border-radius: 50%;
+  box-shadow: $cardShadow;
   position: absolute;
-  top: 0.65rem;
-  right: 0.75rem;
+  top: -0.5rem;
+  right: -0.5rem;
   img {
     height: 1.25rem;
   }
@@ -103,16 +111,16 @@
 
 .name {
   text-transform: capitalize;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 700;
   color: white;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .lockBox {
   @extend %flex_center;
   background-color: transparent;
-  // opacity: 75%;
   height: 2.5rem;
   font-size: 12px;
   width: 100%;
@@ -130,22 +138,19 @@
     font-size: 12px;
     font-weight: 400;
     margin: 0;
-    margin-left: 0.25rem;
+    margin-right: 0.25rem;
   }
 }
 .rarity_center {
   position: absolute;
-  bottom: -10px;
+  bottom: -15px;
   @extend %flex_center;
   margin-bottom: 0.5rem;
 }
-.type {
-  background-color: $actionize_gray;
-  color: white;
-}
+
 .rarity {
   position: absolute;
-  bottom: 6.25rem;
+  bottom: 40%;
   img {
     height: 0.75rem;
   }
@@ -187,9 +192,15 @@
   border-radius: 10px;
   padding: 0.12rem 0.6rem;
 
+  &.open {
+    // background-color: $primary;
+    background-color: $normalGreen;
+    // box-shadow: 0px 4px 0px -0.5px darken($primary, 30%);
+  }
+
   &.free {
     // background-color: $primary;
-    background-color: $actionize_gray;
+    background-color: $primary;
     // box-shadow: 0px 4px 0px -0.5px darken($primary, 30%);
   }
 

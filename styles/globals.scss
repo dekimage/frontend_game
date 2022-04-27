@@ -25,6 +25,16 @@ a {
 
 /* Medium.com TYPOGRAPHY*/
 
+.title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.description {
+  font-size: 14px;
+  font-weight: 500;
+}
+
 p {
   margin-top: 10px;
   font-size: 18px;
@@ -53,6 +63,7 @@ p {
   background-color: $actionize_black;
   min-height: 100vh;
   color: white;
+  padding-bottom: 3rem;
 }
 .section_container {
   //make mixin reuse
@@ -61,7 +72,7 @@ p {
   padding: 0 1rem;
   width: 100%;
   @include media_bg {
-    max-width: 42.5rem;
+    max-width: 45rem;
     padding: 0 1.5rem;
   }
 }
@@ -73,7 +84,7 @@ p {
   padding: 1rem;
   width: 100%;
   @include media_bg {
-    max-width: 42.5rem;
+    max-width: 45rem;
     padding: 1.5rem;
   }
 }
@@ -170,17 +181,18 @@ p {
 }
 .devtoolbox {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  // flex-wrap: wrap;
 }
 .btn-dev {
   margin: 0.25rem;
   font-size: 12px;
-  background-color: $pinkish;
+  background-color: $primary;
 }
 .btn-dev-done {
   margin: 0.25rem;
   font-size: 12px;
-  background-color: $green;
+  background-color: $greenDark;
 }
 .btn-gray {
   background-color: darkgray;

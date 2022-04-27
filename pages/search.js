@@ -1,34 +1,18 @@
 import { React, useState } from "react";
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+
 import Strapi from "strapi-sdk-javascript/build/main";
 const apiUrl = process.env.API_URL || "http://localhost:1337";
 const strapi = new Strapi(apiUrl);
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Navbar from "../components/Navbar";
-import { RealmsList } from "./learn";
+// import { RealmsList } from "./learn";
 import styles from "../styles/SearchBar.module.scss";
 import debounce from "debounce";
 
 // import SearchCard from "./SearchCard/SearchCard";
 
-const GET_REALMS = gql`
-  {
-    realms {
-      id
-      name
-      description
-      coming_soon
-      background {
-        url
-      }
-    }
-  }
-`;
-
 const SearchBar = () => {
-  const { data, loading, error } = useQuery(GET_REALMS);
   const [search, setSearch] = useState("");
   const [result, setResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -110,23 +94,20 @@ const SearchBar = () => {
               {/* <img src={closeIcon} style={{ height: "15px" }} /> */}
             </div>
           )}
-          {!isSearching &&
-            result.length === 0 &&
-            search.length === 0 &&
-            isInputOpen && (
-              <div className={styles.searchResult_box}>
-                <div className={styles.noResults}>
-                  <img
-                    style={{ height: "250px", marginBottom: "1rem" }}
-                    src={`http://localhost:1337/uploads/Asking_Questions_061ea6ce0f.png`}
-                  />
-                  Explore Actionise
-                  <span className={styles.searchDescription}>
-                    Search for Meditations, Actions, Lessons, Friends and More!
-                  </span>
-                </div>
+          {!isSearching && result.length === 0 && search.length === 0 && (
+            <div className={styles.searchResult_box}>
+              <div className={styles.noResults}>
+                <img
+                  style={{ height: "250px", marginBottom: "1rem" }}
+                  src={`http://localhost:1337/uploads/Asking_Questions_061ea6ce0f.png`}
+                />
+                Explore Actionise
+                <span className={styles.searchDescription}>
+                  Search for Meditations, Actions, Lessons, Friends and More!
+                </span>
               </div>
-            )}
+            </div>
+          )}
           {search.length > 0 && (
             <div className={styles.searchResult_box}>
               <div className={styles.isSearching}>
@@ -152,9 +133,6 @@ const SearchBar = () => {
             </div>
           )}
         </div>
-        {error && <div>Error: {error}</div>}
-        {loading && <div>Loading Realms...</div>}
-        {data && !isInputOpen && <RealmsList realms={data.realms} />}
       </div>
       <Navbar />
     </div>

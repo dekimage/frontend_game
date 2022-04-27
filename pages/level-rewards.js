@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
 import { gql } from "apollo-boost";
 import Link from "next/link";
 
@@ -9,7 +10,7 @@ import Link from "next/link";
 import RewardImage from "../components/RewardImage";
 
 // *** ACTIONS ***
-import { purchaseProduct } from "../actions/action";
+import { claimLevelReward } from "../actions/action";
 
 // *** DATA ***
 import { levelRewards } from "../data/rewards";
@@ -18,18 +19,45 @@ import { levelRewards } from "../data/rewards";
 import cx from "classnames";
 import styles from "../styles/LevelRewards.module.scss";
 
+const GET_REWARDS_QUERY = gql`
+  {
+    levelRewards {
+      id
+      level
+      isPremium
+      reward_type
+      reward_amount
+    }
+  }
+`;
+
 const LevelReward = ({
-  level: { level, reward, qty, isCollected, isReadyToCollect },
+  level: {
+    id,
+    level,
+    isPremiumLock,
+    reward_type,
+    reward_amount,
+    isCollected,
+    isReadyToCollect,
+  },
 }) => {
+  const [store, dispatch] = useContext(Context);
   return (
-    <div className={styles.levelReward} key={level}>
+    <div
+      className={styles.levelReward}
+      key={level}
+      onClick={() =>
+        isReadyToCollect && !isPremiumLock && claimLevelReward(dispatch, id)
+      }
+    >
       <RewardImage
-        reward={reward}
-        amount={qty}
+        reward={reward_type}
+        amount={reward_amount}
         isCollected={isCollected}
         isReadyToCollect={isReadyToCollect}
       />
-      {/* <div>{level}</div> */}
+      {isPremiumLock && <div>"Requires Premium"</div>}
 
       {/* <div>{isCollected ? "COMPLETE DONE" : "NOT COMPLETE"}</div> */}
 
@@ -46,21 +74,42 @@ const LevelReward = ({
 
 const LevelRewardsTower = () => {
   const [store, dispatch] = useContext(Context);
+  const router = useRouter();
+  const { loading, error, data } = useQuery(GET_REWARDS_QUERY);
 
-  // *** FUNCTIONS ***
+  const filterPremium = (levels, type) => {
+    if (type === "free") {
+      return levels.filter((l) => !l.isPremium);
+    }
+    if (type === "premium") {
+      return levels.filter((l) => l.isPremium);
+    }
+  };
+
   const joinArrays = (levels) => {
     levels.forEach((level) => {
       const isCollected =
-        !!store.user.rewards_tower && !!store.user.rewards_tower[level.level];
+        !!store.user.rewards_tower && !!store.user.rewards_tower[level.id];
       const isReadyToCollect = store.user.xp >= level.level;
-
+      const isPremiumLock = !store.user.isPremium && level.isPremium;
       level.isCollected = isCollected;
       level.isReadyToCollect = isReadyToCollect;
+      level.isPremiumLock = isPremiumLock;
       return level;
     });
+
     return levels;
   };
+
   const proxyNextReward = joinArrays(levelRewards)[4];
+
+  if (loading) {
+    return <div>Loading level Rewards...</div>;
+  }
+  if (error) {
+    return <div>Error Fetching Level Rewards...</div>;
+  }
+
   return (
     <div className="background_dark">
       <div className="section_container">
@@ -74,37 +123,43 @@ const LevelRewardsTower = () => {
         </div>
         <div className={styles.levelRewardsGrid}>
           <div className={styles.levelRewardsColumn}>
-            {joinArrays(levelRewards).map((level, i) => {
-              return <LevelReward level={level} key={i} />;
-            })}
+            {joinArrays(filterPremium(data.levelRewards, "free")).map(
+              (level, i) => {
+                return <LevelReward level={level} key={i} />;
+              }
+            )}
           </div>
           <div className={styles.levelRewardsColumn}>
-            {[1, 2, 3, 4, 5].map((l, i) => (
+            {filterPremium(data.levelRewards, "free").map((l, i) => (
               <div className={styles.levelRewardLevel} key={i}>
                 <div
                   className={cx([styles.levelRewardLevel__stripe], {
-                    [styles.passed]: l <= store.user.level,
+                    [styles.passed]: l.level <= store.user.level,
                   })}
                 ></div>
                 <div
                   className={cx([styles.levelRewardLevel__text], {
-                    [styles.passed]: l <= store.user.level,
+                    [styles.passed]: l.level <= store.user.level,
                   })}
                 >
-                  {l}
+                  {l.level}
                 </div>
               </div>
             ))}
           </div>
 
           <div className={styles.levelRewardsColumn}>
-            {joinArrays(levelRewards).map((level, i) => {
-              return <LevelReward level={level} key={i} />;
-            })}
+            {joinArrays(filterPremium(data.levelRewards, "premium")).map(
+              (level, i) => {
+                return <LevelReward level={level} key={i} />;
+              }
+            )}
           </div>
         </div>
         <div className={styles.footer}>
-          <div className="btn btn-close">x</div>
+          <div className="btn btn-close" onClick={() => router.back()}>
+            x
+          </div>
           <div className={styles.footer_label}>Your next big reward:</div>
           <div className={styles.footer_reward}>
             <LevelReward level={proxyNextReward} />

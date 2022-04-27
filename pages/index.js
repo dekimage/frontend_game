@@ -13,12 +13,22 @@ import Navbar from "../components/Navbar";
 import { objectiveCounterRewardsTable } from "../data/rewards";
 
 import {
-  collectLevelReward,
+  claimStreakReward,
+  claimUserReward,
+  cancelSubscription,
+  claimLevelReward,
+  deleteCommunityAction,
+  interactCommunityAction,
+  openPack,
+  followBuddy,
   achievementTest,
   claimObjective,
   developerModeApi,
   purchaseProduct,
   claimObjectiveCounter,
+  purchaseLootBox,
+  purchaseExpansion,
+  createCommunityAction,
 } from "../actions/action";
 import styles from "../styles/Today.module.scss";
 import RewardImage from "../components/RewardImage";
@@ -189,7 +199,13 @@ const Home = () => {
     <div className="background_dark">
       <Header />
       <div className="section">
-        {/* <LevelRewardsHeader xp={store.user.xp} maxXp={2} /> */}
+        {/* {store.user && (
+          <LevelRewardsHeader
+            xp={store.user.xp}
+            maxXp={2}
+            level={store.user.level}
+          />
+        )} */}
         <div>
           <div className={styles.objectiveTabsGrid}>
             <div
@@ -292,109 +308,6 @@ const Home = () => {
             ))}
           </div>
         )}
-        <div className="devtoolbox">
-          <div className="btn btn-dev" onClick={() => achievementTest()}>
-            TEST ACHIEVEMENTS API
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "reset")}
-          >
-            Reset User Data API
-          </div>
-
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Get Random Card
-          </div>
-          {/*===== COMMUNITY ANSWERS =======*/}
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Create Community Answer
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Report Community Answer
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Upvote/Downvote Community Answer
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Change User Settings
-          </div>
-          {/*===== SHOP =======*/}
-          <div
-            className="btn btn-dev"
-            onClick={() => purchaseProduct(dispatch, "gems", 1)}
-          >
-            Purchase Gems / ID
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => purchaseProduct(dispatch, "subscription")}
-          >
-            Purchase Subscripton
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => purchaseProduct(dispatch, "bundle", 1)}
-          >
-            Purchase Bundle / ID
-          </div>
-          {/*===== FRIENDS =======*/}
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Generate Share Buddy Link
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Validate Account Create Reward Gems/card + Limit
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Login with Oauth
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Follow Friend / ID
-          </div>
-          {/*===== STREAKS =======*/}
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Update Daily Streak
-          </div>
-          <div
-            className="btn btn-dev"
-            onClick={() => developerModeApi(dispatch, "gainRandomCard")}
-          >
-            Claim Streak Reward
-          </div>
-        </div>
-
-        <div>Results:</div>
-        <div>{store && store.response}</div>
       </div>
       <Navbar />
     </div>

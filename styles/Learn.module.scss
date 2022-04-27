@@ -1,6 +1,7 @@
 @import "variables";
 @import "placeholders";
 .realm {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -40,4 +41,19 @@
 }
 .progress {
   font-size: 12px;
+}
+
+.comingsoon {
+  background-color: $darkEggHeadRed;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 0.25rem 0.75rem;
+  display: inline-block;
+}
+
+.header {
+  @extend %flex_between;
+  padding: 0.5rem;
+  font-size: 20px;
 }
