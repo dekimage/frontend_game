@@ -10,7 +10,8 @@ import Link from "next/link";
 import RewardImage from "../components/RewardImage";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
-import clseIcon from "../assets/close.svg";
+import { CommunityAction } from "../pages/card/[id]";
+
 import settingsIcon from "../assets/menu-settings-dark.svg";
 
 // *** ACTIONS ***
@@ -21,19 +22,22 @@ import cx from "classnames";
 import styles from "../styles/Profile.module.scss";
 import router from "next/router";
 
-const Stat = ({ img, number, text }) => {
+const Stat = ({ img, number, text, isPercent = false }) => {
   return (
     <div className={styles.statsBox}>
       <div className={styles.statsBox_img}>
-        <img src={img} height="25px" />
+        <img src={img} />
       </div>
-      <div className={styles.statsBox_number}>{number}</div>
+      <div className={styles.statsBox_number}>
+        {number}
+        {isPercent && "%"}
+      </div>
       <div className={styles.statsBox_text}>{text}</div>
     </div>
   );
 };
 
-const Activity = ({ img, link, text, notification = false }) => {
+export const Activity = ({ img, link, text, notification = false }) => {
   return (
     <Link href={link}>
       <div className={styles.activityBox}>
@@ -54,60 +58,76 @@ const Buddy = ({ img, link, name, level }) => {
   return (
     <Link href={link}>
       <div className={styles.buddyBox}>
+        <div className={styles.buddyAvatar}>
+          <img
+            // src={`http://localhost:1337${store.user.image.url}`}
+
+            src={`http://localhost:1337/avatar-test.png`}
+          />
+        </div>
         <div className={styles.buddyBox_name}>{name}</div>
 
-        <div className={styles.buddyBox_img}>
-          {/* <img src={img} height="25px" /> */}
+        <div className={styles.buddyBox_level}>{level} Lvl</div>
+        <div className={styles.arrowRight}>
+          <ion-icon name="chevron-forward-outline"></ion-icon>
         </div>
-
-        <div className={styles.buddyBox_level}>{level}</div>
       </div>
     </Link>
   );
 };
 
-const CommunityAction = ({ actionProps }) => {
-  const { name, action, card, votes, type } = actionProps;
-  return (
-    <div className={styles.communityAction}>
-      <div className={styles.communityAction_name}>{name}</div>
-      <div className={styles.communityAction_action}>{action}</div>
-      <div className={styles.communityAction_card}>{card.name}</div>
-      <div className={styles.communityAction_votes}>{votes}</div>
-      <div className={styles.communityAction_type}>{type}</div>
+// const CommunityAction = ({ actionProps }) => {
+//   const { name, action, card, votes, type } = actionProps;
+//   return (
+//     <div className={styles.communityAction}>
+//       <div className={styles.communityAction_name}>{name}</div>
+//       <div className={styles.communityAction_action}>{action}</div>
+//       <div className={styles.communityAction_card}>{card.name}</div>
+//       <div className={styles.communityAction_votes}>{votes}</div>
+//       <div className={styles.communityAction_type}>{type}</div>
 
-      <div className={styles.buddyBox_img}>
-        {/* <img src={img} height="25px" /> */}
-      </div>
-    </div>
-  );
-};
+//       <div className={styles.buddyBox_img}>
+//         {/* <img src={img} height="25px" /> */}
+//       </div>
+//     </div>
+//   );
+// };
 
 const Profile = () => {
   const [store, dispatch] = useContext(Context);
   const router = useRouter();
   const [tab, setTab] = useState("activity");
-
-  console.log(store?.user);
-
+  const collectionProgress = 33;
+  const completionProgress = 12;
+  console.log(store.user.shared_buddies);
   return (
     <div className="background_dark">
       {/* <Header /> */}
 
-      {store?.user && (
-        <div className="section_container">
+      {store?.user?.image && (
+        <div className="section-container">
           <div className={styles.profileHeader}>
             <div className={styles.escape} onClick={() => router.back()}>
-              <img src={clseIcon} height="25px" />
+              {/* <img src={iconBack} height="25px" /> */}
+              <ion-icon name="chevron-back-outline"></ion-icon>
             </div>
             <div className={styles.profileHeader_box}>
               <div className={styles.avatarBox}>
-                <div className={styles.avatar}>img</div>
-                <div className={styles.level}>25</div>
-                <div className={styles.xp}>XP 230/400</div>
-                <div className="btn btn-action" onClick={() => followBuddy()}>
-                  Follow
+                <div className={styles.avatar}>
+                  <img
+                    // src={`http://localhost:1337${store.user.image.url}`}
+
+                    src={`http://localhost:1337/avatar-test.png`}
+                    height="66px"
+                  />
                 </div>
+
+                <div className={styles.level}>25</div>
+                <div className={styles.username}>{store.user.username}</div>
+                <div className={styles.xp}>XP 230/400</div>
+                {/* <div className="btn btn-action" onClick={() => followBuddy()}>
+                  Follow
+                </div> */}
               </div>
             </div>
             <Link href="/settings">
@@ -119,31 +139,52 @@ const Profile = () => {
 
           <div className={styles.stats}>
             <Stat
+              number={collectionProgress}
+              img={"http://localhost:1337/legendary-cards.png"}
+              text={"Collection"}
+              isPercent
+            />
+            <Stat
+              number={completionProgress}
+              img={"http://localhost:1337/rise.png"}
+              text={"Progress"}
+              isPercent
+            />
+            <Stat
               number={store.user.highest_streak_count}
               img={"http://localhost:1337/streak.png"}
               text={"Highest Streak"}
             />
             <Stat
               number={store.user.energy}
-              img={"http://localhost:1337/streak.png"}
+              img={"http://localhost:1337/energy.png"}
               text={"Energy"}
             />
           </div>
           <div className={styles.tabs}>
             <div
-              className={styles.tabsButton}
+              className={cx(
+                styles.tabsButton,
+                tab === "activity" && styles.active
+              )}
               onClick={() => setTab("activity")}
             >
               Activity
             </div>
             <div
-              className={styles.tabsButton}
+              className={cx(
+                styles.tabsButton,
+                tab === "buddies" && styles.active
+              )}
               onClick={() => setTab("buddies")}
             >
               Buddies
             </div>
             <div
-              className={styles.tabsButton}
+              className={cx(
+                styles.tabsButton,
+                tab === "content" && styles.active
+              )}
               onClick={() => setTab("content")}
             >
               Content
@@ -151,7 +192,7 @@ const Profile = () => {
           </div>
 
           {tab === "activity" && (
-            <div>
+            <div className="section">
               <Activity
                 img={"http://localhost:1337/streak.png"}
                 link={"/streak"}
@@ -160,14 +201,14 @@ const Profile = () => {
               />
 
               <Activity
-                img={"http://localhost:1337/streak.png"}
+                img={"http://localhost:1337/gift.png"}
                 link={"/buddies-rewards"}
                 text={"Buddy Rewards"}
                 notification={1}
               />
 
               <Activity
-                img={"http://localhost:1337/streak.png"}
+                img={"http://localhost:1337/trophy.png"}
                 link={"/level-rewards"}
                 text={"Level Rewards"}
               />
@@ -175,8 +216,10 @@ const Profile = () => {
           )}
 
           {tab === "buddies" && (
-            <div>
-              Shared Buddies 0/10
+            <div className="section">
+              <div className={styles.header}>
+                <div>Shared Buddies</div> {store.user.shared_buddies.length}/10
+              </div>
               {store.user.shared_buddies.map((b) => (
                 <Buddy
                   name={b.username}
@@ -186,14 +229,36 @@ const Profile = () => {
                   key={b.id}
                 />
               ))}
+              <div className={styles.header}>
+                <div>Following</div> {store.user.followers.length}/50
+              </div>
+              {store.user.followers.map((b) => (
+                <Buddy
+                  name={b.username}
+                  link={`/users/${b.id}`}
+                  // img={b.profile.url}
+                  level={b.level}
+                  key={b.id}
+                />
+              ))}
+              <div className="btn btn-stretch btn-primary mt1 mb1">
+                <img
+                  src={`http://localhost:1337/add-user.png`}
+                  height="20px"
+                  className="mr1"
+                />
+                Share Buddy Link
+              </div>
             </div>
           )}
 
           {tab === "content" && (
-            <div>
-              Created Actions - 10
+            <div className="section">
+              <div className={styles.header}>
+                <div>Created Actions</div> {store.user.community_actions.length}
+              </div>
               {store.user.community_actions.map((a) => (
-                <CommunityAction actionProps={a} key={a.id} />
+                <CommunityAction action={a} type={"my"} key={a.id} />
               ))}
             </div>
           )}

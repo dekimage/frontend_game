@@ -31,6 +31,7 @@
     "react-dom": "17.0.2",
     "react-query": "^3.31.0",
     "react-timer-hook": "^3.0.5",
+    "react-toastify": "^8.2.0",
     "sass": "^1.33.0",
     "strapi-sdk-javascript": "^0.3.3"
   }

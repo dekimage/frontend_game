@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import _ from "lodash";
 import styles from "../../styles/Realm.module.scss";
-import ProgressBar from "../../components/ProgressBar";
+
+import NavBar from "../../components/Navbar";
 import Card from "../../components/Card";
 
 const GET_REALM_ID = gql`
@@ -107,6 +108,7 @@ const Cards = () => {
             ))}
         </div>
       </div>
+      <NavBar />
     </div>
   );
 };

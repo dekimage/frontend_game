@@ -1,0 +1,50 @@
+@import "variables";
+@import "placeholders";
+
+.logo {
+  @extend %flex_center;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  img {
+    margin-right: 0.2rem;
+    height: 26px;
+  }
+}
+
+.label {
+  font-size: 22px;
+  font-weight: 700;
+  @extend %flex_center;
+  margin-bottom: 2rem;
+}
+.description {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 14px;
+}
+
+.input {
+  color: white;
+  outline: none;
+  width: 100%;
+  margin: 1rem 0;
+  background-color: transparent;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 3px solid $actionize-gray;
+  &:focus {
+    border: 3px solid white;
+  }
+  &::placeholder {
+    color: $gray_light;
+  }
+}
+
+.buttons {
+  @extend %flex_center;
+  padding: 1.5rem 0;
+}
+.oauthSection {
+  @extend %flex_around;
+}

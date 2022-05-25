@@ -5,6 +5,7 @@ import { gql } from "apollo-boost";
 import Link from "next/link";
 import cx from "classnames";
 
+import { Activity } from "./profile";
 import Objective from "../components/Objective";
 import ObjectiveCounter from "../components/ObjectiveCounter";
 import Header from "../components/Header";
@@ -39,7 +40,9 @@ const GET_OBJECTIVES_QUERY = gql`
     objectives {
       id
       name
+      link
       time_type
+      description
       requirement
       requirement_amount
       reward
@@ -93,10 +96,45 @@ const TinyReward = ({
   );
 };
 
+function msToTime(duration) {
+  var milliseconds = Math.floor((duration % 1000) / 100),
+    seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+}
+
+const getTimeDiff = (lastCollectedMS) => {
+  const now = Date.now();
+  const timeDiffSecs = Math.floor((now - lastCollectedMS) / 1000);
+  const timeDiffMins = Math.floor(timeDiffSecs / 60);
+  const timeDiffHours = Math.floor(timeDiffMins / 60);
+  const timeDiffDays = Math.floor(timeDiffHours / 24);
+
+  const timeDiff = {
+    days: timeDiffDays,
+    hours: timeDiffHours,
+    minutes: timeDiffMins,
+    seconds: timeDiffSecs,
+  };
+  return timeDiff;
+};
+
 const Home = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_OBJECTIVES_QUERY);
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
+
+  const [notifications, setNotifications] = useState({
+    daily: 4,
+    weekly: 0,
+    achievements: 2,
+  });
 
   const joinObjectivesCounter = (
     objectives_counter,
@@ -131,11 +169,30 @@ const Home = () => {
 
   const joinObjectives = (objectives, objectives_json) => {
     return objectives.map((obj) => {
+      // console.log("OBJECTIVE", obj);
+      // console.log("objectives_json", objectives_json);
       if (objectives_json[obj.id]) {
+        // isRefreshed = have 24 hours passed since last time?
+        const moreThan24 =
+          getTimeDiff(objectives_json[obj.id].isCollected).hours >= 24;
+        if (obj.requirement === "login") {
+          return {
+            ...obj,
+            progress: 1,
+            isCollected: !moreThan24,
+          };
+        }
         return {
           ...obj,
           progress: objectives_json[obj.id].progress,
-          isCollected: objectives_json[obj.id].isCollected,
+          isCollected: !moreThan24,
+        };
+      }
+      if (obj.requirement === "login") {
+        return {
+          ...obj,
+          progress: 1,
+          isCollected: false,
         };
       }
       return obj;
@@ -216,11 +273,14 @@ const Home = () => {
             >
               <div className={styles.objectiveTab_text}>
                 Daily{" "}
-                <div className={styles.objectiveTabCounter}>
-                  <div>4</div>
-                </div>
+                {notifications.daily && (
+                  <div className={styles.objectiveTabCounter}>
+                    {notifications.daily}
+                  </div>
+                )}
               </div>
             </div>
+
             <div
               className={cx(styles.objectiveTab, {
                 [styles.active]: objectivesTabOpen == "weekly",
@@ -229,9 +289,14 @@ const Home = () => {
             >
               <div className={styles.objectiveTab_text}>
                 Weekly
-                {/* <div className={styles.objectiveTabCounter}>4</div> */}
+                {notifications.weekly && (
+                  <div className={styles.objectiveTabCounter}>
+                    {notifications.weekly}
+                  </div>
+                )}
               </div>
             </div>
+
             <div
               className={cx(styles.objectiveTab, {
                 [styles.active]: objectivesTabOpen == "achievements",
@@ -240,7 +305,11 @@ const Home = () => {
             >
               <div className={styles.objectiveTab_text}>
                 Achievements
-                {/* <div className={styles.objectiveTabCounter}>4</div> */}
+                {notifications.achievements && (
+                  <div className={styles.objectiveTabCounter}>
+                    {notifications.achievements}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -269,6 +338,8 @@ const Home = () => {
             <ProgressBar progress={2} max={4} />
           </div>
         </div> */}
+
+        {/* "../public/objectiveRewardsCounter.png" */}
 
         {(objectivesTabOpen === "daily" || objectivesTabOpen === "weekly") && (
           <div className={styles.objectivesHeadline}>
@@ -308,6 +379,28 @@ const Home = () => {
             ))}
           </div>
         )}
+      </div>
+      <div className="section">
+        <div className={styles.header}>Rewards</div>
+        <Activity
+          img={"http://localhost:1337/streak.png"}
+          link={"/streak"}
+          text={"Streak Rewards"}
+          notification={2}
+        />
+
+        <Activity
+          img={"http://localhost:1337/gift.png"}
+          link={"/buddies-rewards"}
+          text={"Buddy Rewards"}
+          notification={1}
+        />
+
+        <Activity
+          img={"http://localhost:1337/trophy.png"}
+          link={"/level-rewards"}
+          text={"Level Rewards"}
+        />
       </div>
       <Navbar />
     </div>

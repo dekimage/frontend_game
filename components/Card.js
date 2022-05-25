@@ -97,7 +97,7 @@ const Card = ({ card }) => {
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
 
   // console.log(isPremiumLocked);
-  console.log(card);
+  // console.log(card);
 
   const isColored = !isPremiumLocked && (card.isOpen || card.isUnlocked);
   return (
@@ -132,6 +132,8 @@ const Card = ({ card }) => {
             {card.level || 1}
           </div>
         )}
+
+        {card.is_new && <div className={styles.isNew}>New!</div>}
 
         <div className={styles.realmLogo}>
           <img src={`http://localhost:1337${card.realm.background.url}`} />

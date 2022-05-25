@@ -132,3 +132,27 @@ BACKEND APIS
 
     - unlock card with gems? (without copies required?)
     - images with colo scheme byt realm + type art like uniheroes (habit + health = 1 art...)
+
+
+Try this for bulk update card from packs:
+
+    async function getNewFeedItems() {
+let allNewFeedItems = [];
+const feeds = await getFeedUrls();
+for (let i = 0; i < feeds.length; i++) {
+const { link } = feeds[i];
+const feedItems = await getNewFeedItemsFrom(link);
+allNewFeedItems = [...allNewFeedItems, ...feedItems];
+}
+return allNewFeedItems;
+}
+
+update "usercard" relation
+const data = await strapi
+.query("usercard")
+.update({ users_permissions_user: user.id, card: card_id }, update);
+example ---- update = {
+completed_at: Date.now(),
+glory_points: userCardRelation.glory_points + 1,
+};
+

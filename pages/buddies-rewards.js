@@ -93,7 +93,7 @@ const FriendsTower = () => {
 
   return (
     <div className="background_dark">
-      <div className="section_container">
+      <div className="section">
         <div className="title">Streak: {store.user.highestBuddyShares}</div>
         {data && store.user && store.user.friends_rewards && (
           <div>

@@ -21,11 +21,20 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 1rem;
   padding: 1rem;
+  @include media_sm {
+    padding: 0.75rem;
+  }
 }
 
 %flex_center {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+%flex_start {
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -44,6 +53,12 @@
 %text--m {
   font-size: 1rem;
   font-weight: 700;
+  line-height: 150%;
+}
+
+%text--s {
+  font-size: 0.8rem;
+  font-weight: 500;
   line-height: 150%;
 }
 

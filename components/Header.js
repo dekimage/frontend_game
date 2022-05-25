@@ -93,7 +93,7 @@ const Header = () => {
           <Link href="/streak">
             <div className={styles.currency}>
               <img height="12px" src="http://localhost:1337/streak.png" />
-              <div>{store.user.gems}</div>
+              <div>{store.user.streak}</div>
             </div>
           </Link>
           <Link href="/shop">

@@ -1,6 +1,7 @@
 // IMAGES
 import iconCheckmark from "../assets/checkmark.svg";
 import iconCheckmarkFill from "../assets/checkmark-fill.svg";
+import Router from "next/router";
 
 import ProgressBar from "./ProgressBar";
 import RewardImage from "./RewardImage";
@@ -13,7 +14,9 @@ const Objective = ({
   objective: {
     id,
     name,
+    link,
     time_type,
+    description,
     requirement,
     requirement_amount,
     reward,
@@ -35,23 +38,30 @@ const Objective = ({
 
       <RewardImage reward={reward} amount={reward_amount} isTask={true} />
       <div className={styles.objective_body}>
-        <div
+        {/* <div
           className={cx([styles.objective_name], {
             [styles.completed]: isCollected,
           })}
         >
           {name}
+        </div> */}
+
+        <div
+          className={cx([styles.objective_name], {
+            [styles.completed]: isCollected,
+          })}
+        >
+          {description}
         </div>
-        {/* <div className={styles.objective_description}>{requirement}</div> */}
-        <div className={styles.objective_description}>
-          {progress}/{requirement_amount}
+        <div className={styles.objective_progress}>
+          {progress || 0}/{requirement_amount}
         </div>
 
         {/* COMPONENT PROGRESS */}
 
         <div style={{ fontWeight: "500", fontSize: "18px" }}>
           <ProgressBar
-            progress={progress}
+            progress={progress || 0}
             isReadyToClaim={progress >= requirement_amount && !isCollected}
             max={requirement_amount}
           />
@@ -62,7 +72,11 @@ const Objective = ({
 
       <div
         className={styles.objective_checkmark}
-        onClick={() => !isCollected && claimObjective(dispatch, id)}
+        onClick={() =>
+          !isCollected &&
+          progress >= requirement_amount &&
+          claimObjective(dispatch, id)
+        }
       >
         <div className={styles.progressCounter}></div>
         {/* {isCollected ? "COLLECTED" : "NOT COLLECTED"} */}
@@ -76,7 +90,12 @@ const Objective = ({
             {progress >= requirement_amount ? (
               <div className={styles.btn_objective__active}>Claim!</div>
             ) : (
-              <div className={styles.btn_objective__disabled}>Claim</div>
+              <div
+                className={styles.btn_objective__disabled}
+                onClick={() => Router.push(`/${link}`)}
+              >
+                Go
+              </div>
             )}
           </>
         )}

@@ -71,6 +71,16 @@
 //   // z-index: -1;
 // }
 
+.isNew {
+  position: absolute;
+  top: -5px;
+  position: absolute;
+  @extend %flex_center;
+  background-color: $tertiary;
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+}
+
 .image {
   z-index: 5;
   margin-bottom: 0.5rem;

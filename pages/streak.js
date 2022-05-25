@@ -55,7 +55,7 @@ const streakData = [
   },
 ];
 
-const Streak = ({ streak, setSelectedStreak }) => {
+const Streak = ({ streak, isSelected, setSelectedStreak }) => {
   const {
     name,
     reward_card,
@@ -72,15 +72,23 @@ const Streak = ({ streak, setSelectedStreak }) => {
 
   return (
     <div
-      className={styles.streak}
+      className={cx(styles.streak, isSelected && styles.active)}
       onClick={() => setSelectedStreak(streak_count)}
     >
-      <ImageUI imgUrl={reward.image.url} className={styles.image} />
-      <div>{reward.name}</div>
-      <div>X{reward_amount}</div>
-      <div>{streak_count}</div>
-      <div>{isCollected && "CLaimed!"}</div>
-      <div>{isReady && "Ready To Collect!"}</div>
+      <div className={styles.image}>
+        <img src={`http://localhost:1337${reward.image.url}`} alt="" />
+        <div className={styles.streak_amount}>x{reward_amount || 1}</div>
+      </div>
+
+      <div className={styles.streak_name}>{reward.name}</div>
+
+      {/* <div>{streak_count}</div> */}
+      {/* <div>{isCollected && "CLaimed!"}</div> */}
+      {/* <div>{isReady && "Ready To Collect!"}</div> */}
+      <div className={styles.streakIcon}>
+        <img src={`http://localhost:1337/streak.png`} alt="" />
+        <div className={styles.streakIcon_amount}>{streak_count}</div>
+      </div>
     </div>
   );
 };
@@ -91,8 +99,7 @@ const StreakTower = () => {
 
   const [selectedStreak, setSelectedStreak] = useState(0);
 
-  console.log(data && data);
-  console.log(store.user && store.user.streak_rewards);
+  // console.log(store.user && store.user.streak_rewards);
   console.log(selectedStreak);
 
   const mergeStreaks = (streaks, userStreaks) => {
@@ -120,27 +127,46 @@ const StreakTower = () => {
 
   return (
     <div className="background_dark">
-      <div>Streak: {store.user.highest_streak_count}</div>
-      {data && store.user && store.user.streak_rewards && (
-        <div>
-          {mergeStreaks(data.streaks, store.user.streak_rewards).map(
-            (streak, i) => (
-              <Streak
-                streak={streak}
-                key={i}
-                setSelectedStreak={setSelectedStreak}
-              />
-            )
-          )}
+      <div className="section">
+        <div className={styles.label}>Streak</div>
+        <div className={styles.streakTitle}>
+          <img src={`http://localhost:1337/streak.png`} height="60px" />
+          <div className={styles.streakTitle_amount}>
+            {store.user.highest_streak_count}
+          </div>
         </div>
-      )}
-      <div
-        className="btn btn-primary"
-        onClick={() => {
-          claimStreakReward(dispatch, selectedStreak);
-        }}
-      >
-        Claim
+        <div className={styles.subTitle}>Log in daily to unlock rewards.</div>
+        <div className={styles.subTitle_muted}>
+          It takes only 1 second to log in and claim.
+        </div>
+        {data && store.user && store.user.streak_rewards && (
+          <div>
+            {mergeStreaks(data.streaks, store.user.streak_rewards).map(
+              (streak, i) => {
+                const isSelected =
+                  parseInt(streak.streak_count) === selectedStreak;
+                return (
+                  <Streak
+                    streak={streak}
+                    key={i}
+                    isSelected={isSelected}
+                    setSelectedStreak={setSelectedStreak}
+                  />
+                );
+              }
+            )}
+          </div>
+        )}
+        <div className={styles.fixed}>
+          <div
+            className="btn btn-primary"
+            onClick={() => {
+              claimStreakReward(dispatch, selectedStreak);
+            }}
+          >
+            Claim
+          </div>
+        </div>
       </div>
     </div>
   );

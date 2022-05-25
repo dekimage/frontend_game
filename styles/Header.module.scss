@@ -16,7 +16,7 @@
 
 .header {
   // position: fixed;
-  z-index: 500;
+  z-index: 1500;
   @include media_sm {
     display: none;
   }
@@ -56,6 +56,7 @@
   height: auto;
   color: white;
   background-color: black;
+  z-index: 1500;
   &_currenciesBox {
     @extend %flex_between;
   }
@@ -79,6 +80,7 @@
 }
 
 .navBar {
+  z-index: 1500;
   background-color: black;
   @include media_bg {
     display: none;
@@ -117,8 +119,8 @@
     width: 20px;
   }
   &.active {
-    border-top: 2px solid #ffc74e;
-    color: #ffc74e;
+    border-top: 2px solid $actionize_orange;
+    color: $actionize_orange;
   }
   &_name {
     margin-top: 0.2rem;

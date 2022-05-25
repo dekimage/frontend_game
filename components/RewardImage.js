@@ -38,6 +38,9 @@ const RewardImage = ({
         {reward == "stars" && (
           <img height="8px" src="http://localhost:1337/star.png" />
         )}
+        {reward == "streak" && (
+          <img height="8px" src="http://localhost:1337/streak.png" />
+        )}
         {reward == "gems" && <img src={gemIcon} />}
       </div>
 

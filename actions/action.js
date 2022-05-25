@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import * as api from "../api";
 
 // ACTION FACTORY
@@ -249,6 +250,7 @@ export const deleteCommunityAction = (dispatch, actionId) => {
     .deleteCommunityActionApi(actionId)
     .then(({ data }) => {
       dispatch({ type: "DELETE_COMMUNITY_ACTION", data });
+      toast.success("Action deleted.");
     })
     .catch((err) => {
       console.log(err);

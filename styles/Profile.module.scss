@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background-color: $primary;
+  // background-color: $primary;
   padding: 1rem;
   border: solid 1px transparent;
   border-radius: 50%/ 0 0 100px 100px;
@@ -17,16 +17,23 @@
 }
 .avatar {
   border-radius: 50%;
-  background-color: black;
+  background-color: cornsilk;
   @extend %flex_center;
-  height: 5rem;
-  width: 5rem;
+  height: 4rem;
+  width: 4rem;
+  overflow: hidden;
 }
 
 .xp {
   font-size: 12px;
   font-weight: 500;
   margin-top: 0.5rem;
+}
+.username {
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  text-transform: capitalize;
 }
 
 .level {
@@ -51,39 +58,40 @@
 }
 
 .tabs {
-  @extend %flex_center;
-  padding: 1rem;
+  @extend %flex_between;
 }
 .tabsButton {
+  width: 33.3%;
   cursor: pointer;
   @extend %flex_center;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  margin: 0 0.5rem;
-  width: 6rem;
-  background-color: $actionize_gray;
+  padding: 0.5rem 0;
+  color: $actionize_gray_light;
   &.active {
-    border: 2px solid white;
+    border-bottom: 3px solid white;
+    color: white;
   }
 }
 
 .stats {
   @extend %flex_center;
+  flex-wrap: wrap;
 }
 .statsBox {
+  width: 45%;
   @extend %flex_center;
-  padding: 1rem;
+  padding: 0.5rem;
   margin: 1rem 0.5rem;
   font-weight: 500;
-  // background-color: $actionize_gray;
   border-radius: 15px;
   border: 2px solid $actionize_gray;
-  // box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 8px 4px, black 0px 7px 13px -3px,
-  //   black 0px -3px 0px inset;
+  font-size: 14px;
   &_img {
     margin: 0 0.35rem;
+    img {
+      height: 22px;
+    }
   }
   &_number {
     margin-right: 0.35rem;
@@ -116,4 +124,46 @@
     border-radius: 50%;
     @extend %flex_center;
   }
+}
+
+.buddyBox {
+  cursor: pointer;
+  position: relative;
+  @extend %flex_between;
+  justify-content: flex-start;
+  padding: 0.75rem 0;
+  &_name {
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  &_level {
+    font-size: 16px;
+  }
+}
+.buddyAvatar {
+  border-radius: 50%;
+  background-color: cornsilk;
+  @extend %flex_center;
+  height: 2.5rem;
+  width: 2.5rem;
+  overflow: hidden;
+  img {
+    height: 36px;
+  }
+}
+.arrowRight {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: centers;
+}
+
+.header {
+  @extend %flex_between;
+  padding: 0.5rem;
+  font-size: 18px;
+  font-weight: 500;
 }

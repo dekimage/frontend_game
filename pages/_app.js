@@ -3,6 +3,8 @@ import React from "react";
 import Head from "next/head";
 import Store from "../context/store";
 import withData from "../lib/withData";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MyApp = ({ Component, pageProps }) => {
   MyApp.getInitialProps = async ({ Component, router, ctx }) => {
@@ -19,7 +21,7 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <Store>
       <Head>
-        <title>App Title</title>
+        <title>Actionise</title>
         {/* <link href="../public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
         <script
           type="module"
@@ -27,6 +29,20 @@ const MyApp = ({ Component, pageProps }) => {
         ></script>
       </Head>
       <Component {...pageProps} />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        className="toastBig"
+        bodyClassName="toast"
+      />
     </Store>
   );
 };

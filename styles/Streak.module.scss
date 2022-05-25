@@ -3,16 +3,118 @@
 
 .streak {
   @extend %box_duo;
-  margin: 1rem 0;
+  @extend %flex_between;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  &.active {
+    border: 3px solid white;
+  }
+  &_name {
+    font-weight: 500;
+    font-size: 14px;
+    margin-left: 0.5rem;
+    text-transform: capitalize;
+  }
+  &_amount {
+    position: absolute;
+    bottom: 0;
+    right: -5px;
+    @extend %flex_center;
+    background-color: $actionize_gray;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-weight: 500;
+    font-size: 12px;
+  }
 }
 
 .image {
+  @extend %flex_center;
+  border: 3px solid $actionize_gray;
+  position: relative;
   background-color: black;
   border-radius: 50%;
-  width: 65px;
-  height: 65px;
+  width: 55px;
+  height: 55px;
   img {
-    width: 65px;
-    height: 65px;
+    width: 45px;
+    height: 45px;
   }
+}
+
+.streakIcon {
+  @extend %flex_center;
+  border: 3px solid $actionize_gray;
+  position: relative;
+  background-color: black;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  &_amount {
+    position: absolute;
+    bottom: 0;
+    right: -5px;
+    @extend %flex_center;
+    background-color: $actionize_gray;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-weight: 500;
+    font-size: 12px;
+  }
+  img {
+    width: 35px;
+    height: 35px;
+  }
+}
+.streakTitle {
+  @extend %flex_center;
+  position: relative;
+  &_amount {
+    position: absolute;
+    color: white;
+    font-size: 26px;
+    font-weight: 500;
+    left: 49%;
+    top: 35%;
+  }
+}
+
+.subTitle {
+  margin-top: 1rem;
+  font-weight: 500;
+  @extend %flex_center;
+  font-size: 18px;
+  &_muted {
+    @extend %flex_center;
+    font-size: 16px;
+    font-weight: 500;
+    color: $actionize_gray_light;
+    margin-bottom: 2rem;
+  }
+}
+
+// DUPLICATE EXPORT LOGIC!!! FROM CARD PAGE CSS
+.fixed {
+  position: fixed;
+  background-color: $actionize_black;
+  border-top: 3px solid $actionize_gray;
+  // background: linear-gradient(rgba(0, 0, 0, 0) 0%, $actionize_black 70%);
+
+  bottom: 0;
+  width: 100%;
+  height: 5rem;
+  @extend %flex_center;
+  left: 0px;
+  position: fixed;
+  z-index: 10;
+}
+
+// ALSO DUPLICATE FORM LOGIN CSS
+.label {
+  font-size: 22px;
+  font-weight: 700;
+  @extend %flex_center;
+  margin-bottom: 1.5rem;
 }

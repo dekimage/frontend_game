@@ -35,13 +35,13 @@ a {
   font-weight: 500;
 }
 
-p {
-  margin-top: 10px;
-  font-size: 18px;
-  letter-spacing: -0.03px;
-  line-height: 1.58;
-  white-space: pre-line;
-}
+// p {
+//   margin-top: 10px;
+//   font-size: 18px;
+//   letter-spacing: -0.03px;
+//   line-height: 1.58;
+//   white-space: pre-line;
+// }
 
 //  LAYOUT
 
@@ -69,7 +69,6 @@ p {
   //make mixin reuse
   margin: 0px auto;
   max-width: 100%;
-  padding: 0 1rem;
   width: 100%;
   @include media_bg {
     max-width: 45rem;
@@ -144,29 +143,52 @@ p {
 }
 
 /* BUTTONS */
-
 .btn {
-  min-width: 8rem;
+  min-width: 5rem;
   font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
+  @extend %flex_center;
+  font-size: 14px;
   width: auto;
-  padding: 0 24px;
-  height: 48px;
-  border-radius: 10px;
+  width: 100%;
+  // padding: 0 24px;
+  height: 2.5rem;
+  padding: 10px 30px;
+  // border-radius: 10px;
+  border-radius: 20px;
   background-color: $blue_headspace;
   color: white;
   width: fit-content;
   cursor: pointer;
+  @include media_bg {
+    min-width: 8rem;
+    font-size: 22px;
+    height: 3rem;
+  }
+}
+.btn-stretch {
+  width: 100%;
 }
 .btn-primary {
   background: $primary;
-  border-top: 4px solid #678de4;
-  border-bottom: 2px solid #1e4397;
-  border-radius: 10px;
-  box-shadow: 0px 5px 0px -0.5px #1e4397;
+  // border-top: 4px solid #678de4;
+  // border-bottom: 2px solid #1e4397;
+
+  // box-shadow: 0px 5px 0px -0.5px #1e4397;
+}
+.btn-correct {
+  background: $ux_green;
+}
+.btn-wrong {
+  background: $ux_red;
+}
+.btn-google {
+  background: white;
+}
+.btn-facebook {
+  background: #3b5998;
+}
+.btn-apple {
+  background: black;
 }
 .btn-action {
   background: $secondary;
@@ -389,4 +411,23 @@ ion-icon {
 //DELETE
 .margin {
   margin: 1rem;
+}
+
+// TOAST
+.toastBig {
+  .Toastify__toast {
+    border: 3px solid $actionize_gray;
+  }
+}
+.toast {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.yellow-link {
+  cursor: pointer;
+  font-weight: 500;
+  margin: 0 0.5rem;
+  color: $actionize_orange;
+  text-decoration: underline;
 }

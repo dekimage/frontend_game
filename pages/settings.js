@@ -24,7 +24,7 @@ const Settings = () => {
 
   return (
     <div className="background_dark">
-      <div className="section_container">Settings</div>
+      <div className="section">Settings</div>
     </div>
   );
 };

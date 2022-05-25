@@ -16,12 +16,14 @@ import {
   createCommunityAction,
 } from "../../actions/action";
 
+import iconCross from "../../assets/close.svg";
 import iconCommon from "../../assets/common-rarity.svg";
 import iconRare from "../../assets/rare-rarity.svg";
 import iconEpic from "../../assets/epic-rarity.svg";
 import iconLegendary from "../../assets/legendary-rarity.svg";
 import arrowDown from "../../assets/arrow-down-white.png";
 import checkmark1 from "../../assets/checkmark-fill.svg";
+import iconLock from "../../assets/lock-white-border.svg";
 
 // import styles from "../../styles/card.module.scss";
 // REMOVE SECOND STYLE - FIGURE OUT WAY FOR DOUBLE MODULES
@@ -200,38 +202,20 @@ const GET_CARD_ID = gql`
   }
 `;
 
-const CommunityAction = ({ action, type }) => {
+export const CommunityAction = ({ action, type }) => {
   const [open, setOpen] = useState(false);
   const [store, dispatch] = useContext(Context);
   const router = useRouter();
   return (
     <div className={styles.action}>
       <div className={styles.action_closed} onClick={() => setOpen(!open)}>
-        <div className={styles.action_img}>{action.votes}</div>
-        <div
-          className={styles.upvoteBtn}
-          onClick={() =>
-            interactCommunityAction(
-              dispatch,
-              action.id,
-              action.isUpvoted ? "remove_vote" : "vote"
-            )
-          }
-        >
-          {action.isUpvoted ? "Remove Vote" : "Upvote"}
+        <div className={styles.action_votingBox}>
+          <div>
+            <img src={`http://localhost:1337/upvote.png`} height="24px" />
+          </div>
+          <div>{action.votes || 0}</div>
         </div>
-        <div
-          className={styles.reportBtn}
-          onClick={() =>
-            interactCommunityAction(
-              dispatch,
-              action.id,
-              action.isReported ? "remove_report" : "report"
-            )
-          }
-        >
-          {action.isReported ? "Remove Report" : "Report"}
-        </div>
+
         <div className={styles.action_box}>
           <div className={styles.action_header}>
             <div className={styles.action_name}>{action.name}</div>
@@ -279,10 +263,53 @@ const CommunityAction = ({ action, type }) => {
                   )
                 }
               >
-                <img src={checkmark1} height="30px" className="mr1" />
-                {action.isClaimed
-                  ? "Remove from My Actions"
-                  : "Add to My Actions"}
+                {action.isClaimed ? (
+                  <div className="flex_center">
+                    <img src={iconCross} height="16px" className="mr1" />
+                    Remove from My Actions
+                  </div>
+                ) : (
+                  <div className="flex_center">
+                    <img src={iconCross} height="20px" className="mr1" />
+                    Add to My Actions
+                  </div>
+                )}
+              </div>
+              <div className={styles.votingContainer}>
+                <div
+                  className={styles.upvoteBtn}
+                  onClick={() =>
+                    interactCommunityAction(
+                      dispatch,
+                      action.id,
+                      action.isUpvoted ? "remove_vote" : "vote"
+                    )
+                  }
+                >
+                  <img
+                    src={`http://localhost:1337/upvote.png`}
+                    height="18px"
+                    className="mr1"
+                  />
+                  {action.isUpvoted ? "Remove Vote" : "Upvote"}
+                </div>
+                <div
+                  className={styles.upvoteBtn}
+                  onClick={() =>
+                    interactCommunityAction(
+                      dispatch,
+                      action.id,
+                      action.isReported ? "remove_report" : "report"
+                    )
+                  }
+                >
+                  <img
+                    src={`http://localhost:1337/flag.png`}
+                    height="18px"
+                    className="mr1"
+                  />
+                  {action.isReported ? "Remove Report" : "Report"}
+                </div>
               </div>
             </>
           )}
@@ -304,11 +331,18 @@ const CommunityAction = ({ action, type }) => {
                   ? "Remove from My Actions"
                   : "Add to My Actions"}
               </div>
-              <div
-                className={styles.reportBtn}
-                onClick={() => deleteCommunityAction(dispatch, action.id)}
-              >
-                Delete
+              <div className={styles.votingContainer}>
+                <div
+                  className={styles.upvoteBtn}
+                  onClick={() => deleteCommunityAction(dispatch, action.id)}
+                >
+                  <img
+                    src={`http://localhost:1337/trash.png`}
+                    height="18px"
+                    className="mr1"
+                  />
+                  Delete
+                </div>
               </div>
             </>
           )}
@@ -467,6 +501,49 @@ const CreateActionModal = ({ card }) => {
   );
 };
 
+const PlayCta = ({
+  card,
+  maxQuantity,
+  selectedLevel,
+  dispatch,
+  usercard,
+  isLevelUnlocked,
+}) => {
+  const router = useRouter();
+  return isLevelUnlocked ? (
+    <div
+      className={cx(
+        selectedLevel == card.completed + 1 ? "btn btn-action" : "btn"
+      )}
+      onClick={() => {
+        dispatch({
+          type: "OPEN_PLAYER",
+          data: { level: usercard.level, selectedLevel },
+        });
+        router.push(`http://localhost:3000/card/player/${card.id}`);
+      }}
+    >
+      <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
+    </div>
+  ) : (
+    <div
+      className={cx(
+        usercard.quantity >= maxQuantity ? "btn btn-action" : "btn btn-disabled"
+      )}
+      onClick={() => {
+        usercard.quantity >= maxQuantity &&
+          updateCard(dispatch, card.id, "upgrade");
+      }}
+    >
+      <ion-icon name="lock-closed-outline"></ion-icon>&nbsp;
+      <div>Upgrade Card &nbsp;</div>
+      <div>
+        {usercard.quantity}/{maxQuantity}
+      </div>
+    </div>
+  );
+};
+
 const CardPage = ({ dataUserCard, dataCard }) => {
   const proxyUserCard = {
     level: 1,
@@ -482,10 +559,17 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   );
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("community");
+
+  useEffect(() => {
+    if (dataUserCard && dataUserCard.is_new) {
+      updateCard(dispatch, card.id, "new_disable");
+    }
+  }, [dataUserCard]);
+
+  console.log(dataUserCard && dataUserCard);
   const router = useRouter();
   const card = usercard.card || dataCard.card;
 
-  const isCardOpen = card.isOpen || card.isUnlocked;
   const isPremiumLocked =
     card.expansion.name === "Pro" &&
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
@@ -506,7 +590,8 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     return result;
   };
 
-  const isLevelUnlocked = usercard.completed >= selectedLevel;
+  const isLevelUnlocked =
+    usercard.completed >= selectedLevel || usercard.completed === 0;
 
   const communityActions =
     dataUserCard &&
@@ -538,6 +623,16 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   return (
     <div className="section_container">
       <div className={styles.card}>
+        <div
+          className={styles.favorite}
+          onClick={() => updateCard(dispatch, card.id, "favorite")}
+        >
+          {usercard.is_favorite ? (
+            <img src={`http://localhost:1337/favorite.png`} height="25px" />
+          ) : (
+            <img src={`http://localhost:1337/notFavorite.png`} height="25px" />
+          )}
+        </div>
         <div className={styles.backButton} onClick={() => router.back()}>
           <ion-icon name="chevron-back-outline"></ion-icon>
         </div>
@@ -562,15 +657,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               />
             </div>
             {card.name}
-          </div>
-          <div className={styles.favorite}>
-            <div onClick={() => updateCard(dispatch, card.id, "favorite")}>
-              {usercard.is_favorite ? (
-                <ion-icon name="heart-outline"></ion-icon>
-              ) : (
-                <ion-icon name="heart-half-outline"></ion-icon>
-              )}
-            </div>
           </div>
         </div>
 
@@ -674,8 +760,9 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             <ion-icon name="play"></ion-icon>
           </div>
         </div>
-        <div className={styles.titleProgress}>
-          <div className="title mb1">Actions (Level {selectedLevel})</div>
+        <div className={styles.header}>
+          <div>Actions </div>
+          <div>Level {selectedLevel}</div>
         </div>
 
         {isLevelUnlocked ? (
@@ -692,41 +779,63 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               return <Action action={action} key={i} />;
             })
         ) : (
-          <div>Complete the Theory for this level to unlock Actions.</div>
-        )}
-
-        <div className={styles.titleProgress}>
-          <div className="title mb1">Added Actions</div>
-        </div>
-        {addedActions?.length > 0 ? (
-          addedActions.map((action, i) => {
-            return <CommunityAction action={action} type={"added"} key={i} />;
-          })
-        ) : (
-          <div style={{ color: "white" }}>
-            You don't have any added actions yet.
+          <div className={styles.emptyActions}>
+            <img
+              src={iconLock}
+              style={{ height: "35px", marginBottom: "1rem" }}
+            />
+            Complete the Ideas for this level to unlock Actions.
           </div>
         )}
 
         {dataUserCard && (
           <div className={styles.tabs}>
             <div
-              className={styles.tab}
+              className={cx(
+                styles.tabsButton,
+                activeTab === "community" && styles.active
+              )}
               onClick={() => setActiveTab("community")}
             >
-              Community {card.community_actions.length}
+              Community
+              <div className={styles.tabCounter}>
+                {card.community_actions.length}
+              </div>
             </div>
 
-            <div className={styles.tab} onClick={() => setActiveTab("my")}>
-              Create + {usercard.my_community_actions.length}
+            <div
+              className={cx(
+                styles.tabsButton,
+                activeTab === "added" && styles.active
+              )}
+              onClick={() => setActiveTab("added")}
+            >
+              Added
+              <div className={styles.tabCounter}>
+                {usercard.community_actions_claimed.length}
+              </div>
+            </div>
+
+            <div
+              className={cx(
+                styles.tabsButton,
+                activeTab === "my" && styles.active
+              )}
+              onClick={() => setActiveTab("my")}
+            >
+              My Actions
+              <div className={styles.tabCounter}>
+                {usercard.my_community_actions.length}
+              </div>
             </div>
           </div>
         )}
 
         {activeTab === "community" && (
           <>
-            <div className={styles.titleProgress}>
-              <div className="title mb1">Community Actions</div>
+            <div className={styles.header}>
+              <div>Community Actions</div>
+              <div>{card.community_actions.length}</div>
             </div>
             {communityActions?.length > 0 ? (
               communityActions.map((action, i) => {
@@ -735,7 +844,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
                 );
               })
             ) : (
-              <div style={{ color: "white" }}>
+              <div className={styles.emptyActions}>
                 Be the first one to create a community action.
               </div>
             )}
@@ -744,15 +853,11 @@ const CardPage = ({ dataUserCard, dataCard }) => {
 
         {activeTab === "my" && (
           <>
-            <div className={styles.titleProgress}>
-              <div className="title mb1">My Actions</div>
+            <div className={styles.header}>
+              <div>My Actions</div>
+              <div>{usercard.my_community_actions.length}/5</div>
             </div>
-            <div
-              className="btn btn-primary"
-              onClick={() => setCreateModalOpen(true)}
-            >
-              Create Action +
-            </div>
+
             {myActions?.length > 0 ? (
               myActions.map((action, i) => {
                 return <CommunityAction action={action} type={"my"} key={i} />;
@@ -761,6 +866,31 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               <div style={{ color: "white" }}>
                 You haven't created any actions for this card. <br />
                 Create your first action!
+              </div>
+            )}
+            <div
+              className="btn  btn-primary mb1"
+              onClick={() => setCreateModalOpen(true)}
+            >
+              + Create New Action
+            </div>
+          </>
+        )}
+        {activeTab === "added" && (
+          <>
+            <div className={styles.header}>
+              <div>Added Actions</div>
+              <div>{usercard.community_actions_claimed.length}</div>
+            </div>
+            {addedActions?.length > 0 ? (
+              addedActions.map((action, i) => {
+                return (
+                  <CommunityAction action={action} type={"added"} key={i} />
+                );
+              })
+            ) : (
+              <div className={styles.emptyActions}>
+                You don't have any added actions yet.
               </div>
             )}
           </>
@@ -776,43 +906,13 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         <div className="margin">...</div>
       </div>
 
-      {/* ACTIONS BUTTONS */}
       {/* <div>
-  
-        <div
-          className="btn btn-dev-done margin"
-          onClick={() => updateCard(dispatch, card.id, "new_disable")}
-        >
-          Make this card Not New
-        </div>
-        <div
-          className="btn btn-dev-done margin"
-          onClick={() => updateCard(dispatch, card.id, "new_activate")}
-        >
-          Make this Card New
-        </div>
-        <div
-          className="btn btn-dev-done margin"
-          onClick={() => updateCard(dispatch, card.id, "complete")}
-        >
-          Complete Card
-        </div>
-   
-
         <div
           className="btn btn-secondary margin"
           onClick={() => updateCard(dispatch, card.id, "play")}
         >
           Play Card (energy cost)
         </div>
-
-        <div
-          className="btn btn-secondary margin"
-          onClick={() => updateCard(dispatch, card.id, "unlock")}
-        >
-          Unlock Card (10/10)
-        </div>
-
         <div
           className="btn btn-secondary margin"
           onClick={() =>
@@ -822,58 +922,8 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           Complete Action
         </div> */}
 
-      {/* <div className="margin">...</div>
-      </div> */}
-
-      {/* <div>{card.level || 1}</div>
-      <div>{card.completed || 1}</div>
-      <div>{card.quantity || 0}</div>
-      <div>{card.is_new || false}</div> */}
-
       <div className={styles.fixed}>
-        {isCardOpen && isLevelUnlocked ? (
-          <div
-            className={cx(
-              selectedLevel == card.completed + 1 ? "btn btn-action" : "btn"
-            )}
-            onClick={() => {
-              dispatch({
-                type: "OPEN_PLAYER",
-                data: { level: usercard.level, selectedLevel },
-              });
-              router.push(`http://localhost:3000/card/player/${card.id}`);
-            }}
-          >
-            <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
-          </div>
-        ) : (
-          <div
-            className={cx(
-              usercard.quantity >= maxQuantity
-                ? "btn btn-action"
-                : "btn btn-disabled"
-            )}
-            onClick={() => {
-              usercard.quantity >= maxQuantity &&
-                updateCard(dispatch, card.id, "upgrade");
-            }}
-          >
-            <ion-icon name="play"></ion-icon> Upgrade Card {usercard.quantity}/
-            {maxQuantity}
-          </div>
-        )}
-        {!isCardOpen && !isPremiumLocked && (
-          <div
-            className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
-            onClick={() => {
-              router.push(`http://localhost:3000/card/player/${card.id}`);
-            }}
-          >
-            <ion-icon name="lock-closed-outline"></ion-icon>
-            {usercard.quantity >= 10 ? "Unlock ->" : "Collect 10 to Unlock"}
-          </div>
-        )}
-        {!isCardOpen && isPremiumLocked && (
+        {isPremiumLocked ? (
           <div
             className="btn"
             onClick={() => {
@@ -883,6 +933,32 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             <ion-icon name="lock-closed-outline"></ion-icon>
             Purchase Expansion
           </div>
+        ) : card.isOpen ? (
+          <PlayCta
+            card={card}
+            maxQuantity={maxQuantity}
+            selectedLevel={selectedLevel}
+            dispatch={dispatch}
+            usercard={usercard}
+            isLevelUnlocked={isLevelUnlocked}
+          />
+        ) : !card.isUnlocked ? (
+          <div
+            className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
+            onClick={() => updateCard(dispatch, card.id, "unlock")}
+          >
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            {usercard.quantity >= 10 ? "Unlock ->" : "Collect 10 to Unlock"}
+          </div>
+        ) : (
+          <PlayCta
+            card={card}
+            maxQuantity={maxQuantity}
+            selectedLevel={selectedLevel}
+            dispatch={dispatch}
+            usercard={usercard}
+            isLevelUnlocked={isLevelUnlocked}
+          />
         )}
       </div>
     </div>
