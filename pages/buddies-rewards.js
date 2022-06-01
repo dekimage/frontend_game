@@ -17,7 +17,7 @@ import cx from "classnames";
 import styles from "../styles/Streak.module.scss";
 
 const GET_STREAKS_QUERY = gql`
-  {
+  query {
     friendsRewards {
       id
 

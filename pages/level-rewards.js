@@ -20,7 +20,7 @@ import cx from "classnames";
 import styles from "../styles/LevelRewards.module.scss";
 
 const GET_REWARDS_QUERY = gql`
-  {
+  query {
     levelRewards {
       id
       level

@@ -17,7 +17,7 @@ import { merge } from "lodash";
 
 const USER_ID = Cookie.get("userId");
 const GET_COLLECTION = gql`
-  {
+  query($USER_ID: ID!) {
     user(id: ${USER_ID}) {
       usercards {
         id

@@ -18,8 +18,9 @@ import iconPlay from "../assets/progress-collection-dark.svg";
 import iconCollection from "../assets/progress-play-dark.svg";
 
 const USER_ID = Cookie.get("userId");
+
 const GET_USER_STATS = gql`
-  {
+  query($USER_ID: ID!) {
     user(id: ${USER_ID}) {
       usercards {
         completed
@@ -40,7 +41,7 @@ const GET_USER_STATS = gql`
 `;
 
 const GET_REALMS = gql`
-  {
+  query {
     realms {
       id
       name
