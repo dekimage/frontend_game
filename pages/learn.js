@@ -7,7 +7,7 @@ import Link from "next/link";
 import styles from "../styles/Learn.module.scss";
 import ProgressBar from "../components/ProgressBar";
 import Header from "../components/Header";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 
 import { calcRealmProgress } from "../utils/calculations";
 
@@ -194,7 +194,7 @@ const Learn = () => {
         )}
       </div>
 
-      <Navbar />
+      <NavBar />
     </div>
   );
 };

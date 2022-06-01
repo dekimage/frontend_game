@@ -5,7 +5,7 @@ const apiUrl = process.env.API_URL || "http://localhost:1337";
 const strapi = new Strapi(apiUrl);
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 // import { RealmsList } from "./learn";
 import styles from "../styles/SearchBar.module.scss";
 import debounce from "debounce";
@@ -134,7 +134,7 @@ const SearchBar = () => {
           )}
         </div>
       </div>
-      <Navbar />
+      <NavBar />
     </div>
   );
 };

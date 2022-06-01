@@ -10,7 +10,7 @@ import Link from "next/link";
 import ProgressBar from "../components/ProgressBar";
 import RewardImage from "../components/RewardImage";
 import Header from "../components/Header";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import { CommunityAction } from "../pages/card/[id]";
 
 import settingsIcon from "../assets/menu-settings-dark.svg";
@@ -276,7 +276,7 @@ const Profile = () => {
         </div>
       )}
 
-      <Navbar />
+      <NavBar />
     </div>
   );
 };

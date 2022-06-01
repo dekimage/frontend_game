@@ -11,7 +11,7 @@ import { Activity } from "./profile";
 import Objective from "../components/Objective";
 import ObjectiveCounter from "../components/ObjectiveCounter";
 import Header from "../components/Header";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 
 import { objectiveCounterRewardsTable } from "../data/rewards";
 
@@ -393,7 +393,7 @@ const Home = () => {
           notification={store.notifications.levels}
         />
       </div>
-      <Navbar />
+      <NavBar />
     </div>
   );
 };

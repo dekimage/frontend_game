@@ -6,7 +6,7 @@ import Link from "next/link";
 import cx from "classnames";
 
 import Header from "../components/Header";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 
 import styles from "../styles/Collection.module.scss";
 import RewardImage from "../components/RewardImage";
@@ -182,7 +182,7 @@ const Home = () => {
         )}
       </div>
 
-      <Navbar />
+      <NavBar />
     </div>
   );
 };

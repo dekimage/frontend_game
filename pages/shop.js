@@ -8,7 +8,7 @@ import Link from "next/link";
 // *** COMPONENTS ***
 import RewardImage from "../components/RewardImage";
 import Header from "../components/Header";
-import Navbar from "../components/Navbar";
+import NavBar from "../components/NavBar";
 import { ImageUI } from "../components/reusableUI";
 import Modal from "../components/Modal";
 import LootBoxModal from "../components/LootBoxModal";
@@ -339,7 +339,7 @@ const Shop = () => {
         </div>
       )}
 
-      <Navbar />
+      <NavBar />
     </div>
   );
 };

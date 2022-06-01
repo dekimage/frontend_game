@@ -7,7 +7,7 @@ import Link from "next/link";
 import _ from "lodash";
 import styles from "../../styles/Realm.module.scss";
 
-import NavBar from "../../components/Navbar";
+import NavBar from "../../components/NavBar";
 import Card from "../../components/Card";
 
 const GET_REALM_ID = gql`

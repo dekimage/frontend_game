@@ -1,3 +1,21 @@
+import Link from "next/link";
+import { Context } from "../context/store";
+import { useContext } from "react";
+import { useRouter } from "next/router";
+import styles from "../styles/Header.module.scss";
+import cx from "classnames";
+import iconToday from "../assets/menu-today-dark.svg";
+import iconShop from "../assets/menu-shop-dark.svg";
+import iconLearn from "../assets/menu-learn-dark.svg";
+import iconCollection from "../assets/menu-collection-dark.svg";
+import iconProfile from "../assets/menu-profile-dark.svg";
+
+import iconTodayActive from "../assets/menu-today-active.svg";
+import iconShopActive from "../assets/menu-shop-active.svg";
+import iconLearnActive from "../assets/menu-learn-active.svg";
+import iconCollectionActive from "../assets/menu-collection-active.svg";
+import iconProfileActive from "../assets/menu-profile-active.svg";
+
 const mobileNavLinks = [
   {
     icon: iconToday,
@@ -30,23 +48,7 @@ const mobileNavLinks = [
     link: "/profile",
   },
 ];
-import Link from "next/link";
-import { Context } from "../context/store";
-import { useContext } from "react";
-import { useRouter } from "next/router";
-import styles from "../styles/Header.module.scss";
-import cx from "classnames";
-import iconToday from "../assets/menu-today-dark.svg";
-import iconShop from "../assets/menu-shop-dark.svg";
-import iconLearn from "../assets/menu-learn-dark.svg";
-import iconCollection from "../assets/menu-collection-dark.svg";
-import iconProfile from "../assets/menu-profile-dark.svg";
 
-import iconTodayActive from "../assets/menu-today-active.svg";
-import iconShopActive from "../assets/menu-shop-active.svg";
-import iconLearnActive from "../assets/menu-learn-active.svg";
-import iconCollectionActive from "../assets/menu-collection-active.svg";
-import iconProfileActive from "../assets/menu-profile-active.svg";
 export const NavBarItem = ({
   icon,
   activeIcon,
