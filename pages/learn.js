@@ -20,14 +20,14 @@ import iconCollection from "../assets/progress-play-dark.svg";
 const USER_ID = Cookie.get("userId");
 
 const GET_USER_STATS = gql`
-  query($USER_ID: ID!) {
-    user(id: ${USER_ID}) {
+  query ($id: ID!) {
+    user(id: $id) {
       usercards {
         completed
         quantity
         isUnlocked
         level
-        card {          
+        card {
           id
           isOpen
           realm {
@@ -107,7 +107,9 @@ const Learn = () => {
     data: usercardsData,
     loading: usercardsLoading,
     error: usercardsError,
-  } = useQuery(GET_USER_STATS);
+  } = useQuery(GET_USER_STATS, {
+    variables: { id: USER_ID },
+  });
 
   const [store, dispatch] = useContext(Context);
 

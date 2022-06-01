@@ -17,8 +17,8 @@ import { merge } from "lodash";
 
 const USER_ID = Cookie.get("userId");
 const GET_COLLECTION = gql`
-  query($USER_ID: ID!) {
-    user(id: ${USER_ID}) {
+  query ($id: ID!) {
+    user(id: $id) {
       usercards {
         id
         is_new
@@ -45,7 +45,6 @@ const GET_COLLECTION = gql`
             }
           }
         }
-
       }
     }
   }
@@ -77,7 +76,9 @@ const sortSettings = [
 
 const Home = () => {
   const [store, dispatch] = useContext(Context);
-  const { loading, error, data } = useQuery(GET_COLLECTION);
+  const { loading, error, data } = useQuery(GET_COLLECTION, {
+    variables: { id: USER_ID },
+  });
   const [cards, setCards] = useState([]);
   const [sortBy, setSortBy] = useState(sortSettings[0]);
   const [isSortAsc, setIsSortAsc] = useState(true);
