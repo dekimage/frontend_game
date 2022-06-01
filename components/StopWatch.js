@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { msToTime } from "../utils/calculations";
 import styles from "../styles/Timer.module.scss";
 

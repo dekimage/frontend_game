@@ -2,7 +2,6 @@ import styles from "../styles/Reward.module.scss";
 import starIcon from "../assets/xp.svg";
 import gemIcon from "../assets/diamond-currency.svg";
 import checkmark from "../assets/checkmark.svg";
-// import lock from "../assets/lock.svg";
 import cx from "classnames";
 
 const RewardImage = ({

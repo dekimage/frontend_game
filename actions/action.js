@@ -12,44 +12,7 @@ export const actionCreator = (dispatch, apiFunc, type, data) => {
     });
 };
 
-// TESTING DEV MODE
-export const developerModeApi = (dispatch, job) => {
-  api
-    .developerModeApi(job)
-    .then(({ data }) => {
-      dispatch({ type: "UPDATE_USER_GLOBAL", data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-export const achievementTest = (dispatch, itemId, action) => {
-  api.achievementTestApi(itemId, action);
-};
-
 // 1. HOME PAGE
-export const startQuiz = (dispatch) => {
-  api
-    .startQuizApi()
-    .then(({ data }) => {
-      dispatch({ type: "UPDATE_STREAK_REWARDS", data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-export const submitQuiz = (dispatch, data) => {
-  api
-    .submitQuizApi(data)
-    .then(({ data }) => {
-      dispatch({ type: "UPDATE_STREAK_REWARDS", data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 export const claimObjective = (dispatch, objectiveId) => {
   api
     .claimObjectiveApi(objectiveId)

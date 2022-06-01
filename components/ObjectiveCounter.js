@@ -23,9 +23,6 @@ const ObjectiveCounter = ({
       }
     >
       <RewardImage reward={reward_type} amount={reward_quantity} />
-
-      {/* <div>{isCollected ? "COLLECTED" : "NOT COLLECTED YET"}</div> */}
-      {/* <div>{isReadyToCollect ? "READY TO COLLECT" : "NOT READY YET"}</div> */}
     </div>
   );
 };

@@ -11,20 +11,9 @@ import Link from "next/link";
 // *** ACTIONS ***
 import { claimStreakReward } from "../actions/action";
 
-// *** DATA ***
-import { levelRewards } from "../data/rewards";
-
 // *** STYLES ***
 import cx from "classnames";
 import styles from "../styles/Streak.module.scss";
-import checkmark1 from "../assets/checkmark-fill.svg";
-
-// streak_rewards:
-// {
-//   "1": true,
-//   "3": true,
-//   "14": true
-// }
 
 const GET_STREAKS_QUERY = gql`
   {
@@ -49,14 +38,6 @@ const GET_STREAKS_QUERY = gql`
     }
   }
 `;
-
-const streakData = [
-  {
-    reward_type: "card",
-    reward_id: 5,
-    streak: 1,
-  },
-];
 
 const Streak = ({ streak, isSelected, setSelectedStreak }) => {
   const {
