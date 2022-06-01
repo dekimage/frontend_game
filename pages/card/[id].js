@@ -7,6 +7,8 @@ import Link from "next/link";
 import _ from "lodash";
 import styles from "../../styles/CardPage.module.scss";
 import ProgressBar from "../../components/ProgressBar";
+import Modal from "../../components/Modal";
+import useModal from "../../hooks/useModal";
 import cx from "classnames";
 import {
   updateCard,
@@ -43,6 +45,7 @@ const getMaxQuantity = (level) => {
 const GET_USERCARDS_QUERY = gql`
   query ($id: ID!) {
     usercard(id: $id) {
+      id
       card {
         id
         name
@@ -80,6 +83,7 @@ const GET_USERCARDS_QUERY = gql`
           }
         }
         realm {
+          id
           color
           name
           background {
@@ -96,7 +100,6 @@ const GET_USERCARDS_QUERY = gql`
       quantity
       is_new
       glory_points
-
       isUnlocked
       completed_actions {
         id
@@ -159,10 +162,6 @@ const GET_CARD_ID = gql`
         name
       }
       isOpen
-      expansion {
-        id
-        name
-      }
       community_actions {
         id
         name
@@ -189,6 +188,7 @@ const GET_CARD_ID = gql`
         }
       }
       realm {
+        id
         color
         name
         background {
@@ -513,12 +513,12 @@ const PlayCta = ({
   return isLevelUnlocked ? (
     <div
       className={cx(
-        selectedLevel == card.completed + 1 ? "btn btn-action" : "btn"
+        selectedLevel == usercard.completed + 1 ? "btn btn-action" : "btn"
       )}
       onClick={() => {
         dispatch({
           type: "OPEN_PLAYER",
-          data: { level: usercard.level, selectedLevel },
+          data: { level: usercard.completed, selectedLevel },
         });
         router.push(`http://localhost:3000/card/player/${card.id}`);
       }}
@@ -552,12 +552,14 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   };
   const [store, dispatch] = useContext(Context);
 
+  const { isShowing, openModal, closeModal } = useModal();
+
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
   const maxQuantity = getMaxQuantity(usercard.level) || 10;
   const [selectedLevel, setSelectedLevel] = useState(
     usercard && usercard.completed + 1
   );
-  const [createModalOpen, setCreateModalOpen] = useState(false);
+  // const [createModalOpen, setCreateModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("community");
 
   useEffect(() => {
@@ -566,7 +568,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     }
   }, [dataUserCard]);
 
-  console.log(dataUserCard && dataUserCard);
   const router = useRouter();
   const card = usercard.card || dataCard.card;
 
@@ -591,7 +592,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   };
 
   const isLevelUnlocked =
-    usercard.completed >= selectedLevel || usercard.completed === 0;
+    usercard.level >= selectedLevel && selectedLevel <= usercard.completed + 1;
 
   const communityActions =
     dataUserCard &&
@@ -633,9 +634,12 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             <img src={`http://localhost:1337/notFavorite.png`} height="25px" />
           )}
         </div>
-        <div className={styles.backButton} onClick={() => router.back()}>
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </div>
+        <Link href={`/realm/${card.realm.id}`}>
+          <div className={styles.backButton}>
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </div>
+        </Link>
+
         <img
           className={styles.image}
           src={`http://localhost:1337${card.image.url}`}
@@ -740,7 +744,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         </div>
 
         <div className={styles.titleProgress}>
-          <div className="title mb1">Ideas</div>
+          <div className="title">Ideas</div>
         </div>
 
         <div className={styles.ideaPlayer}>
@@ -863,17 +867,16 @@ const CardPage = ({ dataUserCard, dataCard }) => {
                 return <CommunityAction action={action} type={"my"} key={i} />;
               })
             ) : (
-              <div style={{ color: "white" }}>
+              <div className={styles.emptyActions}>
                 You haven't created any actions for this card. <br />
-                Create your first action!
+                <div
+                  className="btn  btn-primary mb1 mt1"
+                  onClick={() => openModal()}
+                >
+                  + Create New Action
+                </div>
               </div>
             )}
-            <div
-              className="btn  btn-primary mb1"
-              onClick={() => setCreateModalOpen(true)}
-            >
-              + Create New Action
-            </div>
           </>
         )}
         {activeTab === "added" && (
@@ -896,14 +899,15 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </>
         )}
 
-        {createModalOpen && (
-          <CreateActionModal
-            setCreateModalOpen={setCreateModalOpen}
-            card={card}
+        {isShowing && (
+          <Modal
+            isShowing={isShowing}
+            closeModal={closeModal}
+            jsx={<CreateActionModal closeModal={closeModal} card={card} />}
           />
         )}
 
-        <div className="margin">...</div>
+        {/* <div className="margin">...</div> */}
       </div>
 
       {/* <div>
@@ -921,46 +925,47 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         >
           Complete Action
         </div> */}
-
-      <div className={styles.fixed}>
-        {isPremiumLocked ? (
-          <div
-            className="btn"
-            onClick={() => {
-              router.push(`http://localhost:3000/shop`);
-            }}
-          >
-            <ion-icon name="lock-closed-outline"></ion-icon>
-            Purchase Expansion
-          </div>
-        ) : card.isOpen ? (
-          <PlayCta
-            card={card}
-            maxQuantity={maxQuantity}
-            selectedLevel={selectedLevel}
-            dispatch={dispatch}
-            usercard={usercard}
-            isLevelUnlocked={isLevelUnlocked}
-          />
-        ) : !card.isUnlocked ? (
-          <div
-            className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
-            onClick={() => updateCard(dispatch, card.id, "unlock")}
-          >
-            <ion-icon name="lock-closed-outline"></ion-icon>
-            {usercard.quantity >= 10 ? "Unlock ->" : "Collect 10 to Unlock"}
-          </div>
-        ) : (
-          <PlayCta
-            card={card}
-            maxQuantity={maxQuantity}
-            selectedLevel={selectedLevel}
-            dispatch={dispatch}
-            usercard={usercard}
-            isLevelUnlocked={isLevelUnlocked}
-          />
-        )}
-      </div>
+      {card && (
+        <div className={styles.fixed}>
+          {isPremiumLocked ? (
+            <div
+              className="btn"
+              onClick={() => {
+                router.push(`http://localhost:3000/shop`);
+              }}
+            >
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              Purchase Expansion
+            </div>
+          ) : card.isOpen ? (
+            <PlayCta
+              card={card}
+              maxQuantity={maxQuantity}
+              selectedLevel={selectedLevel}
+              dispatch={dispatch}
+              usercard={usercard}
+              isLevelUnlocked={isLevelUnlocked}
+            />
+          ) : !card.isUnlocked ? (
+            <div
+              className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
+              onClick={() => updateCard(dispatch, card.id, "unlock")}
+            >
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              {usercard.quantity >= 10 ? "Unlock" : "Collect 10 to Unlock"}
+            </div>
+          ) : (
+            <PlayCta
+              card={card}
+              maxQuantity={maxQuantity}
+              selectedLevel={selectedLevel}
+              dispatch={dispatch}
+              usercard={usercard}
+              isLevelUnlocked={isLevelUnlocked}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

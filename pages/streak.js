@@ -3,8 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import { useRouter } from "next/router";
 // *** COMPONENTS ***
 import { ImageUI } from "../components/reusableUI";
+import Link from "next/link";
 
 // *** ACTIONS ***
 import { claimStreakReward } from "../actions/action";
@@ -15,6 +17,7 @@ import { levelRewards } from "../data/rewards";
 // *** STYLES ***
 import cx from "classnames";
 import styles from "../styles/Streak.module.scss";
+import checkmark1 from "../assets/checkmark-fill.svg";
 
 // streak_rewards:
 // {
@@ -63,7 +66,6 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
     id,
     reward_amount,
     streak_count,
-    isCheckPoint,
     isCollected,
     isReady,
   } = streak;
@@ -72,19 +74,29 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
 
   return (
     <div
-      className={cx(styles.streak, isSelected && styles.active)}
-      onClick={() => setSelectedStreak(streak_count)}
+      className={cx(
+        styles.streak,
+        isSelected && [styles.active],
+        isReady && [styles.isReady],
+        isCollected && [styles.isCollected]
+      )}
+      onClick={() => setSelectedStreak({ streak_count, isReady, isCollected })}
     >
-      <div className={styles.image}>
-        <img src={`http://localhost:1337${reward.image.url}`} alt="" />
-        <div className={styles.streak_amount}>x{reward_amount || 1}</div>
+      <div className="flex_center">
+        <div className={styles.image}>
+          {isCollected ? (
+            <img src={`http://localhost:1337/checked.png`} height="20px" />
+          ) : (
+            <img src={`http://localhost:1337${reward.image.url}`} alt="" />
+          )}
+          {!isCollected && (
+            <div className={styles.streak_amount}>x{reward_amount || 1}</div>
+          )}
+        </div>
+
+        <div className={styles.streak_name}>{reward.name}</div>
       </div>
 
-      <div className={styles.streak_name}>{reward.name}</div>
-
-      {/* <div>{streak_count}</div> */}
-      {/* <div>{isCollected && "CLaimed!"}</div> */}
-      {/* <div>{isReady && "Ready To Collect!"}</div> */}
       <div className={styles.streakIcon}>
         <img src={`http://localhost:1337/streak.png`} alt="" />
         <div className={styles.streakIcon_amount}>{streak_count}</div>
@@ -96,11 +108,8 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
 const StreakTower = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_STREAKS_QUERY);
-
   const [selectedStreak, setSelectedStreak] = useState(0);
-
-  // console.log(store.user && store.user.streak_rewards);
-  console.log(selectedStreak);
+  const router = useRouter();
 
   const mergeStreaks = (streaks, userStreaks) => {
     return streaks.map((s) => {
@@ -110,6 +119,7 @@ const StreakTower = () => {
           isCollected: true,
         };
       }
+
       return {
         ...s,
         isReady: store.user.highest_streak_count >= s.streak_count,
@@ -128,7 +138,14 @@ const StreakTower = () => {
   return (
     <div className="background_dark">
       <div className="section">
-        <div className={styles.label}>Streak</div>
+        <div className={styles.header}>
+          <div className={styles.back} onClick={() => router.back()}>
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </div>
+
+          <div className={styles.label}>Streak</div>
+        </div>
+
         <div className={styles.streakTitle}>
           <img src={`http://localhost:1337/streak.png`} height="60px" />
           <div className={styles.streakTitle_amount}>
@@ -144,7 +161,7 @@ const StreakTower = () => {
             {mergeStreaks(data.streaks, store.user.streak_rewards).map(
               (streak, i) => {
                 const isSelected =
-                  parseInt(streak.streak_count) === selectedStreak;
+                  parseInt(streak.streak_count) === selectedStreak.streak_count;
                 return (
                   <Streak
                     streak={streak}
@@ -159,9 +176,16 @@ const StreakTower = () => {
         )}
         <div className={styles.fixed}>
           <div
-            className="btn btn-primary"
+            className={cx(
+              "btn",
+              selectedStreak.isReady && !selectedStreak.isCollected
+                ? "btn-primary"
+                : "btn-disabled"
+            )}
             onClick={() => {
-              claimStreakReward(dispatch, selectedStreak);
+              selectedStreak.isReady &&
+                !selectedStreak.isCollected &&
+                claimStreakReward(dispatch, selectedStreak.streak_count);
             }}
           >
             Claim

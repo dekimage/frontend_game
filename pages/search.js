@@ -98,7 +98,7 @@ const SearchBar = () => {
             <div className={styles.searchResult_box}>
               <div className={styles.noResults}>
                 <img
-                  style={{ height: "250px", marginBottom: "1rem" }}
+                  style={{ height: "200px", marginBottom: "1rem" }}
                   src={`http://localhost:1337/uploads/Asking_Questions_061ea6ce0f.png`}
                 />
                 Explore Actionise
@@ -117,7 +117,7 @@ const SearchBar = () => {
                 {!isSearching && result.length === 0 && search.length > 0 && (
                   <div className={styles.noResults}>
                     <img
-                      style={{ height: "250px", marginBottom: "1rem" }}
+                      style={{ height: "200px", marginBottom: "1rem" }}
                       src={`http://localhost:1337/uploads/mech_6_3a2f8d0611.png`}
                     />
                     No Results Found...

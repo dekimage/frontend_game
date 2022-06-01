@@ -16,7 +16,57 @@ import { followBuddy } from "../actions/action";
 
 // *** STYLES ***
 import cx from "classnames";
-import styles from "../styles/Profile.module.scss";
+import styles from "../styles/Settings.module.scss";
+
+const settings = [
+  {
+    label: "Account",
+    link: "account",
+  },
+  {
+    label: "Notifications",
+    link: "notifications",
+  },
+  {
+    label: "Subscription",
+    link: "subscription",
+  },
+  {
+    label: "Purchases",
+    link: "purchases",
+  },
+  {
+    label: "FAQ",
+    link: "faq",
+  },
+  {
+    label: "Support",
+    link: "support",
+  },
+  {
+    label: "My Data",
+    link: "data",
+  },
+  {
+    label: "Terms & Conditions",
+    link: "terms",
+  },
+  {
+    label: "Privacy Policy",
+    link: "privacy",
+  },
+];
+
+const Setting = ({ settings }) => {
+  return (
+    <div
+      className={styles.settingsItem}
+      onClick={() => setActiveSettings(settings.link)}
+    >
+      {settings.label}
+    </div>
+  );
+};
 
 const Settings = () => {
   const [store, dispatch] = useContext(Context);
@@ -24,7 +74,16 @@ const Settings = () => {
 
   return (
     <div className="background_dark">
-      <div className="section">Settings</div>
+      <div className="section_container">
+        {settings.map((set, i) => {
+          return <Setting settings={set} key={i} />;
+        })}
+      </div>
+      <div className={styles.footer}>
+        <div>Logged in as: {store.user.email}</div>
+        <div>Version 1.0.0.4 (2210)</div>
+        <div className="btn btn-primary btn-stretch mt1">Log Out</div>
+      </div>
     </div>
   );
 };

@@ -9,7 +9,35 @@ import ProgressBar from "../components/ProgressBar";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 
-import { CardType } from "../components/Card";
+import { calcRealmProgress } from "../utils/calculations";
+
+import { CardType, ProgressBox } from "../components/Card";
+import Cookie from "js-cookie";
+
+import iconPlay from "../assets/progress-collection-dark.svg";
+import iconCollection from "../assets/progress-play-dark.svg";
+
+const USER_ID = Cookie.get("userId");
+const GET_USER_STATS = gql`
+  {
+    user(id: ${USER_ID}) {
+      usercards {
+        completed
+        quantity
+        isUnlocked
+        level
+        card {          
+          id
+          isOpen
+          realm {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
 
 const GET_REALMS = gql`
   {
@@ -29,7 +57,7 @@ const GET_REALMS = gql`
   }
 `;
 
-const Realm = ({ realm }) => {
+const Realm = ({ realm, completed, collected }) => {
   return (
     <Link
       href={{ pathname: "/realm/[id]", query: { id: realm.id } }}
@@ -44,8 +72,18 @@ const Realm = ({ realm }) => {
             <div className={styles.comingsoon}>Coming Soon...</div>
           ) : (
             <>
-              <ProgressBar progress={25} />
-              <div className={styles.progress}>25%</div>
+              <ProgressBox
+                icon={iconPlay}
+                progress={completed || 0}
+                maxProgress={100}
+                isPercent
+              />
+              <ProgressBox
+                icon={iconCollection}
+                progress={collected || 0}
+                maxProgress={100}
+                isPercent
+              />
             </>
           )}
         </div>
@@ -64,6 +102,17 @@ const Realm = ({ realm }) => {
 
 const Learn = () => {
   const { data, loading, error } = useQuery(GET_REALMS);
+  const {
+    data: usercardsData,
+    loading: usercardsLoading,
+    error: usercardsError,
+  } = useQuery(GET_USER_STATS);
+
+  const [store, dispatch] = useContext(Context);
+
+  const realmHash =
+    usercardsData && calcRealmProgress(usercardsData.user.usercards);
+
   const comingRealms = data && data.realms.filter((r) => r.coming_soon);
   const freeRealms =
     data &&
@@ -79,13 +128,14 @@ const Learn = () => {
     data && data.realms.filter((r) => r.name === "Essentials");
   const specialRealm =
     data && data.realms.filter((r) => r.name === "Character");
+
   return (
     <div className="background_dark">
       <Header />
       <div className="section">
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
-        {data && (
+        {data && realmHash && (
           <div>
             <div className={styles.header}>Start Here</div>
             {tutorialRealm.map((realm, i) => (
@@ -95,19 +145,46 @@ const Learn = () => {
               Basic Categories <CardType type={"free"} />
             </div>
             {freeRealms.map((realm, i) => (
-              <Realm realm={realm} key={i} />
+              <Realm
+                realm={realm}
+                completed={
+                  realmHash[realm.name] && realmHash[realm.name].completed
+                }
+                collected={
+                  realmHash[realm.name] && realmHash[realm.name].collected
+                }
+                key={i}
+              />
             ))}
             <div className={styles.header}>
               Pro Categories <CardType type={"premium"} />
             </div>
             {proRealms.map((realm, i) => (
-              <Realm realm={realm} key={i} />
+              <Realm
+                realm={realm}
+                completed={
+                  realmHash[realm.name] && realmHash[realm.name].completed
+                }
+                collected={
+                  realmHash[realm.name] && realmHash[realm.name].collected
+                }
+                key={i}
+              />
             ))}
             <div className={styles.header}>
               Special Category <CardType type={"special"} />
             </div>
             {specialRealm.map((realm, i) => (
-              <Realm realm={realm} key={i} />
+              <Realm
+                realm={realm}
+                completed={
+                  realmHash[realm.name] && realmHash[realm.name].completed
+                }
+                collected={
+                  realmHash[realm.name] && realmHash[realm.name].collected
+                }
+                key={i}
+              />
             ))}
             <div className={styles.header}>Coming Soon...</div>
             {comingRealms.map((realm, i) => (
@@ -123,3 +200,22 @@ const Learn = () => {
 };
 
 export default Learn;
+
+{
+  /* <>
+              <ProgressBar
+                icon={iconPlay}
+                progress={completed || 0}
+                max={100}
+              />
+              <div className={styles.realm_progressBox}>
+                <img
+                  src={iconPlay}
+                  height="10px"
+                  className={styles.progressIcon}
+                />
+
+                <div className={styles.progress}>{completed || 0}%</div>
+              </div>
+            </> */
+}

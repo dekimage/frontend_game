@@ -43,6 +43,8 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   background-color: $actionize_black;
   border-top: 2px solid $actionize_gray;
@@ -53,6 +55,7 @@
   &_header {
     @extend %flex_start;
     margin-bottom: 1rem;
+    width: 100%;
   }
   &_correct {
     color: $ux_green;
@@ -198,7 +201,9 @@
   @extend %flex_center;
   justify-content: space-around;
   background-color: $actionize_black;
-  padding: 1rem;
+  padding: 1rem 0;
+  width: 100%;
+  margin-left: 1rem;
 }
 
 .sliderBar {
@@ -207,7 +212,8 @@
   padding: 0.2rem 0;
   margin: 0 0.5rem;
   border-radius: 10px;
-  width: 50px;
+  min-width: 25px;
+  width: 100%;
   &_filled {
     background-color: white;
   }
@@ -216,13 +222,13 @@
 .sliderHeader {
   @extend %flex_between;
   color: white;
-  padding: 1rem 0;
+  margin-bottom: 1rem;
+  justify-content: flex-end;
 }
 
 .grayBubble {
   border-radius: 15px;
-  padding: 0.2rem 1rem;
-  background-color: $actionize_gray_light;
+  padding-right: 0.5rem;
   @extend %flex_center;
   font-weight: 700;
   width: auto;
@@ -245,4 +251,70 @@ div.grayBubble_rewards * {
   &:hover {
     background-color: $actionize_gray_light;
   }
+}
+
+.ideaTitle {
+  @extend %title;
+  margin-bottom: 0.75rem;
+}
+.ideaContent {
+  line-height: 24px;
+}
+
+.warningModal {
+  @extend %flex_center;
+  flex-direction: column;
+  text-align: center;
+  &_cta {
+    @extend %flex_around;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+}
+
+.genericScreen {
+  @extend %flex_center;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.genericImage {
+  @extend %flex_center;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  margin-bottom: 2rem;
+  // border: 2px solid $actionize_gray;
+  img {
+    height: 100px;
+  }
+}
+
+.genericTitle {
+  @extend %title;
+}
+.genericContent {
+  text-align: center;
+  @extend %regularText;
+}
+
+.genericStat {
+  @extend %flex_between;
+  margin: 0.25rem 0;
+  width: 100%;
+  &_label {
+    @extend %subTitle;
+    margin-left: 0.5rem;
+  }
+  &_amount {
+    @extend %subTitle;
+  }
+  img {
+    height: 20px;
+  }
+}
+.genericStats {
+  @extend %flex_center;
+  width: 100%;
+  flex-direction: column;
 }

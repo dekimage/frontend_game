@@ -1,10 +1,33 @@
+import { calcLevelRewards, calcRewardReady } from "../utils/calculations";
+import { staticRewards } from "../data/rewards";
 const Reducer = (store, action) => {
-  // console.log("action.data", action.data);
   switch (action.type) {
     case "OPEN_PLAYER":
       return { ...store, player: action.data };
     case "FETCH_USER":
-      return { ...store, user: action.data, isAuthenticated: true };
+      return {
+        ...store,
+        user: action.data,
+        isAuthenticated: true,
+        notifications: {
+          streaks: calcRewardReady(
+            staticRewards.streaks,
+            action.data.highest_streak_count,
+            action.data.streak_rewards
+          ),
+          friends: calcRewardReady(
+            staticRewards.friends,
+            action.data.highestBuddyShares,
+            action.data.friends_rewards
+          ),
+          levels: calcLevelRewards(
+            action.data.level,
+            action.data.level_rewards,
+            staticRewards.levels,
+            action.data.isPremium
+          ),
+        },
+      };
     case "REMOVE_USER":
       return { user: {}, isAuthenticated: false };
     case "DEV_TEST":

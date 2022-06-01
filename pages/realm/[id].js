@@ -34,6 +34,7 @@ const GET_REALM_ID = gql`
           name
         }
         realm {
+          id
           name
           color
           background {

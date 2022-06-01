@@ -6,6 +6,7 @@ $actionize_gray_light: #999999;
 $actionize_gray: #3d3d3d;
 $actionize_black: #171717;
 $primary: #376eeb;
+// $primary: #084fff;
 $secondary: #ffbc40;
 $tertiary: #ff5252;
 $premium_color: #ff0095;
@@ -85,6 +86,12 @@ $fasticShadow: 0px 0px 5px 1.5px rgba(0, 0, 0, 0.08);
 $optimzeShadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 $optimzeShadowHover: 4px 4px 6px -1px rgba(0, 0, 0, 0.08);
 $cardShadow: 0px 0px 3px 4px rgba(0, 0, 0, 0.08);
+
+$readyToCollect: 0px 0px 8px 1.5px
+  rgba(
+    $color: #ffc74e,
+    $alpha: 1,
+  );
 
 // SCREEN MEDIA SIZE
 $mobile-size: 480px;

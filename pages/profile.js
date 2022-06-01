@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 // *** COMPONENTS ***
+import ProgressBar from "../components/ProgressBar";
 import RewardImage from "../components/RewardImage";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
@@ -16,6 +17,7 @@ import settingsIcon from "../assets/menu-settings-dark.svg";
 
 // *** ACTIONS ***
 import { followBuddy } from "../actions/action";
+import { calcTotal } from "../utils/calculations";
 
 // *** STYLES ***
 import cx from "classnames";
@@ -97,9 +99,14 @@ const Profile = () => {
   const [store, dispatch] = useContext(Context);
   const router = useRouter();
   const [tab, setTab] = useState("activity");
-  const collectionProgress = 33;
-  const completionProgress = 12;
-  console.log(store.user.shared_buddies);
+
+  const completionProgress =
+    store?.user?.usercards &&
+    calcTotal(store.user.usercards, "completed", true);
+  const collectionProgress =
+    store?.user?.usercards &&
+    calcTotal(store.user.usercards, "collected", true);
+
   return (
     <div className="background_dark">
       {/* <Header /> */}
@@ -121,10 +128,11 @@ const Profile = () => {
                     height="66px"
                   />
                 </div>
-
                 <div className={styles.level}>25</div>
                 <div className={styles.username}>{store.user.username}</div>
-                <div className={styles.xp}>XP 230/400</div>
+                <ProgressBar progress={store.user.xp} max={50} />
+
+                <div className={styles.xp}>XP {store.user.xp}/50</div>
                 {/* <div className="btn btn-action" onClick={() => followBuddy()}>
                   Follow
                 </div> */}
@@ -156,9 +164,9 @@ const Profile = () => {
               text={"Highest Streak"}
             />
             <Stat
-              number={store.user.energy}
+              number={store.user.maxEnergy}
               img={"http://localhost:1337/energy.png"}
-              text={"Energy"}
+              text={"Max Energy"}
             />
           </div>
           <div className={styles.tabs}>
@@ -197,20 +205,21 @@ const Profile = () => {
                 img={"http://localhost:1337/streak.png"}
                 link={"/streak"}
                 text={"Streak Rewards"}
-                notification={2}
+                notification={store.notifications.streaks}
               />
 
               <Activity
                 img={"http://localhost:1337/gift.png"}
                 link={"/buddies-rewards"}
                 text={"Buddy Rewards"}
-                notification={1}
+                notification={store.notifications.friends}
               />
 
               <Activity
                 img={"http://localhost:1337/trophy.png"}
                 link={"/level-rewards"}
                 text={"Level Rewards"}
+                notification={store.notifications.levels}
               />
             </div>
           )}

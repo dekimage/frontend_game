@@ -15,20 +15,21 @@
 }
 
 .realm_body {
-  width: 336px;
+  width: 100%;
   padding: 14px;
 }
 
 .realm_name {
   font-size: 20px;
   font-weight: 500;
-  // color: $gray_headspace;
   color: white;
 }
 
 .realm_description {
   font-size: 12px;
+  margin-top: 4px;
   margin-bottom: 8px;
+  color: rgb(214, 214, 214);
 }
 
 .realm_image {
@@ -39,8 +40,18 @@
     height: 65px;
   }
 }
+.realm_progressBox {
+  @extend %flex_start;
+}
+
 .progress {
+  margin-top: 4px;
   font-size: 12px;
+}
+
+.progressIcon {
+  margin-top: 0.25rem;
+  margin-right: 0.25rem;
 }
 
 .comingsoon {
@@ -55,5 +66,6 @@
 .header {
   @extend %flex_between;
   padding: 0.5rem;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 22px;
 }

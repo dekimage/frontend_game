@@ -5,6 +5,8 @@ import { gql } from "apollo-boost";
 import Link from "next/link";
 import cx from "classnames";
 
+import { getTimeDiff } from "../utils/calculations";
+
 import { Activity } from "./profile";
 import Objective from "../components/Objective";
 import ObjectiveCounter from "../components/ObjectiveCounter";
@@ -96,35 +98,6 @@ const TinyReward = ({
   );
 };
 
-function msToTime(duration) {
-  var milliseconds = Math.floor((duration % 1000) / 100),
-    seconds = Math.floor((duration / 1000) % 60),
-    minutes = Math.floor((duration / (1000 * 60)) % 60),
-    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-
-  return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-}
-
-const getTimeDiff = (lastCollectedMS) => {
-  const now = Date.now();
-  const timeDiffSecs = Math.floor((now - lastCollectedMS) / 1000);
-  const timeDiffMins = Math.floor(timeDiffSecs / 60);
-  const timeDiffHours = Math.floor(timeDiffMins / 60);
-  const timeDiffDays = Math.floor(timeDiffHours / 24);
-
-  const timeDiff = {
-    days: timeDiffDays,
-    hours: timeDiffHours,
-    minutes: timeDiffMins,
-    seconds: timeDiffSecs,
-  };
-  return timeDiff;
-};
-
 const Home = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_OBJECTIVES_QUERY);
@@ -169,8 +142,6 @@ const Home = () => {
 
   const joinObjectives = (objectives, objectives_json) => {
     return objectives.map((obj) => {
-      // console.log("OBJECTIVE", obj);
-      // console.log("objectives_json", objectives_json);
       if (objectives_json[obj.id]) {
         // isRefreshed = have 24 hours passed since last time?
         const moreThan24 =
@@ -241,7 +212,6 @@ const Home = () => {
     const level = Object.keys(static_levels).filter(
       (level) => level.start <= xp && level.end > xp
     );
-    console.log(level);
     //NE VAKA - LOOP ZA OBVJEKTI MI TREBA
     // const maxXp =
     // return {
@@ -252,71 +222,86 @@ const Home = () => {
     // }
   }
 
+  const calculateNotifications = () => {
+    const allTasks = joinObjectives(
+      data.objectives,
+      store.user.objectives_json || []
+    ).filter((o) => !o.isCollected && o.progress >= o.requirement_amount);
+
+    const notifications = {
+      daily: filterObjectives(allTasks, "daily").length,
+      weekly: filterObjectives(allTasks, "weekly").length,
+      achievements: filterObjectives(allTasks, "achievements").length,
+    };
+    return notifications;
+  };
+
   return (
     <div className="background_dark">
       <Header />
-      <div className="section">
-        {/* {store.user && (
+      {store && data && (
+        <div className="section">
+          {/* {store.user && (
           <LevelRewardsHeader
             xp={store.user.xp}
             maxXp={2}
             level={store.user.level}
           />
         )} */}
-        <div>
-          <div className={styles.objectiveTabsGrid}>
-            <div
-              className={cx(styles.objectiveTab, {
-                [styles.active]: objectivesTabOpen == "daily",
-              })}
-              onClick={() => setObjectivesTabOpen("daily")}
-            >
-              <div className={styles.objectiveTab_text}>
-                Daily{" "}
-                {notifications.daily && (
-                  <div className={styles.objectiveTabCounter}>
-                    {notifications.daily}
-                  </div>
-                )}
+          <div>
+            <div className={styles.objectiveTabsGrid}>
+              <div
+                className={cx(styles.objectiveTab, {
+                  [styles.active]: objectivesTabOpen == "daily",
+                })}
+                onClick={() => setObjectivesTabOpen("daily")}
+              >
+                <div className={styles.objectiveTab_text}>
+                  Daily{" "}
+                  {calculateNotifications().daily > 0 && (
+                    <div className={styles.objectiveTabCounter}>
+                      {calculateNotifications().daily}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div
-              className={cx(styles.objectiveTab, {
-                [styles.active]: objectivesTabOpen == "weekly",
-              })}
-              onClick={() => setObjectivesTabOpen("weekly")}
-            >
-              <div className={styles.objectiveTab_text}>
-                Weekly
-                {notifications.weekly && (
-                  <div className={styles.objectiveTabCounter}>
-                    {notifications.weekly}
-                  </div>
-                )}
+              <div
+                className={cx(styles.objectiveTab, {
+                  [styles.active]: objectivesTabOpen == "weekly",
+                })}
+                onClick={() => setObjectivesTabOpen("weekly")}
+              >
+                <div className={styles.objectiveTab_text}>
+                  Weekly{" "}
+                  {calculateNotifications().weekly > 0 && (
+                    <div className={styles.objectiveTabCounter}>
+                      {calculateNotifications().weekly}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div
-              className={cx(styles.objectiveTab, {
-                [styles.active]: objectivesTabOpen == "achievements",
-              })}
-              onClick={() => setObjectivesTabOpen("achievements")}
-            >
-              <div className={styles.objectiveTab_text}>
-                Achievements
-                {notifications.achievements && (
-                  <div className={styles.objectiveTabCounter}>
-                    {notifications.achievements}
-                  </div>
-                )}
+              <div
+                className={cx(styles.objectiveTab, {
+                  [styles.active]: objectivesTabOpen == "achievements",
+                })}
+                onClick={() => setObjectivesTabOpen("achievements")}
+              >
+                <div className={styles.objectiveTab_text}>
+                  Achievements
+                  {calculateNotifications().achievements > 0 && (
+                    <div className={styles.objectiveTabCounter}>
+                      {calculateNotifications().achievements}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* MILESTONES */}
-        {/* <div className={styles.objectiveCounterGrid}>
+          {/* MILESTONES */}
+          {/* <div className={styles.objectiveCounterGrid}>
           <div className={styles.objectiveCounterGrid_box}>
             {data &&
               store.user.objectives_json &&
@@ -339,67 +324,73 @@ const Home = () => {
           </div>
         </div> */}
 
-        {/* "../public/objectiveRewardsCounter.png" */}
+          {/* "../public/objectiveRewardsCounter.png" */}
 
-        {(objectivesTabOpen === "daily" || objectivesTabOpen === "weekly") && (
-          <div className={styles.objectivesHeadline}>
-            <div className={styles.objectivesHeadline_text}>
-              {objectivesTabOpen === "daily"
-                ? "Today's Objectives"
-                : "Weekly's Objectives"}
+          {(objectivesTabOpen === "daily" ||
+            objectivesTabOpen === "weekly") && (
+            <div className={styles.objectivesHeadline}>
+              <div className={styles.objectivesHeadline_text}>
+                {objectivesTabOpen === "daily"
+                  ? "Today's Objectives"
+                  : "Weekly's Objectives"}
+              </div>
+              <div className={styles.tinyRewards}>
+                {data &&
+                  store.user.objectives_json &&
+                  Object.keys(store.user.objectives_json).length > 0 &&
+                  joinObjectivesCounter(
+                    store.user.objectives_counter || {},
+                    store.user.objectives_json,
+                    filterObjectives(data.objectives, objectivesTabOpen),
+                    objectivesTabOpen
+                  ).map((objCounter, i) => (
+                    <TinyReward
+                      objCounter={objCounter}
+                      dispatch={dispatch}
+                      key={i}
+                    />
+                  ))}
+              </div>
+              <span>2/4</span>
             </div>
-            <div className={styles.tinyRewards}>
-              {data &&
-                store.user.objectives_json &&
-                Object.keys(store.user.objectives_json).length > 0 &&
-                joinObjectivesCounter(
-                  store.user.objectives_counter || {},
-                  store.user.objectives_json,
-                  filterObjectives(data.objectives, objectivesTabOpen),
-                  objectivesTabOpen
-                ).map((objCounter, i) => (
-                  <TinyReward
-                    objCounter={objCounter}
-                    dispatch={dispatch}
-                    key={i}
-                  />
-                ))}
-            </div>
-            <span>2/4</span>
-          </div>
-        )}
+          )}
 
-        {data && (
-          <div>
-            {filterObjectives(
-              joinObjectives(data.objectives, store.user.objectives_json || []),
-              objectivesTabOpen
-            ).map((obj, i) => (
-              <Objective objective={obj} dispatch={dispatch} key={i} />
-            ))}
-          </div>
-        )}
-      </div>
+          {data && (
+            <div>
+              {filterObjectives(
+                joinObjectives(
+                  data.objectives,
+                  store.user.objectives_json || []
+                ),
+                objectivesTabOpen
+              ).map((obj, i) => (
+                <Objective objective={obj} dispatch={dispatch} key={i} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
       <div className="section">
         <div className={styles.header}>Rewards</div>
         <Activity
           img={"http://localhost:1337/streak.png"}
           link={"/streak"}
           text={"Streak Rewards"}
-          notification={2}
+          notification={store.notifications.streaks}
         />
 
         <Activity
           img={"http://localhost:1337/gift.png"}
           link={"/buddies-rewards"}
           text={"Buddy Rewards"}
-          notification={1}
+          notification={store.notifications.friends}
         />
 
         <Activity
           img={"http://localhost:1337/trophy.png"}
           link={"/level-rewards"}
           text={"Level Rewards"}
+          notification={store.notifications.levels}
         />
       </div>
       <Navbar />

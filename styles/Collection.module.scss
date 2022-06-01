@@ -1,6 +1,40 @@
 @import "variables";
+@import "placeholders";
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   gap: 1rem;
+}
+
+.headline {
+  @extend %flex_center;
+  @extend %title;
+  margin-bottom: 1rem;
+}
+.orderBtn {
+  margin-bottom: 1rem;
+  cursor: pointer;
+  background-color: $actionize_gray;
+  height: 3rem;
+  border-radius: 10px;
+  @extend %flex_center;
+}
+.sortBtn {
+  padding: 0.5rem;
+  @extend %flex_center;
+  justify-content: flex-start;
+  width: 100%;
+  @extend %subTitle;
+}
+
+.upBtn {
+  border-radius: 10px;
+  padding: 0.5rem;
+  background-color: $primary;
+  @extend %flex_center;
+  width: 20%;
+  height: 100%;
+}
+.label {
+  text-transform: capitalize;
 }

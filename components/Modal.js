@@ -7,19 +7,20 @@ const Modal = ({
   closeModal,
   jsx,
   showCloseButton = true,
+  isSmall = false,
 }) =>
   isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div
-            className="modal-wrapper slideInAnimation"
+            className="modal-wrapper scale-in-center"
             aria-modal
             aria-hidden
             tabIndex={-1}
             role="dialog"
           >
-            <div className="modal">
+            <div className={isSmall ? "modal-small" : "modal"}>
               <div className="modal-header">
                 {showCloseButton && (
                   <button
@@ -29,7 +30,9 @@ const Modal = ({
                     aria-label="Close"
                     onClick={closeModal}
                   >
-                    <span aria-hidden="true">&times;</span>
+                    <div className="modal-icon">
+                      <span aria-hidden="true">&times;</span>
+                    </div>
                   </button>
                 )}
               </div>

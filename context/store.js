@@ -16,6 +16,14 @@ const initialState = {
     isOpen: false,
     results: [],
   },
+  notifications: {
+    streaks: 0,
+    friends: 0,
+    levels: 0,
+    daily: 0,
+    weekly: 0,
+    achievements: 0,
+  },
 };
 
 const Store = ({ children }) => {

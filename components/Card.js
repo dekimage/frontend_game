@@ -30,7 +30,12 @@ export const CardType = ({ type }) => {
   return <div className={cx(styles.type, styles[type])}>{type}</div>;
 };
 
-const ProgressBox = ({ icon, progress, maxProgress }) => {
+export const ProgressBox = ({
+  icon,
+  progress,
+  maxProgress,
+  isPercent = false,
+}) => {
   return (
     <>
       <div className={styles.progress_box}>
@@ -43,7 +48,7 @@ const ProgressBox = ({ icon, progress, maxProgress }) => {
 
         <div className={styles.progressTextBox}>
           <div className={styles.progress_text}>
-            {progress}/{maxProgress}
+            {isPercent ? `${progress}%` : `${progress}/${maxProgress}`}
           </div>
         </div>
       </div>

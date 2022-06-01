@@ -90,6 +90,12 @@ const Header = () => {
           })}
         </div>
         <div className={styles.header_currenciesBox}>
+          <Link href="/shop">
+            <div className={styles.currency}>
+              <img height="12px" src="http://localhost:1337/energy.png" />
+              <div>{store.user.energy}</div>
+            </div>
+          </Link>
           <Link href="/streak">
             <div className={styles.currency}>
               <img height="12px" src="http://localhost:1337/streak.png" />
@@ -119,10 +125,16 @@ const Header = () => {
           active={false}
         />
         <div className={styles.headerMobile_currenciesBox}>
+          <Link href="/shop">
+            <div className={styles.currency}>
+              <img height="12px" src="http://localhost:1337/energy.png" />
+              <div>{store.user.energy}</div>
+            </div>
+          </Link>
           <Link href="/streak">
             <div className={styles.currency}>
               <img height="12px" src="http://localhost:1337/streak.png" />
-              <div>{store.user.gems}</div>
+              <div>{store.user.streak}</div>
             </div>
           </Link>
           <Link href="/shop">

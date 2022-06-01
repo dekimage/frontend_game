@@ -34,7 +34,7 @@
 .fixed {
   position: fixed;
   background-color: $actionize_black;
-  border-top: 3px solid $actionize_gray;
+  border-top: 2px solid $actionize_gray;
   // background: linear-gradient(rgba(0, 0, 0, 0) 0%, $actionize_black 70%);
 
   bottom: 0;
@@ -53,11 +53,10 @@
 }
 
 .name {
+  @extend %title;
   @extend %flex_center;
   align-items: center;
   font-size: 2rem;
-  font-weight: 700;
-  color: white;
   margin-bottom: 0.5rem;
 }
 
@@ -156,8 +155,9 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
-  margin: 0.5rem 0;
-  @extend %box_duo;
+
+  padding-top: 0.5rem;
+  // @extend %box_duo;
 }
 .level_box {
   @extend %flex_center;
@@ -192,10 +192,11 @@
 }
 
 .titleProgress {
-  padding-top: 1.5rem;
   width: 100%;
   @extend %flex_between;
   justify-content: space-between;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
   // flex-direction: row;
 }
 
@@ -211,7 +212,6 @@
 
 .description {
   margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .action {
@@ -227,7 +227,7 @@
     flex-direction: column;
     height: 60px;
     width: 80px;
-    border: 3px solid $actionize_gray;
+    border: 2px solid $actionize_gray;
     margin-right: 1rem;
     border-radius: 10px;
   }
@@ -291,12 +291,11 @@
   &_name {
     font-size: 16px;
     font-weight: 500;
-    margin-bottom: 0.25rem;
   }
   &_img {
     height: 60px;
     width: 80px;
-    border: 3px solid $actionize_gray;
+    border: 2px solid $actionize_gray;
     margin-right: 1rem;
     border-radius: 10px;
   }
@@ -353,7 +352,18 @@
 }
 
 .createActionModal {
-  border: 3px solid green;
+  @extend %flex_center;
+  flex-direction: column;
+  color: white;
+  label {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  input {
+    width: 100%;
+    border-radius: 10px;
+    height: 3rem;
+  }
 }
 
 .emptyActions {
@@ -368,7 +378,8 @@
 
 .header {
   @extend %flex_between;
-  margin: 1rem 0;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
   font-size: 18px;
   font-weight: 500;
   width: 100%;

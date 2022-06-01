@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { useState, useEffect, useContext } from "react";
@@ -10,10 +11,22 @@ import Link from "next/link";
 import clseIcon from "../../../assets/close.svg";
 import _ from "lodash";
 import cx from "classnames";
+import StopWatch from "../../../components/StopWatch";
+
+import Modal from "../../../components/Modal";
+
+import useModal from "../../../hooks/useModal";
 
 import { closeRewardsModal, updateCard } from "../../../actions/action";
 
-const GET_CARD_ID = gql`
+import actionIcon from "../../../assets/player_actions.svg";
+import rewardsIcon from "../../../assets/player_rewards.svg";
+import completedIcon from "../../../assets/player_complete.svg";
+import levelIcon from "../../../assets/player_lvlup.svg";
+import progressIcon from "../../../assets/player_progress.svg";
+import noEnergyIcon from "../../../assets/player_no_energy.svg";
+
+const GET_CARD_PLAYER = gql`
   query ($id: ID!) {
     card(id: $id) {
       id
@@ -22,32 +35,12 @@ const GET_CARD_ID = gql`
       type
       rarity
       realm {
+        id
         color
         name
       }
       image {
         url
-      }
-      sliders {
-        id
-        Title
-        type
-        Image {
-          url
-        }
-        restrictedLevels
-        actions {
-          text
-          timer
-          tips
-        }
-        answers {
-          text
-          isCorrect
-        }
-        idea {
-          rich_text
-        }
       }
       slides {
         id
@@ -58,18 +51,26 @@ const GET_CARD_ID = gql`
         }
         ideaTitle
         ideaContent
-        image {
-          url
-        }
       }
     }
   }
 `;
 
-const SliderProgress = ({ maxSlides, currentSlide, setIsWarningModalOpen }) => {
+const SliderProgress = ({
+  maxSlides,
+  currentSlide,
+  setIsWarningModalOpen,
+  openModal,
+}) => {
   return (
     <div className={styles.header}>
-      <div onClick={() => setIsWarningModalOpen(true)} className="flex_center">
+      <div
+        onClick={() => {
+          setIsWarningModalOpen(true);
+          openModal();
+        }}
+        className="flex_center"
+      >
         <img src={clseIcon} height="20px" />
       </div>
       <div className={styles.sliderProgress}>
@@ -232,8 +233,11 @@ const ContentQuestion = ({
         ) : (
           <div>
             {slide.image && <div></div>}
-            <div>{slide.ideaTitle}</div>
-            <div>{slide.ideaContent}</div>
+            <div className={styles.ideaTitle}>{slide.ideaTitle}</div>
+
+            <div className={styles.ideaContent}>
+              <ReactMarkdown children={slide.ideaContent} />
+            </div>
           </div>
         )}
 
@@ -333,7 +337,7 @@ const ContentAction = ({
   goNext,
 }) => {
   const [currentAction, setCurrentAction] = useState(actions[0]);
-  const [completedActions, setCompletedActions] = useState([]);
+  const [completedActions, setCompletedActions] = useState([0]);
 
   const goNextAction = () => {
     setIsModalOpen(false);
@@ -458,28 +462,56 @@ const ModalAction = ({ currentAction, setIsModalOpen, goNextAction }) => {
 
 const WarningModal = ({ setIsWarningModalOpen, closePlayer }) => {
   return (
-    <div>
-      Are you sure you wish to quit this session? You will lose all progress.
-      <button onClick={closePlayer}>Quit</button>
-      <button onClick={() => setIsWarningModalOpen(false)}>Stay</button>
+    <div className={styles.warningModal}>
+      <div className="modal-title">Quit Player?</div>
+      <div className="flex_center">
+        Are you sure you want to quit this session? You will lose all progress.
+      </div>
+      <div className={styles.warningModal_cta}>
+        <div
+          className="btn btn-primary"
+          onClick={() => setIsWarningModalOpen(false)}
+        >
+          Stay
+        </div>
+        <div className="btn btn-wrong" onClick={closePlayer}>
+          Quit
+        </div>
+      </div>
     </div>
   );
 };
 
-const GenericScreen = ({ img, title, content, stats }) => {
+// player_actions;
+// player_rewards;
+// player_completed;
+// player_lvlup;
+// player_progress;
+// player_no_energy;
+
+const GenericScreen = ({ img, title, content, stats, jsx }) => {
   return (
-    <div className={styles.screen}>
-      <img height="14px" src={`http://localhost:1337/${img}`} />
-      <p>{title}</p>
-      <div>{content}</div>
-      <div className={styles.stats}>
+    <div className={styles.genericScreen}>
+      <div className={styles.genericImage}>
+        <img src={img} />
+      </div>
+
+      <div className={styles.genericTitle}>{title}</div>
+      <div className={styles.genericContent}>
+        <ReactMarkdown children={content} />
+      </div>
+      <div>{jsx}</div>
+      <div className={styles.genericStats}>
         {stats &&
           stats.map((s, i) => {
             return (
-              <div className={styles.stat} key={i}>
-                <img height="14px" src={`http://localhost:1337/${s.img}.png`} />
-                <div className={styles.stat_label}>{s.label}</div>
-                <div className={styles.stat_amount}>{s.amount}</div>
+              <div className={styles.genericStat} key={i}>
+                <div className="flex_center">
+                  <img src={`http://localhost:1337/${s.img}.png`} />
+                  <div className={styles.genericStat_label}>{s.label}</div>
+                </div>
+
+                <div className={styles.genericStat_amount}>{s.amount}</div>
               </div>
             );
           })}
@@ -492,7 +524,7 @@ const RepeatScreen = ({ card, mistakes }) => {
   return (
     <div>
       <GenericScreen
-        img={"stars"}
+        img={progressIcon}
         title={"lesson complete"}
         content={
           "Repetion is the root of all knowledge. Now go to actions & put it in practice!"
@@ -514,7 +546,7 @@ const LevelUpScreen = ({ setSuccessModal, level = 7 }) => {
   return (
     <div>
       <GenericScreen
-        img={"stars"}
+        img={levelIcon}
         title={"Level UP!"}
         content={`Congratualations! You've reached Level ${level}!`}
       />
@@ -533,7 +565,7 @@ const ActionsScreen = ({ card }) => {
   return (
     <div>
       <GenericScreen
-        img={"stars"}
+        img={actionIcon}
         title={"Actions"}
         content={
           "Great! You've unlocked the actions for this level! It's time to put your wisdom into practice!"
@@ -553,7 +585,7 @@ const RewardsScreen = ({ rewards, setSuccessModal }) => {
   return (
     <div>
       <GenericScreen
-        img={"stars"}
+        img={rewardsIcon}
         title={"Rewards"}
         content={"Congratualations! You've earned these rewards:"}
         stats={[
@@ -581,7 +613,7 @@ const CompleteScreen = ({ card, setSuccessModal }) => {
   return (
     <div>
       <GenericScreen
-        img={"stars"}
+        img={completedIcon}
         title={"lesson complete"}
         content={"Congratualations!! You have completed the theory check-in!"}
         stats={[
@@ -609,18 +641,22 @@ const CompleteScreenNoEnergy = ({ card }) => {
   return (
     <div>
       <GenericScreen
-        img={"stars"}
+        img={noEnergyIcon}
         title={"Reached Energy Limit"}
         content={
-          "Uh oh.. You've reached your today's maximum energy limit. Come back in 20:30:01."
+          "Uh oh.. You've reached your today's maximum energy limit. Come back in:"
         }
+        jsx={<StopWatch lastCompleted={false} />}
       />
+
       <div className={styles.ctaBox}>
         <Link href={`/card/${card.id}`}>
-          <div className="btn btn-primary btn-stretch">Continue</div>
+          <div className="btn btn-primary btn-stretch mb1">Back to Card</div>
         </Link>
-        <Link href={`/card/${card.id}`}>
-          <div className="btn btn-primary btn-stretch">Refill 1 Gem</div>
+        <Link href="/shop">
+          <div className="btn btn-primary btn-stretch">
+            Get 6 Energy / Day (subscribe pro)
+          </div>
         </Link>
       </div>
     </div>
@@ -639,9 +675,9 @@ const FeedbackScreen = ({ card }) => {
         }
       />
       <div className={styles.ctaBox}>
-        <div className="btn btn-primary btn-stretch">Not at all. :/</div>
+        <div className="btn btn-primary btn-stretch mb1">Not at all. :/</div>
 
-        <div className="btn btn-primary btn-stretch">Somewhat okay :|</div>
+        <div className="btn btn-primary btn-stretch mb1">Somewhat okay :|</div>
 
         <div className="btn btn-primary btn-stretch">Very much! :D</div>
       </div>
@@ -652,7 +688,7 @@ const FeedbackScreen = ({ card }) => {
 const Card = () => {
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
-  const { data, loading, error } = useQuery(GET_CARD_ID, {
+  const { data, loading, error } = useQuery(GET_CARD_PLAYER, {
     variables: { id: router.query.id },
   });
 
@@ -674,8 +710,10 @@ const Card = () => {
   const [slides, setSlides] = useState(false);
   const [slide, setSlide] = useState(false);
 
-  const [successModal, setSuccessModal] = useState(states[1]);
-  // const [successModal, setSuccessModal] = useState(false);
+  const { isShowing, openModal, closeModal } = useModal();
+
+  // const [successModal, setSuccessModal] = useState(states[1]);
+  const [successModal, setSuccessModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
@@ -693,7 +731,10 @@ const Card = () => {
   const [mistakes, setMistakes] = useState(0);
 
   const isLatestLevel = store.player.level + 1 === store.player.selectedLevel;
-  const hasEnergy = store.user.energy >= 1;
+  console.log(isLatestLevel);
+  console.log(store.player.level + 1);
+  console.log(store.player.selectedLevel);
+  const hasEnergy = store.user.energy > 0;
 
   const updateRewards = (xp = 10, stars = 5) => {
     setRewards({
@@ -722,6 +763,7 @@ const Card = () => {
         setSlide(repeatSlides[0]);
         setRepeatSlides([]);
       } else {
+        console.log(isLatestLevel);
         if (isLatestLevel) {
           setSuccessModal("complete_screen");
         } else {
@@ -758,18 +800,9 @@ const Card = () => {
             maxSlides={slides.length}
             currentSlide={slides && slides.findIndex((s) => s.id === slide.id)}
             setIsWarningModalOpen={setIsWarningModalOpen}
+            openModal={openModal}
           />
           <SliderHeader rewards={rewards} closePlayer={closePlayer} />
-
-          {/* {slide.type === "action" && (
-            <ContentAction
-              actions={slide.actions}
-              goNext={goNext}
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-              skipAction={skipAction}
-            />
-          )} */}
 
           {!successModal && (
             <ContentQuestion
@@ -841,9 +874,16 @@ const Card = () => {
           )}
 
           {isWarningModalOpen && (
-            <WarningModal
-              setIsWarningModalOpen={setIsWarningModalOpen}
-              closePlayer={closePlayer}
+            <Modal
+              isShowing={isShowing}
+              closeModal={closeModal}
+              isSmall={true}
+              jsx={
+                <WarningModal
+                  setIsWarningModalOpen={setIsWarningModalOpen}
+                  closePlayer={closePlayer}
+                />
+              }
             />
           )}
         </div>
@@ -853,3 +893,15 @@ const Card = () => {
 };
 
 export default Card;
+
+{
+  /* {slide.type === "action" && (
+            <ContentAction
+              actions={slide.actions}
+              goNext={goNext}
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              skipAction={skipAction}
+            />
+          )} */
+}

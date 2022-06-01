@@ -92,7 +92,7 @@
 
 .card_body {
   @extend %flex_center;
-  width: 100%;
+  width: 70%;
   flex-direction: column;
   margin-top: 1rem;
 }
@@ -167,7 +167,7 @@
 }
 
 .progress_box {
-  width: 100px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -194,6 +194,7 @@
 }
 
 .type {
+  text-transform: capitalize;
   width: 4rem;
   @extend %flex_center;
   color: white;

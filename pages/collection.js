@@ -20,6 +20,7 @@ const GET_COLLECTION = gql`
   {
     user(id: ${USER_ID}) {
       usercards {
+        id
         is_new
         is_favorite
         completed
@@ -36,6 +37,7 @@ const GET_COLLECTION = gql`
             url
           }
           realm {
+            id
             name
             color
             background {
@@ -147,17 +149,30 @@ const Home = () => {
         {/* <div onClick={() => addFilters("realm", "health")}>rarity</div>
         <div onClick={() => addFilters("type", "free")}>type</div>
         <div onClick={() => addFilters("rarity", "common")}>all</div> */}
-        <button onClick={() => switchSortby()}>
-          Sort By Change {sortBy.label}
-        </button>
-        <button onClick={() => setIsSortAsc(!isSortAsc)}>
-          {isSortAsc ? "UP" : "DOWN"}
-        </button>
+        {data && data.user && (
+          <div className={styles.headline}>
+            Discovered: {data.user.usercards.length}/{108}
+          </div>
+        )}
+
+        <div className={styles.orderBtn}>
+          <div className={styles.sortBtn} onClick={() => switchSortby()}>
+            Sort by&nbsp;<span className={styles.label}>{sortBy.label}</span>
+          </div>
+          <div
+            className={styles.upBtn}
+            onClick={() => setIsSortAsc(!isSortAsc)}
+          >
+            {isSortAsc ? (
+              <ion-icon name="chevron-up-outline"></ion-icon>
+            ) : (
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            )}
+          </div>
+        </div>
+
         {data && (
           <div>
-            <div>
-              Discovered: {data.user.usercards.length}/{108}
-            </div>
             <div className={styles.grid}>
               {filterCards().map((card, i) => {
                 return <Card card={card} key={i} />;

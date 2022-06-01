@@ -6,21 +6,26 @@
 }
 
 .timer {
-  background-color: $actionize_gray_light;
+  border: 2px solid $actionize_gray;
+  background-color: $actionize_gray;
+  overflow: hidden;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
+  margin: 0.25rem 0.5rem;
   border-radius: 6px;
   width: fit-content;
 }
 .count {
-  padding-left: 0.5rem;
-  font-size: 22px;
+  padding: 0.25rem;
+  background-color: $actionize_gray;
+  font-size: 14px;
   font-weight: bold;
+  @extend %flex_center;
 }
 
 .icon {
+  background-color: $actionize_gray;
   @extend %flex_center;
 }
 
@@ -30,4 +35,17 @@
   width: 5rem;
   height: 5rem;
   margin-bottom: 1.2rem;
+}
+
+// STOPWATCH STUFF
+.reward {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  @extend %flex_center;
+  background-color: $ux_green;
+  font-weight: 500;
+  padding: 0 0.5rem;
+  img {
+    height: 20px;
+  }
 }
