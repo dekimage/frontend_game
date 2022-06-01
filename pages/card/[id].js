@@ -27,10 +27,6 @@ import arrowDown from "../../assets/arrow-down-white.png";
 import checkmark1 from "../../assets/checkmark-fill.svg";
 import iconLock from "../../assets/lock-white-border.svg";
 
-// import styles from "../../styles/card.module.scss";
-// REMOVE SECOND STYLE - FIGURE OUT WAY FOR DOUBLE MODULES
-// import styles_2 from "../../styles/Item.module.scss";
-
 const getMaxQuantity = (level) => {
   const data = {
     1: 2,
