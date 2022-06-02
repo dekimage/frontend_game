@@ -47,7 +47,13 @@ export const signupApi = (username, email, password) =>
 // };
 
 export const loginApi = (identifier, password) =>
-  axios.post("/auth/local", { identifier, password });
+  axios.post(
+    "/auth/local",
+    { identifier, password },
+    {
+      headers: { Authorization: "" },
+    }
+  );
 
 // ------
 

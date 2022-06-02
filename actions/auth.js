@@ -7,7 +7,6 @@ export const signup = (dispatch, username, email, password) => {
   api
     .signupApi(username, email, password)
     .then(({ data }) => {
-      console.log(data);
       dispatch({ type: "FETCH_USER", data: data.user });
       Cookie.set("token", data.jwt);
       Cookie.set("userId", data.user.id);

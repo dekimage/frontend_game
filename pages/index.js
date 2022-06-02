@@ -42,15 +42,25 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const GET_OBJECTIVES_QUERY = gql`
   query {
     objectives {
-      id
-      name
-      link
-      time_type
-      description
-      requirement
-      requirement_amount
-      reward
-      reward_amount
+      data {
+        id
+        name
+        link
+        time_type
+        description
+        requirement
+        requirement_amount
+        reward
+        reward_amount
+      }
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
     }
   }
 `;
