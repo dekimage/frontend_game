@@ -43,7 +43,7 @@ const Store = ({ children }) => {
           console.log(err);
         });
     } else {
-      router.push(`${feUrl}/card/player/${card.id}`);
+      router.push(`${feUrl}/login`);
     }
   }, []);
 
