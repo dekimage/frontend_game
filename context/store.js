@@ -41,10 +41,10 @@ const Store = ({ children }) => {
         })
         .catch((err) => {
           console.log(err);
-          router.push(`${feUrl}/login`);
+          router.push(`/login`);
         });
     } else {
-      router.push(`${feUrl}/login`);
+      router.push(`/login`);
     }
   }, []);
 
