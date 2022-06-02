@@ -22,12 +22,23 @@ export const developerModeApi = (job) =>
 export const achievementTestApi = () => axios.get(`${userUrl}/achievement`);
 
 // AUTH API
-export const signupApi = (username, email, password) =>
-  axios.post("/auth/local/register", {
-    username,
-    email,
-    password,
+// export const signupApi = (username, email, password) =>
+//   axios.post("/auth/local/register", {
+//     username,
+//     email,
+//     password,
+//   });
+
+export const signupApi = (username, email, password) => {
+  axios({
+    method: "post",
+    headers: {
+      // 'Authorization': `Bearer ${props.jwtToken}`, **// see how the bearer token now has a single space**
+      "Content-Type": "application/json",
+    },
+    url: `/auth/local/register`,
   });
+};
 
 export const loginApi = (identifier, password) =>
   axios.post("/auth/local", { identifier, password });
