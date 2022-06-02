@@ -23,17 +23,11 @@ export const achievementTestApi = () => axios.get(`${userUrl}/achievement`);
 
 // AUTH API
 export const signupApi = (username, email, password) =>
-  axios.post(
-    "/auth/local/register",
-    {
-      username,
-      email,
-      password,
-    },
-    {
-      headers: { Authroization: "" },
-    }
-  );
+  axios.post("/auth/local/register", {
+    username,
+    email,
+    password,
+  });
 
 export const loginApi = (identifier, password) =>
   axios.post("/auth/local", { identifier, password });
