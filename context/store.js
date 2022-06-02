@@ -41,6 +41,7 @@ const Store = ({ children }) => {
         })
         .catch((err) => {
           console.log(err);
+          router.push(`${feUrl}/login`);
         });
     } else {
       router.push(`${feUrl}/login`);

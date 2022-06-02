@@ -1,7 +1,8 @@
 import axios from "axios";
 import Cookie from "js-cookie";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const backendAPi = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = `${backendAPi}/api`;
 const userUrl = "/users-permissions/users";
 
 const AUTH_TOKEN = Cookie.get("token");
@@ -21,11 +22,17 @@ export const achievementTestApi = () => axios.get(`${userUrl}/achievement`);
 
 // AUTH API
 export const signupApi = (username, email, password) =>
-  axios.post("/auth/local/register", {
-    username,
-    email,
-    password,
-  });
+  axios.post(
+    "/auth/local/register",
+    {
+      username,
+      email,
+      password,
+    },
+    {
+      headers: { Authroization: "" },
+    }
+  );
 
 export const loginApi = (identifier, password) =>
   axios.post("/auth/local", { identifier, password });
