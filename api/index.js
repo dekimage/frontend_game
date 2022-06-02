@@ -8,9 +8,9 @@ const userUrl = "/users-permissions/users";
 const AUTH_TOKEN = Cookie.get("token");
 axios.defaults.baseURL = baseUrl;
 axios.defaults.headers.common["Content-Type"] = "application/json";
-// axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
-//   ? "Bearer " + AUTH_TOKEN
-//   : "";
+axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
+  ? "Bearer " + AUTH_TOKEN
+  : "";
 
 // API
 export const fetchUserApi = () => axios.get("/users/me");
@@ -22,23 +22,29 @@ export const developerModeApi = (job) =>
 export const achievementTestApi = () => axios.get(`${userUrl}/achievement`);
 
 // AUTH API
-// export const signupApi = (username, email, password) =>
-//   axios.post("/auth/local/register", {
-//     username,
-//     email,
-//     password,
-//   });
-
-export const signupApi = (username, email, password) => {
-  axios({
-    method: "post",
-    headers: {
-      // 'Authorization': `Bearer ${props.jwtToken}`, **// see how the bearer token now has a single space**
-      "Content-Type": "application/json",
+export const signupApi = (username, email, password) =>
+  axios.post(
+    "/auth/local/register",
+    {
+      username,
+      email,
+      password,
     },
-    url: `/auth/local/register`,
-  });
-};
+    {
+      headers: { Authorization: "" },
+    }
+  );
+
+// export const signupApi = (username, email, password) => {
+//   axios({
+//     method: "post",
+//     headers: {
+//       // 'Authorization': `Bearer ${props.jwtToken}`, **// see how the bearer token now has a single space**
+//       "Content-Type": "application/json",
+//     },
+//     url: `/auth/local/register`,
+//   });
+// };
 
 export const loginApi = (identifier, password) =>
   axios.post("/auth/local", { identifier, password });
