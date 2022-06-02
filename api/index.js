@@ -8,9 +8,9 @@ const userUrl = "/users-permissions/users";
 const AUTH_TOKEN = Cookie.get("token");
 axios.defaults.baseURL = baseUrl;
 axios.defaults.headers.common["Content-Type"] = "application/json";
-axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
-  ? "Bearer " + AUTH_TOKEN
-  : "";
+// axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
+//   ? "Bearer " + AUTH_TOKEN
+//   : "";
 
 // API
 export const fetchUserApi = () => axios.get("/users/me");
