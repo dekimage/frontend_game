@@ -8,9 +8,10 @@ import { ImageUI } from "../components/reusableUI";
 
 // *** ACTIONS ***
 import { claimUserReward } from "../actions/action";
-
 // *** DATA ***
 import { levelRewards } from "../data/rewards";
+
+import { normalize } from "../utils/calculations";
 
 // *** STYLES ***
 import cx from "classnames";
@@ -18,18 +19,37 @@ import styles from "../styles/Streak.module.scss";
 
 const GET_STREAKS_QUERY = gql`
   query {
-    friendsRewards {
-      id
-
-      reward_card {
-        image {
-          url
-        }
-        name
+    friendrewards {
+      data {
         id
+        attributes {
+          reward_amount
+          friends_count
+          reward_card {
+            data {
+              id
+              attributes {
+                name
+                image {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
-      reward_amount
-      friends_count
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
     }
   }
 `;
@@ -62,11 +82,11 @@ const FriendReward = ({ friendReward, setSelectedReward }) => {
 const FriendsTower = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_STREAKS_QUERY);
+  const gql_data = data && normalize(data);
 
   const [selectedReward, setSelectedReward] = useState(0);
 
-  console.log(data && data);
-  console.log(store.user && store.user.friends_rewards);
+  // console.log(store.user && store.user.friends_rewards);
 
   const mergeRewards = (rewards, userRewards) => {
     return rewards.map((r) => {
@@ -95,17 +115,18 @@ const FriendsTower = () => {
     <div className="background_dark">
       <div className="section">
         <div className="title">Streak: {store.user.highestBuddyShares}</div>
-        {data && store.user && store.user.friends_rewards && (
+        {gql_data && store.user && store.user.friends_rewards && (
           <div>
-            {mergeRewards(data.friendsRewards, store.user.friends_rewards).map(
-              (friendReward, i) => (
-                <FriendReward
-                  friendReward={friendReward}
-                  key={i}
-                  setSelectedReward={setSelectedReward}
-                />
-              )
-            )}
+            {mergeRewards(
+              gql_data.friendsRewards,
+              store.user.friends_rewards
+            ).map((friendReward, i) => (
+              <FriendReward
+                friendReward={friendReward}
+                key={i}
+                setSelectedReward={setSelectedReward}
+              />
+            ))}
           </div>
         )}
         <div

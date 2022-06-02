@@ -18,15 +18,28 @@ import { levelRewards } from "../data/rewards";
 // *** STYLES ***
 import cx from "classnames";
 import styles from "../styles/LevelRewards.module.scss";
+import { normalize } from "../utils/calculations";
 
 const GET_REWARDS_QUERY = gql`
   query {
-    levelRewards {
-      id
-      level
-      isPremium
-      reward_type
-      reward_amount
+    levelrewards {
+      data {
+        id
+        attributes {
+          level
+          is_premium
+          reward_type
+          reward_amount
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
     }
   }
 `;
@@ -77,12 +90,17 @@ const LevelRewardsTower = () => {
   const router = useRouter();
   const { loading, error, data } = useQuery(GET_REWARDS_QUERY);
 
+  const gql_data = data && normalize(data);
+
   const filterPremium = (levels, type) => {
+    if (!levels) {
+      return;
+    }
     if (type === "free") {
-      return levels.filter((l) => !l.isPremium);
+      return levels.filter((l) => !l.is_premium);
     }
     if (type === "premium") {
-      return levels.filter((l) => l.isPremium);
+      return levels.filter((l) => l.is_premium);
     }
   };
 
@@ -91,7 +109,7 @@ const LevelRewardsTower = () => {
       const isCollected =
         !!store.user.rewards_tower && !!store.user.rewards_tower[level.id];
       const isReadyToCollect = store.user.xp >= level.level;
-      const isPremiumLock = !store.user.isPremium && level.isPremium;
+      const isPremiumLock = !store.user.isPremium && level.is_premium;
       level.isCollected = isCollected;
       level.isReadyToCollect = isReadyToCollect;
       level.isPremiumLock = isPremiumLock;
@@ -123,37 +141,40 @@ const LevelRewardsTower = () => {
         </div>
         <div className={styles.levelRewardsGrid}>
           <div className={styles.levelRewardsColumn}>
-            {joinArrays(filterPremium(data.levelRewards, "free")).map(
-              (level, i) => {
-                return <LevelReward level={level} key={i} />;
-              }
-            )}
+            {gql_data &&
+              joinArrays(filterPremium(gql_data.levelrewards, "free")).map(
+                (level, i) => {
+                  return <LevelReward level={level} key={i} />;
+                }
+              )}
           </div>
           <div className={styles.levelRewardsColumn}>
-            {filterPremium(data.levelRewards, "free").map((l, i) => (
-              <div className={styles.levelRewardLevel} key={i}>
-                <div
-                  className={cx([styles.levelRewardLevel__stripe], {
-                    [styles.passed]: l.level <= store.user.level,
-                  })}
-                ></div>
-                <div
-                  className={cx([styles.levelRewardLevel__text], {
-                    [styles.passed]: l.level <= store.user.level,
-                  })}
-                >
-                  {l.level}
+            {gql_data &&
+              filterPremium(gql_data.levelrewards, "free").map((l, i) => (
+                <div className={styles.levelRewardLevel} key={i}>
+                  <div
+                    className={cx([styles.levelRewardLevel__stripe], {
+                      [styles.passed]: l.level <= store.user.level,
+                    })}
+                  ></div>
+                  <div
+                    className={cx([styles.levelRewardLevel__text], {
+                      [styles.passed]: l.level <= store.user.level,
+                    })}
+                  >
+                    {l.level}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
 
           <div className={styles.levelRewardsColumn}>
-            {joinArrays(filterPremium(data.levelRewards, "premium")).map(
-              (level, i) => {
-                return <LevelReward level={level} key={i} />;
-              }
-            )}
+            {gql_data &&
+              joinArrays(filterPremium(gql_data.levelrewards, "premium")).map(
+                (level, i) => {
+                  return <LevelReward level={level} key={i} />;
+                }
+              )}
           </div>
         </div>
         <div className={styles.footer}>

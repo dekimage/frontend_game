@@ -9,7 +9,7 @@ import ProgressBar from "../components/ProgressBar";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 
-import { calcRealmProgress } from "../utils/calculations";
+import { calcRealmProgress, normalize } from "../utils/calculations";
 
 import { CardType, ProgressBox } from "../components/Card";
 import Cookie from "js-cookie";
@@ -21,6 +21,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const USER_ID = Cookie.get("userId");
 
+//fix_gql
 const GET_USER_STATS = gql`
   query ($id: ID!) {
     user(id: $id) {
@@ -45,22 +46,43 @@ const GET_USER_STATS = gql`
 const GET_REALMS = gql`
   query {
     realms {
-      id
-      name
-      description
-      coming_soon
-      background {
-        url
-      }
-      expansion {
+      data {
         id
-        name
+        attributes {
+          name
+          description
+          coming_soon
+          image {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+          expansion {
+            data {
+              id
+              attributes {
+                name
+              }
+            }
+          }
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
       }
     }
   }
 `;
 
 const Realm = ({ realm, completed, collected }) => {
+  console.log(realm);
   return (
     <Link
       href={{ pathname: "/realm/[id]", query: { id: realm.id } }}
@@ -91,9 +113,7 @@ const Realm = ({ realm, completed, collected }) => {
           )}
         </div>
         <div className={styles.realm_image}>
-          {realm.background && (
-            <img className="image" src={`${baseUrl}${realm.background.url}`} />
-          )}
+          {realm.image && <img className="image" src={realm.image.url} />}
         </div>
       </div>
     </Link>
@@ -102,6 +122,8 @@ const Realm = ({ realm, completed, collected }) => {
 
 const Learn = () => {
   const { data, loading, error } = useQuery(GET_REALMS);
+  const gql_data = data && normalize(data);
+  console.log("realms", gql_data);
   const {
     data: usercardsData,
     loading: usercardsLoading,
@@ -112,24 +134,25 @@ const Learn = () => {
 
   const [store, dispatch] = useContext(Context);
 
-  const realmHash =
-    usercardsData && calcRealmProgress(usercardsData.user.usercards);
+  const realmHash = usercardsData
+    ? calcRealmProgress(usercardsData.user.usercards)
+    : { Essentials: 0 };
 
   const comingRealms = data && data.realms.filter((r) => r.coming_soon);
   const freeRealms =
-    data &&
-    data.realms.filter(
+    gql_data &&
+    gql_data.realms.filter(
       (r) =>
         r.expansion.name === "Basic" &&
         r.name !== "Essentials" &&
         r.name !== "Character"
     );
   const proRealms =
-    data && data.realms.filter((r) => r.expansion.name === "Pro");
+    gql_data && gql_data.realms.filter((r) => r.expansion.name === "Pro");
   const tutorialRealm =
-    data && data.realms.filter((r) => r.name === "Essentials");
+    gql_data && gql_data.realms.filter((r) => r.name === "Essentials");
   const specialRealm =
-    data && data.realms.filter((r) => r.name === "Character");
+    gql_data && gql_data.realms.filter((r) => r.name === "Character");
 
   return (
     <div className="background_dark">
@@ -137,7 +160,7 @@ const Learn = () => {
       <div className="section">
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
-        {data && realmHash && (
+        {gql_data && realmHash && (
           <div>
             <div className={styles.header}>Start Here</div>
             {tutorialRealm.map((realm, i) => (
