@@ -4,6 +4,7 @@ import styles from "../styles/Card.module.scss";
 import cx from "classnames";
 
 import { Context } from "../context/store";
+import { ImageUI } from "../components/reusableUI";
 
 import iconCheck from "../assets/checkmark.svg";
 import iconPlay from "../assets/progress-collection-dark.svg";
@@ -14,6 +15,8 @@ import iconRare from "../assets/rare-rarity.svg";
 import iconEpic from "../assets/epic-rarity.svg";
 import iconLegendary from "../assets/legendary-rarity.svg";
 import { useContext } from "react";
+
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const getMaxQuantity = (level) => {
   const data = {
@@ -122,7 +125,6 @@ const Card = ({ card }) => {
             <img src={iconLock} />
           </div>
         )}
-
         <div
           className={styles.background}
           style={{ "--background": card.realm.color }}
@@ -137,20 +139,17 @@ const Card = ({ card }) => {
             {card.level || 1}
           </div>
         )}
-
         {card.is_new && <div className={styles.isNew}>New!</div>}
-
-        <div className={styles.realmLogo}>
-          <img src={`http://localhost:1337${card.realm.background.url}`} />
-        </div>
-
+        <ImageUI
+          className={styles.realmLogo}
+          imgUrl={card.realm.background.url}
+        />
         <div className={styles.image}>
           <img
-            src={`http://localhost:1337${card.image.url}`}
+            src={`${baseUrl}${card.image.url}`}
             style={{ filter: !isColored && "grayscale(100%)" }}
           />
         </div>
-
         <div className={styles.card_body}>
           <div className={styles.rarity_center}>
             {isColored ? (
@@ -168,7 +167,6 @@ const Card = ({ card }) => {
             <ClosedCard card={card} />
           )}
         </div>
-
         <div className={styles.rarity}>
           {card.rarity === "common" && <img src={iconCommon} />}
           {card.rarity === "rare" && <img src={iconRare} />}

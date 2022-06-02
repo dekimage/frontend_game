@@ -32,6 +32,8 @@ import styles from "../styles/Shop.module.scss";
 // *** HOOKS ***
 import useModal from "../hooks/useModal";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const GET_BOXES = gql`
   query {
     boxes {
@@ -87,7 +89,7 @@ const DropLabel = ({}) => {
       {cards.map((card, i) => (
         <div className={styles.dropLabel_item} key={i}>
           {card.chance}%
-          <img height="26px" src={`http://localhost:1337/${card.url}.png`} />
+          <img height="26px" src={`${baseUrl}/${card.url}.png`} />
         </div>
       ))}
     </div>
@@ -144,10 +146,10 @@ const BoxProduct = ({ box, setSelectedProduct, openModal }) => {
       <ImageUI imgUrl={box.image.url} height="125px" />
       <div className={styles.box_cta}>
         {box.price_type == "stars" && (
-          <img height="18px" src="http://localhost:1337/star.png" />
+          <img height="18px" src={`${baseUrl}/stars.png`} />
         )}
         {box.price_type == "gems" && (
-          <img height="18px" src="http://localhost:1337/gems.png" />
+          <img height="18px" src={`${baseUrl}/gems.png`} />
         )}
         {box.price}
       </div>
@@ -188,10 +190,10 @@ const BoxModal = ({ product, closeModal }) => {
               }}
             >
               {box.price_type == "stars" && (
-                <img height="18px" src="http://localhost:1337/star.png" />
+                <img height="18px" src={`${baseUrl}/stars.png`} />
               )}
               {box.price_type == "gems" && (
-                <img height="18px" src="http://localhost:1337/gems.png" />
+                <img height="18px" src={`${baseUrl}/gems.png`} />
               )}
               {box.price}
             </div>
@@ -326,7 +328,7 @@ const Shop = () => {
                       purchaseExpansion(dispatch, data.expansion.id);
                   }}
                 >
-                  <img height="18px" src="http://localhost:1337/gems.png" />
+                  <img height="18px" src={`${baseUrl}/gems.png`} />
                   {data.expansion.price}
                 </div>
               ) : (

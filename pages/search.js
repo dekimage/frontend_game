@@ -9,6 +9,7 @@ import NavBar from "../components/NavBar";
 // import { RealmsList } from "./learn";
 import styles from "../styles/SearchBar.module.scss";
 import debounce from "debounce";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // import SearchCard from "./SearchCard/SearchCard";
 
@@ -63,10 +64,7 @@ const SearchBar = () => {
         as={`/card/${card.id}`}
       >
         <div className={styles.searchCard}>
-          <img
-            className={styles.image}
-            src={`http://localhost:1337${card.image.url}`}
-          />
+          <img className={styles.image} src={`${baseUrl}${card.image.url}`} />
           <div>{card.name}</div>
         </div>
       </Link>
@@ -99,7 +97,7 @@ const SearchBar = () => {
               <div className={styles.noResults}>
                 <img
                   style={{ height: "200px", marginBottom: "1rem" }}
-                  src={`http://localhost:1337/uploads/Asking_Questions_061ea6ce0f.png`}
+                  // src={`${baseUrl}/uploads/Asking_Questions_061ea6ce0f.png`}
                 />
                 Explore Actionise
                 <span className={styles.searchDescription}>
@@ -118,7 +116,7 @@ const SearchBar = () => {
                   <div className={styles.noResults}>
                     <img
                       style={{ height: "200px", marginBottom: "1rem" }}
-                      src={`http://localhost:1337/uploads/mech_6_3a2f8d0611.png`}
+                      // src={`${baseUrl}/uploads/mech_6_3a2f8d0611.png`}
                     />
                     No Results Found...
                   </div>

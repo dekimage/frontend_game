@@ -10,6 +10,8 @@ import styles from "../../styles/Realm.module.scss";
 import NavBar from "../../components/NavBar";
 import Card from "../../components/Card";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const GET_REALM_ID = gql`
   query ($id: ID!) {
     realm(id: $id) {
@@ -92,7 +94,7 @@ const Cards = () => {
             </Link>
             <div className={styles.realmLogo}>
               <img
-                src={`http://localhost:1337${data.realm.background.url}`}
+                src={`${baseUrl}${data.realm.background.url}`}
                 height="24px"
                 className="mr1"
               />

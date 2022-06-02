@@ -22,6 +22,8 @@ import iconSearchActive from "../assets/menu-search-active.svg";
 
 import iconLogo from "../assets/menu-logo-dark.svg";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const mobileNavLinks = [
   {
     icon: iconToday,
@@ -62,6 +64,41 @@ const searchLink = {
   link: "/search",
 };
 
+const currencies = [
+  {
+    link: "shop",
+    currency: "energy",
+    img: "energy.png",
+  },
+  {
+    link: "streak",
+    currency: "streak",
+    img: "streak.png",
+  },
+  {
+    link: "shop",
+    currency: "gems",
+    img: "gems.png",
+  },
+  {
+    link: "shop",
+    currency: "stars",
+    img: "stars.png",
+  },
+];
+
+const NavLink = ({ link, img, currency }) => {
+  const [store] = useContext(Context);
+  return (
+    <Link href={`/${link}`}>
+      <div className={styles.currency}>
+        <img height="12px" src={`${baseUrl}/${img}`} />
+        <div>{store.user[currency]}</div>
+      </div>
+    </Link>
+  );
+};
+
 const Header = () => {
   const [store] = useContext(Context);
   const router = useRouter();
@@ -91,30 +128,9 @@ const Header = () => {
           })}
         </div>
         <div className={styles.header_currenciesBox}>
-          <Link href="/shop">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/energy.png" />
-              <div>{store.user.energy}</div>
-            </div>
-          </Link>
-          <Link href="/streak">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/streak.png" />
-              <div>{store.user.streak}</div>
-            </div>
-          </Link>
-          <Link href="/shop">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/gems.png" />
-              <div>{store.user.gems}</div>
-            </div>
-          </Link>
-          <Link href="/shop">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/star.png" />
-              <div>{store.user.stars}</div>
-            </div>
-          </Link>
+          {currencies.map((c, i) => (
+            <NavLink key={i} link={c.link} currency={c.currency} img={c.img} />
+          ))}
         </div>
       </div>
       <div className={styles.headerMobile}>
@@ -126,30 +142,9 @@ const Header = () => {
           active={false}
         />
         <div className={styles.headerMobile_currenciesBox}>
-          <Link href="/shop">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/energy.png" />
-              <div>{store.user.energy}</div>
-            </div>
-          </Link>
-          <Link href="/streak">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/streak.png" />
-              <div>{store.user.streak}</div>
-            </div>
-          </Link>
-          <Link href="/shop">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/gems.png" />
-              <div>{store.user.gems}</div>
-            </div>
-          </Link>
-          <Link href="/shop">
-            <div className={styles.currency}>
-              <img height="12px" src="http://localhost:1337/star.png" />
-              <div>{store.user.stars}</div>
-            </div>
-          </Link>
+          {currencies.map((c, i) => (
+            <NavLink key={i} link={c.link} currency={c.currency} img={c.img} />
+          ))}
         </div>
       </div>
     </>

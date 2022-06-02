@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { msToTime } from "../utils/calculations";
 import styles from "../styles/Timer.module.scss";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const StopWatch = ({}) => {
   const reward = {
     label: "+3",
-    img: "http://localhost:1337/energy.png",
+    img: `${baseUrl}/energy.png`,
   };
   const today = new Date();
   today.setHours(23, 59);

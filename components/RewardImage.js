@@ -4,6 +4,8 @@ import gemIcon from "../assets/diamond-currency.svg";
 import checkmark from "../assets/checkmark.svg";
 import cx from "classnames";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const RewardImage = ({
   reward,
   amount,
@@ -34,11 +36,9 @@ const RewardImage = ({
       )}
 
       <div className={styles.reward_image}>
-        {reward == "stars" && (
-          <img height="8px" src="http://localhost:1337/star.png" />
-        )}
+        {reward == "stars" && <img height="8px" src={`${baseUrl}/star.png`} />}
         {reward == "streak" && (
-          <img height="8px" src="http://localhost:1337/streak.png" />
+          <img height="8px" src={`${baseUrl}/streak.png`} />
         )}
         {reward == "gems" && <img src={gemIcon} />}
       </div>

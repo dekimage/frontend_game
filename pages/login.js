@@ -7,6 +7,8 @@ import styles from "../styles/Login.module.scss";
 import iconLogo from "../assets/menu-logo-dark.svg";
 import Link from "next/link";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const Login = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [data, updateData] = useState({
@@ -142,13 +144,13 @@ const Login = () => {
         )}
         <div className={styles.oauthSection}>
           <div className="btn btn-google">
-            <img height="18px" src={`http://localhost:1337/google.png`} />
+            <img height="18px" src={`${baseUrl}/google.png`} />
           </div>
           <div className="btn btn-facebook">
-            <img height="18px" src={`http://localhost:1337/facebook.png`} />
+            <img height="18px" src={`${baseUrl}/facebook.png`} />
           </div>
           <div className="btn btn-apple">
-            <img height="18px" src={`http://localhost:1337/apple.png`} />
+            <img height="18px" src={`${baseUrl}/apple.png`} />
           </div>
         </div>
       </div>

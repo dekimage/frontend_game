@@ -1,9 +1,11 @@
 import React, { createContext, useReducer, useEffect } from "react";
+import { useRouter } from "next/router";
 import Reducer from "../reducers/Reducer";
 import * as api from "../api";
 import Cookie from "js-cookie";
 
 const AUTH_TOKEN = Cookie.get("token");
+const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const initialState = {
   player: {},
@@ -28,6 +30,7 @@ const initialState = {
 
 const Store = ({ children }) => {
   const [store, dispatch] = useReducer(Reducer, initialState);
+  const router = useRouter();
   useEffect(() => {
     if (AUTH_TOKEN) {
       api
@@ -39,6 +42,8 @@ const Store = ({ children }) => {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      router.push(`${feUrl}/card/player/${card.id}`);
     }
   }, []);
 

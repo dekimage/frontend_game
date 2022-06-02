@@ -27,6 +27,9 @@ import arrowDown from "../../assets/arrow-down-white.png";
 import checkmark1 from "../../assets/checkmark-fill.svg";
 import iconLock from "../../assets/lock-white-border.svg";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 const getMaxQuantity = (level) => {
   const data = {
     1: 2,
@@ -207,7 +210,7 @@ export const CommunityAction = ({ action, type }) => {
       <div className={styles.action_closed} onClick={() => setOpen(!open)}>
         <div className={styles.action_votingBox}>
           <div>
-            <img src={`http://localhost:1337/upvote.png`} height="24px" />
+            <img src={`${baseUrl}/upvote.png`} height="24px" />
           </div>
           <div>{action.votes || 0}</div>
         </div>
@@ -283,7 +286,7 @@ export const CommunityAction = ({ action, type }) => {
                   }
                 >
                   <img
-                    src={`http://localhost:1337/upvote.png`}
+                    src={`${baseUrl}/upvote.png`}
                     height="18px"
                     className="mr1"
                   />
@@ -300,7 +303,7 @@ export const CommunityAction = ({ action, type }) => {
                   }
                 >
                   <img
-                    src={`http://localhost:1337/flag.png`}
+                    src={`${baseUrl}/flag.png`}
                     height="18px"
                     className="mr1"
                   />
@@ -333,7 +336,7 @@ export const CommunityAction = ({ action, type }) => {
                   onClick={() => deleteCommunityAction(dispatch, action.id)}
                 >
                   <img
-                    src={`http://localhost:1337/trash.png`}
+                    src={`${baseUrl}/trash.png`}
                     height="18px"
                     className="mr1"
                   />
@@ -516,7 +519,7 @@ const PlayCta = ({
           type: "OPEN_PLAYER",
           data: { level: usercard.completed, selectedLevel },
         });
-        router.push(`http://localhost:3000/card/player/${card.id}`);
+        router.push(`${feUrl}/card/player/${card.id}`);
       }}
     >
       <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
@@ -625,9 +628,9 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           onClick={() => updateCard(dispatch, card.id, "favorite")}
         >
           {usercard.is_favorite ? (
-            <img src={`http://localhost:1337/favorite.png`} height="25px" />
+            <img src={`${baseUrl}/favorite.png`} height="25px" />
           ) : (
-            <img src={`http://localhost:1337/notFavorite.png`} height="25px" />
+            <img src={`${baseUrl}/notFavorite.png`} height="25px" />
           )}
         </div>
         <Link href={`/realm/${card.realm.id}`}>
@@ -636,10 +639,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
         </Link>
 
-        <img
-          className={styles.image}
-          src={`http://localhost:1337${card.image.url}`}
-        />
+        <img className={styles.image} src={`${baseUrl}${card.image.url}`} />
         <div
           className={styles.background}
           style={{ "--background": card.realm.color }}
@@ -652,7 +652,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           <div className={styles.name}>
             <div className={styles.realmLogo}>
               <img
-                src={`http://localhost:1337${card.realm.background.url}`}
+                src={`${baseUrl}${card.realm.background.url}`}
                 height="36px"
               />
             </div>
@@ -754,7 +754,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           <div
             className={styles.btn_play_passed}
             onClick={() => {
-              router.push(`http://localhost:3000/card/player/${card.id}`);
+              router.push(`${feUrl}/card/player/${card.id}`);
             }}
           >
             <ion-icon name="play"></ion-icon>
@@ -927,7 +927,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             <div
               className="btn"
               onClick={() => {
-                router.push(`http://localhost:3000/shop`);
+                router.push(`${feUrl}/shop`);
               }}
             >
               <ion-icon name="lock-closed-outline"></ion-icon>

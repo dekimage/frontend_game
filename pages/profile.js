@@ -24,6 +24,8 @@ import cx from "classnames";
 import styles from "../styles/Profile.module.scss";
 import router from "next/router";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const Stat = ({ img, number, text, isPercent = false }) => {
   return (
     <div className={styles.statsBox}>
@@ -62,9 +64,9 @@ const Buddy = ({ img, link, name, level }) => {
       <div className={styles.buddyBox}>
         <div className={styles.buddyAvatar}>
           <img
-            // src={`http://localhost:1337${store.user.image.url}`}
+            // src={`${baseUrl}/${store.user.image.url}`
 
-            src={`http://localhost:1337/avatar-test.png`}
+            src={`${baseUrl}/avatar-test.png`}
           />
         </div>
         <div className={styles.buddyBox_name}>{name}</div>
@@ -122,9 +124,9 @@ const Profile = () => {
               <div className={styles.avatarBox}>
                 <div className={styles.avatar}>
                   <img
-                    // src={`http://localhost:1337${store.user.image.url}`}
+                    // src={`${baseUrl}/${store.user.image.url}`
 
-                    src={`http://localhost:1337/avatar-test.png`}
+                    src={`${baseUrl}/avatar-test.png`}
                     height="66px"
                   />
                 </div>
@@ -148,24 +150,24 @@ const Profile = () => {
           <div className={styles.stats}>
             <Stat
               number={collectionProgress}
-              img={"http://localhost:1337/legendary-cards.png"}
+              img={`${baseUrl}/legendary-cards.png`}
               text={"Collection"}
               isPercent
             />
             <Stat
               number={completionProgress}
-              img={"http://localhost:1337/rise.png"}
+              img={`${baseUrl}/rise.png`}
               text={"Progress"}
               isPercent
             />
             <Stat
               number={store.user.highest_streak_count}
-              img={"http://localhost:1337/streak.png"}
+              img={`${baseUrl}/streak.png`}
               text={"Highest Streak"}
             />
             <Stat
               number={store.user.maxEnergy}
-              img={"http://localhost:1337/energy.png"}
+              img={`${baseUrl}/energy.png`}
               text={"Max Energy"}
             />
           </div>
@@ -202,21 +204,21 @@ const Profile = () => {
           {tab === "activity" && (
             <div className="section">
               <Activity
-                img={"http://localhost:1337/streak.png"}
+                img={`${baseUrl}/streak.png`}
                 link={"/streak"}
                 text={"Streak Rewards"}
                 notification={store.notifications.streaks}
               />
 
               <Activity
-                img={"http://localhost:1337/gift.png"}
+                img={`${baseUrl}/gift.png`}
                 link={"/buddies-rewards"}
                 text={"Buddy Rewards"}
                 notification={store.notifications.friends}
               />
 
               <Activity
-                img={"http://localhost:1337/trophy.png"}
+                img={`${baseUrl}/trophy.png`}
                 link={"/level-rewards"}
                 text={"Level Rewards"}
                 notification={store.notifications.levels}
@@ -252,7 +254,7 @@ const Profile = () => {
               ))}
               <div className="btn btn-stretch btn-primary mt1 mb1">
                 <img
-                  src={`http://localhost:1337/add-user.png`}
+                  src={`${baseUrl}/add-user.png`}
                   height="20px"
                   className="mr1"
                 />

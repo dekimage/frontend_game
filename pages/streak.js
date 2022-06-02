@@ -15,6 +15,8 @@ import { claimStreakReward } from "../actions/action";
 import cx from "classnames";
 import styles from "../styles/Streak.module.scss";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const GET_STREAKS_QUERY = gql`
   query {
     streaks {
@@ -66,9 +68,9 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
       <div className="flex_center">
         <div className={styles.image}>
           {isCollected ? (
-            <img src={`http://localhost:1337/checked.png`} height="20px" />
+            <img src={`${baseUrl}/checked.png`} height="20px" />
           ) : (
-            <img src={`http://localhost:1337${reward.image.url}`} alt="" />
+            <img src={`${baseUrl}${reward.image.url}`} alt="" />
           )}
           {!isCollected && (
             <div className={styles.streak_amount}>x{reward_amount || 1}</div>
@@ -79,7 +81,7 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
       </div>
 
       <div className={styles.streakIcon}>
-        <img src={`http://localhost:1337/streak.png`} alt="" />
+        <img src={`${baseUrl}/streak.png`} alt="" />
         <div className={styles.streakIcon_amount}>{streak_count}</div>
       </div>
     </div>
@@ -128,7 +130,7 @@ const StreakTower = () => {
         </div>
 
         <div className={styles.streakTitle}>
-          <img src={`http://localhost:1337/streak.png`} height="60px" />
+          <img src={`${baseUrl}/streak.png`} height="60px" />
           <div className={styles.streakTitle_amount}>
             {store.user.highest_streak_count}
           </div>

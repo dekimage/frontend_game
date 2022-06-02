@@ -37,6 +37,8 @@ import styles from "../styles/Today.module.scss";
 import RewardImage from "../components/RewardImage";
 import ProgressBar from "../components/ProgressBar";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const GET_OBJECTIVES_QUERY = gql`
   query {
     objectives {
@@ -373,21 +375,21 @@ const Home = () => {
       <div className="section">
         <div className={styles.header}>Rewards</div>
         <Activity
-          img={"http://localhost:1337/streak.png"}
+          img={`${baseUrl}/streak.png`}
           link={"/streak"}
           text={"Streak Rewards"}
           notification={store.notifications.streaks}
         />
 
         <Activity
-          img={"http://localhost:1337/gift.png"}
+          img={`${baseUrl}/gift.png`}
           link={"/buddies-rewards"}
           text={"Buddy Rewards"}
           notification={store.notifications.friends}
         />
 
         <Activity
-          img={"http://localhost:1337/trophy.png"}
+          img={`${baseUrl}/trophy.png`}
           link={"/level-rewards"}
           text={"Level Rewards"}
           notification={store.notifications.levels}

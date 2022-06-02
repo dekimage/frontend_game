@@ -17,6 +17,8 @@ import Cookie from "js-cookie";
 import iconPlay from "../assets/progress-collection-dark.svg";
 import iconCollection from "../assets/progress-play-dark.svg";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const USER_ID = Cookie.get("userId");
 
 const GET_USER_STATS = gql`
@@ -90,10 +92,7 @@ const Realm = ({ realm, completed, collected }) => {
         </div>
         <div className={styles.realm_image}>
           {realm.background && (
-            <img
-              className="image"
-              src={`http://localhost:1337${realm.background.url}`}
-            />
+            <img className="image" src={`${baseUrl}${realm.background.url}`} />
           )}
         </div>
       </div>

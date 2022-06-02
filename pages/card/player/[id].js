@@ -26,6 +26,9 @@ import levelIcon from "../../../assets/player_lvlup.svg";
 import progressIcon from "../../../assets/player_progress.svg";
 import noEnergyIcon from "../../../assets/player_no_energy.svg";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 const GET_CARD_PLAYER = gql`
   query ($id: ID!) {
     card(id: $id) {
@@ -94,12 +97,12 @@ const SliderHeader = ({ rewards }) => {
     <div className={styles.sliderHeader}>
       <div className={styles.grayBubble}>
         <div className={styles.grayBubble_rewards}>
-          <img height="14px" src="http://localhost:1337/xp.png" />
+          <img height="14px" src={`${baseUrl}/xp.png`} />
           <span>{rewards.xp}</span>
-          <img height="14px" src="http://localhost:1337/stars.png" />
+          <img height="14px" src={`${baseUrl}/stars.png`} />
 
           <span> {rewards.stars}</span>
-          <img height="14px" src="http://localhost:1337/gems.png" />
+          <img height="14px" src={`${baseUrl}/gems.png`} />
 
           <span> {rewards.gems}</span>
         </div>
@@ -159,7 +162,7 @@ const CtaCorrectAnswer = ({ onContinue }) => {
     <div className={styles.ctaBox}>
       <div className={styles.ctaBox_header}>
         <div className={styles.ctaBox_image}>
-          <img src={`http://localhost:1337/checked.png`} height="40px" />
+          <img src={`${baseUrl}/checked.png`} height="40px" />
         </div>
         <div>
           <div className={styles.ctaBox_correct}>Correct!</div>
@@ -181,7 +184,7 @@ const CtaWrongAnswer = ({ onContinue }) => {
     <div className={styles.ctaBox}>
       <div className={styles.ctaBox_header}>
         <div className={styles.ctaBox_image}>
-          <img src={`http://localhost:1337/wrong.png`} height="40px" />
+          <img src={`${baseUrl}/wrong.png`} height="40px" />
         </div>
         <div>
           <div className={styles.ctaBox_wrong}>Try Again!</div>
@@ -507,7 +510,7 @@ const GenericScreen = ({ img, title, content, stats, jsx }) => {
             return (
               <div className={styles.genericStat} key={i}>
                 <div className="flex_center">
-                  <img src={`http://localhost:1337/${s.img}.png`} />
+                  <img src={`${baseUrl}/${s.img}.png`} />
                   <div className={styles.genericStat_label}>{s.label}</div>
                 </div>
 
@@ -745,7 +748,7 @@ const Card = () => {
   };
 
   const closePlayer = () => {
-    router.push(`http://localhost:3000/card/${router.query.id}`);
+    router.push(`${feUrl}/card/${router.query.id}`);
   };
 
   const recordResults = (answerId, answerCorrect) => {};
