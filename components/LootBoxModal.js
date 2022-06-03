@@ -30,8 +30,6 @@ const LootBoxModal = () => {
     }
   };
 
-  console.log(store.rewardsModal && store.rewardsModal);
-
   return (
     <div className={styles.boxModal}>
       <div className="text__b">

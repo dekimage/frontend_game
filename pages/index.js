@@ -25,8 +25,6 @@ import ProgressBar from "../components/ProgressBar";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const kure = process.env.NEXT_PUBLIC_API_AWS;
 
-console.log(11, kure, baseUrl);
-
 const GET_OBJECTIVES_QUERY = gql`
   query {
     objectives {

@@ -14,34 +14,61 @@ import Card from "../components/Card";
 
 import Cookie from "js-cookie";
 import { merge } from "lodash";
+import { normalize } from "../utils/calculations";
 
 const USER_ID = Cookie.get("userId");
+
 const GET_COLLECTION = gql`
   query ($id: ID!) {
     user(id: $id) {
-      usercards {
+      data {
         id
-        is_new
-        is_favorite
-        completed
-        quantity
-        glory_points
-        level
-        card {
-          id
-          name
-          rarity
-          type
-          isOpen
-          image {
-            url
-          }
-          realm {
-            id
-            name
-            color
-            background {
-              url
+        attributes {
+          usercards {
+            data {
+              attributes {
+                is_new
+                is_favorite
+                completed
+                quantity
+                glory_points
+                level
+                is_unlocked
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                      rarity
+                      type
+                      is_open
+                      image {
+                        data {
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                      realm {
+                        data {
+                          id
+                          attributes {
+                            name
+                            color
+                            iamge {
+                              data {
+                                attributes {
+                                  url
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -79,6 +106,8 @@ const Home = () => {
   const { loading, error, data } = useQuery(GET_COLLECTION, {
     variables: { id: USER_ID },
   });
+
+  const gql_data = data && normalize(data);
   const [cards, setCards] = useState([]);
   const [sortBy, setSortBy] = useState(sortSettings[0]);
   const [isSortAsc, setIsSortAsc] = useState(true);
@@ -97,8 +126,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    !loading && data && setCards(data.user.usercards);
-  }, [data, loading]);
+    !loading && gql_data && setCards(gql_data.user.usercards);
+  }, [gql_data, loading]);
 
   const mergeCards = () => {
     const mergedcards = cards.map((card) => {
@@ -118,7 +147,7 @@ const Home = () => {
     const type = sortBy.label;
     let array = sortBy.sortBy;
     array = isSortAsc ? array.reverse() : array.reverse();
-    // console.log("array AFTER REVERSE", array);
+
     if (type === "realm") {
       return arr.sort((a, b) => {
         return array.indexOf(a.realm.name) - array.indexOf(b.realm.name);
@@ -150,9 +179,9 @@ const Home = () => {
         {/* <div onClick={() => addFilters("realm", "health")}>rarity</div>
         <div onClick={() => addFilters("type", "free")}>type</div>
         <div onClick={() => addFilters("rarity", "common")}>all</div> */}
-        {data && data.user && (
+        {gql_data && gql_data.user && (
           <div className={styles.headline}>
-            Discovered: {data.user.usercards.length}/{108}
+            Discovered: {gql_data.user.usercards.length}/{108}
           </div>
         )}
 
@@ -172,7 +201,7 @@ const Home = () => {
           </div>
         </div>
 
-        {data && (
+        {gql_data && (
           <div>
             <div className={styles.grid}>
               {filterCards().map((card, i) => {

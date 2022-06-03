@@ -86,8 +86,6 @@ const FriendsTower = () => {
 
   const [selectedReward, setSelectedReward] = useState(0);
 
-  // console.log(store.user && store.user.friends_rewards);
-
   const mergeRewards = (rewards, userRewards) => {
     return rewards.map((r) => {
       if (userRewards[r.friends_count]) {

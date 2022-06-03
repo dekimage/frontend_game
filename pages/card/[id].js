@@ -26,6 +26,7 @@ import iconLegendary from "../../assets/legendary-rarity.svg";
 import arrowDown from "../../assets/arrow-down-white.png";
 import checkmark1 from "../../assets/checkmark-fill.svg";
 import iconLock from "../../assets/lock-white-border.svg";
+import { normalize } from "../../utils/calculations";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -44,105 +45,159 @@ const getMaxQuantity = (level) => {
 const GET_USERCARDS_QUERY = gql`
   query ($id: ID!) {
     usercard(id: $id) {
-      id
-      card {
+      data {
         id
-        name
-        description
-        type
-        rarity
-        expansion {
-          id
-          name
-        }
-        isOpen
-        actions {
-          id
-          name
-          type
+        attributes {
+          is_favorite
           level
-          duration
-          steps {
-            content
-          }
-        }
-        community_actions {
-          id
-          name
-          type
-          duration
-          steps {
-            content
-          }
-          votes
-          reports
-          user {
-            id
-            username
-          }
-        }
-        realm {
-          id
-          color
-          name
-          background {
-            url
-          }
-        }
-        image {
-          url
-        }
-      }
-      is_favorite
-      level
-      completed
-      quantity
-      is_new
-      glory_points
-      isUnlocked
-      completed_actions {
-        id
-      }
+          completed
+          quantity
+          is_new
+          glory_points
+          is_unlocked
+          card {
+            data {
+              id
+              attributes {
+                name
+                description
+                type
+                rarity
+                is_open
+                realm {
+                  data {
+                    id
+                    attributes {
+                      color
+                      name
+                      image {
+                        data {
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                expansion {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+                actions {
+                  data {
+                    id
+                    attributes {
+                      name
+                      type
+                      level
+                      duration
+                      steps {
+                        content
+                      }
+                    }
+                  }
+                }
+                completed_actions {
+                  data {
+                    id
+                  }
+                }
+                upvoted_actions {
+                  data {
+                    id
+                  }
+                }
+                community_actions_completed {
+                  data {
+                    id
+                  }
+                }
+                reported_actions {
+                  data {
+                    id
+                  }
+                }
+                community_actions {
+                  data {
+                    id
+                    attributes {
+                      name
+                      type
+                      duration
+                      votes
+                      reports
+                      steps {
+                        content
+                      }
+                      user {
+                        data {
+                          id
+                          attributes {
+                            username
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
 
-      community_actions_claimed {
-        id
-        user {
-          id
-          username
+                community_actions_claimed {
+                  data {
+                    id
+                    attributes {
+                      name
+                      type
+                      duration
+                      votes
+                      reports
+                      steps {
+                        content
+                      }
+                      user {
+                        data {
+                          id
+                          attributes {
+                            username
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                my_community_actions {
+                  data {
+                    id
+                    attributes {
+                      name
+                      type
+                      duration
+                      votes
+                      reports
+                      is_private
+                      steps {
+                        content
+                      }
+                      user {
+                        data {
+                          id
+                          attributes {
+                            username
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
-        type
-        votes
-        reports
-        name
-        duration
-        steps {
-          content
-        }
-      }
-      my_community_actions {
-        id
-        user {
-          id
-          username
-        }
-        type
-        votes
-        reports
-        name
-        duration
-        steps {
-          content
-        }
-        isPrivate
-      }
-      upvoted_actions {
-        id
-      }
-      community_actions_completed {
-        id
-      }
-      reported_actions {
-        id
       }
     }
   }
@@ -151,51 +206,83 @@ const GET_USERCARDS_QUERY = gql`
 const GET_CARD_ID = gql`
   query ($id: ID!) {
     card(id: $id) {
-      id
-      name
-      description
-      type
-      rarity
-      expansion {
+      data {
         id
-        name
-      }
-      isOpen
-      community_actions {
-        id
-        name
-        type
-        duration
-        steps {
-          content
+        attributes {
+          name
+          description
+          type
+          rarity
+          is_open
+          image {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+          expansion {
+            data {
+              id
+              attributes {
+                name
+              }
+            }
+          }
+          realm {
+            data {
+              id
+              attributes {
+                color
+                name
+                image {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+          actions {
+            data {
+              id
+              attributes {
+                name
+                type
+                level
+                duration
+                steps {
+                  content
+                }
+              }
+            }
+          }
+          communityactions {
+            data {
+              id
+              attributes {
+                name
+                type
+                duration
+                votes
+                reports
+                steps {
+                  content
+                }
+                user {
+                  data {
+                    id
+                    attributes {
+                      username
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
-        votes
-        reports
-        user {
-          id
-          username
-        }
-      }
-      actions {
-        id
-        name
-        type
-        level
-        duration
-        steps {
-          content
-        }
-      }
-      realm {
-        id
-        color
-        name
-        background {
-          url
-        }
-      }
-      image {
-        url
       }
     }
   }
@@ -558,7 +645,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   const [selectedLevel, setSelectedLevel] = useState(
     usercard && usercard.completed + 1
   );
-  // const [createModalOpen, setCreateModalOpen] = useState(false);
+
   const [activeTab, setActiveTab] = useState("community");
 
   useEffect(() => {
@@ -579,10 +666,10 @@ const CardPage = ({ dataUserCard, dataCard }) => {
       return {
         ...action,
         [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
-        isReported: !!usercard.reported_actions.filter(
+        is_reported: !!usercard.reported_actions.filter(
           (a) => a.id === action.id
         )[0],
-        isUpvoted: !!usercard.upvoted_actions.filter(
+        is_upvoted: !!usercard.upvoted_actions.filter(
           (a) => a.id === action.id
         )[0],
       };
@@ -599,7 +686,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
       usercard,
       card.community_actions,
       usercard.community_actions_claimed,
-      "isClaimed"
+      "is_claimed"
     );
 
   const addedActions =
@@ -608,7 +695,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
       usercard,
       usercard.community_actions_claimed,
       usercard.community_actions_completed,
-      "isCompleted"
+      "is_completed"
     );
 
   const myActions =
@@ -617,7 +704,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
       usercard,
       usercard.my_community_actions,
       usercard.community_actions_claimed,
-      "isClaimed"
+      "is_claimed"
     );
 
   return (
@@ -651,10 +738,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         <div className={styles.section_name}>
           <div className={styles.name}>
             <div className={styles.realmLogo}>
-              <img
-                src={`${baseUrl}${card.realm.background.url}`}
-                height="36px"
-              />
+              <img src={card.realm.image.url} height="36px" />
             </div>
             {card.name}
           </div>
@@ -766,18 +850,20 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         </div>
 
         {isLevelUnlocked ? (
-          card.actions &&
-          dataUserCard &&
-          mergeActions(
-            usercard,
-            card.actions,
-            usercard.completed_actions,
-            "isCompleted"
+          card.actions && usercard.completed_actions ? (
+            mergeActions(
+              usercard,
+              card.actions,
+              usercard.completed_actions,
+              "is_completed"
+            )
+          ) : (
+            card.actions
+              .filter((a) => a.level === selectedLevel)
+              .map((action, i) => {
+                return <Action action={action} key={i} />;
+              })
           )
-            .filter((a) => a.level === selectedLevel)
-            .map((action, i) => {
-              return <Action action={action} key={i} />;
-            })
         ) : (
           <div className={styles.emptyActions}>
             <img
@@ -831,11 +917,11 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
         )}
 
-        {activeTab === "community" && (
+        {activeTab === "community" && card.communityactions && (
           <>
             <div className={styles.header}>
               <div>Community Actions</div>
-              <div>{card.community_actions.length}</div>
+              <div>{card.communityactions.length}</div>
             </div>
             {communityActions?.length > 0 ? (
               communityActions.map((action, i) => {
@@ -976,8 +1062,10 @@ const Card = () => {
   } = useQuery(GET_CARD_ID, {
     variables: { id: router.query.id },
   });
+  const gql_card = card && normalize(card);
   const [getUserCard, { data, loading, error }] =
     useLazyQuery(GET_USERCARDS_QUERY);
+  const gql_usercard = data && normalize(data);
   useEffect(() => {
     if (store.user.usercards) {
       const usercard = store.user.usercards.filter((uc) => {
@@ -991,39 +1079,14 @@ const Card = () => {
     }
   }, [store.user]);
 
-  // const joinCard = (card, usercards) => {
-  //   let collectionCard = usercards.filter(
-  //     (c) => c.card === parseInt(card.id)
-  //   )[0];
-
-  //   if (collectionCard) {
-  //     const mergedCard = {
-  //       ...collectionCard,
-  //       id: card.id,
-  //       image: card.image,
-  //       isOpen: card.isOpen,
-  //       rarity: card.rarity,
-  //       type: card.type,
-  //       realm: card.realm,
-  //       name: card.name,
-  //       actions: card.actions,
-  //     };
-
-  //     return mergedCard;
-  //   }
-
-  //   return card;
-  // };
-
   return (
     <div className="background_dark">
       {error || (cardError && <div>Error: {error}</div>)}
       {loading || (cardLoading && <div>Loading...</div>)}
-      {card && store.user && store.user.usercards && (
+      {gql_card && store.user && (
         <CardPage
-          // card={joinCard(data.card, store.user.usercards || {})}
-          dataCard={card}
-          dataUserCard={data && data.usercard}
+          dataCard={gql_card}
+          dataUserCard={gql_usercard && gql_usercard.usercard}
         />
       )}
     </div>

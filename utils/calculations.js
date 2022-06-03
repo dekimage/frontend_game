@@ -46,7 +46,7 @@ export const calcRewardReady = (
   const notifCount = notCollected.length;
   return notifCount;
 };
-export const calcLevelRewards = (level, level_rewards, levels, isPremium) => {
+export const calcLevelRewards = (level, level_rewards, levels, is_premium) => {
   const availableArr = levels.filter((l) => l <= level);
   const filtered = availableArr.map((l) =>
     level_rewards.filter((el) => el.level === l)
@@ -63,7 +63,7 @@ export const calcLevelRewards = (level, level_rewards, levels, isPremium) => {
     }
   });
 
-  return isPremium
+  return is_premium
     ? filtered.length * 2 - collected
     : filtered.length - collected;
 };

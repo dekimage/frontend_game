@@ -126,8 +126,6 @@ const StreakTower = () => {
 
   const gql_data = data && normalize(data);
 
-  console.log(gql_data);
-
   const mergeStreaks = (streaks, userStreaks) => {
     if (!userStreaks) {
       return streaks;
@@ -154,12 +152,6 @@ const StreakTower = () => {
   if (loading) {
     return <div>Loading Streaks...</div>;
   }
-
-  console.log(
-    gql_data &&
-      store &&
-      mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)
-  );
 
   return (
     <div className="background_dark">

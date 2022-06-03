@@ -104,10 +104,7 @@ const Card = ({ card }) => {
     card.expansion.name === "Pro" &&
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
 
-  // console.log(isPremiumLocked);
-  // console.log(card);
-
-  const isColored = !isPremiumLocked && (card.isOpen || card.isUnlocked);
+  const isColored = !isPremiumLocked && (card.is_open || card.is_unlocked);
   return (
     <Link
       key={card.id}
@@ -140,13 +137,13 @@ const Card = ({ card }) => {
           </div>
         )}
         {card.is_new && <div className={styles.isNew}>New!</div>}
-        <ImageUI
-          className={styles.realmLogo}
-          imgUrl={card.realm.background.url}
-        />
+        <div className={styles.realmLogo}>
+          <img src={card.realm.image.url} />
+        </div>
+
         <div className={styles.image}>
           <img
-            src={`${baseUrl}${card.image.url}`}
+            src={card.image.url}
             style={{ filter: !isColored && "grayscale(100%)" }}
           />
         </div>

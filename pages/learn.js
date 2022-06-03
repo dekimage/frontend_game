@@ -21,21 +21,37 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const USER_ID = Cookie.get("userId");
 
-//fix_gql
 const GET_USER_STATS = gql`
   query ($id: ID!) {
     user(id: $id) {
-      usercards {
-        completed
-        quantity
-        isUnlocked
-        level
-        card {
-          id
-          isOpen
-          realm {
-            id
-            name
+      data {
+        id
+        attributes {
+          usercards {
+            data {
+              attributes {
+                completed
+                quantity
+                is_unlocked
+                level
+                card {
+                  data {
+                    id
+                    attributes {
+                      is_open
+                      realm {
+                        data {
+                          id
+                          attributes {
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -82,7 +98,6 @@ const GET_REALMS = gql`
 `;
 
 const Realm = ({ realm, completed, collected }) => {
-  console.log(realm);
   return (
     <Link
       href={{ pathname: "/realm/[id]", query: { id: realm.id } }}
@@ -123,9 +138,9 @@ const Realm = ({ realm, completed, collected }) => {
 const Learn = () => {
   const { data, loading, error } = useQuery(GET_REALMS);
   const gql_data = data && normalize(data);
-  console.log("realms", gql_data);
+
   const {
-    data: usercardsData,
+    data: usercardPreData,
     loading: usercardsLoading,
     error: usercardsError,
   } = useQuery(GET_USER_STATS, {
@@ -133,6 +148,8 @@ const Learn = () => {
   });
 
   const [store, dispatch] = useContext(Context);
+
+  const usercardsData = usercardPreData && normalize(usercardPreData);
 
   const realmHash = usercardsData
     ? calcRealmProgress(usercardsData.user.usercards)

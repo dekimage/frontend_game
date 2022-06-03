@@ -17,15 +17,15 @@ const Reducer = (store, action) => {
           ),
           friends: calcRewardReady(
             staticRewards.friends,
-            action.data.highestBuddyShares,
+            action.data.highest_buddy_shares,
             action.data.friends_rewards
           ),
-          levels: calcLevelRewards(
-            action.data.level,
-            action.data.level_rewards,
-            staticRewards.levels,
-            action.data.isPremium
-          ),
+          // levels: calcLevelRewards(
+          //   action.data.level,
+          //   action.data.rewards_tower,
+          //   staticRewards.levels,
+          //   action.data.is_premium
+          // ),
         },
       };
     case "REMOVE_USER":

@@ -31,48 +31,89 @@ import styles from "../styles/Shop.module.scss";
 
 // *** HOOKS ***
 import useModal from "../hooks/useModal";
+import { normalize } from "../utils/calculations";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const GET_BOXES = gql`
   query {
     boxes {
-      id
-      name
-      description
-      require
-      price
-      price_type
-      image {
-        url
+      data {
+        id
+        attributes {
+          name
+          description
+          require
+          price
+          price_type
+          image {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+          expansion {
+            data {
+              attributes {
+                name
+              }
+            }
+          }
+        }
       }
-      drop_rates
-      expansion {
-        name
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
       }
     }
+
     products {
-      id
-      name
-      description
-      price
-      discount
-      type
-      image {
-        url
+      data {
+        id
+        attributes {
+          name
+          description
+          price
+          discount
+          type
+          google_id
+          apple_id
+          is_disabled
+          amount
+          image {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+        }
       }
-      googleID
-      appleID
-      isDisabled
-      amount
-      bonusAmount
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
     }
+
     expansion(id: 2) {
-      id
-      name
-      description
-      price
-      discountPrice
+      data {
+        id
+        attributes {
+          name
+          description
+          price
+          discount_price
+        }
+      }
     }
   }
 `;
@@ -228,7 +269,12 @@ const Shop = () => {
   const { isShowing, openModal, closeModal } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  const gql_data = data && normalize(data);
+
   const hasExpansion = (expansionId) => {
+    if (!store.user.expansions) {
+      return expansionId === 1 ? true : false;
+    }
     return (
       store.user.expansions.filter((e) => e.id === expansionId).length === 1
     );
@@ -268,8 +314,8 @@ const Shop = () => {
       <div className="section">
         <div>BOXES</div>
         <div className={styles.boxes}>
-          {data &&
-            data.boxes.map((box, i) => {
+          {gql_data &&
+            gql_data.boxes.map((box, i) => {
               return (
                 <BoxProduct
                   box={box}
@@ -296,8 +342,8 @@ const Shop = () => {
 
       <div className="section">
         <div>GEMS</div>
-        {data &&
-          getGems(data.products).map((gems, i) => {
+        {gql_data &&
+          getGems(gql_data.products).map((gems, i) => {
             return (
               <GemsProduct
                 gems={gems}
@@ -309,27 +355,27 @@ const Shop = () => {
           })}
       </div>
 
-      {data && store.user && (
+      {gql_data && store.user && (
         <div className="section">
           <div>EXPANSIONS</div>
           <div className={styles.subscription}>
             <div className={styles.subscription_name}>
-              {data.expansion.name}
+              {gql_data.expansion.name}
             </div>
             <div className={styles.subscription_body}>
               <div className={styles.subscription_reward}>
-                {data.expansion.description}
+                {gql_data.expansion.description}
               </div>
-              {hasExpansion(data.expansion.id) ? (
+              {hasExpansion(gql_data.expansion.id) ? (
                 <div
                   className={styles.subscription_price}
                   onClick={() => {
-                    store.user.gems >= data.expansion.price &&
-                      purchaseExpansion(dispatch, data.expansion.id);
+                    store.user.gems >= gql_data.expansion.price &&
+                      purchaseExpansion(dispatch, gql_data.expansion.id);
                   }}
                 >
                   <img height="18px" src={`${baseUrl}/gems.png`} />
-                  {data.expansion.price}
+                  {gql_data.expansion.price}
                 </div>
               ) : (
                 <div className={styles.subscription_price}>

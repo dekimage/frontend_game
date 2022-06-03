@@ -17,7 +17,7 @@ import Modal from "../../../components/Modal";
 
 import useModal from "../../../hooks/useModal";
 
-import { closeRewardsModal, updateCard } from "../../../actions/action";
+import { updateCard } from "../../../actions/action";
 
 import actionIcon from "../../../assets/player_actions.svg";
 import rewardsIcon from "../../../assets/player_rewards.svg";
@@ -25,6 +25,7 @@ import completedIcon from "../../../assets/player_complete.svg";
 import levelIcon from "../../../assets/player_lvlup.svg";
 import progressIcon from "../../../assets/player_progress.svg";
 import noEnergyIcon from "../../../assets/player_no_energy.svg";
+import { normalize } from "../../../utils/calculations";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -32,28 +33,41 @@ const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_CARD_PLAYER = gql`
   query ($id: ID!) {
     card(id: $id) {
-      id
-      name
-      description
-      type
-      rarity
-      realm {
+      data {
         id
-        color
-        name
-      }
-      image {
-        url
-      }
-      slides {
-        id
-        question
-        answers {
-          text
-          isCorrect
+        attributes {
+          name
+          description
+          type
+          rarity
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          realm {
+            data {
+              id
+              attributes {
+                color
+                name
+              }
+            }
+          }
+          slides {
+            id
+            question
+            idea_title
+            idea_content
+            answers {
+              text
+              is_correct
+            }
+          }
         }
-        ideaTitle
-        ideaContent
       }
     }
   }
@@ -695,12 +709,14 @@ const Card = () => {
     variables: { id: router.query.id },
   });
 
+  const gql_data = data && normalize(data);
+
   useEffect(() => {
-    if (!loading && data) {
-      setSlide(data.card.slides[0]);
-      setSlides(data.card.slides);
+    if (!loading && gql_data) {
+      setSlide(gql_data.card.slides[0]);
+      setSlides(gql_data.card.slides);
     }
-  }, [data, loading]);
+  }, [gql_data, loading]);
 
   const states = [
     "feedback_screen",
@@ -734,9 +750,7 @@ const Card = () => {
   const [mistakes, setMistakes] = useState(0);
 
   const isLatestLevel = store.player.level + 1 === store.player.selectedLevel;
-  console.log(isLatestLevel);
-  console.log(store.player.level + 1);
-  console.log(store.player.selectedLevel);
+
   const hasEnergy = store.user.energy > 0;
 
   const updateRewards = (xp = 10, stars = 5) => {
@@ -766,7 +780,6 @@ const Card = () => {
         setSlide(repeatSlides[0]);
         setRepeatSlides([]);
       } else {
-        console.log(isLatestLevel);
         if (isLatestLevel) {
           setSuccessModal("complete_screen");
         } else {
@@ -797,7 +810,7 @@ const Card = () => {
     <div className="background_dark">
       {error && <div>Error: {error}</div>}
       {loading && <div>Loading...</div>}
-      {data && store.user && slide && (
+      {gql_data && store.user && slide && (
         <div className="section">
           <SliderProgress
             maxSlides={slides.length}
@@ -822,14 +835,14 @@ const Card = () => {
           {successModal === "repeat_screen" && (
             <RepeatScreen
               closePlayer={closePlayer}
-              card={data.card}
+              card={gql_data.card}
               mistakes={mistakes}
             />
           )}
           {successModal === "complete_screen" && hasEnergy && (
             <CompleteScreen
               closePlayer={closePlayer}
-              card={data.card}
+              card={gql_data.card}
               rewards={rewards}
               setSuccessModal={setSuccessModal}
             />
@@ -837,7 +850,7 @@ const Card = () => {
           {successModal === "complete_screen" && !hasEnergy && (
             <CompleteScreenNoEnergy
               closePlayer={closePlayer}
-              card={data.card}
+              card={gql_data.card}
               rewards={rewards}
               setSuccessModal={setSuccessModal}
             />
@@ -846,7 +859,7 @@ const Card = () => {
           {successModal === "rewards_screen" && (
             <RewardsScreen
               closePlayer={closePlayer}
-              card={data.card}
+              card={gql_data.card}
               setSuccessModal={setSuccessModal}
               rewards={rewards}
             />
@@ -855,7 +868,7 @@ const Card = () => {
           {successModal === "actions_screen" && (
             <ActionsScreen
               closePlayer={closePlayer}
-              card={data.card}
+              card={gql_data.card}
               setSuccessModal={setSuccessModal}
             />
           )}
@@ -863,7 +876,7 @@ const Card = () => {
           {successModal === "feedback_screen" && (
             <FeedbackScreen
               closePlayer={closePlayer}
-              card={data.card}
+              card={gql_data.card}
               setSuccessModal={setSuccessModal}
             />
           )}
@@ -871,7 +884,7 @@ const Card = () => {
           {successModal === "levelup_screen" && (
             <LevelUpScreen
               closePlayer={closePlayer}
-              card={data.card}
+              card={gql_data.card}
               setSuccessModal={setSuccessModal}
             />
           )}

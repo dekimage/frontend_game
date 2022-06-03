@@ -3,7 +3,6 @@ import Cookie from "js-cookie";
 import * as api from "../api";
 
 export const signup = (dispatch, username, email, password) => {
-  console.log(username, email, password);
   api
     .signupApi(username, email, password)
     .then(({ data }) => {

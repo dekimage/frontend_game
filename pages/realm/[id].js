@@ -9,38 +9,67 @@ import styles from "../../styles/Realm.module.scss";
 
 import NavBar from "../../components/NavBar";
 import Card from "../../components/Card";
+import { normalize } from "../../utils/calculations";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const GET_REALM_ID = gql`
   query ($id: ID!) {
     realm(id: $id) {
-      id
-      name
-      description
-      background {
-        url
-      }
-      cards {
+      data {
         id
-        name
-        description
-        type
-        rarity
-        isOpen
-        image {
-          url
-        }
-        expansion {
-          id
+        attributes {
           name
-        }
-        realm {
-          id
-          name
-          color
-          background {
-            url
+          description
+          image {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+          cards {
+            data {
+              id
+              attributes {
+                name
+                description
+                type
+                rarity
+                is_open
+                image {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                }
+                expansion {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -55,8 +84,13 @@ const Cards = () => {
     variables: { id: router.query.id },
   });
 
+  const gql_data = data && normalize(data);
+
   const usercards = store.user && store.user.usercards;
   const joinCards = (cards, usercards) => {
+    if (!usercards) {
+      return cards;
+    }
     const joinedCards = cards.map((card) => {
       let collectionCard = usercards.filter(
         (c) => c.card === parseInt(card.id)
@@ -66,7 +100,7 @@ const Cards = () => {
           ...collectionCard[0],
           id: card.id,
           image: card.image,
-          isOpen: card.isOpen,
+          isOpen: card.is_open,
           rarity: card.rarity,
           type: card.type,
           realm: card.realm,
@@ -85,7 +119,7 @@ const Cards = () => {
       <div className="section">
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
-        {data && (
+        {gql_data && (
           <div className={styles.header}>
             <Link href="/learn">
               <div className={styles.back}>
@@ -94,19 +128,18 @@ const Cards = () => {
             </Link>
             <div className={styles.realmLogo}>
               <img
-                src={`${baseUrl}${data.realm.background.url}`}
+                src={gql_data.realm.image.url}
                 height="24px"
                 className="mr1"
               />
-              {data.realm.name}
+              {gql_data.realm.name}
             </div>
           </div>
         )}
         <div className={styles.grid}>
-          {data &&
+          {gql_data &&
             store.user &&
-            store.user.usercards &&
-            joinCards(data.realm.cards, usercards).map((card, i) => (
+            joinCards(gql_data.realm.cards, usercards).map((card, i) => (
               <Card card={card} key={i} />
             ))}
         </div>
