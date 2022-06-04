@@ -113,7 +113,7 @@ const Profile = () => {
     <div className="background_dark">
       {/* <Header /> */}
 
-      {store?.user?.image && (
+      {store?.user && (
         <div className="section-container">
           <div className={styles.profileHeader}>
             <div className={styles.escape} onClick={() => router.back()}>
@@ -229,9 +229,11 @@ const Profile = () => {
           {tab === "buddies" && (
             <div className="section">
               <div className={styles.header}>
-                <div>Shared Buddies</div> {store.user.shared_buddies.length}/10
+                <div>Shared Buddies</div>{" "}
+                {store.user.shared_buddies?.length || 0}
+                /10
               </div>
-              {store.user.shared_buddies.map((b) => (
+              {store.user.shared_buddies?.map((b) => (
                 <Buddy
                   name={b.username}
                   link={`/users/${b.id}`}
@@ -241,9 +243,9 @@ const Profile = () => {
                 />
               ))}
               <div className={styles.header}>
-                <div>Following</div> {store.user.followers.length}/50
+                <div>Following</div> {store.user.followers?.length || 0}/50
               </div>
-              {store.user.followers.map((b) => (
+              {store.user.followers?.map((b) => (
                 <Buddy
                   name={b.username}
                   link={`/users/${b.id}`}
@@ -266,9 +268,10 @@ const Profile = () => {
           {tab === "content" && (
             <div className="section">
               <div className={styles.header}>
-                <div>Created Actions</div> {store.user.community_actions.length}
+                <div>Created Actions</div>{" "}
+                {store.user.community_actions?.length || 0}
               </div>
-              {store.user.community_actions.map((a) => (
+              {store.user.community_actions?.map((a) => (
                 <CommunityAction action={a} type={"my"} key={a.id} />
               ))}
             </div>

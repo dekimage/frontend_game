@@ -55,6 +55,7 @@ const GET_BOXES = gql`
           }
           expansion {
             data {
+              id
               attributes {
                 name
               }
@@ -184,7 +185,7 @@ const BoxProduct = ({ box, setSelectedProduct, openModal }) => {
     >
       <div className={styles.box_quantity}>{store.user.boxes[box.id]}</div>
       <div className={styles.box_expansion}>{box.expansion.name}</div>
-      <ImageUI imgUrl={box.image.url} height="125px" />
+      {/* <div><img src={box.image.url} alt="" height="125px" /></div> */}
       <div className={styles.box_cta}>
         {box.price_type == "stars" && (
           <img height="18px" src={`${baseUrl}/stars.png`} />
@@ -208,7 +209,7 @@ const BoxModal = ({ product, closeModal }) => {
       {box && (
         <div className={styles.boxModal}>
           <div className={styles.boxModal_name}>{box.name}</div>
-          <ImageUI imgUrl={box.image.url} height="250px" />
+          {/* <div><img src={box.image.url} alt="" height="250px" /></div> */}
           <div className={styles.boxModal_label}>Chance to contain:</div>
           <DropLabel />
           <div>Quantity: {store.user.boxes[box.id]}</div>
@@ -270,6 +271,7 @@ const Shop = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const gql_data = data && normalize(data);
+  console.log(gql_data);
 
   const hasExpansion = (expansionId) => {
     if (!store.user.expansions) {

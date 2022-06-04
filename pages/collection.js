@@ -20,7 +20,7 @@ const USER_ID = Cookie.get("userId");
 
 const GET_COLLECTION = gql`
   query ($id: ID!) {
-    user(id: $id) {
+    usersPermissionsUser(id: $id) {
       data {
         id
         attributes {
@@ -55,7 +55,7 @@ const GET_COLLECTION = gql`
                           attributes {
                             name
                             color
-                            iamge {
+                            image {
                               data {
                                 attributes {
                                   url
@@ -126,7 +126,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    !loading && gql_data && setCards(gql_data.user.usercards);
+    !loading &&
+      gql_data?.usersPermissionsUser.usercards &&
+      setCards(gql_data.usersPermissionsUser.usercards);
   }, [gql_data, loading]);
 
   const mergeCards = () => {
@@ -179,9 +181,9 @@ const Home = () => {
         {/* <div onClick={() => addFilters("realm", "health")}>rarity</div>
         <div onClick={() => addFilters("type", "free")}>type</div>
         <div onClick={() => addFilters("rarity", "common")}>all</div> */}
-        {gql_data && gql_data.user && (
+        {gql_data && gql_data.usersPermissionsUser && (
           <div className={styles.headline}>
-            Discovered: {gql_data.user.usercards.length}/{108}
+            Discovered: {gql_data.usersPermissionsUser.usercards.length}/{108}
           </div>
         )}
 
@@ -201,7 +203,7 @@ const Home = () => {
           </div>
         </div>
 
-        {gql_data && (
+        {cards.length > 0 && (
           <div>
             <div className={styles.grid}>
               {filterCards().map((card, i) => {
