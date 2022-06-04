@@ -138,14 +138,14 @@ const Card = ({ card }) => {
         )}
         {card.is_new && <div className={styles.isNew}>New!</div>}
         <div className={styles.realmLogo}>
-          {/* <img src={card.realm.image.url} /> */}
+          <img src={card.realm.image.url} />
         </div>
 
         <div className={styles.image}>
-          {/* <img
+          <img
             src={card.image.url}
             style={{ filter: !isColored && "grayscale(100%)" }}
-          /> */}
+          />
         </div>
         <div className={styles.card_body}>
           <div className={styles.rarity_center}>
