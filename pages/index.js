@@ -138,29 +138,20 @@ const Home = () => {
   const joinObjectives = (objectives, objectives_json) => {
     return objectives.map((obj) => {
       if (objectives_json[obj.id]) {
-        // isRefreshed = have 24 hours passed since last time?
-        const moreThan24 =
-          getTimeDiff(objectives_json[obj.id].isCollected).hours >= 24;
         if (obj.requirement === "login") {
           return {
             ...obj,
             progress: 1,
-            isCollected: !moreThan24,
+            isCollected: objectives_json[obj.id].isCollected,
           };
         }
         return {
           ...obj,
           progress: objectives_json[obj.id].progress,
-          isCollected: !moreThan24,
+          isCollected: objectives_json[obj.id].isCollected,
         };
       }
-      if (obj.requirement === "login") {
-        return {
-          ...obj,
-          progress: 1,
-          isCollected: false,
-        };
-      }
+
       return obj;
     });
   };

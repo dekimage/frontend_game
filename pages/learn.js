@@ -23,7 +23,7 @@ const USER_ID = Cookie.get("userId");
 
 const GET_USER_STATS = gql`
   query ($id: ID!) {
-    user(id: $id) {
+    usersPermissionsUser(id: $id) {
       data {
         id
         attributes {
@@ -70,6 +70,7 @@ const GET_REALMS = gql`
           coming_soon
           image {
             data {
+              id
               attributes {
                 url
               }
@@ -151,7 +152,7 @@ const Learn = () => {
 
   const usercardsData = usercardPreData && normalize(usercardPreData);
 
-  const realmHash = usercardsData
+  const realmHash = usercardsData?.user?.usercards
     ? calcRealmProgress(usercardsData.user.usercards)
     : { Essentials: 0 };
 
@@ -183,9 +184,11 @@ const Learn = () => {
             {tutorialRealm.map((realm, i) => (
               <Realm realm={realm} key={i} />
             ))}
+
             <div className={styles.header}>
               Basic Categories <CardType type={"free"} />
             </div>
+
             {freeRealms.map((realm, i) => (
               <Realm
                 realm={realm}
@@ -198,24 +201,11 @@ const Learn = () => {
                 key={i}
               />
             ))}
+
             <div className={styles.header}>
-              Pro Categories <CardType type={"premium"} />
+              Secret Category <CardType type={"special"} />
             </div>
-            {proRealms.map((realm, i) => (
-              <Realm
-                realm={realm}
-                completed={
-                  realmHash[realm.name] && realmHash[realm.name].completed
-                }
-                collected={
-                  realmHash[realm.name] && realmHash[realm.name].collected
-                }
-                key={i}
-              />
-            ))}
-            <div className={styles.header}>
-              Special Category <CardType type={"special"} />
-            </div>
+
             {specialRealm.map((realm, i) => (
               <Realm
                 realm={realm}
@@ -228,10 +218,28 @@ const Learn = () => {
                 key={i}
               />
             ))}
-            <div className={styles.header}>Coming Soon...</div>
+
+            <div className={styles.header}>
+              Premium Categories <CardType type={"premium"} />
+            </div>
+
+            {proRealms.map((realm, i) => (
+              <Realm
+                realm={realm}
+                completed={
+                  realmHash[realm.name] && realmHash[realm.name].completed
+                }
+                collected={
+                  realmHash[realm.name] && realmHash[realm.name].collected
+                }
+                key={i}
+              />
+            ))}
+
+            {/* <div className={styles.header}>Coming Soon...</div>
             {comingRealms.map((realm, i) => (
               <Realm realm={realm} key={i} />
-            ))}
+            ))} */}
           </div>
         )}
       </div>

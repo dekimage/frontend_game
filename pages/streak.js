@@ -5,8 +5,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { useRouter } from "next/router";
 // *** COMPONENTS ***
-import { ImageUI } from "../components/reusableUI";
-import Link from "next/link";
+import { Rarity } from "../components/Rarity";
 
 // *** ACTIONS ***
 import { claimStreakReward } from "../actions/action";
@@ -17,7 +16,7 @@ import { normalize } from "../utils/calculations";
 import cx from "classnames";
 import styles from "../styles/Streak.module.scss";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_AWS;
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const GET_STREAKS_QUERY = gql`
   query {
@@ -32,8 +31,10 @@ const GET_STREAKS_QUERY = gql`
               id
               attributes {
                 name
+                rarity
                 image {
                   data {
+                    id
                     attributes {
                       url
                     }
@@ -49,6 +50,7 @@ const GET_STREAKS_QUERY = gql`
                 name
                 image {
                   data {
+                    id
                     attributes {
                       url
                     }
@@ -79,8 +81,8 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
     id,
     reward_amount,
     streak_count,
-    isCollected,
-    isReady,
+    is_collected,
+    is_ready,
   } = streak;
 
   const reward = reward_card ? reward_card : reward_box;
@@ -90,24 +92,28 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
       className={cx(
         styles.streak,
         isSelected && [styles.active],
-        isReady && [styles.isReady],
-        isCollected && [styles.isCollected]
+        is_ready && [styles.isReady],
+        is_collected && [styles.isCollected]
       )}
-      onClick={() => setSelectedStreak({ streak_count, isReady, isCollected })}
+      onClick={() =>
+        setSelectedStreak({ streak_count, is_ready, is_collected })
+      }
     >
       <div className="flex_center">
         <div className={styles.image}>
-          {isCollected ? (
+          {is_collected ? (
             <img src={`${baseUrl}/checked.png`} height="20px" />
           ) : (
             <img src={reward.image.url} alt="" />
           )}
-          {!isCollected && (
+          {!is_collected && (
             <div className={styles.streak_amount}>x{reward_amount || 1}</div>
           )}
         </div>
-
-        <div className={styles.streak_name}>{reward.name}</div>
+        <div className="ml1">
+          <div className={styles.streak_name}>{reward.name}</div>
+          {reward.rarity && <Rarity rarity={reward.rarity} />}
+        </div>
       </div>
 
       <div className={styles.streakIcon}>
@@ -134,13 +140,13 @@ const StreakTower = () => {
       if (userStreaks[s.streak_count]) {
         return {
           ...s,
-          isCollected: true,
+          is_collected: true,
         };
       }
 
       return {
         ...s,
-        isReady: store.user.highest_streak_count >= s.streak_count,
+        is_ready: store.user.highest_streak_count >= s.streak_count,
       };
     });
   };
@@ -161,11 +167,14 @@ const StreakTower = () => {
             <ion-icon name="chevron-back-outline"></ion-icon>
           </div>
 
-          <div className={styles.label}>Streak</div>
+          <div className={styles.label}>Highest Streak</div>
         </div>
 
         <div className={styles.streakTitle}>
-          <img src={`${baseUrl}/streak_305510ebfc.png`} height="60px" />
+          <div style={{ position: "relative" }}>
+            <img src={`${baseUrl}/streak.png`} height="60px" />
+          </div>
+
           <div className={styles.streakTitle_amount}>
             {store.user.highest_streak_count}
           </div>
@@ -175,35 +184,34 @@ const StreakTower = () => {
           It takes only 1 second to log in and claim.
         </div>
         {gql_data && store.user && (
-          <div>
-            {mergeStreaks(
-              gql_data.streakrewards,
-              store.user.streak_rewards
-            ).map((streak, i) => {
-              const isSelected =
-                parseInt(streak.streak_count) === selectedStreak.streak_count;
-              return (
-                <Streak
-                  streak={streak}
-                  key={i}
-                  isSelected={isSelected}
-                  setSelectedStreak={setSelectedStreak}
-                />
-              );
-            })}
+          <div className={styles.streakContainer}>
+            {mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)
+              .sort((a, b) => a.id - b.id)
+              .map((streak, i) => {
+                const isSelected =
+                  parseInt(streak.streak_count) === selectedStreak.streak_count;
+                return (
+                  <Streak
+                    streak={streak}
+                    key={i}
+                    isSelected={isSelected}
+                    setSelectedStreak={setSelectedStreak}
+                  />
+                );
+              })}
           </div>
         )}
         <div className={styles.fixed}>
           <div
             className={cx(
               "btn",
-              selectedStreak.isReady && !selectedStreak.isCollected
+              selectedStreak.is_ready && !selectedStreak.is_collected
                 ? "btn-primary"
                 : "btn-disabled"
             )}
             onClick={() => {
-              selectedStreak.isReady &&
-                !selectedStreak.isCollected &&
+              selectedStreak.is_ready &&
+                !selectedStreak.is_collected &&
                 claimStreakReward(dispatch, selectedStreak.streak_count);
             }}
           >

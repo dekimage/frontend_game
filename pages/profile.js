@@ -41,11 +41,11 @@ const Stat = ({ img, number, text, isPercent = false }) => {
   );
 };
 
-export const Activity = ({ img, link, text, notification = false }) => {
+export const Activity = ({ img, link, text, notification = 0 }) => {
   return (
     <Link href={link}>
       <div className={styles.activityBox}>
-        {notification && (
+        {notification !== 0 && (
           <div className={styles.activityBox_notification}>{notification}</div>
         )}
         <div className={styles.activityBox_img}>
@@ -130,7 +130,7 @@ const Profile = () => {
                     height="66px"
                   />
                 </div>
-                <div className={styles.level}>25</div>
+                <div className={styles.level}>{store.user.level}</div>
                 <div className={styles.username}>{store.user.username}</div>
                 <ProgressBar progress={store.user.xp} max={50} />
 
@@ -166,7 +166,7 @@ const Profile = () => {
               text={"Highest Streak"}
             />
             <Stat
-              number={store.user.maxEnergy}
+              number={store.user.max_energy}
               img={`${baseUrl}/energy.png`}
               text={"Max Energy"}
             />

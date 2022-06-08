@@ -86,7 +86,7 @@ const SliderProgress = ({
           setIsWarningModalOpen(true);
           openModal();
         }}
-        className="flex_center"
+        className={styles.escapeBtn}
       >
         <img src={clseIcon} height="20px" />
       </div>

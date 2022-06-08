@@ -11,8 +11,6 @@ import NavBar from "../../components/NavBar";
 import Card from "../../components/Card";
 import { normalize } from "../../utils/calculations";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
 const GET_REALM_ID = gql`
   query ($id: ID!) {
     realm(id: $id) {
@@ -23,6 +21,7 @@ const GET_REALM_ID = gql`
           description
           image {
             data {
+              id
               attributes {
                 url
               }
@@ -39,6 +38,7 @@ const GET_REALM_ID = gql`
                 is_open
                 image {
                   data {
+                    id
                     attributes {
                       url
                     }
@@ -60,6 +60,7 @@ const GET_REALM_ID = gql`
                       color
                       image {
                         data {
+                          id
                           attributes {
                             url
                           }
@@ -100,7 +101,7 @@ const Cards = () => {
           ...collectionCard[0],
           id: card.id,
           image: card.image,
-          isOpen: card.is_open,
+          is_open: card.is_open,
           rarity: card.rarity,
           type: card.type,
           realm: card.realm,

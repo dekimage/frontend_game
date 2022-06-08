@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 
 const backendAPi = process.env.NEXT_PUBLIC_API_URL;
 const baseUrl = `${backendAPi}/api`;
-const userUrl = "/users-permissions/users";
+const userUrl = "/usercard";
 
 const AUTH_TOKEN = Cookie.get("token");
 axios.defaults.baseURL = baseUrl;
@@ -13,13 +13,7 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
   : "";
 
 // API
-export const fetchUserApi = () => axios.get("/users/me");
-
-// TESTING DEV MODE
-export const developerModeApi = (job) =>
-  axios.put(`${userUrl}/developer-mode`, { job });
-
-export const achievementTestApi = () => axios.get(`${userUrl}/achievement`);
+export const fetchUserApi = () => axios.get("/usercard/me");
 
 // AUTH API
 export const signupApi = (username, email, password) =>
@@ -34,17 +28,6 @@ export const signupApi = (username, email, password) =>
       headers: { Authorization: "" },
     }
   );
-
-// export const signupApi = (username, email, password) => {
-//   axios({
-//     method: "post",
-//     headers: {
-//       // 'Authorization': `Bearer ${props.jwtToken}`, **// see how the bearer token now has a single space**
-//       "Content-Type": "application/json",
-//     },
-//     url: `/auth/local/register`,
-//   });
-// };
 
 export const loginApi = (identifier, password) =>
   axios.post(
@@ -101,7 +84,7 @@ export const openPackApi = (boxId) =>
 
 // 3. CARD PAGE
 export const updateCardApi = (cardId, action) =>
-  axios.put(`/users-permissions/users/update-card/${cardId}`, {
+  axios.put(`${userUrl}/update-card/${cardId}`, {
     action,
   });
 
@@ -130,19 +113,12 @@ export const restorePurchaseApi = () =>
 // 5. COMMUNITY ACTIONS
 //TODO: ADD DIFFERENT ROUTES - FOR DEFAULT SHADOW CRUD STRAPI
 export const createCommunityActionApi = (dataForm) =>
-  axios.post(`/community-actions`, dataForm);
+  axios.post(`/communityactions`, dataForm);
 export const deleteCommunityActionApi = (actionId) =>
-  axios.delete(`/community-actions/${actionId}`);
+  axios.delete(`/communityactions/${actionId}`);
 export const interactCommunityActionApi = (actionId, intent) =>
-  axios.put(`/community-actions/interact/${actionId}`, { intent });
+  axios.put(`/communityactions/interact/${actionId}`, { intent });
 
 // 6. ACTIONS ORIGINAL
 export const completeActionApi = (actionId, intent) =>
   axios.put(`/actions/complete/${actionId}`, { intent });
-
-// ARCHIVE OLD ACTIONS
-export const updateItemApi = (itemId, action) =>
-  axios.put("/users-permissions/users/update-item", {
-    itemId,
-    action,
-  });

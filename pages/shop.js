@@ -12,6 +12,7 @@ import NavBar from "../components/NavBar";
 import { ImageUI } from "../components/reusableUI";
 import Modal from "../components/Modal";
 import LootBoxModal from "../components/LootBoxModal";
+import { CardType } from "../components/Card";
 
 // *** ACTIONS ***
 import {
@@ -138,18 +139,32 @@ const DropLabel = ({}) => {
   );
 };
 
+const getHeight = (amount) => {
+  const heights = {
+    5: 30,
+    30: 55,
+    60: 70,
+    80: 80,
+  };
+  return heights[amount];
+};
+
 const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
   const {
     amount,
     appleID,
     googleID,
-    bonusAmount,
+    bonus_amount,
     description,
     discount,
+    type,
     image,
     name,
     price,
   } = gems;
+
+  const height = getHeight(type === "gems" && amount);
+
   return (
     <div
       className={styles.box}
@@ -158,11 +173,12 @@ const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
         openModal(true);
       }}
     >
-      <div className={styles.box_quantity}>
-        {amount} + {bonusAmount}
+      <div className={styles.box_name}>{name}</div>
+      <div className={styles.box_gemsAmount}>x {amount}</div>
+
+      <div className="mt1 mb1">
+        <img src={image.url} alt="" height={`${height}px`} />
       </div>
-      <div className={styles.box_expansion}>{name}</div>
-      <ImageUI imgUrl={image.url} height="50px" />
       <div
         className={styles.box_cta}
         onClick={() => purchaseProduct(dispatch, 2)}
@@ -175,27 +191,46 @@ const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
 
 const BoxProduct = ({ box, setSelectedProduct, openModal }) => {
   const [store, dispatch] = useContext(Context);
+  console.log(store.user);
   return (
-    <div
-      className={styles.box}
-      onClick={() => {
-        setSelectedProduct(box);
-        openModal(true);
-      }}
-    >
-      <div className={styles.box_quantity}>{store.user.boxes[box.id]}</div>
-      <div className={styles.box_expansion}>{box.expansion.name}</div>
-      {/* <div><img src={box.image.url} alt="" height="125px" /></div> */}
-      <div className={styles.box_cta}>
-        {box.price_type == "stars" && (
-          <img height="18px" src={`${baseUrl}/stars.png`} />
-        )}
-        {box.price_type == "gems" && (
-          <img height="18px" src={`${baseUrl}/gems.png`} />
-        )}
-        {box.price}
+    store.user && (
+      <div
+        className={styles.box}
+        onClick={() => {
+          setSelectedProduct(box);
+          openModal(true);
+        }}
+      >
+        {/* <div className={styles.box_type}>
+          <CardType
+            type={box.expansion.name === "Basic" ? "free" : "premium"}
+          />
+        </div> */}
+
+        <div
+          className={
+            store.user.boxes[box.id] === 0
+              ? styles.box_quantity
+              : styles.box_quantity_red
+          }
+        >
+          {store.user.boxes[box.id]}
+        </div>
+        <div className={styles.box_name}>{box.name}</div>
+        <div>
+          <img src={box.image.url} alt="" height="125px" />
+        </div>
+        <div className={styles.box_cta}>
+          {box.price_type == "stars" && (
+            <img height="18px" src={`${baseUrl}/stars.png`} />
+          )}
+          {box.price_type == "gems" && (
+            <img height="18px" src={`${baseUrl}/gems.png`} />
+          )}
+          {box.price}
+        </div>
       </div>
-    </div>
+    )
   );
 };
 
@@ -209,7 +244,9 @@ const BoxModal = ({ product, closeModal }) => {
       {box && (
         <div className={styles.boxModal}>
           <div className={styles.boxModal_name}>{box.name}</div>
-          {/* <div><img src={box.image.url} alt="" height="250px" /></div> */}
+          <div>
+            <img src={box.image.url} alt="" height="250px" />
+          </div>
           <div className={styles.boxModal_label}>Chance to contain:</div>
           <DropLabel />
           <div>Quantity: {store.user.boxes[box.id]}</div>
@@ -274,11 +311,11 @@ const Shop = () => {
   console.log(gql_data);
 
   const hasExpansion = (expansionId) => {
-    if (!store.user.expansions) {
-      return expansionId === 1 ? true : false;
+    if (store.user.expansions?.length === 0) {
+      return true;
     }
     return (
-      store.user.expansions.filter((e) => e.id === expansionId).length === 1
+      store.user.expansions?.filter((e) => e.id === expansionId).length === 1
     );
   };
 
@@ -314,19 +351,22 @@ const Shop = () => {
       </div>
 
       <div className="section">
-        <div>BOXES</div>
+        <div className={styles.header}>Boxes</div>
         <div className={styles.boxes}>
           {gql_data &&
-            gql_data.boxes.map((box, i) => {
-              return (
-                <BoxProduct
-                  box={box}
-                  key={i}
-                  setSelectedProduct={setSelectedProduct}
-                  openModal={openModal}
-                />
-              );
-            })}
+            store.user?.boxes &&
+            gql_data.boxes
+              .sort((a, b) => a.id - b.id)
+              .map((box, i) => {
+                return (
+                  <BoxProduct
+                    box={box}
+                    key={i}
+                    setSelectedProduct={setSelectedProduct}
+                    openModal={openModal}
+                  />
+                );
+              })}
         </div>
 
         <Modal
@@ -343,23 +383,27 @@ const Shop = () => {
       </div>
 
       <div className="section">
-        <div>GEMS</div>
-        {gql_data &&
-          getGems(gql_data.products).map((gems, i) => {
-            return (
-              <GemsProduct
-                gems={gems}
-                setSelectedProduct={setSelectedProduct}
-                openModal={openModal}
-                key={i}
-              />
-            );
-          })}
+        <div className={styles.header}>Gems</div>
+        <div className={styles.boxes}>
+          {gql_data &&
+            getGems(gql_data.products)
+              .sort((a, b) => a.amount - b.amount)
+              .map((gems, i) => {
+                return (
+                  <GemsProduct
+                    gems={gems}
+                    setSelectedProduct={setSelectedProduct}
+                    openModal={openModal}
+                    key={i}
+                  />
+                );
+              })}
+        </div>
       </div>
 
       {gql_data && store.user && (
         <div className="section">
-          <div>EXPANSIONS</div>
+          <div className={styles.header}>Expansions</div>
           <div className={styles.subscription}>
             <div className={styles.subscription_name}>
               {gql_data.expansion.name}
@@ -368,7 +412,7 @@ const Shop = () => {
               <div className={styles.subscription_reward}>
                 {gql_data.expansion.description}
               </div>
-              {hasExpansion(gql_data.expansion.id) ? (
+              {hasExpansion(store.user && gql_data.expansion.id) ? (
                 <div
                   className={styles.subscription_price}
                   onClick={() => {

@@ -68,7 +68,6 @@
 .card {
   width: auto;
   background-color: $actionize_black;
-  border-radius: 10px;
   @extend %flex_center;
   flex-direction: column;
   position: relative;

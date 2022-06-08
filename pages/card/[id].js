@@ -72,6 +72,7 @@ const GET_USERCARDS_QUERY = gql`
                       name
                       image {
                         data {
+                          id
                           attributes {
                             url
                           }
@@ -102,27 +103,7 @@ const GET_USERCARDS_QUERY = gql`
                     }
                   }
                 }
-                completed_actions {
-                  data {
-                    id
-                  }
-                }
-                upvoted_actions {
-                  data {
-                    id
-                  }
-                }
-                community_actions_completed {
-                  data {
-                    id
-                  }
-                }
-                reported_actions {
-                  data {
-                    id
-                  }
-                }
-                community_actions {
+                communityactions {
                   data {
                     id
                     attributes {
@@ -145,52 +126,73 @@ const GET_USERCARDS_QUERY = gql`
                     }
                   }
                 }
+              }
+            }
+          }
 
-                community_actions_claimed {
+          completed_actions {
+            data {
+              id
+            }
+          }
+          upvoted_actions {
+            data {
+              id
+            }
+          }
+          community_actions_completed {
+            data {
+              id
+            }
+          }
+          reported_actions {
+            data {
+              id
+            }
+          }
+
+          community_actions_claimed {
+            data {
+              id
+              attributes {
+                name
+                type
+                duration
+                votes
+                reports
+                steps {
+                  content
+                }
+                user {
                   data {
                     id
                     attributes {
-                      name
-                      type
-                      duration
-                      votes
-                      reports
-                      steps {
-                        content
-                      }
-                      user {
-                        data {
-                          id
-                          attributes {
-                            username
-                          }
-                        }
-                      }
+                      username
                     }
                   }
                 }
+              }
+            }
+          }
 
-                my_community_actions {
+          my_community_actions {
+            data {
+              id
+              attributes {
+                name
+                type
+                duration
+                votes
+                reports
+                is_private
+                steps {
+                  content
+                }
+                user {
                   data {
                     id
                     attributes {
-                      name
-                      type
-                      duration
-                      votes
-                      reports
-                      is_private
-                      steps {
-                        content
-                      }
-                      user {
-                        data {
-                          id
-                          attributes {
-                            username
-                          }
-                        }
-                      }
+                      username
                     }
                   }
                 }
@@ -216,6 +218,7 @@ const GET_CARD_ID = gql`
           is_open
           image {
             data {
+              id
               attributes {
                 url
               }
@@ -237,6 +240,7 @@ const GET_CARD_ID = gql`
                 name
                 image {
                   data {
+                    id
                     attributes {
                       url
                     }
@@ -525,6 +529,7 @@ const Action = ({ action }) => {
   );
 };
 
+// @calc
 const static_levels = [
   { lvl: 1, required: 1 },
   { lvl: 2, required: 2 },
@@ -631,10 +636,11 @@ const PlayCta = ({
 };
 
 const CardPage = ({ dataUserCard, dataCard }) => {
+  console.log(dataCard);
   const proxyUserCard = {
     level: 1,
     completed: 0,
-    quantity: 0,
+    quantity: dataCard.card.is_open ? 1 : 0,
   };
   const [store, dispatch] = useContext(Context);
 
@@ -655,57 +661,59 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   }, [dataUserCard]);
 
   const router = useRouter();
-  const card = usercard.card || dataCard.card;
+  // const card = usercard.card || dataCard.card;
+  const card = dataCard.card;
 
   const isPremiumLocked =
     card.expansion.name === "Pro" &&
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
 
-  const mergeActions = (usercard, actions, checkingArray, keyword) => {
-    const result = actions.map((action) => {
-      return {
-        ...action,
-        [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
-        is_reported: !!usercard.reported_actions.filter(
-          (a) => a.id === action.id
-        )[0],
-        is_upvoted: !!usercard.upvoted_actions.filter(
-          (a) => a.id === action.id
-        )[0],
-      };
-    });
-    return result;
-  };
+  // const mergeActions = (usercard, actions, checkingArray, keyword) => {
+  //   const result = actions.map((action) => {
+  //     return {
+  //       ...action,
+  //       [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
+  //       is_reported: !!usercard.reported_actions.filter(
+  //         (a) => a.id === action.id
+  //       )[0],
+  //       is_upvoted: !!usercard.upvoted_actions.filter(
+  //         (a) => a.id === action.id
+  //       )[0],
+  //     };
+  //   });
+  //   return result;
+  //   console.log(result);
+  // };
 
   const isLevelUnlocked =
     usercard.level >= selectedLevel && selectedLevel <= usercard.completed + 1;
 
-  const communityActions =
-    dataUserCard &&
-    mergeActions(
-      usercard,
-      card.community_actions,
-      usercard.community_actions_claimed,
-      "is_claimed"
-    );
+  // const communityActions =
+  //   dataUserCard &&
+  //   mergeActions(
+  //     usercard,
+  //     card.communityactions,
+  //     usercard.community_actions_claimed,
+  //     "is_claimed"
+  //   );
 
-  const addedActions =
-    dataUserCard &&
-    mergeActions(
-      usercard,
-      usercard.community_actions_claimed,
-      usercard.community_actions_completed,
-      "is_completed"
-    );
+  // const addedActions =
+  //   dataUserCard &&
+  //   mergeActions(
+  //     usercard,
+  //     usercard.community_actions_claimed,
+  //     usercard.community_actions_completed,
+  //     "is_completed"
+  //   );
 
-  const myActions =
-    dataUserCard &&
-    mergeActions(
-      usercard,
-      usercard.my_community_actions,
-      usercard.community_actions_claimed,
-      "is_claimed"
-    );
+  // const myActions =
+  //   dataUserCard &&
+  //   mergeActions(
+  //     usercard,
+  //     usercard.my_community_actions,
+  //     usercard.community_actions_claimed,
+  //     "is_claimed"
+  //   );
 
   return (
     <div className="section_container">
@@ -726,7 +734,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
         </Link>
 
-        <img className={styles.image} src={`${baseUrl}${card.image.url}`} />
+        <img className={styles.image} src={card.image.url} />
         <div
           className={styles.background}
           style={{ "--background": card.realm.color }}
@@ -849,7 +857,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           <div>Level {selectedLevel}</div>
         </div>
 
-        {isLevelUnlocked ? (
+        {/* {isLevelUnlocked ? (
           card.actions && usercard.completed_actions ? (
             mergeActions(
               usercard,
@@ -872,7 +880,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             />
             Complete the Ideas for this level to unlock Actions.
           </div>
-        )}
+        )} */}
 
         {dataUserCard && (
           <div className={styles.tabs}>
@@ -885,7 +893,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             >
               Community
               <div className={styles.tabCounter}>
-                {card.community_actions.length}
+                {card.communityactions.length}
               </div>
             </div>
 
@@ -917,7 +925,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
         )}
 
-        {activeTab === "community" && card.communityactions && (
+        {/* {activeTab === "community" && card.communityactions && (
           <>
             <div className={styles.header}>
               <div>Community Actions</div>
@@ -935,9 +943,9 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               </div>
             )}
           </>
-        )}
+        )} */}
 
-        {activeTab === "my" && (
+        {/* {activeTab === "my" && (
           <>
             <div className={styles.header}>
               <div>My Actions</div>
@@ -979,7 +987,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               </div>
             )}
           </>
-        )}
+        )} */}
 
         {isShowing && (
           <Modal
@@ -1019,7 +1027,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               <ion-icon name="lock-closed-outline"></ion-icon>
               Purchase Expansion
             </div>
-          ) : card.isOpen ? (
+          ) : card.is_open ? (
             <PlayCta
               card={card}
               maxQuantity={maxQuantity}
@@ -1066,10 +1074,11 @@ const Card = () => {
   const [getUserCard, { data, loading, error }] =
     useLazyQuery(GET_USERCARDS_QUERY);
   const gql_usercard = data && normalize(data);
+
   useEffect(() => {
     if (store.user.usercards) {
       const usercard = store.user.usercards.filter((uc) => {
-        return uc.card === parseInt(router.query.id);
+        return uc.card.id === parseInt(router.query.id);
       })[0];
 
       if (!usercard) {
@@ -1083,6 +1092,7 @@ const Card = () => {
     <div className="background_dark">
       {error || (cardError && <div>Error: {error}</div>)}
       {loading || (cardLoading && <div>Loading...</div>)}
+
       {gql_card && store.user && (
         <CardPage
           dataCard={gql_card}

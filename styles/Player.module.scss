@@ -196,6 +196,10 @@
 .header {
   @extend %flex_between;
 }
+.escapeBtn {
+  @extend %flex_center;
+  cursor: pointer;
+}
 
 .sliderProgress {
   @extend %flex_center;

@@ -19,7 +19,7 @@ const Objective = ({
     description,
     requirement,
     requirement_amount,
-    reward,
+    reward_type,
     reward_amount,
     isCollected,
     progress,
@@ -36,7 +36,7 @@ const Objective = ({
     >
       {/* REWARD COMPONENT */}
 
-      <RewardImage reward={reward} amount={reward_amount} isTask={true} />
+      <RewardImage reward={reward_type} amount={reward_amount} isTask={true} />
       <div className={styles.objective_body}>
         {/* <div
           className={cx([styles.objective_name], {

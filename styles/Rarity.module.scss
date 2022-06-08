@@ -1,0 +1,38 @@
+@import "placeholders";
+@import "variables";
+
+.rarity {
+  @extend %flex_center;
+  flex-direction: row;
+  text-transform: capitalize;
+  padding: 0.2rem 0.5rem;
+  padding-top: 0.1rem;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
+  width: 75px;
+  &_image {
+    @extend %flex_center;
+  }
+  img {
+    height: 12px;
+    margin-right: 5px;
+  }
+  &.common {
+    background-color: gray;
+    border: 2px solid darken($color: gray, $amount: 20);
+  }
+  &.rare {
+    border: 2px solid darken($color: $blue_headspace, $amount: 20);
+    background-color: $blue_headspace;
+  }
+  &.epic {
+    border: 2px solid darken($color: #b62ac5, $amount: 20);
+    background-color: #b62ac5;
+  }
+  &.legendary {
+    border: 2px solid darken($color: $wowLegendary, $amount: 20);
+    background-color: $wowLegendary;
+  }
+}

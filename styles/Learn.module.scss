@@ -16,7 +16,8 @@
 
 .realm_body {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
+  padding-right: 0;
 }
 
 .realm_name {
@@ -66,6 +67,5 @@
 .header {
   @extend %flex_between;
   padding: 0.5rem;
-  font-weight: 700;
-  font-size: 22px;
+  @extend %title;
 }

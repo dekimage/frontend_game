@@ -17,7 +17,6 @@ export const claimObjective = (dispatch, objectiveId) => {
   api
     .claimObjectiveApi(objectiveId)
     .then(({ data }) => {
-      console.log(dispatch);
       dispatch({ type: "CLAIM_OBJECTIVE", data });
     })
     .catch((err) => {
@@ -28,7 +27,6 @@ export const claimObjectiveCounter = (dispatch, objectiveId, temporal_type) => {
   api
     .claimObjectiveCounterApi(objectiveId, temporal_type)
     .then(({ data }) => {
-      console.log(dispatch);
       dispatch({ type: "CLAIM_OBJECTIVE_COUNTER", data });
     })
     .catch((err) => {
@@ -236,19 +234,6 @@ export const completeAction = (dispatch, actionId, intent) => {
     .completeActionApi(actionId, intent)
     .then(({ data }) => {
       dispatch({ type: "UPDATE_ACTION", data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-// ARCHIVE OLD APIS
-export const updateItem = (dispatch, itemId, action) => {
-  api
-    .updateItemApi(itemId, action)
-    .then(({ data }) => {
-      dispatch({ type: "EQUIP_ITEM", data });
-      console.log("data", data);
     })
     .catch((err) => {
       console.log(err);
