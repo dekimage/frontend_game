@@ -29,6 +29,7 @@ const RewardImage = ({
           <img src={checkmark} />
         </div>
       )}
+
       {isPremium && !isUserPremium && (
         <div className={styles.lock}>
           <ion-icon name="lock-closed-outline"></ion-icon>
@@ -40,7 +41,9 @@ const RewardImage = ({
         {reward == "streak" && (
           <img height="8px" src={`${baseUrl}/streak.png`} />
         )}
-        {reward == "gems" && <img src={gemIcon} />}
+        {reward == "gems" && (
+          <img src={`${baseUrl}/gems.png`} height="12px" className="mb5" />
+        )}
       </div>
 
       <div className={styles.reward_amount}>{amount}</div>

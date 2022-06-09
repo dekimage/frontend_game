@@ -1,17 +1,23 @@
 import { React, useState } from "react";
+import Cookie from "js-cookie";
 
+const backendAPi = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+const apiUrl = `${backendAPi}/api`;
 import Strapi from "strapi-sdk-javascript/build/main";
-const apiUrl = process.env.API_URL || "http://localhost:1337";
-const strapi = new Strapi(apiUrl);
+const strapi = new Strapi(`${apiUrl}/api`);
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import NavBar from "../components/NavBar";
 // import { RealmsList } from "./learn";
 import styles from "../styles/SearchBar.module.scss";
 import debounce from "debounce";
+import { normalize } from "../utils/calculations";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 // import SearchCard from "./SearchCard/SearchCard";
+
+console.log(strapi);
 
 const SearchBar = () => {
   const [search, setSearch] = useState("");
@@ -21,18 +27,20 @@ const SearchBar = () => {
   const router = useRouter();
 
   const onSearch = debounce((value) => {
+    const query = `?filters[name][$contains]=${value}&populate[0]=image`;
     if (search.length > 0) {
       setIsSearching(true);
-      strapi.getEntries("cards", { name_contains: value }).then((res) => {
-        // const filtered = res.filter((card) => {
-        //   return card.name.toLowerCase().startsWith(value);
-        // });
-
-        setResult(res);
-        setIsSearching(false);
-      });
+      axios
+        .get(`/cards/${query}`)
+        .then((res) => {
+          setResult(normalize(res).data);
+          setIsSearching(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, 1000);
+  }, 1500);
 
   const onChange = (e) => {
     e.preventDefault();
@@ -57,6 +65,8 @@ const SearchBar = () => {
     setIsSearching(false);
   };
 
+  console.log(result);
+
   const SearchCard = ({ card }) => {
     return (
       <Link
@@ -64,7 +74,7 @@ const SearchBar = () => {
         as={`/card/${card.id}`}
       >
         <div className={styles.searchCard}>
-          <img className={styles.image} src={`${baseUrl}${card.image.url}`} />
+          {card.image && <img className={styles.image} src={card.image.url} />}
           <div>{card.name}</div>
         </div>
       </Link>
@@ -97,7 +107,7 @@ const SearchBar = () => {
               <div className={styles.noResults}>
                 <img
                   style={{ height: "200px", marginBottom: "1rem" }}
-                  // src={`${baseUrl}/uploads/Asking_Questions_061ea6ce0f.png`}
+                  src="https://backendactionise.s3.eu-west-1.amazonaws.com/declutter_lifestyle_955677a0df.png"
                 />
                 Explore Actionise
                 <span className={styles.searchDescription}>
@@ -116,7 +126,7 @@ const SearchBar = () => {
                   <div className={styles.noResults}>
                     <img
                       style={{ height: "200px", marginBottom: "1rem" }}
-                      // src={`${baseUrl}/uploads/mech_6_3a2f8d0611.png`}
+                      src="https://backendactionise.s3.eu-west-1.amazonaws.com/strong_sit_f2e5f0f1a5.png"
                     />
                     No Results Found...
                   </div>

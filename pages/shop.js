@@ -82,6 +82,7 @@ const GET_BOXES = gql`
           description
           price
           discount
+          bonus_amount
           type
           google_id
           apple_id
@@ -114,6 +115,14 @@ const GET_BOXES = gql`
           description
           price
           discount_price
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
         }
       }
     }
@@ -141,8 +150,8 @@ const DropLabel = ({}) => {
 
 const getHeight = (amount) => {
   const heights = {
-    5: 30,
-    30: 55,
+    10: 50,
+    20: 75,
     60: 70,
     80: 80,
   };
@@ -174,7 +183,10 @@ const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
       }}
     >
       <div className={styles.box_name}>{name}</div>
-      <div className={styles.box_gemsAmount}>x {amount}</div>
+      <div className={styles.boxModal_amount}>
+        {gems.amount}
+        <span className={styles.boxModal_bonus}> + {gems.bonus_amount}</span>
+      </div>
 
       <div className="mt1 mb1">
         <img src={image.url} alt="" height={`${height}px`} />
@@ -183,7 +195,7 @@ const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
         className={styles.box_cta}
         onClick={() => purchaseProduct(dispatch, 2)}
       >
-        ${price}
+        $ {price}
       </div>
     </div>
   );
@@ -238,6 +250,13 @@ const BoxModal = ({ product, closeModal }) => {
   const box = product.type !== "gems" && product;
   const gems = product.type === "gems" && product;
   const [store, dispatch] = useContext(Context);
+  let cantBuy = false;
+  if (box) {
+    cantBuy =
+      box.price_type === "stars"
+        ? box.price > store.user.stars
+        : box.price > store.user.gems;
+  }
 
   return (
     <div>
@@ -249,10 +268,13 @@ const BoxModal = ({ product, closeModal }) => {
           </div>
           <div className={styles.boxModal_label}>Chance to contain:</div>
           <DropLabel />
-          <div>Quantity: {store.user.boxes[box.id]}</div>
+          <div className={styles.boxModal_quantity}>
+            You have {store.user.boxes[box.id]} pack
+            {store.user.boxes[box.id] == 1 ? "" : "s"}.
+          </div>
           {store.user.boxes[box.id] > 0 ? (
             <div
-              className="btn btn-primary"
+              className="btn btn-stretch btn-primary"
               onClick={() => {
                 openPack(dispatch, box.id);
                 closeModal();
@@ -262,19 +284,33 @@ const BoxModal = ({ product, closeModal }) => {
             </div>
           ) : (
             <div
-              className="btn btn-primary"
+              className="btn btn-stretch btn-primary"
               onClick={() => {
                 purchaseLootBox(dispatch, box.id);
                 closeModal();
               }}
             >
               {box.price_type == "stars" && (
-                <img height="18px" src={`${baseUrl}/stars.png`} />
+                <img
+                  height="18px"
+                  className="mr5"
+                  src={`${baseUrl}/stars.png`}
+                />
               )}
               {box.price_type == "gems" && (
-                <img height="18px" src={`${baseUrl}/gems.png`} />
+                <img
+                  height="18px"
+                  className="mr5"
+                  src={`${baseUrl}/gems.png`}
+                />
               )}
-              {box.price}
+              <span
+                className={cx(styles.boxModal_cta, {
+                  [styles.boxModal_ctaRed]: cantBuy,
+                })}
+              >
+                {box.price}
+              </span>
             </div>
           )}
         </div>
@@ -282,10 +318,18 @@ const BoxModal = ({ product, closeModal }) => {
       {gems && (
         <div className={styles.boxModal}>
           <div className={styles.boxModal_name}>{gems.name}</div>
-          <ImageUI imgUrl={gems.image.url} height="100px" />
-          <div>
-            x{gems.amount} + {gems.bonusAmount}
+          <img src={gems.image.url} height={"100px"} alt="" />
+          <div className={styles.boxModal_amount}>
+            {gems.amount}
+            <span className={styles.boxModal_bonus}>
+              {" "}
+              + {gems.bonus_amount}
+            </span>
+            <img height="14px" src={`${baseUrl}/gems.png`} className="ml5" />
           </div>
+          <span className={styles.boxModal_bonusLabel}>
+            First Purchase Bonus
+          </span>
           <div
             className="btn btn-primary"
             onClick={() => {
@@ -293,7 +337,7 @@ const BoxModal = ({ product, closeModal }) => {
               closeModal();
             }}
           >
-            ${gems.price}
+            $ {gems.price}
           </div>
         </div>
       )}
@@ -308,11 +352,10 @@ const Shop = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const gql_data = data && normalize(data);
-  console.log(gql_data);
 
   const hasExpansion = (expansionId) => {
     if (store.user.expansions?.length === 0) {
-      return true;
+      return false;
     }
     return (
       store.user.expansions?.filter((e) => e.id === expansionId).length === 1
@@ -334,24 +377,57 @@ const Shop = () => {
               Gain progress faster!
             </div>
 
-            <div className={styles.subscription_reward}>Energy x2 </div>
-            <div className={styles.subscription_reward}>Stars x2 </div>
-            <div className={styles.subscription_reward}>30 Gems</div>
-            <div className={styles.subscription_reward}>Premium Rewards</div>
+            <div className={styles.subscriptionContainer}>
+              <div className={styles.subscription_reward}>
+                <img
+                  height="18px"
+                  src={`${baseUrl}/energy.png`}
+                  className="mr5"
+                />
+                x2 Energy
+              </div>
+              <div className={styles.subscription_reward}>
+                <img
+                  height="18px"
+                  src={`${baseUrl}/stars.png`}
+                  className="mr5"
+                />
+                x2 Stars
+              </div>
+
+              <div className={styles.subscription_reward}>
+                <img
+                  height="18px"
+                  src={`${baseUrl}/gems.png`}
+                  className="mr5"
+                />
+                +30 Gems
+              </div>
+              <div className={styles.subscription_reward}>
+                <img
+                  height="18px"
+                  src={`${baseUrl}/gift.png`}
+                  className="mr5"
+                />
+                Premium Rewards
+              </div>
+            </div>
 
             <div
-              className={styles.subscription_price}
+              className="btn btn-stretch btn-primary mt1"
               onClick={() => purchaseProduct(dispatch, 1, "android")}
             >
               $ 4.99
             </div>
-            <div className={styles.subscription_monthly}>Billed Monthly.</div>
+            <div className={styles.subscription_monthly}>
+              Billed Monthly. Cancel anytime.
+            </div>
           </div>
         </div>
       </div>
 
       <div className="section">
-        <div className={styles.header}>Boxes</div>
+        <div className={styles.header}>Packs</div>
         <div className={styles.boxes}>
           {gql_data &&
             store.user?.boxes &&
@@ -404,29 +480,69 @@ const Shop = () => {
       {gql_data && store.user && (
         <div className="section">
           <div className={styles.header}>Expansions</div>
+
           <div className={styles.subscription}>
-            <div className={styles.subscription_name}>
-              {gql_data.expansion.name}
+            <CardType type={"premium"} />
+            <div className={styles.expansion_name}>
+              {/* {gql_data.expansion.name} */}
+              Expansion Set
             </div>
+
+            <div className={styles.expansion_description}>
+              {/* <div className={styles.expansion_salesPoint}>
+                + Unlock the full Actionise Experience!
+              </div> */}
+              {/* <div className={styles.expansion_salesPoint}>
+                + 20 New Open Cards (Instant Access)
+              </div>
+              <div className={styles.expansion_salesPoint}>
+                + 20 New Collectable Cards (Premium Packs)
+              </div> */}
+              <div className={styles.expansion_salesPoint}>
+                + 40 New Premium Cards
+              </div>
+              <div className={styles.expansion_salesPoint}>
+                + 120 New Actions
+              </div>
+              <div className={styles.expansion_salesPoint}>
+                + 150 New Ideas & Questions
+              </div>
+              <div className={styles.expansion_salesPoint}>
+                + Wisdom from 50+ Books
+              </div>
+            </div>
+
+            {gql_data.expansion.image && (
+              <img src={gql_data.expansion.image.url} alt="" height="125px" />
+            )}
             <div className={styles.subscription_body}>
               <div className={styles.subscription_reward}>
                 {gql_data.expansion.description}
               </div>
               {hasExpansion(store.user && gql_data.expansion.id) ? (
-                <div
-                  className={styles.subscription_price}
-                  onClick={() => {
-                    store.user.gems >= gql_data.expansion.price &&
-                      purchaseExpansion(dispatch, gql_data.expansion.id);
-                  }}
-                >
-                  <img height="18px" src={`${baseUrl}/gems.png`} />
-                  {gql_data.expansion.price}
-                </div>
-              ) : (
-                <div className={styles.subscription_price}>
+                <div className={styles.expansion_alreadyPurchased}>
                   Already Purchased
                 </div>
+              ) : (
+                <>
+                  <div
+                    className="btn btn-stretch btn-primary"
+                    onClick={() => {
+                      store.user.gems >= gql_data.expansion.price &&
+                        purchaseExpansion(dispatch, gql_data.expansion.id);
+                    }}
+                  >
+                    <img
+                      height="18px"
+                      src={`${baseUrl}/gems.png`}
+                      className="mr5"
+                    />
+                    {gql_data.expansion.price}
+                  </div>
+                  <div className={styles.subscription_monthly}>
+                    Lifetime Access.
+                  </div>
+                </>
               )}
             </div>
           </div>

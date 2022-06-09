@@ -76,6 +76,7 @@ export const purchaseLootBox = (dispatch, boxId) => {
     .purchaseLootBoxApi(boxId)
     .then(({ data }) => {
       const upData = { ...data, boxId };
+      console.log(11, upData);
       dispatch({ type: "PURCHASE_BOX", upData });
     })
     .catch((err) => {

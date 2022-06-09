@@ -61,7 +61,7 @@ const Setting = ({ settings }) => {
   return (
     <div
       className={styles.settingsItem}
-      onClick={() => setActiveSettings(settings.link)}
+      // onClick={() => setActiveSettings(settings.link)}
     >
       {settings.label}
     </div>
@@ -75,6 +75,14 @@ const Settings = () => {
   return (
     <div className="background_dark">
       <div className="section_container">
+        <div className={styles.header}>
+          <Link href="/profile">
+            <div className={styles.back}>
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </div>
+          </Link>
+          <div className={styles.title}>Settings</div>
+        </div>
         {settings.map((set, i) => {
           return <Setting settings={set} key={i} />;
         })}

@@ -86,8 +86,8 @@ const Reducer = (store, action) => {
             ...store.user.boxes,
             [action.upData.boxId]: store.user.boxes[action.upData.boxId] + 1,
           },
-          stars: action.upData.data.stars,
-          gems: action.upData.data.gems,
+          stars: action.data.stars,
+          gems: action.data.gems,
         },
       };
 

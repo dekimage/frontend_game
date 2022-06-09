@@ -13,3 +13,19 @@
   flex-direction: column;
   @extend %secondaryText;
 }
+// DUPLICATE REALM
+.header {
+  @extend %title;
+  @extend %flex_between;
+  padding: 1rem;
+  position: relative;
+}
+
+.back {
+  @extend %flex_center;
+}
+
+.title {
+  flex-grow: 1;
+  @extend %flex_center;
+}

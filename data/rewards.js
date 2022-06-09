@@ -28,11 +28,11 @@ export const objectiveCounterRewardsTable = {
       reward_quantity: 15,
     },
     3: {
-      reward_type: "gems",
-      reward_quantity: 1,
+      reward_type: "stars",
+      reward_quantity: 40,
     },
     4: {
-      reward_type: "pack", // ?? type?
+      reward_type: "gems", // ?? type?
       reward_quantity: 1,
     },
   },
@@ -46,12 +46,12 @@ export const objectiveCounterRewardsTable = {
       reward_quantity: 75,
     },
     3: {
-      reward_type: "gems",
-      reward_quantity: 3,
+      reward_type: "stars",
+      reward_quantity: 100,
     },
     4: {
-      reward_type: "pack", // ?? type?
-      reward_quantity: 1,
+      reward_type: "gems", // ?? type?
+      reward_quantity: 3,
     },
   },
 };

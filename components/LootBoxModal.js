@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import cx from "classnames";
 import { Context } from "../context/store";
 import Card from "../components/Card";
 import { ImageUI } from "../components/reusableUI";
 import styles from "../styles/Shop.module.scss";
 import { closeRewardsModal } from "../actions/action";
+import { Rarity } from "./Rarity";
 
 const LootBoxModal = () => {
   const [store, dispatch] = useContext(Context);
@@ -35,41 +37,47 @@ const LootBoxModal = () => {
       <div className="text__b">
         {page === "box" && box.name}
         {page === "cards" && (
-          <div className={styles.rarityLabel}>{card.card.rarity} Card</div>
+          <div className={styles.boxResult_header}>
+            <Rarity rarity={card.card.rarity} />
+            <div className={styles.boxResult_quantity}> x {card.quantity}</div>
+          </div>
         )}
         {page === "results" && "You Got:"}
       </div>
+
       {page === "cards" && (
-        <div className={styles.duplicateLabel}>
-          {card.isNew ? "New" : "Duplicate"}
+        <div
+          className={cx(styles.duplicateLabel, { [styles.new]: card.is_new })}
+        >
+          {card.is_new ? "New" : "Duplicate"}
         </div>
       )}
 
       {page === "box" && (
         <div className={styles.wobbleAnimation}>
-          <ImageUI imgUrl={box.image.url} height="250px" />
+          <img src={box.image.url} alt="" height="250px" />
         </div>
       )}
       {page === "cards" && (
         <div className={styles.wobbleAnimation}>
-          <Card card={card.card} /> Qty: {card.quantity}
+          <Card card={card.card} />
         </div>
       )}
       {page === "results" && (
-        <div>
+        <div className={styles.boxResult_container}>
           {results.map((c, i) => (
-            <div key={i}>
-              <div className={styles.duplicateLabel}>
-                {card.isNew ? "New" : "Duplicate"}
+            <div key={i} className="mu1">
+              <div className={styles.boxResult_header}>
+                <Rarity rarity={c.card.rarity} />
+                <div className={styles.boxResult_quantity}>x {c.quantity}</div>
               </div>
               <Card card={c.card} key={i} />
-              Qty: {card.quantity}
             </div>
           ))}
         </div>
       )}
       {!(page === "results") && (
-        <div className="modal-close-button-lootbox  m1">{counter}</div>
+        <div className="modal-close-button-lootbox m1">{counter}</div>
       )}
       {page === "results" ? (
         <div

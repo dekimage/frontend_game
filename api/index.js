@@ -67,7 +67,7 @@ export const claimStreakRewardApi = (rewardCount) =>
 
 // 2. SHOP PAGE
 export const purchaseLootBoxApi = (boxId) =>
-  axios.put(`/users-permissions/users/purchase-box/${boxId}`);
+  axios.put(`${userUrl}/purchase-box/${boxId}`);
 
 export const purchaseProductApi = (productId, payment_env) =>
   axios.put(`${userUrl}/purchase-product/${productId}`, {

@@ -26,6 +26,7 @@ const GET_COLLECTION = gql`
         attributes {
           usercards {
             data {
+              id
               attributes {
                 is_new
                 is_favorite
@@ -44,6 +45,7 @@ const GET_COLLECTION = gql`
                       is_open
                       image {
                         data {
+                          id
                           attributes {
                             url
                           }
@@ -57,6 +59,7 @@ const GET_COLLECTION = gql`
                             color
                             image {
                               data {
+                                id
                                 attributes {
                                   url
                                 }

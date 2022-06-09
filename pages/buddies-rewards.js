@@ -96,7 +96,7 @@ const FriendReward = ({ friendReward, isSelected, setSelectedReward }) => {
       </div>
 
       <div className={styles.streakIcon}>
-        <img src={`${baseUrl}/streak.png`} alt="" />
+        <img src={`${baseUrl}/user.png`} alt="" />
         <div className={styles.streakIcon_amount}>{friends_count}</div>
       </div>
     </div>
@@ -152,7 +152,7 @@ const FriendsTower = () => {
 
         <div className={styles.streakTitle}>
           <div style={{ position: "relative" }}>
-            <img src={`${baseUrl}/streak.png`} height="60px" />
+            <img src={`${baseUrl}/user.png`} height="60px" />
           </div>
 
           <div className={styles.streakTitle_amount}>

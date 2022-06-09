@@ -1091,7 +1091,13 @@ const Card = () => {
   return (
     <div className="background_dark">
       {error || (cardError && <div>Error: {error}</div>)}
-      {loading || (cardLoading && <div>Loading...</div>)}
+      {loading ||
+        (cardLoading && (
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        ))}
 
       {gql_card && store.user && (
         <CardPage
