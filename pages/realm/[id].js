@@ -89,12 +89,13 @@ const Cards = () => {
 
   const usercards = store.user && store.user.usercards;
   const joinCards = (cards, usercards) => {
+    // remove as user will always have at least 1 usercard
     if (!usercards) {
       return cards;
     }
     const joinedCards = cards.map((card) => {
       let collectionCard = usercards.filter(
-        (c) => c.card === parseInt(card.id)
+        (c) => c.card.id === parseInt(card.id)
       );
       if (collectionCard) {
         const mergedCard = {
@@ -140,9 +141,9 @@ const Cards = () => {
         <div className={styles.grid}>
           {gql_data &&
             store.user &&
-            joinCards(gql_data.realm.cards, usercards).map((card, i) => (
-              <Card card={card} key={i} />
-            ))}
+            joinCards(gql_data.realm.cards, usercards)
+              .sort((a, b) => b.is_open - a.is_open)
+              .map((card, i) => <Card card={card} key={i} />)}
         </div>
       </div>
       <NavBar />

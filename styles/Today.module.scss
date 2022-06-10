@@ -233,3 +233,18 @@
   // width: 100%;
   // background-color: $actionize_gray;
 }
+
+// TUTORIAL!!
+.tutorial {
+  color: white;
+  @extend %flex_center;
+  justify-content: flex-start;
+  min-width: 200px;
+  min-height: 300px;
+  flex-direction: column;
+  &_content {
+    @extend %subTitle;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+  }
+}

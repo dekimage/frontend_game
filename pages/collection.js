@@ -137,8 +137,9 @@ const Home = () => {
   const mergeCards = () => {
     const mergedcards = cards.map((card) => {
       const mergedCard = _.merge(card, card.card);
-      return { ...mergedCard, card: card.card.id };
+      return { ...mergedCard, [card.id]: card.card.id };
     });
+    console.log(mergedcards);
     return mergedcards;
   };
 

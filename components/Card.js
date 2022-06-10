@@ -105,12 +105,13 @@ const Card = ({ card }) => {
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
 
   const isColored = !isPremiumLocked && (card.is_open || card.is_unlocked);
+
   return (
     <Link
-      key={card.id}
+      // key={card.id}
       href={{
         pathname: "/card/[id]",
-        query: { id: isCollected ? card.card : card.id },
+        query: { id: isCollected ? card.card.id : card.id },
       }}
     >
       <div

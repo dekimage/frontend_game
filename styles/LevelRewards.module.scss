@@ -1,20 +1,44 @@
 @import "variables";
 @import "placeholders";
 
+// DUPLICATE FROM REALM -> MAKE IT REUSABLE COMPONENT HEADER TO USE
+.headerr {
+  @extend %title;
+  text-align: center;
+  vertical-align: center;
+  padding: 1rem;
+
+  position: relative;
+}
+
+.back {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  left: 0;
+
+  &:hover {
+    background-color: $optimzeColor;
+  }
+}
+
 .header {
   @extend %flex_center;
-  border-bottom: 12px solid $actionize_gray;
+  border-bottom: 3px solid $actionize_gray;
   background-color: $actionize_black;
   flex-direction: column;
   color: white;
   padding: 1rem;
-  padding-bottom: 2rem;
+  padding-top: 0;
+  margin-bottom: 1rem;
+
   &_ctabox {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-direction: row;
     width: 100%;
     margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -31,8 +55,11 @@
 }
 
 .levelReward {
-  padding: 1rem;
+  margin: 1rem;
   @extend %flex_center;
+  border: 2px solid $actionize_gray;
+  border-radius: 10px;
+  height: 60px;
 }
 .levelRewardLevel {
   @extend %flex_center;
@@ -55,7 +82,7 @@
   &__stripe {
     background-color: $actionize_gray;
     position: absolute;
-    width: 10px;
+    width: 4px;
     height: 104px;
     &.passed {
       background-color: $primary;

@@ -4,6 +4,8 @@ const Reducer = (store, action) => {
   switch (action.type) {
     case "OPEN_PLAYER":
       return { ...store, player: action.data };
+    case "END_TUTORIAL":
+      return { ...store, tutorial: 10 };
     case "FETCH_USER":
       return {
         ...store,
@@ -86,8 +88,8 @@ const Reducer = (store, action) => {
             ...store.user.boxes,
             [action.upData.boxId]: store.user.boxes[action.upData.boxId] + 1,
           },
-          stars: action.data.stars,
-          gems: action.data.gems,
+          // stars: action.data.stars,
+          // gems: action.data.gems,
         },
       };
 

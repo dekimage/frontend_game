@@ -32,11 +32,13 @@
     background-color: $actionize_black;
   }
   &.premium {
-    border: 2px solid $premium_color;
+    border: 3px solid $ux_red;
   }
   &.action {
-    border: 2px solid $secondary;
-    background-color: $secondary;
+    border: 3px solid $secondary;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 1.5px rgba($color: #ffc74e, $alpha: 1);
+    // background-color: $secondary;
   }
   &.done {
     background-color: black;

@@ -333,7 +333,7 @@ const BoxModal = ({ product, closeModal }) => {
           <div
             className="btn btn-primary"
             onClick={() => {
-              purchaseProduct(dispatch, gems.id, "android");
+              // purchaseProduct(dispatch, gems.id, "android");
               closeModal();
             }}
           >
@@ -415,7 +415,7 @@ const Shop = () => {
 
             <div
               className="btn btn-stretch btn-primary mt1"
-              onClick={() => purchaseProduct(dispatch, 1, "android")}
+              // onClick={() => purchaseProduct(dispatch, 1, "android")}
             >
               $ 4.99
             </div>

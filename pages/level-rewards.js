@@ -70,7 +70,7 @@ const LevelReward = ({
         isCollected={isCollected}
         isReadyToCollect={isReadyToCollect}
       />
-      {isPremiumLock && <div>"Requires Premium"</div>}
+      {/* {isPremiumLock && <div>"Requires Premium"</div>} */}
 
       {/* <div>{isCollected ? "COMPLETE DONE" : "NOT COMPLETE"}</div> */}
 
@@ -108,8 +108,9 @@ const LevelRewardsTower = () => {
     levels.forEach((level) => {
       const isCollected =
         !!store.user.rewards_tower && !!store.user.rewards_tower[level.id];
-      const isReadyToCollect = store.user.xp >= level.level;
-      const isPremiumLock = !store.user.isPremium && level.is_premium;
+      const isReadyToCollect = store.user.level >= level.level;
+
+      const isPremiumLock = !store.user.is_subscribed && level.is_premium;
       level.isCollected = isCollected;
       level.isReadyToCollect = isReadyToCollect;
       level.isPremiumLock = isPremiumLock;
@@ -130,13 +131,22 @@ const LevelRewardsTower = () => {
 
   return (
     <div className="background_dark">
+      <div className={styles.headerr}>
+        <div className={styles.back} onClick={() => router.back()}>
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </div>
+        <div className={styles.label}>Rewards Tower</div>
+      </div>
       <div className="section_container">
         <div className={styles.header}>
-          <h1>Rewards Tower</h1>
-          <h3>Collect rewards for leveling up!</h3>
+          {/* <h1>Rewards Tower</h1> */}
+
+          <div className="mb1">Collect rewards for leveling up!</div>
           <div className={styles.header_ctabox}>
-            <div className="btn">Free Tier</div>
-            <div className="btn btn-premium">Go Premium</div>
+            <div className="btn" style={{ width: "120px" }}>
+              Free
+            </div>
+            <div className="btn btn-wrong">Premium</div>
           </div>
         </div>
         <div className={styles.levelRewardsGrid}>
@@ -177,7 +187,7 @@ const LevelRewardsTower = () => {
               )}
           </div>
         </div>
-        <div className={styles.footer}>
+        {/* <div className={styles.footer}>
           <div className="btn btn-close" onClick={() => router.back()}>
             x
           </div>
@@ -191,7 +201,7 @@ const LevelRewardsTower = () => {
               lvl
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

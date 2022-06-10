@@ -17,6 +17,9 @@ import {
   deleteCommunityAction,
   createCommunityAction,
 } from "../../actions/action";
+import iconCollection from "../../assets/progress-play-dark.svg";
+
+import { Rarity } from "../../components/Rarity";
 
 import iconCross from "../../assets/close.svg";
 import iconCommon from "../../assets/common-rarity.svg";
@@ -325,7 +328,7 @@ export const CommunityAction = ({ action, type }) => {
         </div>
         {action.isCompleted && (
           <div className={styles.action_checkmark}>
-            <img src={checkmark1} height="25px" />
+            <img src={`${baseUrl}/checked.png`} height="25px" />
           </div>
         )}
       </div>
@@ -416,7 +419,7 @@ export const CommunityAction = ({ action, type }) => {
                   )
                 }
               >
-                <img src={checkmark1} height="30px" className="mr1" />
+                <img src={`${baseUrl}/checked.png`} height="25px" />
                 {action.isClaimed
                   ? "Remove from My Actions"
                   : "Add to My Actions"}
@@ -445,7 +448,7 @@ export const CommunityAction = ({ action, type }) => {
                   interactCommunityAction(dispatch, action.id, "remove_add")
                 }
               >
-                <img src={checkmark1} height="30px" className="mr1" />
+                <img src={`${baseUrl}/checked.png`} height="40px" />
                 Remove from My Actions
               </div>
               <div
@@ -496,9 +499,11 @@ const Action = ({ action }) => {
         <div className={styles.action_arrow}>
           <img src={arrowDown} height="20px" />
         </div>
-        <div className={styles.action_checkmark}>
-          <img src={checkmark1} height="25px" />
-        </div>
+        {action.is_completed && (
+          <div className={styles.action_checkmark}>
+            <img src={`${baseUrl}/checked.png`} height="25px" />
+          </div>
+        )}
       </div>
 
       {open && (
@@ -515,13 +520,13 @@ const Action = ({ action }) => {
           <div
             className={styles.action_open_complete}
             onClick={() => {
-              action.isCompleted
+              action.is_completed
                 ? completeAction(dispatch, action.id, "remove_complete")
                 : completeAction(dispatch, action.id, "complete");
             }}
           >
-            <img src={checkmark1} height="30px" className="mr1" />
-            {action.isCompleted ? "Completed" : "Mark as Complete"}
+            <img src={`${baseUrl}/checked.png`} height="25px" className="mr5" />
+            {action.is_completed ? "Completed" : "Mark as Complete"}
           </div>
         </div>
       )}
@@ -641,6 +646,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     level: 1,
     completed: 0,
     quantity: dataCard.card.is_open ? 1 : 0,
+    proxy: true,
   };
   const [store, dispatch] = useContext(Context);
 
@@ -668,52 +674,51 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     card.expansion.name === "Pro" &&
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
 
-  // const mergeActions = (usercard, actions, checkingArray, keyword) => {
-  //   const result = actions.map((action) => {
-  //     return {
-  //       ...action,
-  //       [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
-  //       is_reported: !!usercard.reported_actions.filter(
-  //         (a) => a.id === action.id
-  //       )[0],
-  //       is_upvoted: !!usercard.upvoted_actions.filter(
-  //         (a) => a.id === action.id
-  //       )[0],
-  //     };
-  //   });
-  //   return result;
-  //   console.log(result);
-  // };
+  const mergeActions = (usercard, actions, checkingArray, keyword) => {
+    const result = actions.map((action) => {
+      return {
+        ...action,
+        [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
+        is_reported: !!usercard.reported_actions.filter(
+          (a) => a.id === action.id
+        )[0],
+        is_upvoted: !!usercard.upvoted_actions.filter(
+          (a) => a.id === action.id
+        )[0],
+      };
+    });
+    return result;
+    console.log(result);
+  };
 
-  const isLevelUnlocked =
-    usercard.level >= selectedLevel && selectedLevel <= usercard.completed + 1;
+  const isLevelUnlocked = usercard.proxy ? card.is_open : usercard.is_unlocked;
 
-  // const communityActions =
-  //   dataUserCard &&
-  //   mergeActions(
-  //     usercard,
-  //     card.communityactions,
-  //     usercard.community_actions_claimed,
-  //     "is_claimed"
-  //   );
+  const communityActions =
+    dataUserCard &&
+    mergeActions(
+      usercard,
+      card.communityactions,
+      usercard.community_actions_claimed,
+      "is_claimed"
+    );
 
-  // const addedActions =
-  //   dataUserCard &&
-  //   mergeActions(
-  //     usercard,
-  //     usercard.community_actions_claimed,
-  //     usercard.community_actions_completed,
-  //     "is_completed"
-  //   );
+  const addedActions =
+    dataUserCard &&
+    mergeActions(
+      usercard,
+      usercard.community_actions_claimed,
+      usercard.community_actions_completed,
+      "is_completed"
+    );
 
-  // const myActions =
-  //   dataUserCard &&
-  //   mergeActions(
-  //     usercard,
-  //     usercard.my_community_actions,
-  //     usercard.community_actions_claimed,
-  //     "is_claimed"
-  //   );
+  const myActions =
+    dataUserCard &&
+    mergeActions(
+      usercard,
+      usercard.my_community_actions,
+      usercard.community_actions_claimed,
+      "is_claimed"
+    );
 
   return (
     <div className="section_container">
@@ -728,6 +733,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             <img src={`${baseUrl}/notFavorite.png`} height="25px" />
           )}
         </div>
+
         <Link href={`/realm/${card.realm.id}`}>
           <div className={styles.backButton}>
             <ion-icon name="chevron-back-outline"></ion-icon>
@@ -735,22 +741,27 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         </Link>
 
         <img className={styles.image} src={card.image.url} />
+
         <div
           className={styles.background}
           style={{ "--background": card.realm.color }}
         ></div>
+
         <div
           className={styles.curve}
           style={{ "--background": card.realm.color }}
         ></div>
+
         <div className={styles.section_name}>
           <div className={styles.name}>
             <div className={styles.realmLogo}>
-              <img src={card.realm.image.url} height="36px" />
+              <img src={card.realm.image.url} height="28px" />
             </div>
-            {card.name}
+            <div className={styles.name}>{card.name}</div>
           </div>
         </div>
+
+        <Rarity rarity={card.rarity} />
 
         <div className={styles.section_level}>
           <div className={styles.level}>
@@ -758,23 +769,35 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
           <div className={styles.progress_box}>
             <span>
-              {usercard.quantity}/{maxQuantity}
+              {usercard.quantity}/{isLevelUnlocked ? maxQuantity : 10}
             </span>
             <ProgressBar
               progress={usercard.quantity}
-              max={maxQuantity}
+              max={isLevelUnlocked ? maxQuantity : 10}
               isReadyToClaim={usercard.quantity >= maxQuantity}
             />
           </div>
-          {usercard.quantity >= maxQuantity ? (
+
+          {isLevelUnlocked ? (
+            usercard.quantity >= maxQuantity ? (
+              <div
+                className="btn btn-action"
+                onClick={() => updateCard(dispatch, card.id, "upgrade")}
+              >
+                Upgrade
+              </div>
+            ) : (
+              <div className="btn btn-disabled">Upgrade</div>
+            )
+          ) : usercard && usercard.quantity >= 10 ? (
             <div
               className="btn btn-action"
-              onClick={() => updateCard(dispatch, card.id, "upgrade")}
+              onClick={() => updateCard(dispatch, card.id, "unlock")}
             >
-              Upgrade
+              <img src={iconCollection} height="14px" /> 10 Unlock
             </div>
           ) : (
-            <div className="btn btn-disabled">Upgrade</div>
+            <div className="btn btn-disabled">Unlock</div>
           )}
         </div>
 
@@ -857,14 +880,16 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           <div>Level {selectedLevel}</div>
         </div>
 
-        {/* {isLevelUnlocked ? (
+        {isLevelUnlocked ? (
           card.actions && usercard.completed_actions ? (
             mergeActions(
               usercard,
               card.actions,
               usercard.completed_actions,
               "is_completed"
-            )
+            ).map((action, i) => {
+              return <Action action={action} key={i} />;
+            })
           ) : (
             card.actions
               .filter((a) => a.level === selectedLevel)
@@ -880,7 +905,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             />
             Complete the Ideas for this level to unlock Actions.
           </div>
-        )} */}
+        )}
 
         {dataUserCard && (
           <div className={styles.tabs}>
@@ -925,7 +950,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
         )}
 
-        {/* {activeTab === "community" && card.communityactions && (
+        {activeTab === "community" && card.communityactions && (
           <>
             <div className={styles.header}>
               <div>Community Actions</div>
@@ -943,9 +968,9 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               </div>
             )}
           </>
-        )} */}
+        )}
 
-        {/* {activeTab === "my" && (
+        {activeTab === "my" && (
           <>
             <div className={styles.header}>
               <div>My Actions</div>
@@ -969,6 +994,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             )}
           </>
         )}
+
         {activeTab === "added" && (
           <>
             <div className={styles.header}>
@@ -987,7 +1013,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               </div>
             )}
           </>
-        )} */}
+        )}
 
         {isShowing && (
           <Modal
@@ -1036,13 +1062,18 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               usercard={usercard}
               isLevelUnlocked={isLevelUnlocked}
             />
-          ) : !card.isUnlocked ? (
+          ) : !card.is_unlocked ? (
             <div
               className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
-              onClick={() => updateCard(dispatch, card.id, "unlock")}
+              onClick={() =>
+                usercard.quantity >= 10 &&
+                updateCard(dispatch, card.id, "unlock")
+              }
             >
               <ion-icon name="lock-closed-outline"></ion-icon>
-              {usercard.quantity >= 10 ? "Unlock" : "Collect 10 to Unlock"}
+              <div className="ml5">
+                {usercard.quantity >= 10 ? "Unlock" : "Collect 10 to Unlock"}
+              </div>
             </div>
           ) : (
             <PlayCta

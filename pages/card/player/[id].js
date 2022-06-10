@@ -17,7 +17,7 @@ import Modal from "../../../components/Modal";
 
 import useModal from "../../../hooks/useModal";
 
-import { updateCard } from "../../../actions/action";
+import { updateCard, completeTutorial } from "../../../actions/action";
 
 import actionIcon from "../../../assets/player_actions.svg";
 import rewardsIcon from "../../../assets/player_rewards.svg";
@@ -62,6 +62,14 @@ const GET_CARD_PLAYER = gql`
             question
             idea_title
             idea_content
+            image {
+              data {
+                id
+                attributes {
+                  url
+                }
+              }
+            }
             answers {
               text
               is_correct
@@ -250,11 +258,21 @@ const ContentQuestion = ({
         ) : (
           <div>
             {slide.image && <div></div>}
-            <div className={styles.ideaTitle}>{slide.ideaTitle}</div>
+            <div className={styles.ideaTitle}>{slide.idea_title}</div>
 
             <div className={styles.ideaContent}>
-              <ReactMarkdown children={slide.ideaContent} />
+              <ReactMarkdown children={slide.idea_content} />
             </div>
+            {slide.image && (
+              <>
+                <div className="description_muted mb1">
+                  **Screenshot taken from Actionise**
+                </div>
+                <div className="flex_center" style={{ marginBottom: "130px" }}>
+                  <img src={slide.image.url} alt="" width="95%" />
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -538,21 +556,35 @@ const GenericScreen = ({ img, title, content, stats, jsx }) => {
 };
 
 const RepeatScreen = ({ card, mistakes }) => {
+  const [store, dispatch] = useContext(Context);
+  const isTutorial = card.id === "41";
+  console.log(card);
+
   return (
     <div>
       <GenericScreen
         img={progressIcon}
-        title={"lesson complete"}
+        title={"Lesson complete"}
         content={
-          "Repetion is the root of all knowledge. Now go to actions & put it in practice!"
+          isTutorial
+            ? "Congratulations for completing the Tutorial! It's time to make real positive changes in your life. Click the button below to start exploring the app!"
+            : "Repetion is the root of all knowledge. Now go to actions & put it in practice!"
         }
         stats={[{ img: "gems", label: "Errors", amount: mistakes }]}
       />
 
       <div className={styles.ctaBox}>
-        <Link href={`/card/${card.id}`}>
-          <div className="btn btn-primary btn-stretch">Back to Card</div>
-        </Link>
+        {isTutorial ? (
+          <Link href={`/`} onClick={() => completeTutorial(dispatch)}>
+            <div className="btn btn-primary btn-stretch">
+              Start your journey
+            </div>
+          </Link>
+        ) : (
+          <Link href={`/card/${card.id}`}>
+            <div className="btn btn-primary btn-stretch">Back to Card</div>
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -626,6 +658,7 @@ const RewardsScreen = ({ rewards, setSuccessModal }) => {
 };
 
 const CompleteScreen = ({ card, setSuccessModal }) => {
+  console.log(card);
   const [store, dispatch] = useContext(Context);
   return (
     <div>
@@ -633,10 +666,12 @@ const CompleteScreen = ({ card, setSuccessModal }) => {
         img={completedIcon}
         title={"lesson complete"}
         content={"Congratualations!! You have completed the theory check-in!"}
-        stats={[
-          { img: "gems", label: "Course Progress", amount: "25%" },
-          { img: "play", label: "Practice", amount: `${card.completed}/5` },
-        ]}
+        stats={
+          [
+            // { img: "gems", label: "Course Progress", amount: "25%" },
+            // { img: "play", label: "Practice", amount: `${card.completed}/5` },
+          ]
+        }
       />
       <div className={styles.ctaBox}>
         <div
@@ -646,7 +681,8 @@ const CompleteScreen = ({ card, setSuccessModal }) => {
             updateCard(dispatch, card.id, "complete");
           }}
         >
-          Mark as Complete! 1 Energy
+          1 <img src={`${baseUrl}/energy.png`} height="14px" className="mr5" />{" "}
+          Mark as Complete!
         </div>
       </div>
     </div>
@@ -793,15 +829,15 @@ const Card = () => {
   };
 
   const onAnswer = (answer) => {
-    if (answer.isCorrect) {
+    if (answer.is_correct) {
       setIsCorrectAnswer(true);
       updateRewards();
-      recordResults(answer.id, { isCorrect: true });
+      recordResults(answer.id, { is_correct: true });
     } else {
       setMistakes(mistakes + 1);
       setIsCorrectAnswer(false);
       addWrongAnswerForLater(slide);
-      recordResults(answer.id, { isCorrect: false });
+      recordResults(answer.id, { is_correct: false });
     }
     setIsQuestionScreen(false);
   };

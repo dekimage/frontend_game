@@ -4,6 +4,8 @@ import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import Link from "next/link";
 import cx from "classnames";
+import useModal from "../hooks/useModal";
+import Modal from "../components/Modal";
 
 import { getTimeDiff } from "../utils/calculations";
 
@@ -21,6 +23,7 @@ import { claimObjectiveCounter } from "../actions/action";
 import styles from "../styles/Today.module.scss";
 import RewardImage from "../components/RewardImage";
 import ProgressBar from "../components/ProgressBar";
+import router from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const kure = process.env.NEXT_PUBLIC_API_AWS;
@@ -196,18 +199,89 @@ const Home = () => {
     return notifications;
   };
 
+  const { isShowing, openModal, closeModal } = useModal();
+
+  useEffect(() => {
+    console.log(store);
+    if (store.tutorial < 10) {
+      openModal();
+    }
+    openModal();
+  }, [store.user]);
+
+  const tutorialSlides = [
+    {
+      title: `Welcome ${store.user.username}`,
+      image:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/just_do_it_554ead2616.png?updated_at=2022-06-03T12:39:22.558Z",
+      content: "Let's explore Actionise together!",
+      button: "Start",
+    },
+    {
+      title: `Why Actionise?`,
+      image:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/tutorial_change_78980f7d25.png?updated_at=2022-06-10T14:42:05.164Z",
+      content:
+        "Our mission is to provide you with Ideas, Tools & Actions that will help you become the best version of yourself. ",
+      button: "Next",
+    },
+    {
+      title: `What's Inside?`,
+      image:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/tutorial_value_0b41c88c71.png?updated_at=2022-06-10T14:42:05.512Z",
+      content: "Actionise contains:",
+      content_2:
+        "• 150 mini interactive lessons • 100 questions • 200 actions & tasks • 100 books worth of wisdom",
+      button: "Next",
+    },
+    {
+      title: `Let's Start`,
+      image:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/digital_declutter_fc71581fd2.png?updated_at=2022-06-04T10:10:04.811Z",
+      content:
+        "Your first task will be to complete the Tutorial Card, in which you will learn the 5 main concepts of Actionise!",
+      button: "Let's Begin!",
+    },
+  ];
+
+  const TutorialModal = ({}) => {
+    const [store, dispatch] = useContext(Context);
+    const [active, setActive] = useState(0);
+    const slide = tutorialSlides[active];
+    const nextSlide = () => {
+      if (active + 1 === tutorialSlides.length) {
+        router.push("/card/player/41");
+      } else {
+        setActive(active + 1);
+      }
+    };
+    return (
+      <div className={styles.tutorial}>
+        <h1>{slide.title}</h1>
+        <img src={slide.image} alt="" height="250px" className="mb1" />
+        <div className={styles.tutorial_content}>
+          {slide.content}
+          <br />
+          {slide.content_2 && slide.content_2}
+        </div>
+        <div className="btn btn-primary mu1" onClick={() => nextSlide()}>
+          {slide.button}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="background_dark">
       <Header />
       {store && gql_data && (
         <div className="section">
-          {/* {store.user && (
-          <LevelRewardsHeader
-            xp={store.user.xp}
-            maxXp={2}
-            level={store.user.level}
+          <Modal
+            isShowing={isShowing}
+            closeModal={closeModal}
+            jsx={<TutorialModal closeModal={closeModal} />}
           />
-        )} */}
+
           <div>
             <div className={styles.objectiveTabsGrid}>
               <div

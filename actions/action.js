@@ -69,6 +69,11 @@ export const claimStreakReward = (dispatch, rewardCount) => {
 
 // ------
 
+// TUTORIAL
+export const completeTutorial = (dispatch) => {
+  dispatch({ type: "END_TUTORIAL" });
+};
+
 // 2. SHOP PAGE
 
 export const purchaseLootBox = (dispatch, boxId) => {
