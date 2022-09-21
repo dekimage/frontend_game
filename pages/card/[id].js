@@ -1,678 +1,69 @@
 import { useQuery, useLazyQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 import { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/store";
 import { useRouter } from "next/router";
-import Link from "next/link";
+
 import _ from "lodash";
 import styles from "../../styles/CardPage.module.scss";
 import ProgressBar from "../../components/ProgressBar";
 import Modal from "../../components/Modal";
 import useModal from "../../hooks/useModal";
 import cx from "classnames";
-import {
-  updateCard,
-  completeAction,
-  interactCommunityAction,
-  deleteCommunityAction,
-  createCommunityAction,
-} from "../../actions/action";
-import iconCollection from "../../assets/progress-play-dark.svg";
+
+import { updateCard } from "../../actions/action";
 
 import { Rarity } from "../../components/Rarity";
 
-import iconCross from "../../assets/close.svg";
-import iconCommon from "../../assets/common-rarity.svg";
-import iconRare from "../../assets/rare-rarity.svg";
-import iconEpic from "../../assets/epic-rarity.svg";
-import iconLegendary from "../../assets/legendary-rarity.svg";
-import arrowDown from "../../assets/arrow-down-white.png";
-import checkmark1 from "../../assets/checkmark-fill.svg";
-import iconLock from "../../assets/lock-white-border.svg";
+import { Tabs } from "../../components/profileComps";
+
 import { normalize } from "../../utils/calculations";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import { GET_USERCARDS_QUERY } from "../../GQL/query";
+import { GET_CARD_ID } from "../../GQL/query";
+
+import { getMaxQuantity } from "../../data/cardPageData";
+import {
+  ActionsWrapper,
+  BasicActionsWrapper,
+  CreateActionModal,
+  PlayCta,
+  FavoriteButton,
+  BackButton,
+  UpgradeButton,
+  LevelButtons,
+  IdeaPlayer,
+  Title,
+  CardCtaFooter,
+} from "../../components/cardPageComps";
+
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const getMaxQuantity = (level) => {
-  const data = {
-    1: 2,
-    2: 4,
-    3: 6,
-    4: 8,
-    5: 10,
-  };
-  return data[level];
-};
-
-const GET_USERCARDS_QUERY = gql`
-  query ($id: ID!) {
-    usercard(id: $id) {
-      data {
-        id
-        attributes {
-          is_favorite
-          level
-          completed
-          quantity
-          is_new
-          glory_points
-          is_unlocked
-          card {
-            data {
-              id
-              attributes {
-                name
-                description
-                type
-                rarity
-                is_open
-                realm {
-                  data {
-                    id
-                    attributes {
-                      color
-                      name
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                expansion {
-                  data {
-                    id
-                    attributes {
-                      name
-                    }
-                  }
-                }
-                actions {
-                  data {
-                    id
-                    attributes {
-                      name
-                      type
-                      level
-                      duration
-                      steps {
-                        content
-                      }
-                    }
-                  }
-                }
-                communityactions {
-                  data {
-                    id
-                    attributes {
-                      name
-                      type
-                      duration
-                      votes
-                      reports
-                      steps {
-                        content
-                      }
-                      user {
-                        data {
-                          id
-                          attributes {
-                            username
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          completed_actions {
-            data {
-              id
-            }
-          }
-          upvoted_actions {
-            data {
-              id
-            }
-          }
-          community_actions_completed {
-            data {
-              id
-            }
-          }
-          reported_actions {
-            data {
-              id
-            }
-          }
-
-          community_actions_claimed {
-            data {
-              id
-              attributes {
-                name
-                type
-                duration
-                votes
-                reports
-                steps {
-                  content
-                }
-                user {
-                  data {
-                    id
-                    attributes {
-                      username
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          my_community_actions {
-            data {
-              id
-              attributes {
-                name
-                type
-                duration
-                votes
-                reports
-                is_private
-                steps {
-                  content
-                }
-                user {
-                  data {
-                    id
-                    attributes {
-                      username
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const GET_CARD_ID = gql`
-  query ($id: ID!) {
-    card(id: $id) {
-      data {
-        id
-        attributes {
-          name
-          description
-          type
-          rarity
-          is_open
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          expansion {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
-          realm {
-            data {
-              id
-              attributes {
-                color
-                name
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-          actions {
-            data {
-              id
-              attributes {
-                name
-                type
-                level
-                duration
-                steps {
-                  content
-                }
-              }
-            }
-          }
-          communityactions {
-            data {
-              id
-              attributes {
-                name
-                type
-                duration
-                votes
-                reports
-                steps {
-                  content
-                }
-                user {
-                  data {
-                    id
-                    attributes {
-                      username
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const CommunityAction = ({ action, type }) => {
-  const [open, setOpen] = useState(false);
-  const [store, dispatch] = useContext(Context);
-  const router = useRouter();
-  return (
-    <div className={styles.action}>
-      <div className={styles.action_closed} onClick={() => setOpen(!open)}>
-        <div className={styles.action_votingBox}>
-          <div>
-            <img src={`${baseUrl}/upvote.png`} height="24px" />
-          </div>
-          <div>{action.votes || 0}</div>
-        </div>
-
-        <div className={styles.action_box}>
-          <div className={styles.action_header}>
-            <div className={styles.action_name}>{action.name}</div>
-            <div className={styles.action_grouper}></div>
-          </div>
-          <div className={styles.action_header}>
-            <div className={styles.action_grouper}>
-              <div className={styles.action_type}>{action.type}</div>
-              <div className={styles.action_duration}>
-                {action.duration} min
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={styles.action_arrow}>
-          <img src={arrowDown} height="20px" />
-        </div>
-        {action.isCompleted && (
-          <div className={styles.action_checkmark}>
-            <img src={`${baseUrl}/checked.png`} height="25px" />
-          </div>
-        )}
-      </div>
-
-      {open && (
-        <div className={styles.action_open}>
-          {action.steps.map((step, i) => {
-            return (
-              <div className={styles.action_open_step} key={i}>
-                <div className={styles.action_open_stepLabel}>Step {i + 1}</div>
-                {step.content}
-              </div>
-            );
-          })}
-
-          {type === "community" && (
-            <>
-              <div
-                className={styles.action_open_complete}
-                onClick={() =>
-                  interactCommunityAction(
-                    dispatch,
-                    action.id,
-                    action.isClaimed ? "remove_add" : "add"
-                  )
-                }
-              >
-                {action.isClaimed ? (
-                  <div className="flex_center">
-                    <img src={iconCross} height="16px" className="mr1" />
-                    Remove from My Actions
-                  </div>
-                ) : (
-                  <div className="flex_center">
-                    <img src={iconCross} height="20px" className="mr1" />
-                    Add to My Actions
-                  </div>
-                )}
-              </div>
-              <div className={styles.votingContainer}>
-                <div
-                  className={styles.upvoteBtn}
-                  onClick={() =>
-                    interactCommunityAction(
-                      dispatch,
-                      action.id,
-                      action.isUpvoted ? "remove_vote" : "vote"
-                    )
-                  }
-                >
-                  <img
-                    src={`${baseUrl}/upvote.png`}
-                    height="18px"
-                    className="mr1"
-                  />
-                  {action.isUpvoted ? "Remove Vote" : "Upvote"}
-                </div>
-                <div
-                  className={styles.upvoteBtn}
-                  onClick={() =>
-                    interactCommunityAction(
-                      dispatch,
-                      action.id,
-                      action.isReported ? "remove_report" : "report"
-                    )
-                  }
-                >
-                  <img
-                    src={`${baseUrl}/flag.png`}
-                    height="18px"
-                    className="mr1"
-                  />
-                  {action.isReported ? "Remove Report" : "Report"}
-                </div>
-              </div>
-            </>
-          )}
-
-          {type === "my" && (
-            <>
-              <div
-                className={styles.action_open_complete}
-                onClick={() =>
-                  interactCommunityAction(
-                    dispatch,
-                    action.id,
-                    action.isClaimed ? "remove_add" : "add"
-                  )
-                }
-              >
-                <img src={`${baseUrl}/checked.png`} height="25px" />
-                {action.isClaimed
-                  ? "Remove from My Actions"
-                  : "Add to My Actions"}
-              </div>
-              <div className={styles.votingContainer}>
-                <div
-                  className={styles.upvoteBtn}
-                  onClick={() => deleteCommunityAction(dispatch, action.id)}
-                >
-                  <img
-                    src={`${baseUrl}/trash.png`}
-                    height="18px"
-                    className="mr1"
-                  />
-                  Delete
-                </div>
-              </div>
-            </>
-          )}
-
-          {type === "added" && (
-            <>
-              <div
-                className={styles.action_open_complete}
-                onClick={() =>
-                  interactCommunityAction(dispatch, action.id, "remove_add")
-                }
-              >
-                <img src={`${baseUrl}/checked.png`} height="40px" />
-                Remove from My Actions
-              </div>
-              <div
-                className={styles.action_open_complete}
-                onClick={() => {
-                  action.isCompleted
-                    ? interactCommunityAction(
-                        dispatch,
-                        action.id,
-                        "remove_complete"
-                      )
-                    : interactCommunityAction(dispatch, action.id, "complete");
-                }}
-              >
-                <img src={checkmark1} height="30px" className="mr1" />
-                {action.isCompleted ? "Completed" : "Mark as Complete"}
-              </div>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Action = ({ action }) => {
-  const [open, setOpen] = useState(false);
-  const [store, dispatch] = useContext(Context);
-  const router = useRouter();
-  return (
-    <div className={styles.action}>
-      <div className={styles.action_closed} onClick={() => setOpen(!open)}>
-        <div className={styles.action_img}></div>
-        <div className={styles.action_box}>
-          <div className={styles.action_header}>
-            <div className={styles.action_name}>{action.name}</div>
-            <div className={styles.action_grouper}></div>
-          </div>
-          <div className={styles.action_header}>
-            <div className={styles.action_grouper}>
-              <div className={styles.action_type}>{action.type}</div>
-              <div className={styles.action_duration}>
-                {action.duration} min
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={styles.action_arrow}>
-          <img src={arrowDown} height="20px" />
-        </div>
-        {action.is_completed && (
-          <div className={styles.action_checkmark}>
-            <img src={`${baseUrl}/checked.png`} height="25px" />
-          </div>
-        )}
-      </div>
-
-      {open && (
-        <div className={styles.action_open}>
-          {action.steps.map((step, i) => {
-            return (
-              <div className={styles.action_open_step} key={i}>
-                <div className={styles.action_open_stepLabel}>Step {i + 1}</div>
-                {step.content}
-              </div>
-            );
-          })}
-
-          <div
-            className={styles.action_open_complete}
-            onClick={() => {
-              action.is_completed
-                ? completeAction(dispatch, action.id, "remove_complete")
-                : completeAction(dispatch, action.id, "complete");
-            }}
-          >
-            <img src={`${baseUrl}/checked.png`} height="25px" className="mr5" />
-            {action.is_completed ? "Completed" : "Mark as Complete"}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// @calc
-const static_levels = [
-  { lvl: 1, required: 1 },
-  { lvl: 2, required: 2 },
-  { lvl: 3, required: 3 },
-  { lvl: 4, required: 4 },
-  { lvl: 5, required: 5 },
-];
-
-const CreateActionModal = ({ card }) => {
-  const [store, dispatch] = useContext(Context);
-  const [data, updateData] = useState({
-    action: "",
-    duration: 1,
-    name: "",
-    type: "challenge",
-    card: card.id,
-    isPrivate: false,
-  });
-
-  const onChange = (event) => {
-    updateData({ ...data, [event.target.name]: event.target.value });
-  };
-
-  return (
-    <div className={styles.createActionModal}>
-      <form action="">
-        <label>Name:</label>
-
-        <input onChange={(event) => onChange(event)} type="text" name="name" />
-
-        <label>Action: (Max 500 words.)</label>
-
-        <input
-          onChange={(event) => onChange(event)}
-          type="text"
-          name="action"
-        />
-        <div
-          onClick={() => updateData({ ...data, isPrivate: !data.isPrivate })}
-        >
-          {data.isPrivate ? "Private" : "Public"}
-        </div>
-        {data.isPrivate &&
-          "Warning! Only you can see this action and other member will not benefit from your knowledge."}
-        <label>Duration (minutes):</label>
-
-        <input
-          onChange={(event) => onChange(event)}
-          type="number"
-          name="duration"
-        />
-      </form>
-      <div
-        className="btn btn-primary"
-        onClick={() => createCommunityAction(dispatch, data)}
-      >
-        Create
-      </div>
-    </div>
-  );
-};
-
-const PlayCta = ({
-  card,
-  maxQuantity,
-  selectedLevel,
-  dispatch,
-  usercard,
-  isLevelUnlocked,
-}) => {
-  const router = useRouter();
-  return isLevelUnlocked ? (
-    <div
-      className={cx(
-        selectedLevel == usercard.completed + 1 ? "btn btn-action" : "btn"
-      )}
-      onClick={() => {
-        dispatch({
-          type: "OPEN_PLAYER",
-          data: { level: usercard.completed, selectedLevel },
-        });
-        router.push(`${feUrl}/card/player/${card.id}`);
-      }}
-    >
-      <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
-    </div>
-  ) : (
-    <div
-      className={cx(
-        usercard.quantity >= maxQuantity ? "btn btn-action" : "btn btn-disabled"
-      )}
-      onClick={() => {
-        usercard.quantity >= maxQuantity &&
-          updateCard(dispatch, card.id, "upgrade");
-      }}
-    >
-      <ion-icon name="lock-closed-outline"></ion-icon>&nbsp;
-      <div>Upgrade Card &nbsp;</div>
-      <div>
-        {usercard.quantity}/{maxQuantity}
-      </div>
-    </div>
-  );
-};
-
 const CardPage = ({ dataUserCard, dataCard }) => {
-  console.log(dataCard);
+  const [store, dispatch] = useContext(Context);
+  const router = useRouter();
   const proxyUserCard = {
     level: 1,
     completed: 0,
     quantity: dataCard.card.is_open ? 1 : 0,
     proxy: true,
   };
-  const [store, dispatch] = useContext(Context);
+  const usercard = dataUserCard ? dataUserCard : proxyUserCard;
 
   const { isShowing, openModal, closeModal } = useModal();
-
-  const usercard = dataUserCard ? dataUserCard : proxyUserCard;
-  const maxQuantity = getMaxQuantity(usercard.level) || 10;
   const [selectedLevel, setSelectedLevel] = useState(
     usercard && usercard.completed + 1
   );
-
   const [activeTab, setActiveTab] = useState("community");
 
-  useEffect(() => {
-    if (dataUserCard && dataUserCard.is_new) {
-      updateCard(dispatch, card.id, "new_disable");
-    }
-  }, [dataUserCard]);
+  const maxQuantity = getMaxQuantity(usercard.level) || 10;
 
-  const router = useRouter();
-  // const card = usercard.card || dataCard.card;
   const card = dataCard.card;
 
   const isPremiumLocked =
     card.expansion.name === "Pro" &&
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
+
+  const isLevelUnlocked = usercard.proxy ? card.is_open : usercard.is_unlocked;
 
   const mergeActions = (usercard, actions, checkingArray, keyword) => {
     const result = actions.map((action) => {
@@ -688,10 +79,19 @@ const CardPage = ({ dataUserCard, dataCard }) => {
       };
     });
     return result;
-    console.log(result);
   };
 
-  const isLevelUnlocked = usercard.proxy ? card.is_open : usercard.is_unlocked;
+  const tabsData = [
+    { label: "community", count: card?.communityactions?.length },
+    { label: "added", count: usercard?.community_actions_claimed?.length },
+    { label: "my", count: usercard?.my_community_actions?.length },
+  ];
+
+  useEffect(() => {
+    if (dataUserCard && dataUserCard.is_new) {
+      updateCard(dispatch, card.id, "new_disable");
+    }
+  }, [dataUserCard]);
 
   const communityActions =
     dataUserCard &&
@@ -723,22 +123,9 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   return (
     <div className="section_container">
       <div className={styles.card}>
-        <div
-          className={styles.favorite}
-          onClick={() => updateCard(dispatch, card.id, "favorite")}
-        >
-          {usercard.is_favorite ? (
-            <img src={`${baseUrl}/favorite.png`} height="25px" />
-          ) : (
-            <img src={`${baseUrl}/notFavorite.png`} height="25px" />
-          )}
-        </div>
+        <FavoriteButton usercard={usercard} cardId={card.id} />
 
-        <Link href={`/realm/${card.realm.id}`}>
-          <div className={styles.backButton}>
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
-        </Link>
+        <BackButton routeDynamic={card.realm.id} routeStatic={"/realm/"} />
 
         <img className={styles.image} src={card.image.url} />
 
@@ -767,6 +154,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           <div className={styles.level}>
             <span style={{ fontSize: "40px" }}>{usercard.level}</span> lvl
           </div>
+
           <div className={styles.progress_box}>
             <span>
               {usercard.quantity}/{isLevelUnlocked ? maxQuantity : 10}
@@ -778,241 +166,71 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             />
           </div>
 
-          {isLevelUnlocked ? (
-            usercard.quantity >= maxQuantity ? (
-              <div
-                className="btn btn-action"
-                onClick={() => updateCard(dispatch, card.id, "upgrade")}
-              >
-                Upgrade
-              </div>
-            ) : (
-              <div className="btn btn-disabled">Upgrade</div>
-            )
-          ) : usercard && usercard.quantity >= 10 ? (
-            <div
-              className="btn btn-action"
-              onClick={() => updateCard(dispatch, card.id, "unlock")}
-            >
-              <img src={iconCollection} height="14px" /> 10 Unlock
-            </div>
-          ) : (
-            <div className="btn btn-disabled">Unlock</div>
-          )}
+          <UpgradeButton
+            isLevelUnlocked={isLevelUnlocked}
+            usercard={usercard}
+            maxQuantity={maxQuantity}
+          />
         </div>
 
         <div className={styles.description}>{card.description}</div>
 
-        <div className={styles.titleProgress}>
-          <div className="title">Progress</div>
-          <div className="title">{usercard.completed}/5</div>
+        <Title
+          name={"Progress"}
+          rightText={usercard.completed}
+          rightSeparator={5}
+        />
+
+        <LevelButtons
+          usercard={usercard}
+          selectedLevel={selectedLevel}
+          setSelectedLevel={setSelectedLevel}
+        />
+
+        <Title name="Ideas" />
+
+        <IdeaPlayer cardId={card.id} />
+
+        <Title name="Actions" rightText={`Level ${selectedLevel}`} />
+
+        <BasicActionsWrapper
+          isLevelUnlocked={isLevelUnlocked}
+          card={card}
+          usercard={usercard}
+          mergeActions={mergeActions}
+          selectedLevel={selectedLevel}
+        />
+
+        <div className="btn  btn-primary mb1 mt1" onClick={() => openModal()}>
+          + Create New Action
         </div>
 
-        <div className={styles.section_levels}>
-          {static_levels.map((level, i) => {
-            return (
-              <div className={styles.level_box} key={i}>
-                {level.lvl < usercard.completed + 1 && (
-                  <div
-                    className={cx(styles.btn_play_passed, {
-                      [styles.btn_play_active]: selectedLevel === level.lvl,
-                    })}
-                    onClick={() => setSelectedLevel(level.lvl)}
-                  >
-                    <ion-icon name="play"></ion-icon>
-                  </div>
-                )}
-                {level.lvl == usercard.completed + 1 && (
-                  <div
-                    className={cx(styles.btn_play_orange, {
-                      [styles.btn_play_active]: selectedLevel === level.lvl,
-                    })}
-                    onClick={() => setSelectedLevel(level.lvl)}
-                  >
-                    <ion-icon name="play"></ion-icon>
-                  </div>
-                )}
-                {level.lvl > usercard.completed + 1 &&
-                  usercard.level >= level.required && (
-                    <div
-                      className={cx(styles.btn_play_grayopen, {
-                        [styles.btn_play_active]: selectedLevel === level.lvl,
-                      })}
-                    >
-                      <ion-icon name="play"></ion-icon>
-                    </div>
-                  )}
-                {level.lvl > usercard.completed + 1 &&
-                  usercard.level < level.required && (
-                    <div className={styles.btn_play_graylocked}>
-                      <ion-icon name="lock-closed-outline"></ion-icon>
-                    </div>
-                  )}
-                {level.lvl}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className={styles.titleProgress}>
-          <div className="title">Ideas</div>
-        </div>
-
-        <div className={styles.ideaPlayer}>
-          <div className="">
-            <div className="title">Player</div>
-            <div className={styles.ideaPlayer_group}>
-              <div className="description mr1">6 Slides</div>
-              <div className="description">2 Questions</div>
-            </div>
-          </div>
-          <div
-            className={styles.btn_play_passed}
-            onClick={() => {
-              router.push(`${feUrl}/card/player/${card.id}`);
-            }}
-          >
-            <ion-icon name="play"></ion-icon>
-          </div>
-        </div>
-        <div className={styles.header}>
-          <div>Actions </div>
-          <div>Level {selectedLevel}</div>
-        </div>
-
-        {isLevelUnlocked ? (
-          card.actions && usercard.completed_actions ? (
-            mergeActions(
-              usercard,
-              card.actions,
-              usercard.completed_actions,
-              "is_completed"
-            ).map((action, i) => {
-              return <Action action={action} key={i} />;
-            })
-          ) : (
-            card.actions
-              .filter((a) => a.level === selectedLevel)
-              .map((action, i) => {
-                return <Action action={action} key={i} />;
-              })
-          )
-        ) : (
-          <div className={styles.emptyActions}>
-            <img
-              src={iconLock}
-              style={{ height: "35px", marginBottom: "1rem" }}
-            />
-            Complete the Ideas for this level to unlock Actions.
-          </div>
-        )}
-
-        {dataUserCard && (
-          <div className={styles.tabs}>
-            <div
-              className={cx(
-                styles.tabsButton,
-                activeTab === "community" && styles.active
-              )}
-              onClick={() => setActiveTab("community")}
-            >
-              Community
-              <div className={styles.tabCounter}>
-                {card.communityactions.length}
-              </div>
-            </div>
-
-            <div
-              className={cx(
-                styles.tabsButton,
-                activeTab === "added" && styles.active
-              )}
-              onClick={() => setActiveTab("added")}
-            >
-              Added
-              <div className={styles.tabCounter}>
-                {usercard.community_actions_claimed.length}
-              </div>
-            </div>
-
-            <div
-              className={cx(
-                styles.tabsButton,
-                activeTab === "my" && styles.active
-              )}
-              onClick={() => setActiveTab("my")}
-            >
-              My Actions
-              <div className={styles.tabCounter}>
-                {usercard.my_community_actions.length}
-              </div>
-            </div>
-          </div>
-        )}
+        <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
 
         {activeTab === "community" && card.communityactions && (
-          <>
-            <div className={styles.header}>
-              <div>Community Actions</div>
-              <div>{card.communityactions.length}</div>
-            </div>
-            {communityActions?.length > 0 ? (
-              communityActions.map((action, i) => {
-                return (
-                  <CommunityAction action={action} type={"community"} key={i} />
-                );
-              })
-            ) : (
-              <div className={styles.emptyActions}>
-                Be the first one to create a community action.
-              </div>
-            )}
-          </>
+          <ActionsWrapper
+            actions={card.communityactions}
+            label={"Community Actions"}
+            type={"community"}
+            emptyDescription={"Be the first one to create a community action."}
+          />
         )}
 
         {activeTab === "my" && (
-          <>
-            <div className={styles.header}>
-              <div>My Actions</div>
-              <div>{usercard.my_community_actions.length}/5</div>
-            </div>
-
-            {myActions?.length > 0 ? (
-              myActions.map((action, i) => {
-                return <CommunityAction action={action} type={"my"} key={i} />;
-              })
-            ) : (
-              <div className={styles.emptyActions}>
-                You haven't created any actions for this card. <br />
-                <div
-                  className="btn  btn-primary mb1 mt1"
-                  onClick={() => openModal()}
-                >
-                  + Create New Action
-                </div>
-              </div>
-            )}
-          </>
+          <ActionsWrapper
+            actions={myActions}
+            label={"My Actions"}
+            type={"my"}
+            emptyDescription={"You haven't created any actions for this card."}
+          />
         )}
-
         {activeTab === "added" && (
-          <>
-            <div className={styles.header}>
-              <div>Added Actions</div>
-              <div>{usercard.community_actions_claimed.length}</div>
-            </div>
-            {addedActions?.length > 0 ? (
-              addedActions.map((action, i) => {
-                return (
-                  <CommunityAction action={action} type={"added"} key={i} />
-                );
-              })
-            ) : (
-              <div className={styles.emptyActions}>
-                You don't have any added actions yet.
-              </div>
-            )}
-          </>
+          <ActionsWrapper
+            actions={addedActions}
+            label={"Added Actions"}
+            type={"added"}
+            emptyDescription={" You don't have any added actions yet."}
+          />
         )}
 
         {isShowing && (
@@ -1022,70 +240,18 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             jsx={<CreateActionModal closeModal={closeModal} card={card} />}
           />
         )}
-
-        {/* <div className="margin">...</div> */}
+        <div className="margin"></div>
       </div>
 
-      {/* <div>
-        <div
-          className="btn btn-secondary margin"
-          onClick={() => updateCard(dispatch, card.id, "play")}
-        >
-          Play Card (energy cost)
-        </div>
-        <div
-          className="btn btn-secondary margin"
-          onClick={() =>
-            updateCard(dispatch, card.id, "complete_action", "action_id")
-          }
-        >
-          Complete Action
-        </div> */}
       {card && (
-        <div className={styles.fixed}>
-          {isPremiumLocked ? (
-            <div
-              className="btn"
-              onClick={() => {
-                router.push(`${feUrl}/shop`);
-              }}
-            >
-              <ion-icon name="lock-closed-outline"></ion-icon>
-              Purchase Expansion
-            </div>
-          ) : card.is_open ? (
-            <PlayCta
-              card={card}
-              maxQuantity={maxQuantity}
-              selectedLevel={selectedLevel}
-              dispatch={dispatch}
-              usercard={usercard}
-              isLevelUnlocked={isLevelUnlocked}
-            />
-          ) : !card.is_unlocked ? (
-            <div
-              className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
-              onClick={() =>
-                usercard.quantity >= 10 &&
-                updateCard(dispatch, card.id, "unlock")
-              }
-            >
-              <ion-icon name="lock-closed-outline"></ion-icon>
-              <div className="ml5">
-                {usercard.quantity >= 10 ? "Unlock" : "Collect 10 to Unlock"}
-              </div>
-            </div>
-          ) : (
-            <PlayCta
-              card={card}
-              maxQuantity={maxQuantity}
-              selectedLevel={selectedLevel}
-              dispatch={dispatch}
-              usercard={usercard}
-              isLevelUnlocked={isLevelUnlocked}
-            />
-          )}
-        </div>
+        <CardCtaFooter
+          isPremiumLocked={isPremiumLocked}
+          isLevelUnlocked={isLevelUnlocked}
+          card={card}
+          usercard={usercard}
+          selectedLevel={selectedLevel}
+          maxQuantity={maxQuantity}
+        />
       )}
     </div>
   );

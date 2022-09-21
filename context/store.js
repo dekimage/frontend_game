@@ -8,6 +8,7 @@ const AUTH_TOKEN = Cookie.get("token");
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const initialState = {
+  tutorialModal: true,
   tutorial: 0,
   player: {},
   isAuthenticated: false,

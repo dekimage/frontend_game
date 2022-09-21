@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { Context } from "../../context/store";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -11,72 +10,7 @@ import NavBar from "../../components/NavBar";
 import Card from "../../components/Card";
 import { normalize } from "../../utils/calculations";
 
-const GET_REALM_ID = gql`
-  query ($id: ID!) {
-    realm(id: $id) {
-      data {
-        id
-        attributes {
-          name
-          description
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          cards {
-            data {
-              id
-              attributes {
-                name
-                description
-                type
-                rarity
-                is_open
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-                expansion {
-                  data {
-                    id
-                    attributes {
-                      name
-                    }
-                  }
-                }
-                realm {
-                  data {
-                    id
-                    attributes {
-                      name
-                      color
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+import { GET_REALM_ID } from "../../GQL/query";
 
 const Cards = () => {
   const router = useRouter();

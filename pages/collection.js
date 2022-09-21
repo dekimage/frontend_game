@@ -1,108 +1,21 @@
 import { useContext, useEffect, useState, useMemo } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import Link from "next/link";
-import cx from "classnames";
+import _ from "lodash";
 
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 
 import styles from "../styles/Collection.module.scss";
-import RewardImage from "../components/RewardImage";
 import Card from "../components/Card";
 
 import Cookie from "js-cookie";
-import { merge } from "lodash";
 import { normalize } from "../utils/calculations";
+import { GET_COLLECTION } from "../GQL/query";
+
+import { sortSettings } from "../data/collectionData";
 
 const USER_ID = Cookie.get("userId");
-
-const GET_COLLECTION = gql`
-  query ($id: ID!) {
-    usersPermissionsUser(id: $id) {
-      data {
-        id
-        attributes {
-          usercards {
-            data {
-              id
-              attributes {
-                is_new
-                is_favorite
-                completed
-                quantity
-                glory_points
-                level
-                is_unlocked
-                card {
-                  data {
-                    id
-                    attributes {
-                      name
-                      rarity
-                      type
-                      is_open
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                      realm {
-                        data {
-                          id
-                          attributes {
-                            name
-                            color
-                            image {
-                              data {
-                                id
-                                attributes {
-                                  url
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const sortByRealms = [
-  "Health",
-  "Energy",
-  "Minimalism",
-  "Mindfulness",
-  "Character",
-  "Negative patterns",
-  "Productivity",
-  "Learning",
-  "Big picture",
-];
-const sortByRarity = ["common", "rare", "epic", "legendary"];
-const sortByType = ["Free", "Premium", "Special"];
-const sortByLevel = [1, 2, 3];
-const sortByCompleted = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-const sortSettings = [
-  { label: "realm", sortBy: sortByRealms },
-  { label: "rarity", sortBy: sortByRarity },
-  { label: "type", sortBy: sortByType },
-  { label: "level", sortBy: sortByLevel },
-  { label: "completed", sortBy: sortByCompleted },
-];
 
 const Home = () => {
   const [store, dispatch] = useContext(Context);
@@ -139,7 +52,6 @@ const Home = () => {
       const mergedCard = _.merge(card, card.card);
       return { ...mergedCard, [card.id]: card.card.id };
     });
-    console.log(mergedcards);
     return mergedcards;
   };
 

@@ -2,7 +2,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 import { useRouter } from "next/router";
 // *** COMPONENTS ***
 import { Rarity } from "../components/Rarity";
@@ -15,47 +14,9 @@ import { normalize } from "../utils/calculations";
 // *** STYLES ***
 import cx from "classnames";
 import styles from "../styles/Streak.module.scss";
+import { GET_FRIENDS_QUERY } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const GET_STREAKS_QUERY = gql`
-  query {
-    friendrewards {
-      data {
-        id
-        attributes {
-          reward_amount
-          friends_count
-          reward_card {
-            data {
-              id
-              attributes {
-                name
-                rarity
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          total
-          pageCount
-        }
-      }
-    }
-  }
-`;
 
 const FriendReward = ({ friendReward, isSelected, setSelectedReward }) => {
   const { reward_card, reward_amount, friends_count, is_collected, is_ready } =
@@ -105,7 +66,7 @@ const FriendReward = ({ friendReward, isSelected, setSelectedReward }) => {
 
 const FriendsTower = () => {
   const [store, dispatch] = useContext(Context);
-  const { loading, error, data } = useQuery(GET_STREAKS_QUERY);
+  const { loading, error, data } = useQuery(GET_FRIENDS_QUERY);
   const [selectedReward, setSelectedReward] = useState(0);
   const router = useRouter();
 

@@ -9,6 +9,31 @@
   font-weight: 500;
 }
 
+.problemBox {
+  @extend %box_duo;
+  background-color: transparent;
+  border: 0;
+  margin-bottom: 1rem;
+  padding: 0;
+  &_name {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  &_blackScreen {
+    border-radius: 15px;
+    @extend %flex_center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.459);
+    padding: 1rem;
+  }
+}
+.exploreProblemsBtn {
+  font-size: 12px;
+}
+
 .levelHeader {
   cursor: pointer;
   @extend %box_dark;
@@ -36,10 +61,15 @@
 }
 .objectivesHeadline {
   @extend %flex_between;
-  margin-top: 1rem;
+
   &_text {
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: 500;
     margin-left: 0.25rem;
+  }
+  &_number {
+    font-size: 18px;
+    font-weight: 500;
   }
 }
 .tinyRewards {
@@ -102,6 +132,18 @@
   grid-template-columns: minmax(0px, 3.5rem) 1fr minmax(0px, 5rem);
   gap: 1rem;
   max-height: 6.5rem;
+
+  &_timeType {
+    position: absolute;
+    left: -5px;
+    top: -9px;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: capitalize;
+    border-radius: 7px;
+    padding: 0.15rem 0.5rem;
+    z-index: 10;
+  }
 
   &_checkmark {
     @extend %flex_center;
@@ -247,4 +289,29 @@
     margin-bottom: 1.5rem;
     margin-top: 1rem;
   }
+}
+
+.courseBox {
+  margin-bottom: 1rem;
+  &_header {
+    border-radius: 15px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 1rem;
+    @extend %flex_between;
+  }
+  &_name {
+    font-weight: 500;
+    font-size: 22px;
+  }
+  &_progress {
+    font-weight: 700;
+    font-size: 14px;
+    color: $actionize_gray_light;
+  }
+}
+
+.progressCircle {
+  height: 50px;
+  width: 50px;
 }

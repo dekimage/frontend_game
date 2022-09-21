@@ -1,0 +1,99 @@
+@import "variables";
+@import "placeholders";
+
+.problem {
+  // border: 2px solid $actionize_gray;
+  border-radius: 15px;
+  @extend %flex_between;
+  margin: 0.5rem 0;
+  background-color: $actionize_gray;
+}
+
+.id {
+  background-color: $primary;
+  font-size: 20px;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 15px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  font-weight: 700;
+}
+
+.name {
+  flex-grow: 1;
+  padding-left: 1rem;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.tag {
+  @extend %flex_center;
+  font-size: 12px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 15px;
+  margin-right: 1rem;
+  background-color: $actionize_black;
+}
+
+.iconRight {
+  @extend %flex_center;
+  margin-right: 1rem;
+}
+
+.dropDown {
+  position: relative;
+  background-color: $actionize_gray;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: 500;
+  width: 9rem;
+  @extend %flex_center;
+
+  &_item {
+    @extend %flex_start;
+
+    padding: 0.5rem;
+    padding-left: 0.75rem;
+    margin: 0.15rem 0;
+    border-radius: 5px;
+    border-bottom: 3px solid $actionize_gray;
+  }
+
+  &_items {
+    border-radius: 15px;
+    width: 144px;
+    z-index: 25;
+    background-color: $actionize_black;
+    position: absolute;
+    margin-top: 0.25rem;
+    border: 2px solid $actionize_gray;
+    border-bottom: none;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 4px 12px;
+  }
+}
+
+.filters {
+  @extend %flex_between;
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  background-color: $actionize_gray;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: 500;
+  width: 9rem;
+  @extend %flex_center;
+  border: 2px solid gray;
+  color: white;
+  &:focus {
+    outline: none;
+    border: 2px solid white;
+  }
+  &::placeholder {
+    color: $actionize_gray_light;
+  }
+}

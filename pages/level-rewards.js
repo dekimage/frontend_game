@@ -3,8 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-import { gql } from "apollo-boost";
-import Link from "next/link";
 
 // *** COMPONENTS ***
 import RewardImage from "../components/RewardImage";
@@ -19,30 +17,7 @@ import { levelRewards } from "../data/rewards";
 import cx from "classnames";
 import styles from "../styles/LevelRewards.module.scss";
 import { normalize } from "../utils/calculations";
-
-const GET_REWARDS_QUERY = gql`
-  query {
-    levelrewards {
-      data {
-        id
-        attributes {
-          level
-          is_premium
-          reward_type
-          reward_amount
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          total
-          pageCount
-        }
-      }
-    }
-  }
-`;
+import { GET_REWARDS_QUERY } from "../GQL/query";
 
 const LevelReward = ({
   level: {

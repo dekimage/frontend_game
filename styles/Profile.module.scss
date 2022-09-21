@@ -57,8 +57,15 @@
 
 .tabs {
   @extend %flex_between;
+  width: 100%;
+  margin: 1rem 0;
+  // position: fixed;
+  top: 3rem;
+  z-index: 200;
+  background-color: $actionize_black;
 }
 .tabsButton {
+  text-transform: capitalize;
   width: 33.3%;
   cursor: pointer;
   @extend %flex_center;
@@ -70,6 +77,14 @@
     border-bottom: 3px solid white;
     color: white;
   }
+}
+.tabCounter {
+  margin-left: 0.5rem;
+  @extend %flex_center;
+  background-color: $actionize_gray;
+  border-radius: 7px;
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 .stats {

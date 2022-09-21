@@ -1,172 +1,32 @@
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import { useState, useEffect, useContext } from "react";
-import { Context } from "../context/store";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import styles from "../styles/Learn.module.scss";
-import ProgressBar from "../components/ProgressBar";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-
-import { calcRealmProgress, normalize } from "../utils/calculations";
-
-import { CardType, ProgressBox } from "../components/Card";
+import { CardType } from "../components/Card";
+import { Realm } from "../components/Realm";
 import Cookie from "js-cookie";
+import { calcRealmProgress, normalize } from "../utils/calculations";
+import styles from "../styles/Learn.module.scss";
 
-import iconPlay from "../assets/progress-collection-dark.svg";
-import iconCollection from "../assets/progress-play-dark.svg";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import { GET_REALMS } from "../GQL/query";
+import { GET_USER_STATS } from "../GQL/query";
 
 const USER_ID = Cookie.get("userId");
-
-const GET_USER_STATS = gql`
-  query ($id: ID!) {
-    usersPermissionsUser(id: $id) {
-      data {
-        id
-        attributes {
-          usercards {
-            data {
-              attributes {
-                completed
-                quantity
-                is_unlocked
-                level
-                card {
-                  data {
-                    id
-                    attributes {
-                      is_open
-                      realm {
-                        data {
-                          id
-                          attributes {
-                            name
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const GET_REALMS = gql`
-  query {
-    realms {
-      data {
-        id
-        attributes {
-          name
-          description
-          coming_soon
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          expansion {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          total
-          pageCount
-        }
-      }
-    }
-  }
-`;
-
-const Realm = ({ realm, completed, collected }) => {
-  return (
-    <Link
-      href={{ pathname: "/realm/[id]", query: { id: realm.id } }}
-      as={`/realm/${realm.id}`}
-      key={realm.id}
-    >
-      <div className={styles.realm}>
-        <div className={styles.realm_body}>
-          <div className={styles.realm_name}>{realm.name}</div>
-          <div className={styles.realm_description}>{realm.description}</div>
-          {realm.coming_soon ? (
-            <div className={styles.comingsoon}>Coming Soon...</div>
-          ) : (
-            <>
-              <ProgressBox
-                icon={iconPlay}
-                progress={completed || 0}
-                maxProgress={100}
-                isPercent
-              />
-              <ProgressBox
-                icon={iconCollection}
-                progress={collected || 0}
-                maxProgress={100}
-                isPercent
-              />
-            </>
-          )}
-        </div>
-        <div className={styles.realm_image}>
-          {realm.image && <img className="image" src={realm.image.url} />}
-        </div>
-      </div>
-    </Link>
-  );
-};
 
 const Learn = () => {
   const { data, loading, error } = useQuery(GET_REALMS);
   const gql_data = data && normalize(data);
 
-  const {
-    data: usercardPreData,
-    loading: usercardsLoading,
-    error: usercardsError,
-  } = useQuery(GET_USER_STATS, {
+  const { data: usercardPreData } = useQuery(GET_USER_STATS, {
     variables: { id: USER_ID },
   });
-
-  const [store, dispatch] = useContext(Context);
-
   const usercardsData = usercardPreData && normalize(usercardPreData);
 
   const realmHash = usercardsData?.user?.usercards
     ? calcRealmProgress(usercardsData.user.usercards)
     : { Essentials: 0 };
 
-  const comingRealms = data && data.realms.filter((r) => r.coming_soon);
-  const freeRealms =
-    gql_data &&
-    gql_data.realms.filter(
-      (r) =>
-        r.expansion.name === "Basic" &&
-        r.name !== "Essentials" &&
-        r.name !== "Character"
-    );
-  const proRealms =
-    gql_data && gql_data.realms.filter((r) => r.expansion.name === "Pro");
+  // const comingRealms = data && data.realms.filter((r) => r.coming_soon);
+
   const tutorialRealm =
     gql_data && gql_data.realms.filter((r) => r.name === "Essentials");
   const specialRealm =
@@ -175,35 +35,21 @@ const Learn = () => {
   return (
     <div className="background_dark">
       <Header />
+
       <div className="section">
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
         {gql_data && realmHash && (
           <div>
             <div className={styles.header}>Start Here</div>
+
             {tutorialRealm.map((realm, i) => (
               <Realm realm={realm} key={i} />
             ))}
 
             <div className={styles.header}>
-              Basic Categories <CardType type={"free"} />
-            </div>
-
-            {freeRealms.map((realm, i) => (
-              <Realm
-                realm={realm}
-                completed={
-                  realmHash[realm.name] && realmHash[realm.name].completed
-                }
-                collected={
-                  realmHash[realm.name] && realmHash[realm.name].collected
-                }
-                key={i}
-              />
-            ))}
-
-            <div className={styles.header}>
-              Secret Category <CardType type={"special"} />
+              Special Categories
+              <CardType type={"special"} />
             </div>
 
             {specialRealm.map((realm, i) => (
@@ -219,11 +65,7 @@ const Learn = () => {
               />
             ))}
 
-            <div className={styles.header}>
-              Premium Categories <CardType type={"premium"} />
-            </div>
-
-            {proRealms.map((realm, i) => (
+            {gql_data.realms.map((realm, i) => (
               <Realm
                 realm={realm}
                 completed={
@@ -250,22 +92,3 @@ const Learn = () => {
 };
 
 export default Learn;
-
-{
-  /* <>
-              <ProgressBar
-                icon={iconPlay}
-                progress={completed || 0}
-                max={100}
-              />
-              <div className={styles.realm_progressBox}>
-                <img
-                  src={iconPlay}
-                  height="10px"
-                  className={styles.progressIcon}
-                />
-
-                <div className={styles.progress}>{completed || 0}%</div>
-              </div>
-            </> */
-}

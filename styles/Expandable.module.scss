@@ -1,0 +1,35 @@
+@import "mixins";
+@import "variables";
+@import "placeholders";
+
+.expandable {
+  // @extend %box_duo;
+  margin: 2rem 0;
+  flex-direction: column;
+}
+
+.header {
+  @extend %flex_between;
+  margin-bottom: 1rem;
+}
+
+.name {
+  flex-grow: 1;
+  margin-left: 1rem;
+  font-size: 20px;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 15px;
+  margin-right: 1rem;
+  background-color: $primary;
+}
+
+.image {
+  @extend %flex_center;
+  img {
+    height: 30px;
+  }
+}

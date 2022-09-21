@@ -1,0 +1,234 @@
+@import "mixins";
+@import "variables";
+@import "placeholders";
+.name {
+  @extend %title;
+  margin-bottom: 0.5rem;
+}
+
+.shortRating {
+  font-weight: 700;
+  font-size: 14px;
+  @extend %flex_start;
+}
+.ratingNumber {
+  font-size: 12px;
+  margin-bottom: 0.5rem;
+}
+.smallText {
+  font-size: 12px;
+  margin: 0.25rem 0;
+}
+.price {
+  font-size: 24px;
+  font-weight: 500;
+  @extend %flex_start;
+  margin-top: 1rem;
+}
+
+.fullPrice {
+  font-size: 16px;
+  font-weight: 500;
+  color: gray;
+  text-decoration: line-through;
+  margin-left: 0.5rem;
+}
+.discount {
+  color: rgb(255, 132, 116);
+  font-size: 12px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.moneyback {
+  font-size: 12px;
+  margin: 0.25rem 0;
+  font-weight: 500;
+  @extend %flex_center;
+  color: gray;
+}
+.share {
+  text-decoration: underline;
+  font-weight: 500;
+  padding-right: 1rem;
+  margin: 0.5rem 0;
+}
+
+.salesPoints {
+  margin: 1rem 0;
+}
+
+.salesName {
+  font-weight: 700;
+  font-size: 20px;
+}
+.salesText {
+  ul {
+    margin: 0;
+    padding-left: 2rem;
+  }
+  li {
+    margin: 0.25rem 0;
+  }
+  ol {
+    padding-left: 1.75rem;
+    margin: 0;
+  }
+}
+
+.details {
+  @extend %flex_start;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-left: 0.7rem;
+}
+
+.detailsItem {
+  margin: 0.25rem 0;
+  font-size: 16px;
+}
+
+.seeAll {
+  @extend %box_duo;
+  @extend %flex_center;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+// CURRICULUM
+.day {
+  @extend %box_duo;
+  @extend %flex_start;
+  flex-direction: column;
+  margin: 0.5rem 0;
+  padding: 0;
+}
+
+.dayHeader {
+  @extend %flex_between;
+  width: 100%;
+  padding: 1rem;
+}
+
+.labelBox {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.progress {
+  font-weight: 500;
+  font-size: 14px;
+  color: gray;
+}
+
+.state {
+  width: 45px;
+  height: 45px;
+  border-radius: 15px;
+  @extend %flex_center;
+}
+
+.contents {
+  width: 100%;
+}
+
+.contentStep {
+  @extend %flex_between;
+  width: 100%;
+  padding: 0.25rem 1rem;
+}
+
+.contentState {
+  position: relative;
+  @extend %flex_center;
+
+  width: 45px;
+  height: 45px;
+}
+
+.contentTypeBackground {
+  border-radius: 50%;
+  background-color: $actionize_gray;
+  @extend %flex_center;
+  height: 30px;
+  width: 30px;
+}
+
+.contentStateIcon {
+  margin-right: 0.3rem;
+}
+
+.contentTitle {
+  flex-grow: 1;
+  font-weight: 500;
+  font-size: 14px;
+  margin-left: 1rem;
+  @extend %flex_start;
+}
+.contentDuration {
+  font-weight: 700;
+  font-size: 14px;
+  color: gray;
+}
+
+.line {
+  position: absolute;
+  left: 48%;
+  background-color: $actionize_gray;
+  width: 2px;
+  height: 55px;
+  z-index: 5;
+}
+
+// Content Next
+.contentNext {
+  @extend %flex_between;
+  width: 100%;
+  padding: 0.5rem 0;
+  padding-left: 1rem;
+  background-color: $actionize_gray;
+}
+
+.contentNextState {
+  position: relative;
+  @extend %flex_center;
+
+  width: 45px;
+  height: 45px;
+}
+
+.contentNextNameBox {
+  @extend %flex_start;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.contentNextTitle {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.contentNextTypeBackground {
+  border-radius: 50%;
+  background-color: black;
+  @extend %flex_center;
+  height: 40px;
+  width: 40px;
+}
+
+.continueButton {
+  background-color: $secondary;
+  padding: 0.25rem 1rem;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 15px;
+  margin: 0 0.5rem;
+}

@@ -4,98 +4,25 @@ import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 // *** COMPONENTS ***
-import ProgressBar from "../components/ProgressBar";
-import RewardImage from "../components/RewardImage";
-import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-import { CommunityAction } from "../pages/card/[id]";
-
-import settingsIcon from "../assets/menu-settings-dark.svg";
+import { CommunityAction } from "../components/cardPageComps";
+import {
+  Activity,
+  Stat,
+  Buddy,
+  ProfileHeader,
+  Tabs,
+} from "../components/profileComps";
 
 // *** ACTIONS ***
-import { followBuddy } from "../actions/action";
 import { calcTotal } from "../utils/calculations";
 
 // *** STYLES ***
-import cx from "classnames";
 import styles from "../styles/Profile.module.scss";
-import router from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const Stat = ({ img, number, text, isPercent = false }) => {
-  return (
-    <div className={styles.statsBox}>
-      <div className={styles.statsBox_img}>
-        <img src={img} />
-      </div>
-      <div className={styles.statsBox_number}>
-        {number}
-        {isPercent && "%"}
-      </div>
-      <div className={styles.statsBox_text}>{text}</div>
-    </div>
-  );
-};
-
-export const Activity = ({ img, link, text, notification = 0 }) => {
-  return (
-    <Link href={link}>
-      <div className={styles.activityBox}>
-        {notification !== 0 && (
-          <div className={styles.activityBox_notification}>{notification}</div>
-        )}
-        <div className={styles.activityBox_img}>
-          <img src={img} height="25px" />
-        </div>
-
-        <div className={styles.activityBox_text}>{text}</div>
-      </div>
-    </Link>
-  );
-};
-
-const Buddy = ({ img, link, name, level }) => {
-  return (
-    <Link href={link}>
-      <div className={styles.buddyBox}>
-        <div className={styles.buddyAvatar}>
-          <img
-            // src={`${baseUrl}/${store.user.image.url}`
-
-            src={`${baseUrl}/avatar-test.png`}
-          />
-        </div>
-        <div className={styles.buddyBox_name}>{name}</div>
-
-        <div className={styles.buddyBox_level}>{level} Lvl</div>
-        <div className={styles.arrowRight}>
-          <ion-icon name="chevron-forward-outline"></ion-icon>
-        </div>
-      </div>
-    </Link>
-  );
-};
-
-// const CommunityAction = ({ actionProps }) => {
-//   const { name, action, card, votes, type } = actionProps;
-//   return (
-//     <div className={styles.communityAction}>
-//       <div className={styles.communityAction_name}>{name}</div>
-//       <div className={styles.communityAction_action}>{action}</div>
-//       <div className={styles.communityAction_card}>{card.name}</div>
-//       <div className={styles.communityAction_votes}>{votes}</div>
-//       <div className={styles.communityAction_type}>{type}</div>
-
-//       <div className={styles.buddyBox_img}>
-//         {/* <img src={img} height="25px" /> */}
-//       </div>
-//     </div>
-//   );
-// };
 
 const Profile = () => {
   const [store, dispatch] = useContext(Context);
@@ -109,43 +36,17 @@ const Profile = () => {
     store?.user?.usercards &&
     calcTotal(store.user.usercards, "collected", true);
 
+  const tabsData = [
+    { label: "activity", count: -1 },
+    { label: "buddies", count: -1 },
+    { label: "content", count: -1 },
+  ];
+
   return (
     <div className="background_dark">
-      {/* <Header /> */}
-
       {store?.user && (
         <div className="section-container">
-          <div className={styles.profileHeader}>
-            <div className={styles.escape} onClick={() => router.back()}>
-              {/* <img src={iconBack} height="25px" /> */}
-              <ion-icon name="chevron-back-outline"></ion-icon>
-            </div>
-            <div className={styles.profileHeader_box}>
-              <div className={styles.avatarBox}>
-                <div className={styles.avatar}>
-                  <img
-                    // src={`${baseUrl}/${store.user.image.url}`
-
-                    src={`${baseUrl}/avatar-test.png`}
-                    height="66px"
-                  />
-                </div>
-                <div className={styles.level}>{store.user.level}</div>
-                <div className={styles.username}>{store.user.username}</div>
-                <ProgressBar progress={store.user.xp} max={50} />
-
-                <div className={styles.xp}>XP {store.user.xp}/50</div>
-                {/* <div className="btn btn-action" onClick={() => followBuddy()}>
-                  Follow
-                </div> */}
-              </div>
-            </div>
-            <Link href="/settings">
-              <div className={styles.settings}>
-                <img src={settingsIcon} height="25px" />
-              </div>
-            </Link>
-          </div>
+          <ProfileHeader />
 
           <div className={styles.stats}>
             <Stat
@@ -171,36 +72,10 @@ const Profile = () => {
               text={"Max Energy"}
             />
           </div>
-          <div className={styles.tabs}>
-            <div
-              className={cx(
-                styles.tabsButton,
-                tab === "activity" && styles.active
-              )}
-              onClick={() => setTab("activity")}
-            >
-              Activity
-            </div>
-            <div
-              className={cx(
-                styles.tabsButton,
-                tab === "buddies" && styles.active
-              )}
-              onClick={() => setTab("buddies")}
-            >
-              Buddies
-            </div>
-            <div
-              className={cx(
-                styles.tabsButton,
-                tab === "content" && styles.active
-              )}
-              onClick={() => setTab("content")}
-            >
-              Content
-            </div>
-          </div>
 
+          <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
+
+          {/* "https://backendactionise.s3.eu-west-1.amazonaws.com/2022_07_08_10_58_31_Actionise_28d16b97b5.png?updated_at=2022-07-08T08:58:51.431Z" */}
           {tab === "activity" && (
             <div className="section">
               <Activity
@@ -276,8 +151,6 @@ const Profile = () => {
               ))}
             </div>
           )}
-
-          {/* SEPERATOR=--------------------------- */}
         </div>
       )}
 

@@ -1,0 +1,15 @@
+@import "variables";
+@import "placeholders";
+
+.tabs {
+  @extend %flex_between;
+}
+
+.link {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 1rem;
+  &.active {
+    border-bottom: 2px solid white;
+  }
+}

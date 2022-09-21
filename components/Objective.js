@@ -26,6 +26,7 @@ const Objective = ({
   },
   dispatch,
 }) => {
+  const timeColor = time_type === "daily" ? "#009c68" : "#1e67ac";
   return (
     <div
       className={cx(styles.objective, {
@@ -34,6 +35,14 @@ const Objective = ({
       })}
       key={id}
     >
+      <div
+        className={styles.objective_timeType}
+        style={{
+          backgroundColor: timeColor,
+        }}
+      >
+        {time_type}
+      </div>
       {/* REWARD COMPONENT */}
 
       <RewardImage reward={reward_type} amount={reward_amount} isTask={true} />

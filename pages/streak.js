@@ -15,63 +15,9 @@ import { normalize } from "../utils/calculations";
 // *** STYLES ***
 import cx from "classnames";
 import styles from "../styles/Streak.module.scss";
+import { GET_STREAKS_QUERY } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const GET_STREAKS_QUERY = gql`
-  query {
-    streakrewards {
-      data {
-        id
-        attributes {
-          reward_amount
-          streak_count
-          reward_card {
-            data {
-              id
-              attributes {
-                name
-                rarity
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-          reward_box {
-            data {
-              id
-              attributes {
-                name
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          total
-          pageCount
-        }
-      }
-    }
-  }
-`;
 
 const Streak = ({ streak, isSelected, setSelectedStreak }) => {
   const {

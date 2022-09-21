@@ -6,6 +6,8 @@ const Reducer = (store, action) => {
       return { ...store, player: action.data };
     case "END_TUTORIAL":
       return { ...store, tutorial: 10 };
+    case "END_TUTORIAL_MODAL":
+      return { ...store, tutorialModal: false };
     case "FETCH_USER":
       return {
         ...store,

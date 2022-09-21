@@ -16,8 +16,6 @@ import iconEpic from "../assets/epic-rarity.svg";
 import iconLegendary from "../assets/legendary-rarity.svg";
 import { useContext } from "react";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
 const getMaxQuantity = (level) => {
   const data = {
     1: 2,

@@ -53,8 +53,6 @@ const SearchBar = () => {
     setIsSearching(false);
   };
 
-  console.log(result);
-
   const SearchCard = ({ card }) => {
     return (
       <Link
