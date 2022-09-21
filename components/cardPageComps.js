@@ -95,11 +95,12 @@ export const Action = ({ action }) => {
       {open && (
         <div className={styles.action_open}>
           <div className={styles.stats}>
-            {Object.keys(action.stats)
-              .slice(0, 4)
-              .map((key, i) => (
-                <ActionStat key={i} label={key} value={action.stats[key]} />
-              ))}
+            {action.stats &&
+              Object.keys(action.stats)
+                .slice(0, 4)
+                .map((key, i) => (
+                  <ActionStat key={i} label={key} value={action.stats[key]} />
+                ))}
           </div>
 
           <div className={styles.action_instructions}>
@@ -120,7 +121,12 @@ export const Action = ({ action }) => {
             <div className={styles.header}>
               <div>Tips</div>
             </div>
-            <ReactMarkdown children={action.tips} className={styles.markdown} />
+            {action.tips && (
+              <ReactMarkdown
+                children={action.tips}
+                className={styles.markdown}
+              />
+            )}
           </div>
 
           <div
