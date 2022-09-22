@@ -9,9 +9,14 @@ import NavBar from "../components/NavBar";
 import styles from "../styles/Collection.module.scss";
 import Card from "../components/Card";
 
+import { DropDown } from "./problems";
+import { Tabs } from "../components/profileComps";
+import { Course } from "../components/shopComps";
+import { Action } from "../components/cardPageComps";
+
 import Cookie from "js-cookie";
 import { normalize } from "../utils/calculations";
-import { GET_COLLECTION } from "../GQL/query";
+import { GET_COLLECTION, GET_REALMS } from "../GQL/query";
 
 import { sortSettings } from "../data/collectionData";
 
@@ -23,16 +28,47 @@ const Home = () => {
     variables: { id: USER_ID },
   });
 
+  console.log(store && store.user);
+
+  const { data: realmData, realmsLoading } = useQuery(GET_REALMS);
+  const realms = realmData && normalize(realmData).realms;
+
   const gql_data = data && normalize(data);
   const [cards, setCards] = useState([]);
   const [sortBy, setSortBy] = useState(sortSettings[0]);
   const [isSortAsc, setIsSortAsc] = useState(true);
+  const [dropDownFilters, setDropDownFilters] = useState(false);
+  const [tab, setTab] = useState("Concepts");
 
   const [filters, setFilters] = useState({
     type: "",
     rarity: "",
     realm: "",
   });
+
+  const tabsData = [
+    { label: "Concepts", count: -1, link: "cards" },
+    { label: "Programs", count: -1, link: "courses" },
+    { label: "Actions", count: -1, link: "actions" },
+  ];
+
+  const filterContent = (contents, filter) => {
+    if (!filter || filter === "All") {
+      return contents;
+    }
+
+    if (tab === "Concepts") {
+      return contents.filter((c) => c.realm.name === filter);
+    }
+    if (tab === "Programs") {
+      console.log(111, contents);
+      return contents.filter((c) => c.course.realm.name === filter);
+    }
+    if (tab === "Actions") {
+      return contents.filter((c) => c.card.realm.name === filter);
+    }
+    return contents;
+  };
 
   const addFilters = (filterType, value) => {
     setFilters({
@@ -93,39 +129,80 @@ const Home = () => {
       <div className="section">
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
-        {/* TODO: ADD DROPDOWNS -> */}
-        {/* <div onClick={() => addFilters("realm", "health")}>rarity</div>
-        <div onClick={() => addFilters("type", "free")}>type</div>
-        <div onClick={() => addFilters("rarity", "common")}>all</div> */}
-        {gql_data && gql_data.usersPermissionsUser && (
-          <div className={styles.headline}>
-            Discovered: {gql_data.usersPermissionsUser.usercards.length}/{108}
-          </div>
-        )}
-
-        <div className={styles.orderBtn}>
-          <div className={styles.sortBtn} onClick={() => switchSortby()}>
-            Sort by&nbsp;<span className={styles.label}>{sortBy.label}</span>
-          </div>
-          <div
-            className={styles.upBtn}
-            onClick={() => setIsSortAsc(!isSortAsc)}
-          >
-            {isSortAsc ? (
-              <ion-icon name="chevron-up-outline"></ion-icon>
-            ) : (
-              <ion-icon name="chevron-down-outline"></ion-icon>
-            )}
+        <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
+        <div className="flex_between">
+          {realms && (
+            <DropDown
+              realms={realms}
+              filter={dropDownFilters}
+              setFilter={setDropDownFilters}
+            />
+          )}
+          <div className={styles.orderBtn}>
+            <div className={styles.sortBtn} onClick={() => switchSortby()}>
+              Sort by&nbsp;<span className={styles.label}>{sortBy.label}</span>
+            </div>
+            <div
+              className={styles.upBtn}
+              onClick={() => setIsSortAsc(!isSortAsc)}
+            >
+              {isSortAsc ? (
+                <ion-icon name="chevron-up-outline"></ion-icon>
+              ) : (
+                <ion-icon name="chevron-down-outline"></ion-icon>
+              )}
+            </div>
           </div>
         </div>
 
-        {cards.length > 0 && (
+        {gql_data &&
+          gql_data.usersPermissionsUser &&
+          store?.user?.usercourses?.length > 0 && (
+            <div className={styles.headline}>
+              {tab === "Concepts" && (
+                <div>
+                  Discovered: {gql_data.usersPermissionsUser.usercards.length}/
+                  {108}
+                </div>
+              )}
+              {tab === "Programs" && (
+                <div>Purchased Programs: {store.user.usercourses.length}</div>
+              )}
+              {tab === "Actions" && (
+                <div>
+                  Discovered: {store.user.actions.length}/{330}
+                </div>
+              )}
+            </div>
+          )}
+
+        {tab === "Concepts" && cards.length > 0 && (
           <div>
             <div className={styles.grid}>
-              {filterCards().map((card, i) => {
-                return <Card card={card} key={i} />;
-              })}
+              {filterContent(mergeCards(cards), dropDownFilters).map(
+                (card, i) => {
+                  return <Card card={card} key={i} />;
+                }
+              )}
             </div>
+          </div>
+        )}
+
+        {tab === "Programs" && store?.user?.usercourses.length > 0 && (
+          <div>
+            {filterContent(store.user.usercourses, dropDownFilters).map(
+              (uc, i) => (
+                <Course course={uc.course} key={i} />
+              )
+            )}
+          </div>
+        )}
+
+        {tab === "Actions" && store?.user?.actions.length > 0 && (
+          <div>
+            {filterContent(store.user.actions, dropDownFilters).map((a, i) => (
+              <Action action={a} key={i} />
+            ))}
           </div>
         )}
       </div>

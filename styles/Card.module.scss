@@ -129,9 +129,13 @@
 }
 
 .lockBox {
+  position: absolute;
+  bottom: 0;
   @extend %flex_center;
-  background-color: transparent;
-  height: 2.5rem;
+  padding: 0.5rem 1rem;
+
+  flex-direction: column;
+  background-color: rgb(87, 87, 87);
   font-size: 12px;
   width: 100%;
 }

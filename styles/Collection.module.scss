@@ -9,10 +9,9 @@
 .headline {
   @extend %flex_center;
   @extend %title;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
 }
 .orderBtn {
-  margin-bottom: 1rem;
   cursor: pointer;
   background-color: $actionize_gray;
   height: 3rem;

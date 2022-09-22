@@ -58,11 +58,9 @@ const links = [
 ];
 
 const CourseSales = ({ course }) => {
-  const [store, dispatch] = useContext(Context);
-
   return (
     <div className="section">
-      <BackButton routeDynamic={""} routeStatic={"/shop"} />
+      <BackButton routeDynamic={""} routeStatic={""} isBack />
       <div className={styles.image}>
         <img src={`${baseUrl}${course.image.url}`} width="100%" />
       </div>
@@ -364,7 +362,7 @@ const CoursePurchased = ({ course, usercourse }) => {
   return (
     <div className="section">
       <div className={styles.card}>
-        <BackButton routeDynamic={""} routeStatic={"/shop"} />
+        <BackButton routeDynamic={""} routeStatic={""} isBack />
 
         <img src={`${baseUrl}${course.image.url}`} width="100%" />
 

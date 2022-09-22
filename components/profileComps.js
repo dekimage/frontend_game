@@ -108,7 +108,13 @@ export const ProfileHeader = () => {
   );
 };
 
-export const Tabs = ({ tabState, setTab, tabs }) => {
+export const Tabs = ({
+  tabState,
+  setTab,
+  tabs,
+  callback = false,
+  value = false,
+}) => {
   const Tab = ({ tabState, setTab, tab, link }) => {
     return (
       <a
@@ -118,7 +124,12 @@ export const Tabs = ({ tabState, setTab, tabs }) => {
           tabState === tab.label && styles.active
         )}
       >
-        <div onClick={() => setTab(tab.label)}>
+        <div
+          onClick={() => {
+            setTab(tab.label);
+            callback && callback(value);
+          }}
+        >
           {tab.label}
           {tab.count !== -1 && (
             <div className={styles.tabCounter}>{tab.count ? tab.count : 0}</div>

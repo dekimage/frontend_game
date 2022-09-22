@@ -76,20 +76,20 @@ const OpenCard = ({ card, maxQuantity }) => {
 
 const ClosedCard = ({ card }) => {
   return (
-    <>
+    <div className={styles.lockBox}>
+      <div className="flex_center">
+        <img
+          src={card.quantity >= 10 ? iconCheck : iconLock}
+          style={{ height: "48px", marginBottom: ".5rem" }}
+        />
+      </div>
+      {card.quantity >= 10 ? "Unlock" : "Locked"}
       <ProgressBox
         icon={iconCollection}
         progress={card.quantity || 0}
         maxProgress={10}
       />
-      <div className={styles.lockBox}>
-        <img
-          src={card.quantity >= 10 ? iconCheck : iconLock}
-          style={{ height: "20px", marginRight: "1rem" }}
-        />
-        {card.quantity >= 10 ? "Ready to Unlock!" : "Collect 10 to Unlock"}
-      </div>
-    </>
+    </div>
   );
 };
 
@@ -116,11 +116,11 @@ const Card = ({ card }) => {
         className={cx(styles.card, { [styles.notCollected]: !isColored })}
         style={{ "--background": card.realm.color }}
       >
-        {!isColored && (
+        {/* {!isColored && (
           <div className={styles.lock}>
             <img src={iconLock} />
           </div>
-        )}
+        )} */}
         <div
           className={styles.background}
           style={{ "--background": card.realm.color }}
@@ -135,7 +135,7 @@ const Card = ({ card }) => {
             {card.level || 1}
           </div>
         )}
-        {card.is_new && <div className={styles.isNew}>New!</div>}
+        {/* {card.is_new && <div className={styles.isNew}>New!</div>} */}
         <div className={styles.realmLogo}>
           <img src={card.realm.image.url} />
         </div>
@@ -147,13 +147,13 @@ const Card = ({ card }) => {
           />
         </div>
         <div className={styles.card_body}>
-          <div className={styles.rarity_center}>
+          {/* <div className={styles.rarity_center}>
             {isColored ? (
               <CardType type={"open"} />
             ) : (
               <CardType type={card.type} />
             )}
-          </div>
+          </div> */}
 
           <div className={styles.name}>{card.name}</div>
 

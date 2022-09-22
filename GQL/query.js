@@ -359,6 +359,63 @@ export const GET_REALM_ID = gql`
               }
             }
           }
+
+          problems {
+            data {
+              id
+              attributes {
+                name
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          courses {
+            data {
+              id
+              attributes {
+                name
+                students
+                price
+                discount
+                course_details {
+                  id
+                  duration
+                  actions
+                  concepts
+                  questions
+                  sessions
+                  days
+                }
+                last_updated
+                rating
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
           cards {
             data {
               id

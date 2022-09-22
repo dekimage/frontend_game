@@ -476,13 +476,22 @@ export const FavoriteButton = ({ usercard, cardId }) => {
   );
 };
 
-export const BackButton = ({ routeStatic, routeDynamic }) => {
+export const BackButton = ({ routeStatic, routeDynamic, isBack = false }) => {
+  const router = useRouter();
   return (
-    <Link href={`${routeStatic}${routeDynamic}`}>
-      <div className={styles.backButton}>
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </div>
-    </Link>
+    <>
+      {isBack ? (
+        <div className={styles.backButton} onClick={() => router.back()}>
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </div>
+      ) : (
+        <Link href={`${routeStatic}${routeDynamic}`}>
+          <div className={styles.backButton}>
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </div>
+        </Link>
+      )}
+    </>
   );
 };
 

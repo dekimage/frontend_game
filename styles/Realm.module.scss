@@ -15,8 +15,6 @@
   @extend %title;
   text-align: center;
   vertical-align: center;
-  padding: 24px;
-  padding-top: 8px;
   position: relative;
 }
 .back {
@@ -33,6 +31,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   gap: 1rem;
+  margin-bottom: 2rem;
   // -webkit-box-align: stretch;
   // place-items: stretch;
 }
@@ -121,6 +120,15 @@
   @extend %flex_center;
   color: $light_gray_headspace;
   width: 100%;
+}
+
+.sectionHeader {
+  @extend %title;
+  margin-bottom: 0.5rem;
+}
+
+.problemsWrap {
+  margin-bottom: 2rem;
 }
 
 //old card headspace style
