@@ -3,6 +3,8 @@ import { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/store";
 import { useRouter } from "next/router";
 
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+
 import ReactMarkdown from "react-markdown";
 import { Rating } from "../../components/Rating";
 import Link from "next/link";
@@ -359,43 +361,62 @@ const CoursePurchased = ({ course, usercourse }) => {
     return result;
   };
 
+  const percentage = (
+    (usercourse.last_completed_day / usercourse.course.course_details.days) *
+    100
+  ).toFixed(1);
+
   return (
-    <div className="section">
+    <div>
       <div className={styles.card}>
         <BackButton routeDynamic={""} routeStatic={""} isBack />
 
-        <img src={`${baseUrl}${course.image.url}`} width="100%" />
+        <div
+          className={styles.courseImage}
+          style={{ backgroundImage: `url(${baseUrl}${course.image.url})` }}
+        ></div>
 
-        <div className={styles.background}></div>
+        <div className="section">
+          <div className={styles.section_name}>
+            <div className={styles.nameProgress}>
+              <div>
+                <div className={styles.name}>{course.name}</div>
+                <div className={styles.description}>{course.description}</div>
+              </div>
 
-        <div className={styles.section_name}>
-          <div className={styles.name}>
-            <div className={styles.name}>{course.name}</div>
+              <div className={styles.progressCircle}>
+                <CircularProgressbar
+                  value={percentage}
+                  text={`${percentage}%`}
+                  styles={{
+                    text: {
+                      fill: "#c9ff75",
+                      fontSize: "24px",
+                      fontWeight: "700",
+                    },
+                    path: {
+                      stroke: "#3dbc4a",
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <Curriculum days={course.days} usercourse={usercourse} />
+          <div className={styles.fixed}>
+            <div
+              className="btn btn-action"
+              style={{ fontSize: "20px" }}
+              onClick={() => {
+                router.push(`${feUrl}/shop`);
+              }}
+            >
+              Play
+              <img src={iconPlay} height="16px" className="ml5" />
+            </div>
           </div>
         </div>
-        {/* 
-        <div className={styles.section_level}>
-          <div className={styles.progress_box}>
-            <span>
-              {usercard.quantity}/{isLevelUnlocked ? maxQuantity : 10}
-            </span>
-            <ProgressBar
-              progress={usercard.quantity}
-              max={isLevelUnlocked ? maxQuantity : 10}
-              isReadyToClaim={usercard.quantity >= maxQuantity}
-            />
-          </div>
-        </div> */}
-
-        <div className={styles.description}>{course.description}</div>
-
-        {/* <Title
-          name="Progress"
-          rightText={usercard.completed}
-          rightSeparator={5}
-        /> */}
-
-        <Curriculum days={course.days} usercourse={usercourse} />
       </div>
     </div>
   );

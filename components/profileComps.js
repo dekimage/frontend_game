@@ -72,12 +72,12 @@ export const Buddy = ({ img, link, name, level }) => {
   );
 };
 
-export const ProfileHeader = () => {
+export const ProfileHeader = ({ buddy, isBuddy = false }) => {
   const [store, dispatch] = useContext(Context);
+  const user = isBuddy ? buddy : store.user;
   return (
     <div className={styles.profileHeader}>
       <div className={styles.escape} onClick={() => router.back()}>
-        {/* <img src={iconBack} height="25px" /> */}
         <ion-icon name="chevron-back-outline"></ion-icon>
       </div>
       <div className={styles.profileHeader_box}>
@@ -89,21 +89,25 @@ export const ProfileHeader = () => {
               height="66px"
             />
           </div>
-          <div className={styles.level}>{store.user.level}</div>
-          <div className={styles.username}>{store.user.username}</div>
-          <ProgressBar progress={store.user.xp} max={50} />
+          <div className={styles.level}>{user.level}</div>
+          <div className={styles.username}>{user.username}</div>
+          <ProgressBar progress={user.xp} max={50} />
 
-          <div className={styles.xp}>XP {store.user.xp}/50</div>
+          <div className={styles.xp}>XP {user.xp}/50</div>
           {/* <div className="btn btn-action" onClick={() => followBuddy()}>
             Follow
           </div> */}
         </div>
       </div>
-      <Link href="/settings">
-        <div className={styles.settings}>
-          <img src={settingsIcon} height="25px" />
-        </div>
-      </Link>
+      <div style={{ width: "24px" }}>
+        {!isBuddy && (
+          <Link href="/settings">
+            <div className={styles.settings}>
+              <img src={settingsIcon} height="25px" />
+            </div>
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

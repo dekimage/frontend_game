@@ -67,9 +67,9 @@ const Profile = () => {
               text={"Highest Streak"}
             />
             <Stat
-              number={store.user.max_energy}
+              number={store.user?.actions?.length}
               img={`${baseUrl}/energy.png`}
-              text={"Max Energy"}
+              text={"Actions Done"}
             />
           </div>
 

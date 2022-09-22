@@ -232,3 +232,34 @@
   border-radius: 15px;
   margin: 0 0.5rem;
 }
+
+.progressCircle {
+  height: auto;
+  width: 60px;
+  margin-left: 1rem;
+}
+
+.nameProgress {
+  @extend %flex_between;
+  height: 100%;
+  margin-bottom: 1rem;
+}
+
+.courseImage {
+  background-position: 25% 75%;
+  width: 100%;
+  height: 150px;
+}
+
+.fixed {
+  position: fixed;
+  background-color: $actionize_black;
+  border-top: 2px solid $actionize_gray;
+  bottom: 0;
+  width: 100%;
+  height: 5rem;
+  @extend %flex_center;
+  left: 0px;
+  position: fixed;
+  z-index: 10;
+}

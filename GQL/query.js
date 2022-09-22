@@ -1068,6 +1068,178 @@ export const GET_BOX_ID = gql`
   }
 `;
 
+export const GET_USER_ID = gql`
+  query ($id: ID) {
+    usersPermissionsUser(id: $id) {
+      data {
+        id
+        attributes {
+          username
+          level
+          xp
+          gems
+          stars
+          streak
+          energy
+          highest_streak_count
+          highest_buddy_shares
+          is_subscribed
+          actions {
+            data {
+              id
+              attributes {
+                name
+                type
+                level
+                duration
+                tips
+                stats {
+                  difficulty
+                  fun
+                  short_term
+                  long_term
+                }
+                steps {
+                  content
+                }
+              }
+            }
+          }
+          communityactions {
+            data {
+              id
+              attributes {
+                name
+                votes
+                reports
+                duration
+                steps {
+                  content
+                }
+                type
+              }
+            }
+          }
+          last_unlocked_cards {
+            data {
+              id
+              attributes {
+                name
+              }
+            }
+          }
+          last_unlocked_cards {
+            data {
+              id
+              attributes {
+                name
+              }
+            }
+          }
+          followedBy {
+            data {
+              id
+              attributes {
+                username
+              }
+            }
+          }
+          followers {
+            data {
+              id
+              attributes {
+                username
+              }
+            }
+          }
+          usercards {
+            data {
+              id
+              attributes {
+                is_new
+                is_favorite
+                completed
+                quantity
+                glory_points
+                level
+                is_unlocked
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                      rarity
+                      type
+                      is_open
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                      realm {
+                        data {
+                          id
+                          attributes {
+                            name
+                            color
+                            image {
+                              data {
+                                id
+                                attributes {
+                                  url
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_USER_IDAGAGAGAG = gql`
+  query ($id: ID!) {
+    user(id: $id) {
+      data {
+        id
+        attributes {
+          name
+          description
+          require
+          price
+          price_type
+          image {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+          expansion {
+            data {
+              id
+              attributes {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_BOXES = gql`
   query {
     boxes {

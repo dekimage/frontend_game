@@ -188,6 +188,10 @@ a {
 .btn-empty {
   background-color: $actionize_black;
 }
+.btn-blank {
+  background-color: $actionize_black;
+  border: 2px solid $actionize_gray;
+}
 .btn-stretch {
   width: 100%;
   max-width: 600px;

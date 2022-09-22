@@ -5,15 +5,16 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  // background-color: $primary;
   padding: 1rem;
   border: solid 1px transparent;
   border-radius: 50%/ 0 0 100px 100px;
+  background-color: $primary;
 }
 .avatarBox {
   position: relative;
   @extend %flex_center;
   flex-direction: column;
+  flex-grow: 1;
 }
 .avatar {
   border-radius: 50%;
