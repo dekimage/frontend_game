@@ -11,6 +11,10 @@ import checkmark1 from "../assets/checkmark-fill.svg";
 import iconCollection from "../assets/progress-play-dark.svg";
 import iconLock from "../assets/lock-white-border.svg";
 
+import { GenericDropDown } from "../pages/problems";
+
+import { useTimer } from "react-timer-hook";
+
 import { static_levels, getMaxQuantity } from "../data/cardPageData";
 
 import {
@@ -20,7 +24,8 @@ import {
   deleteCommunityAction,
   createCommunityAction,
 } from "../actions/action";
-import { stripSymbols } from "apollo-utilities";
+
+import Timer from "../components/Timer";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -58,9 +63,23 @@ const ActionStat = ({ label, value }) => {
   );
 };
 
-export const Action = ({ action }) => {
-  const [open, setOpen] = useState(false);
+export const Action = ({ action, parent, goNext, isOpen = false }) => {
+  const time = new Date();
+  const expiryTimestamp = time.setSeconds(time.getSeconds() + action.duration);
+  const [isTimerCompleted, setIsTimerCompleted] = useState(false);
+  const [open, setOpen] = useState(isOpen);
   const [store, dispatch] = useContext(Context);
+  const [isShowTips, setIsShowTips] = useState(false);
+
+  const onExpire = () => {
+    setIsTimerCompleted(true);
+  };
+
+  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
+    expiryTimestamp,
+    autoStart: false,
+    onExpire: onExpire,
+  });
 
   return (
     <div className={styles.action}>
@@ -121,24 +140,50 @@ export const Action = ({ action }) => {
             <div className={styles.header}>
               <div>Tips</div>
             </div>
-            {action.tips && (
-              <ReactMarkdown
-                children={action.tips}
-                className={styles.markdown}
-              />
-            )}
+            {action.tips &&
+              (action.tips.length < 250 ? (
+                <ReactMarkdown
+                  children={action.tips}
+                  className={styles.markdown}
+                />
+              ) : (
+                <>
+                  <ReactMarkdown
+                    children={
+                      isShowTips
+                        ? action.tips
+                        : action.tips.slice(0, 250).concat("...")
+                    }
+                    className={styles.markdown}
+                  />
+                  <div className="flex_center">
+                    <div
+                      className="btn btn-blank"
+                      onClick={() => setIsShowTips(!isShowTips)}
+                    >
+                      {isShowTips ? "show less tips" : "show all tips"}
+                    </div>
+                  </div>
+                </>
+              ))}
           </div>
 
-          <div
-            className={styles.action_open_complete}
-            onClick={() => {
-              action.is_completed
-                ? completeAction(dispatch, action.id, "remove_complete")
-                : completeAction(dispatch, action.id, "complete");
-            }}
-          >
-            <img src={`${baseUrl}/checked.png`} height="25px" className="mr5" />
-            {action.is_completed ? "Completed" : "Mark as Complete"}
+          <div className={styles.action_timer}>
+            <div className={styles.header}>Do It</div>
+            <Timer
+              seconds={seconds}
+              minutes={minutes}
+              isRunning={isRunning}
+              start={start}
+              pause={pause}
+              restart={restart}
+              duration={action.duration}
+              isTimerCompleted={isTimerCompleted}
+              setIsTimerCompleted={setIsTimerCompleted}
+              action={action}
+              parent={parent}
+              goNext={goNext}
+            />
           </div>
         </div>
       )}
@@ -363,16 +408,99 @@ export const CommunityAction = ({ action, type }) => {
   );
 };
 
+const Step = ({ step, index, removeStep, changeStep }) => {
+  return (
+    <div className={styles.step}>
+      <div className={styles.stepIndex}>{index + 1}</div>
+      <textarea
+        onChange={(event) => changeStep(event.target.value, step.id)}
+        type="text"
+        name="step"
+        placeholder={`Step ${index + 1}...`}
+        className={styles.inputTips}
+        style={{ height: "6rem" }}
+      />
+      <div
+        className={styles.removeStep}
+        onClick={() => {
+          removeStep(step.id);
+        }}
+      >
+        <span aria-hidden="true">&times;</span>
+      </div>
+    </div>
+  );
+};
+
+const Instructions = ({}) => {
+  const [steps, setSteps] = useState([]);
+  const removeStep = (id) => {
+    setSteps((current) => current.filter((step) => step.id !== id));
+  };
+  const addStep = () => {
+    setSteps([
+      ...steps,
+      {
+        id: steps.length > 0 ? steps[steps.length - 1].id + 1 : 1,
+        content: "",
+      },
+    ]);
+  };
+
+  const changeStep = (stepContent, id) => {
+    const newState = steps.map((step) => {
+      if (step.id === id) {
+        return { ...step, content: stepContent };
+      }
+      return step;
+    });
+    setSteps(newState);
+  };
+
+  return (
+    <div>
+      {steps.map((step, i) => (
+        <Step
+          step={step}
+          key={i}
+          index={i}
+          changeStep={changeStep}
+          removeStep={removeStep}
+        />
+      ))}
+      <div className={styles.addStep} onClick={() => addStep()}>
+        <img
+          src={`${baseUrl}/plus-step.png`}
+          className="mr5"
+          height="34px"
+          alt=""
+        />
+        ADD STEPS
+        {/* <div className="btn btn-blank">
+          <span style={{ fontSize: "24px" }}>+</span>ADD STEP
+        </div> */}
+      </div>
+    </div>
+  );
+};
+
 export const CreateActionModal = ({ card }) => {
   const [store, dispatch] = useContext(Context);
   const [data, updateData] = useState({
     action: "",
     duration: 1,
+    tips: "",
     name: "",
     type: "challenge",
     card: card.id,
     isPrivate: false,
   });
+
+  const actionTypesData = ["Triggered", "Repeatable", "One Time"];
+
+  const setActionType = (type) => {
+    updateData({ ...data, type: type });
+  };
 
   const onChange = (event) => {
     updateData({ ...data, [event.target.name]: event.target.value });
@@ -380,35 +508,64 @@ export const CreateActionModal = ({ card }) => {
 
   return (
     <div className={styles.createActionModal}>
+      <div className={styles.header}>Action Creator</div>
       <form action="">
-        <label>Name:</label>
-
-        <input onChange={(event) => onChange(event)} type="text" name="name" />
-
-        <label>Action: (Max 500 words.)</label>
+        <div className={styles.label}>Name</div>
 
         <input
           onChange={(event) => onChange(event)}
           type="text"
-          name="action"
+          name="name"
+          placeholder="Example `Focus Meditation` "
+          className={styles.inputTips}
         />
-        <div
-          onClick={() => updateData({ ...data, isPrivate: !data.isPrivate })}
-        >
-          {data.isPrivate ? "Private" : "Public"}
-        </div>
-        {data.isPrivate &&
-          "Warning! Only you can see this action and other member will not benefit from your knowledge."}
-        <label>Duration (minutes):</label>
 
-        <input
+        <div>
+          <div className={styles.label}>Type</div>
+          <GenericDropDown
+            items={actionTypesData}
+            label="Type"
+            callback={setActionType}
+          />
+
+          <div className={styles.label}>Duration (Minutes)</div>
+
+          <input
+            onChange={(event) => onChange(event)}
+            type="number"
+            name="duration"
+            className={styles.inputTips}
+            placeholder="10"
+          />
+        </div>
+
+        <div className={styles.label}>Steps</div>
+
+        <Instructions />
+
+        <div className={styles.label}>Tips</div>
+
+        <textarea
           onChange={(event) => onChange(event)}
-          type="number"
-          name="duration"
+          type="text"
+          name="tips"
+          placeholder="1. Tip One..."
+          className={styles.inputTips}
+          style={{ height: "10rem" }}
         />
       </form>
+
+      {/* <div
+        className="btn btn-blank"
+        onClick={() => updateData({ ...data, isPrivate: !data.isPrivate })}
+      >
+        {data.isPrivate ? "Private" : "Public"}
+      </div>
+
+      {data.isPrivate &&
+        "Warning! Only you can see this action and other member will not benefit from your knowledge."} */}
       <div
-        className="btn btn-primary"
+        className="btn btn-primary mt1"
         onClick={() => createCommunityAction(dispatch, data)}
       >
         Create

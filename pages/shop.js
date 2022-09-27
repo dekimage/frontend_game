@@ -81,14 +81,16 @@ const Shop = () => {
           showCloseButton={false}
           jsx={<LootBoxModal />}
         />
+      </div>
 
-        {/* *** COURSES *** */}
-
-        <div id="programs" className="seperator"></div>
+      {/* *** COURSES *** */}
+      <div className="section">
+        <div id="programs"></div>
         <div className={styles.header}>Programs</div>
         {courses && courses.map((c, i) => <Course course={c} key={i} />)}
-
-        <div id="subscription" className="seperator"></div>
+      </div>
+      <div className="section">
+        <div id="subscription"></div>
         <div className={styles.subscription_name}>Premium Subscription</div>
         <PremiumSubscription />
         <BenefitsTable />

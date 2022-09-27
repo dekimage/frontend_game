@@ -12,8 +12,7 @@
     flex-direction: column;
   }
   &_name {
-    font-weight: 500;
-    font-size: 24px;
+    @extend %header;
   }
   &_reward {
     // width: 100%;
@@ -50,7 +49,7 @@
   justify-content: space-between;
   cursor: pointer;
 
-  border-radius: 20px;
+  border-radius: $border_radius;
   flex-direction: column;
   padding: 0;
   color: white;
@@ -86,14 +85,14 @@
     position: absolute;
     // background-color: $eggHeadRed;
     // border: 3px solid $eggHeadRed;
-    border-radius: 10px;
+    border-radius: $border_radius;
     padding: 0.25rem 0.5rem;
     top: -5px;
     left: 50%;
     transform: translate(-50%, -50%);
   }
   &_cta {
-    border-radius: 20px;
+    border-radius: $border_radius;
     font-weight: 500;
     padding: 0.5rem;
     background-color: $primary;
@@ -118,8 +117,8 @@
 }
 
 .header {
-  @extend %title;
-  margin-bottom: 1rem;
+  @extend %header;
+  margin-bottom: 0.75rem;
 }
 
 // BOX MODAL
@@ -175,7 +174,7 @@
     font-size: 14px;
     font-weight: 500;
     background-color: $actionize_gray;
-    border-radius: 10px;
+    border-radius: $border_radius;
     border: 2px solid $actionize_gray_light;
     padding: 0 1rem;
     width: fit-content;
@@ -209,7 +208,7 @@
   margin: 1rem 0;
   @extend %flex_center;
   background-color: black;
-  border-radius: 15px;
+  border-radius: $border_radius;
   justify-content: space-around;
   width: 100%;
   padding: 1rem 1rem;
@@ -226,7 +225,7 @@
   background-color: $eggHeadRed;
   font-size: 24px;
   font-weight: 500;
-  border-radius: 10px;
+  border-radius: $border_radius;
   padding: 0.4rem 0.8rem;
   margin-bottom: 1rem;
 }
@@ -236,7 +235,7 @@
   font-weight: 500;
   background-color: $actionize_gray;
   padding: 0.3rem 0.5rem;
-  border-radius: 12px;
+  border-radius: $border_radius;
   &.new {
     background-color: $ux_red;
   }
@@ -343,7 +342,7 @@
 }
 
 .pricingBox {
-  border-radius: 10px;
+  border-radius: $border_radius;
   @extend %flex_start;
   border: 2px solid transparent;
   &.active {
@@ -366,7 +365,7 @@
     transform: translate(-50%, -50%);
     font-size: 10px;
     padding: 0.25rem 0.5rem;
-    border-radius: 10px;
+    border-radius: $border_radius;
     width: fit-content;
   }
   &_discount {
@@ -375,7 +374,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: $ux_red;
-    border-radius: 10px;
+    border-radius: $border_radius;
     font-size: 10px;
     padding: 0.25rem 0.5rem;
   }
@@ -383,7 +382,7 @@
     font-size: 14px;
     font-weight: 500;
     background-color: black;
-    border-radius: 10px;
+    border-radius: $border_radius;
     @extend %flex_center;
     padding: 0.5rem 1rem;
     margin-bottom: 1rem;
@@ -429,7 +428,7 @@
 .row {
   @extend %flex_start;
   padding: 0.33rem 0.5rem;
-  border-radius: 10px;
+  border-radius: $border_radius;
   font-weight: 500;
   font-size: 18px;
   &_name {

@@ -15,7 +15,7 @@
   cursor: pointer;
   background-color: $actionize_gray;
   height: 3rem;
-  border-radius: 10px;
+  border-radius: $border_radius;
   @extend %flex_center;
 }
 .sortBtn {
@@ -27,7 +27,7 @@
 }
 
 .upBtn {
-  border-radius: 10px;
+  border-radius: $border_radius;
   padding: 0.5rem;
   background-color: $primary;
   @extend %flex_center;

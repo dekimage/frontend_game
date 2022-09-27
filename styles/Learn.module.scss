@@ -10,7 +10,7 @@
   background-color: $actionize_gray;
   color: white;
   // border: 1px solid $optimzeColor;
-  border-radius: 10px;
+  border-radius: $border_radius;
   cursor: pointer;
 }
 
@@ -59,13 +59,12 @@
   background-color: $darkEggHeadRed;
   font-size: 12px;
   font-weight: 500;
-  border-radius: 10px;
+  border-radius: $border_radius;
   padding: 0.25rem 0.75rem;
   display: inline-block;
 }
 
 .header {
-  @extend %flex_between;
+  @extend %header;
   padding: 0.5rem;
-  @extend %title;
 }

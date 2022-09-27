@@ -8,6 +8,7 @@ import Timer from "../components/Timer";
 import styles from "../styles/Player.module.scss";
 import Link from "next/link";
 import clseIcon from "../assets/close.svg";
+
 import _ from "lodash";
 import cx from "classnames";
 import StopWatch from "../components/StopWatch";
@@ -36,18 +37,16 @@ export const SliderProgress = ({
   currentSlide,
   setIsWarningModalOpen,
   openModal,
+  goBack,
 }) => {
   return (
     <div className={styles.header}>
-      <div
-        onClick={() => {
-          setIsWarningModalOpen(true);
-          openModal();
-        }}
-        className={styles.escapeBtn}
-      >
-        <img src={clseIcon} height="20px" />
-      </div>
+      {goBack && (
+        <div onClick={() => goBack()} className={styles.escapeBtn}>
+          <img src={clseIcon} height="20px" />
+        </div>
+      )}
+
       <div className={styles.sliderProgress}>
         {Array.from(Array(maxSlides).keys()).map((bar, i) => {
           return (
@@ -59,6 +58,15 @@ export const SliderProgress = ({
             ></div>
           );
         })}
+      </div>
+      <div
+        onClick={() => {
+          setIsWarningModalOpen(true);
+          openModal();
+        }}
+        className={styles.escapeBtn}
+      >
+        <img src={clseIcon} height="20px" />
       </div>
     </div>
   );

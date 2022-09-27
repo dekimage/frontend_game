@@ -10,7 +10,7 @@
   min-width: 4rem;
   height: 100%;
   width: 100%;
-  border-radius: 1rem;
+  border-radius: $border_radius;
   @extend %flex_center;
   flex-direction: column;
   &_image {
@@ -36,7 +36,7 @@
   }
   &.action {
     border: 3px solid $secondary;
-    border-radius: 10px;
+    border-radius: $border_radius;
     box-shadow: 0px 0px 8px 1.5px rgba($color: #ffc74e, $alpha: 1);
     // background-color: $secondary;
   }
@@ -67,7 +67,7 @@
   left: 75%;
   background-color: $actionize_gray;
   border: 2px solid $premium_color;
-  border-radius: 10px;
+  border-radius: $border_radius;
   padding: 0.1rem;
   img {
     height: 20px;

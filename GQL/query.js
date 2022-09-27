@@ -860,6 +860,19 @@ export const GET_COURSE_ID = gql`
                   id
                   attributes {
                     name
+                    type
+                    level
+                    duration
+                    tips
+                    stats {
+                      difficulty
+                      fun
+                      short_term
+                      long_term
+                    }
+                    steps {
+                      content
+                    }
                   }
                 }
               }

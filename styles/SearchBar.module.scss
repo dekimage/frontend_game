@@ -11,7 +11,7 @@
   width: 100%;
   min-width: 20rem;
   background-color: $actionize_gray;
-  border-radius: 15px;
+  border-radius: $border_radius;
   padding: 0.25rem 0;
   position: relative;
   z-index: 1000;
@@ -104,7 +104,7 @@
   margin-top: 4rem;
   position: absolute;
   z-index: 1000;
-  border-radius: 15px;
+  border-radius: $border_radius;
 
   @media (max-width: 480px) {
     position: fixed;
@@ -156,7 +156,7 @@
     align-items: center;
     cursor: pointer;
     // border: 1px solid $optimzeColor;
-    border-radius: 5px;
+    border-radius: $border_radius;
     &:hover {
       border: 1px solid $optimzeColor;
       box-shadow: $optimzeShadowHover;
@@ -172,7 +172,7 @@
   background-color: $actionize_gray;
   padding: 0.5rem 1rem;
   margin: 0.5rem 0;
-  border-radius: 20px;
+  border-radius: $border_radius;
   @extend %flex_between;
   justify-content: flex-start;
 }

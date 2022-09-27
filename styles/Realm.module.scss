@@ -12,9 +12,7 @@
 }
 
 .header {
-  @extend %title;
-  text-align: center;
-  vertical-align: center;
+  @extend %header;
   position: relative;
 }
 .back {
@@ -39,7 +37,7 @@
   display: block;
   border: 1px solid $optimzeColor;
   cursor: pointer;
-  border-radius: 1rem;
+  border-radius: $border_radius;
   height: 14rem;
   position: relative;
   background-color: white;

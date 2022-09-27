@@ -204,44 +204,42 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         <div className="btn  btn-primary mb1 mt1" onClick={() => openModal()}>
           + Create New Action
         </div>
-
-        <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
-
-        {activeTab === "community" && card.communityactions && (
-          <ActionsWrapper
-            actions={card.communityactions}
-            label={"Community Actions"}
-            type={"community"}
-            emptyDescription={"Be the first one to create a community action."}
-          />
-        )}
-
-        {activeTab === "my" && (
-          <ActionsWrapper
-            actions={myActions}
-            label={"My Actions"}
-            type={"my"}
-            emptyDescription={"You haven't created any actions for this card."}
-          />
-        )}
-        {activeTab === "added" && (
-          <ActionsWrapper
-            actions={addedActions}
-            label={"Added Actions"}
-            type={"added"}
-            emptyDescription={" You don't have any added actions yet."}
-          />
-        )}
-
-        {isShowing && (
-          <Modal
-            isShowing={isShowing}
-            closeModal={closeModal}
-            jsx={<CreateActionModal closeModal={closeModal} card={card} />}
-          />
-        )}
-        <div className="margin"></div>
       </div>
+      <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
+
+      {activeTab === "community" && card.communityactions && (
+        <ActionsWrapper
+          actions={card.communityactions}
+          label={"Community Actions"}
+          type={"community"}
+          emptyDescription={"Be the first one to create a community action."}
+        />
+      )}
+
+      {activeTab === "my" && (
+        <ActionsWrapper
+          actions={myActions}
+          label={"My Actions"}
+          type={"my"}
+          emptyDescription={"You haven't created any actions for this card."}
+        />
+      )}
+      {activeTab === "added" && (
+        <ActionsWrapper
+          actions={addedActions}
+          label={"Added Actions"}
+          type={"added"}
+          emptyDescription={" You don't have any added actions yet."}
+        />
+      )}
+
+      {isShowing && (
+        <Modal
+          isShowing={isShowing}
+          closeModal={closeModal}
+          jsx={<CreateActionModal closeModal={closeModal} card={card} />}
+        />
+      )}
 
       {card && (
         <CardCtaFooter

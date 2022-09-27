@@ -169,8 +169,6 @@ const Curriculum = ({ days, usercourse }) => {
 };
 
 const Day = ({ day, usercourse }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const getDayState = (day) => {
     if (!usercourse) {
       return { color: "#222", icon: iconPlay };
@@ -182,10 +180,11 @@ const Day = ({ day, usercourse }) => {
         return { color: "orange", icon: iconPlay, state: "next" };
       }
       if (day.index < usercourse.last_completed_day) {
-        return { color: "green", icon: iconCheck, state: "completed" };
+        return { color: "transparent", icon: iconCheck, state: "completed" };
       }
     }
   };
+  const [isOpen, setIsOpen] = useState(getDayState(day).state === "next");
   const color = getDayState(day).color;
   const icon = getDayState(day).icon;
   const dayLockState = getDayState(day).state;
@@ -201,7 +200,10 @@ const Day = ({ day, usercourse }) => {
     <div className={styles.day}>
       <div className={styles.dayHeader} onClick={() => setIsOpen(!isOpen)}>
         <div className={styles.state} style={{ backgroundColor: color }}>
-          <img src={icon} height="20px" />
+          <img
+            src={icon}
+            height={getDayState(day).state === "completed" ? "30px" : "20px"}
+          />
         </div>
         <div className={styles.labelBox}>
           <div className={styles.label}>Day {day.index}</div>
@@ -235,9 +237,9 @@ const Day = ({ day, usercourse }) => {
   );
 };
 
-export const NextContent = ({ title, duration, icon }) => {
+export const NextContent = ({ course, title, duration, icon }) => {
   return (
-    <Link href={"/player"}>
+    <Link href={`/course/player/${course.id}`}>
       <div className={styles.contentNext}>
         <div className={styles.contentState}>
           <div className={styles.contentNextTypeBackground}>
@@ -249,7 +251,7 @@ export const NextContent = ({ title, duration, icon }) => {
           <div className={styles.contentNextTitle}>{title}</div>
           <div className={styles.contentDuration}>{duration} min</div>
         </div>
-        <div className={styles.continueButton}>Continue </div>
+        <div className={styles.continueButton}>Continue</div>
       </div>
     </Link>
   );
@@ -298,6 +300,7 @@ const ContentStep = ({ content, usercourse, dayLockState }) => {
           title={content.title}
           duration={content.duration}
           icon={getIconType(content.type).icon}
+          course={usercourse.course}
         />
       ) : (
         <div
@@ -369,7 +372,7 @@ const CoursePurchased = ({ course, usercourse }) => {
   return (
     <div>
       <div className={styles.card}>
-        <BackButton routeDynamic={""} routeStatic={""} isBack />
+        <BackButton routeDynamic={""} routeStatic={"/"} />
 
         <div
           className={styles.courseImage}
@@ -405,16 +408,12 @@ const CoursePurchased = ({ course, usercourse }) => {
 
           <Curriculum days={course.days} usercourse={usercourse} />
           <div className={styles.fixed}>
-            <div
-              className="btn btn-action"
-              style={{ fontSize: "20px" }}
-              onClick={() => {
-                router.push(`${feUrl}/shop`);
-              }}
-            >
-              Play
-              <img src={iconPlay} height="16px" className="ml5" />
-            </div>
+            <Link href={`/course/player/${course.id}`}>
+              <div className="btn btn-action" style={{ fontSize: "20px" }}>
+                Play
+                <img src={iconPlay} height="16px" className="ml5" />
+              </div>
+            </Link>
           </div>
         </div>
       </div>

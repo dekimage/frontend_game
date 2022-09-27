@@ -3,9 +3,8 @@
 
 // DUPLICATE FROM REALM -> MAKE IT REUSABLE COMPONENT HEADER TO USE
 .headerr {
-  @extend %title;
-  text-align: center;
-  vertical-align: center;
+  @extend %header;
+
   padding: 1rem;
 
   position: relative;
@@ -58,7 +57,7 @@
   margin: 1rem;
   @extend %flex_center;
   border: 2px solid $actionize_gray;
-  border-radius: 10px;
+  border-radius: $border_radius;
   height: 60px;
 }
 .levelRewardLevel {
@@ -103,7 +102,7 @@
     color: white;
     font-weight: 700;
     font-size: 1.2rem;
-    border-radius: 10px;
+    border-radius: $border_radius;
     background-color: $actionize_gray;
     padding: 1rem;
     margin-left: 2rem;
@@ -113,7 +112,7 @@
     background-color: $actionize_gray;
     border: 2px solid $primary;
     color: white;
-    border-radius: 10px;
+    border-radius: $border_radius;
     font-size: 0.7rem;
     padding: 0.2rem;
     right: 0;

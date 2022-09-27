@@ -3,10 +3,8 @@
 
 // export this to placeholder repeated in profile.css
 .header {
-  @extend %flex_between;
-  padding: 0.5rem;
-  font-size: 18px;
-  font-weight: 500;
+  @extend %header;
+  margin-bottom: 0.75rem;
 }
 
 .problemBox {
@@ -21,7 +19,7 @@
     margin-bottom: 1rem;
   }
   &_blackScreen {
-    border-radius: 15px;
+    border-radius: $border_radius;
     @extend %flex_center;
     flex-direction: column;
     width: 100%;
@@ -39,7 +37,7 @@
   @extend %box_dark;
   background-color: $actionize_gray;
   margin-bottom: 1rem;
-  border-radius: 1rem;
+  border-radius: $border_radius;
   @extend %flex_between;
   flex-direction: row;
   &_box {
@@ -63,8 +61,7 @@
   @extend %flex_between;
 
   &_text {
-    font-size: 18px;
-    font-weight: 500;
+    @extend %header;
     margin-left: 0.25rem;
   }
   &_number {
@@ -102,7 +99,7 @@
   &_loot {
     padding: 1rem;
     z-index: 100;
-    border-radius: 16px;
+    border-radius: $border_radius;
     background-color: $actionize_black;
     position: absolute;
     top: -8rem;
@@ -110,7 +107,7 @@
       black 0px -3px 0px inset;
     &__button {
       background-color: $actionize_gray;
-      border-radius: 10px;
+      border-radius: $border_radius;
       padding: 0.5rem;
       @extend %flex_center;
       margin-top: 0.5rem;
@@ -140,7 +137,7 @@
     font-weight: 500;
     font-size: 12px;
     text-transform: capitalize;
-    border-radius: 7px;
+    border-radius: $border_radius;
     padding: 0.15rem 0.5rem;
     z-index: 10;
   }
@@ -184,7 +181,7 @@
   width: 100%;
   padding: 0.5rem 0;
   color: white;
-  border-radius: 1rem;
+  border-radius: $border_radius;
   cursor: pointer;
 }
 
@@ -206,7 +203,7 @@
   height: 7rem;
   @extend %flex_center;
   background-color: $actionize_gray;
-  border-radius: 1rem;
+  border-radius: $border_radius;
   padding: 0 1rem;
   margin-bottom: 1rem;
   margin-top: 1rem;
@@ -225,7 +222,7 @@
 .objectiveTabsGrid {
   background-color: $actionize_gray;
   // @extend %box_dark;
-  border-radius: 10px;
+  border-radius: $border_radius;
   padding: 0.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -239,7 +236,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  border-radius: 10px;
+  border-radius: $border_radius;
   padding: 0.5rem;
   cursor: pointer;
 
@@ -258,7 +255,7 @@
   top: -0.5rem;
   width: 1.2rem;
   height: 1.2rem;
-  border-radius: 10px;
+  border-radius: $border_radius;
   background-color: red;
   @extend %flex_center;
   font-size: 10px;
@@ -294,7 +291,7 @@
 .courseBox {
   margin-bottom: 1rem;
   &_header {
-    border-radius: 15px;
+    border-radius: $border_radius;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     padding: 1rem;

@@ -57,7 +57,7 @@ const Home = () => {
     <div className="background_dark">
       <Header />
       {store && store.user?.usercourses && gql_data && (
-        <div className="section">
+        <div>
           {store?.tutorialModal && (
             <Modal
               isShowing={isShowing}
@@ -66,35 +66,43 @@ const Home = () => {
             />
           )}
 
-          <div className={styles.objectivesHeadline}>
-            <div className={styles.objectivesHeadline_text}>Objectives</div>
+          <div className="section">
+            <div className={styles.objectivesHeadline}>
+              <div className={styles.objectivesHeadline_text}>Objectives</div>
 
-            {/* FIXME: */}
-            <span className={styles.objectivesHeadline_number}>2/4</span>
+              {/* FIXME: */}
+              <span className={styles.objectivesHeadline_number}>2/4</span>
+            </div>
+
+            {gql_data && (
+              <div>
+                {objectivesData.map((obj, i) => (
+                  <Objective objective={obj} dispatch={dispatch} key={i} />
+                ))}
+              </div>
+            )}
           </div>
 
-          {gql_data && (
-            <div>
-              {objectivesData.map((obj, i) => (
-                <Objective objective={obj} dispatch={dispatch} key={i} />
-              ))}
-            </div>
-          )}
-          <div className={styles.header}>Continue your Program</div>
+          <div className="section">
+            <div className={styles.header}>Continue your Program</div>
 
-          {store.user.usercourses.length > 0 ? (
-            <CourseBox
-              usercourse={
-                store.user.usercourses
-                  .sort((a, b) => a.last_completed_day - b.last_completed_day)
-                  .reverse()[0]
-              }
-            />
-          ) : (
-            <EmptyCourseBox />
-          )}
-          <div className={styles.header}>Problems</div>
-          <ProblemsBox />
+            {store.user.usercourses.length > 0 ? (
+              <CourseBox
+                usercourse={
+                  store.user.usercourses
+                    .sort((a, b) => a.last_completed_day - b.last_completed_day)
+                    .reverse()[0]
+                }
+              />
+            ) : (
+              <EmptyCourseBox />
+            )}
+          </div>
+
+          <div className="section">
+            <div className={styles.header}>Problems</div>
+            <ProblemsBox />
+          </div>
         </div>
       )}
 

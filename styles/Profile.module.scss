@@ -60,7 +60,7 @@
   @extend %flex_between;
   width: 100%;
   margin: 1rem 0;
-  // position: fixed;
+  border-bottom: 2px solid $actionize_gray;
   top: 3rem;
   z-index: 200;
   background-color: $actionize_black;
@@ -83,7 +83,7 @@
   margin-left: 0.5rem;
   @extend %flex_center;
   background-color: $actionize_gray;
-  border-radius: 7px;
+  border-radius: $border_radius;
   height: 1.5rem;
   width: 1.5rem;
 }
@@ -98,7 +98,7 @@
   padding: 0.5rem;
   margin: 1rem 0.5rem;
   font-weight: 500;
-  border-radius: 15px;
+  border-radius: $border_radius;
   border: 2px solid $actionize_gray;
   font-size: 14px;
   &_img {
@@ -116,7 +116,7 @@
 
 .activityBox {
   border: 2px solid $actionize_gray;
-  border-radius: 15px;
+  border-radius: $border_radius;
   margin: 1rem 0;
   padding: 1rem;
   cursor: pointer;
@@ -177,8 +177,6 @@
 }
 
 .header {
-  @extend %flex_between;
+  @extend %header;
   padding: 0.5rem;
-  font-size: 18px;
-  font-weight: 500;
 }

@@ -1,6 +1,11 @@
 import { addZeroToInteger } from "../utils/calculations";
 import styles from "../styles/Timer.module.scss";
 
+import { completeAction } from "../actions/action";
+import { useContext } from "react";
+import { Context } from "../context/store";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const Timer = ({
   seconds,
   minutes,
@@ -10,9 +15,12 @@ const Timer = ({
   restart,
   isTimerCompleted,
   setIsTimerCompleted,
-  currentAction,
-  goNextAction,
+  duration,
+  goNext,
+  action = false,
+  parent = "course",
 }) => {
+  const [store, dispatch] = useContext(Context);
   return (
     <div className={styles.section}>
       {!isTimerCompleted && isRunning && (
@@ -30,7 +38,7 @@ const Timer = ({
           className={styles.btnPlay}
           onClick={() => {
             const time = new Date();
-            time.setSeconds(time.getSeconds() + currentAction.timer);
+            time.setSeconds(time.getSeconds() + duration);
             restart(time);
             setIsTimerCompleted(false);
           }}
@@ -38,22 +46,57 @@ const Timer = ({
           <ion-icon size="large" name="refresh-outline"></ion-icon>
         </div>
       )}
-      {isTimerCompleted ? (
-        <div className="btn btn-primary" onClick={() => goNextAction()}>
-          Complete Action
-        </div>
-      ) : (
-        <div className={styles.timer}>
-          <div className={styles.icon}>
-            <ion-icon name="stopwatch-outline"></ion-icon>
-          </div>
 
-          <div className={styles.count}>
-            <span>{addZeroToInteger(minutes, 2)}</span>:
-            <span>{addZeroToInteger(seconds, 2)}</span>
+      {parent == "problem" &&
+        (isTimerCompleted ? (
+          <>
+            <div className={styles.congrats}>Congratulations!</div>
+            <div
+              className={styles.action_open_complete}
+              onClick={() => {
+                action.is_completed
+                  ? completeAction(dispatch, action.id, "remove_complete")
+                  : completeAction(dispatch, action.id, "complete");
+              }}
+            >
+              <img
+                src={`${baseUrl}/checked.png`}
+                height="25px"
+                className="mr5"
+              />
+              {action.is_completed ? "Completed" : "Mark as Complete"}
+            </div>
+          </>
+        ) : (
+          <div className={styles.timer}>
+            <div className={styles.icon}>
+              <ion-icon name="stopwatch-outline"></ion-icon>
+            </div>
+
+            <div className={styles.count}>
+              <span>{addZeroToInteger(minutes, 2)}</span>:
+              <span>{addZeroToInteger(seconds, 2)}</span>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
+
+      {parent == "course" &&
+        (isTimerCompleted ? (
+          <div className="btn btn-primary" onClick={goNext}>
+            Complete Action
+          </div>
+        ) : (
+          <div className={styles.timer}>
+            <div className={styles.icon}>
+              <ion-icon name="stopwatch-outline"></ion-icon>
+            </div>
+
+            <div className={styles.count}>
+              <span>{addZeroToInteger(minutes, 2)}</span>:
+              <span>{addZeroToInteger(seconds, 2)}</span>
+            </div>
+          </div>
+        ))}
     </div>
   );
 };

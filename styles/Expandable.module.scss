@@ -9,7 +9,7 @@
 }
 
 .header {
-  @extend %flex_between;
+  @extend %header;
   margin-bottom: 1rem;
 }
 
@@ -22,7 +22,7 @@
 .tag {
   font-size: 12px;
   padding: 0.25rem 0.5rem;
-  border-radius: 15px;
+  border-radius: $border_radius;
   margin-right: 1rem;
   background-color: $primary;
 }

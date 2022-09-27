@@ -19,6 +19,14 @@ a {
   box-sizing: border-box;
 }
 
+textarea,
+input {
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  resize: none;
+}
+
 /* Medium.com TYPOGRAPHY*/
 
 .title {
@@ -173,8 +181,8 @@ a {
   // padding: 0 24px;
   height: 2.5rem;
   padding: 10px 30px;
-  // border-radius: 10px;
-  border-radius: 20px;
+
+  border-radius: $border_radius;
   background-color: $blue_headspace;
   color: white;
   width: fit-content;
@@ -389,6 +397,9 @@ ion-icon {
 .modal {
   z-index: 10000000000000;
 
+  width: 100vw;
+  height: 100vh;
+
   // box-shadow: 0px 8px 0px 0px #271c4e;
   // TANK STYLE
   // background: #3f326e;
@@ -398,12 +409,11 @@ ion-icon {
   background: $actionize_black;
   border-top: 4px solid black;
   position: relative;
-  border-radius: 10px;
-  max-width: 600px;
-  min-width: 300px;
+  border-radius: $border_radius;
+  // max-width: 600px;
+  // min-width: 300px;
   // height: 100%;
   padding: 1rem;
-  margin: 1rem;
   overflow-y: scroll;
   overflow-x: scroll;
 }
@@ -412,7 +422,7 @@ ion-icon {
   z-index: 10000000000000;
   background: $actionize_black;
   position: relative;
-  border-radius: 10px;
+  border-radius: $border_radius;
   max-width: 400px;
   height: auto;
   padding: 1rem;
@@ -434,7 +444,7 @@ ion-icon {
   background-color: #ff161e;
   border-top: 4px solid #ff6368;
   border-bottom: 2px solid #af0006;
-  border-radius: 10px;
+  border-radius: $border_radius;
   box-shadow: 0px 5px 0px -0.5px #8a0408;
 
   font-size: 24px;
@@ -478,7 +488,7 @@ ion-icon {
 .image {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 7px;
+  border-radius: $border_radius;
 }
 
 .text__b {

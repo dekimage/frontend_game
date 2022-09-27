@@ -41,10 +41,6 @@ const SearchBar = () => {
     }
   };
 
-  console.log("resultProblems", resultProblems);
-  console.log("resultCards", resultCards);
-  console.log("resultPrograms", resultPrograms);
-
   const callback = () => {
     setSearch("");
   };

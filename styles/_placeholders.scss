@@ -30,7 +30,7 @@
 %box {
   // border: 1px solid rgba(0, 0, 0, 0.08);
   // box-shadow: $fasticShadow;
-  border-radius: 25px;
+  border-radius: $border_radius;
   padding: 1rem;
   border: 1px solid $optimzeColor;
   background-color: white;
@@ -39,13 +39,14 @@
 %box_duo {
   border: 2px solid $actionize_gray;
   padding: 1rem;
+  padding: 0.5rem;
   display: flex;
-  border-radius: 15px;
+  border-radius: $border_radius;
 }
 
 %box_dark {
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 1rem;
+  border-radius: $border_radius;
   padding: 1rem;
   @include media_sm {
     padding: 0.75rem;
@@ -94,4 +95,11 @@
   width: 3rem;
   border-radius: 50%;
   cursor: pointer;
+}
+
+%header {
+  @extend %flex_between;
+  font-size: 22px;
+  font-weight: 400;
+  width: 100%;
 }

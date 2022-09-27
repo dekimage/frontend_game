@@ -59,8 +59,6 @@ const Cards = () => {
     return joinedCards;
   };
 
-  console.log(gql_data);
-
   return (
     <div className="background_dark">
       {error && <div>Error: {error}</div>}
@@ -87,7 +85,7 @@ const Cards = () => {
 
           <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
           <div className="section">
-            <div id="concepts" className={styles.sectionHeader}>
+            <div id="Concepts" className={styles.sectionHeader}>
               Concepts
             </div>
             <div className={styles.grid}>
@@ -96,7 +94,7 @@ const Cards = () => {
                   .sort((a, b) => b.is_open - a.is_open)
                   .map((card, i) => <Card card={card} key={i} />)}
             </div>
-            <div id="problems" className={styles.sectionHeader}>
+            <div id="Problems" className={styles.sectionHeader}>
               Problems
             </div>
             <div className={styles.problemsWrap}>
@@ -104,7 +102,7 @@ const Cards = () => {
                 <Problem problem={problem} key={i} />
               ))}
             </div>
-            <div id="programs" className={styles.sectionHeader}>
+            <div id="Programs" className={styles.sectionHeader}>
               Programs
             </div>
             <div className={styles.problemsWrap}>

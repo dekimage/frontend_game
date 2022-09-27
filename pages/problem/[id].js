@@ -45,7 +45,7 @@ const ActionsMapper = ({ actions, type }) => {
   return (
     <div>
       {filteredActions.map((a, i) => (
-        <Action action={a} key={i} />
+        <Action action={a} key={i} parent="problem" />
       ))}
     </div>
   );

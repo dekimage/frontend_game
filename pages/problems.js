@@ -12,6 +12,45 @@ import { GET_PROBLEMS } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+export const GenericDropDown = ({ items, label, callback }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(false);
+
+  return (
+    <div
+      tabIndex={0}
+      onBlur={(e) => {
+        setIsOpen(false);
+      }}
+    >
+      <div className={styles.dropDown} onClick={() => setIsOpen(!isOpen)}>
+        <div className="mr5">{selectedItem ? selectedItem : label}</div>
+        {isOpen ? (
+          <ion-icon name="chevron-up-outline"></ion-icon>
+        ) : (
+          <ion-icon name="chevron-down-outline"></ion-icon>
+        )}
+      </div>
+      {isOpen && (
+        <div className={styles.dropDown_items}>
+          {items.map((item, i) => (
+            <div
+              className={styles.dropDown_item}
+              key={i}
+              onClick={() => {
+                setSelectedItem(item);
+                callback(item);
+              }}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const DropDown = ({ realms, filter, setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
   const filters = [{ name: "All" }, ...realms];

@@ -28,8 +28,6 @@ const Home = () => {
     variables: { id: USER_ID },
   });
 
-  console.log(store && store.user);
-
   const { data: realmData, realmsLoading } = useQuery(GET_REALMS);
   const realms = realmData && normalize(realmData).realms;
 
@@ -52,6 +50,20 @@ const Home = () => {
     { label: "Actions", count: -1, link: "actions" },
   ];
 
+  const removeKeyFromObject = (object, key) => {
+    delete object[key];
+    return object;
+  };
+
+  const removeIdFromActionStats = (actions) => {
+    const actionsWithFixedStats = actions.map((action) => {
+      action.stats = removeKeyFromObject(action.stats, "id");
+      return action;
+    });
+
+    return actionsWithFixedStats;
+  };
+
   const filterContent = (contents, filter) => {
     if (!filter || filter === "All") {
       return contents;
@@ -61,7 +73,6 @@ const Home = () => {
       return contents.filter((c) => c.realm.name === filter);
     }
     if (tab === "Programs") {
-      console.log(111, contents);
       return contents.filter((c) => c.course.realm.name === filter);
     }
     if (tab === "Actions") {
@@ -126,11 +137,11 @@ const Home = () => {
   return (
     <div className="background_dark">
       <Header />
-      <div className="section">
+      <div>
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
         <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
-        <div className="flex_between">
+        <div className="flex_between section">
           {realms && (
             <DropDown
               realms={realms}
@@ -155,56 +166,61 @@ const Home = () => {
           </div>
         </div>
 
-        {gql_data &&
-          gql_data.usersPermissionsUser &&
-          store?.user?.usercourses?.length > 0 && (
-            <div className={styles.headline}>
-              {tab === "Concepts" && (
-                <div>
-                  Discovered: {gql_data.usersPermissionsUser.usercards.length}/
-                  {108}
-                </div>
-              )}
-              {tab === "Programs" && (
-                <div>Purchased Programs: {store.user.usercourses.length}</div>
-              )}
-              {tab === "Actions" && (
-                <div>
-                  Discovered: {store.user.actions.length}/{330}
-                </div>
+        <div className="section">
+          {gql_data &&
+            gql_data.usersPermissionsUser &&
+            store?.user?.usercourses?.length > 0 && (
+              <div className={styles.headline}>
+                {tab === "Concepts" && (
+                  <div>
+                    Discovered: {gql_data.usersPermissionsUser.usercards.length}
+                    /{108}
+                  </div>
+                )}
+                {tab === "Programs" && (
+                  <div>Purchased Programs: {store.user.usercourses.length}</div>
+                )}
+                {tab === "Actions" && (
+                  <div>
+                    Discovered: {store.user.actions.length}/{330}
+                  </div>
+                )}
+              </div>
+            )}
+
+          {tab === "Concepts" && cards.length > 0 && (
+            <div>
+              <div className={styles.grid}>
+                {filterContent(mergeCards(cards), dropDownFilters).map(
+                  (card, i) => {
+                    return <Card card={card} key={i} />;
+                  }
+                )}
+              </div>
+            </div>
+          )}
+
+          {tab === "Programs" && store?.user?.usercourses.length > 0 && (
+            <div>
+              {filterContent(store.user.usercourses, dropDownFilters).map(
+                (uc, i) => (
+                  <Course course={uc.course} key={i} />
+                )
               )}
             </div>
           )}
 
-        {tab === "Concepts" && cards.length > 0 && (
-          <div>
-            <div className={styles.grid}>
-              {filterContent(mergeCards(cards), dropDownFilters).map(
-                (card, i) => {
-                  return <Card card={card} key={i} />;
-                }
-              )}
+          {tab === "Actions" && store?.user?.actions.length > 0 && (
+            <div>
+              {filterContent(
+                removeIdFromActionStats(store.user.actions, "id"),
+                dropDownFilters
+              ).map((a, i) => (
+                <Action action={a} key={i} />
+              ))}
             </div>
-          </div>
-        )}
-
-        {tab === "Programs" && store?.user?.usercourses.length > 0 && (
-          <div>
-            {filterContent(store.user.usercourses, dropDownFilters).map(
-              (uc, i) => (
-                <Course course={uc.course} key={i} />
-              )
-            )}
-          </div>
-        )}
-
-        {tab === "Actions" && store?.user?.actions.length > 0 && (
-          <div>
-            {filterContent(store.user.actions, dropDownFilters).map((a, i) => (
-              <Action action={a} key={i} />
-            ))}
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <NavBar />

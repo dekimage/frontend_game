@@ -183,6 +183,7 @@ export const CourseBox = ({ usercourse }) => {
         title={lastContent.title}
         duration={lastContent.duration}
         icon={getIconType(lastContent.type).icon}
+        course={usercourse.course}
       />
     </div>
   );

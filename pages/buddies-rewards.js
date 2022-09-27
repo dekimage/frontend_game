@@ -76,7 +76,7 @@ const FriendsTower = () => {
     if (!userRewards) {
       return rewards;
     }
-    console.log(rewards);
+
     return rewards.map((s) => {
       if (userRewards[s.friends_count]) {
         return {

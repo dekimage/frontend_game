@@ -119,27 +119,47 @@ export const Tabs = ({
   callback = false,
   value = false,
 }) => {
-  const Tab = ({ tabState, setTab, tab, link }) => {
+  const TabHoc = ({ children, tab, tabState, link }) => {
     return (
-      <a
-        href={`#${link ? link : ""}`}
+      <div
         className={cx(
           styles.tabsButton,
           tabState === tab.label && styles.active
         )}
       >
-        <div
-          onClick={() => {
-            setTab(tab.label);
-            callback && callback(value);
-          }}
-        >
-          {tab.label}
-          {tab.count !== -1 && (
-            <div className={styles.tabCounter}>{tab.count ? tab.count : 0}</div>
-          )}
-        </div>
-      </a>
+        {link ? (
+          <a href={link ? `#${link}` : ""}>
+            <div>{children}</div>
+          </a>
+        ) : (
+          <div>{children}</div>
+        )}
+      </div>
+    );
+  };
+  const Tab = ({ tabState, setTab, tab, link }) => {
+    return (
+      <TabHoc
+        tab={tab}
+        tabState={tabState}
+        link={link}
+        children={
+          <div
+            onClick={() => {
+              setTab(tab.label);
+              callback && callback(value);
+            }}
+            className="flex_center"
+          >
+            {tab.label}
+            {tab.count !== -1 && (
+              <div className={styles.tabCounter}>
+                {tab.count ? tab.count : 0}
+              </div>
+            )}
+          </div>
+        }
+      />
     );
   };
   return (

@@ -16,7 +16,7 @@ $rare_background: rgb(200, 194, 255);
   margin: 1rem;
   display: inline-block;
   border: 0px solid transparent;
-  border-radius: 10px;
+  border-radius: $border_radius;
 
   &.epic {
     box-shadow: 0px 5px 0px -0.5px $epic_shadow;
@@ -34,7 +34,7 @@ $rare_background: rgb(200, 194, 255);
 
 .item {
   display: flex;
-  border-radius: 10px;
+  border-radius: $border_radius;
 
   width: 100px;
   height: 100px;
@@ -76,7 +76,7 @@ $rare_background: rgb(200, 194, 255);
   padding: 0.5rem;
   padding-right: 1rem;
   margin-bottom: 0.5rem;
-  border-radius: 5px;
+  border-radius: $border_radius;
 
   font-size: 20px;
   font-weight: 900;
@@ -145,6 +145,6 @@ $rare_background: rgb(200, 194, 255);
   background-color: rgb(255, 186, 36);
   border-top: 4px solid rgb(255, 225, 92);
   border-bottom: 2px solid rgb(255, 148, 26);
-  border-radius: 10px;
+  border-radius: $border_radius;
   box-shadow: 0px 5px 0px -0.5px $legendary_shadow;
 }
