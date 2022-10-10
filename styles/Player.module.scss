@@ -1,50 +1,62 @@
 @import "variables";
 @import "placeholders";
 
-.title {
-  padding: 1rem 0;
-  @extend %flex_center;
-  font-size: 28px;
-  font-weight: 700;
-}
+// .title {
+//   padding: 1rem 0;
+//   @extend %flex_center;
+//   font-size: 28px;
+//   font-weight: 700;
+// }
 
 .contentTheory {
-  height: 600px;
   position: relative;
+  margin-bottom: 1rem;
+
+  // overflow-x: scroll;
 }
 
 .theoryText {
-  padding: 1rem 0;
-  font-size: 20px;
+  margin: 1rem 0;
   font-weight: 500;
-  position: relative;
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-  &::before {
-    background-color: $actionize_black;
-    animation: typewritter 1.5s steps(24) forwards;
-  }
-  @keyframes typewritter {
-    to {
-      left: 100%;
-    }
-  }
+  font-size: 14px;
+  background-color: $primary;
+  border-radius: 30px;
+  padding: 20px;
 }
+
+.chatWrapper {
+  // overflow-y: auto;
+}
+
+// .theoryText {
+//   padding: 1rem 0;
+//   font-weight: 500;
+//   position: relative;
+//   &::before,
+//   &::after {
+//     content: "";
+//     position: absolute;
+//     top: 0;
+//     bottom: 0;
+//     left: 0;
+//     right: 0;
+//   }
+//   &::before {
+//     background-color: $actionize_black;
+//     animation: typewritter 1.5s steps(24) forwards;
+//   }
+//   @keyframes typewritter {
+//     to {
+//       left: 100%;
+//     }
+//   }
+// }
 
 .ctaBox {
   height: auto;
-  padding: 1rem;
+  // padding: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   background-color: $actionize_black;
   border-top: 2px solid $actionize_gray;
@@ -77,6 +89,61 @@
     width: 2.5rem;
     margin-right: 0.75rem;
     background-color: $actionize_gray_light;
+  }
+}
+.ctaButtonWrapper {
+  padding: 1rem;
+  @extend %flex_center;
+}
+.ctaStepWrapper {
+  width: 100%;
+}
+
+.stepTimer {
+  @extend %flex_start;
+  border: 2px solid $actionize_gray;
+  padding: 0.5rem;
+  border-radius: $border_radius;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+  font-weight: 500;
+  &_image {
+    @extend %flex_center;
+    height: 20px;
+    width: 20px;
+    margin-right: 0.25rem;
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.greenCircle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: $actionize_green;
+  margin: 0 0.5rem;
+}
+
+.infoBarStep {
+  border-left: 2px solid $actionize_gray;
+  @extend %flex_center;
+  width: 6rem;
+  padding: 0.25rem 0;
+}
+
+.ctaStepInfobar {
+  height: 24px;
+  font-size: 12px;
+  @extend %flex_between;
+  width: 100%;
+  border-bottom: 2px solid $actionize_gray;
+  padding-left: 0.5rem;
+  &_nameAndGreen {
+    @extend %flex_between;
+    width: 100%;
   }
 }
 
@@ -227,7 +294,13 @@
   @extend %flex_between;
   color: white;
   margin-bottom: 1rem;
-  justify-content: flex-end;
+  justify-content: flex-between;
+}
+
+.sliderTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 2.6rem;
 }
 
 .grayBubble {

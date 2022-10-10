@@ -1,0 +1,61 @@
+@import "variables";
+@import "placeholders";
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: 1rem;
+}
+.book {
+  @extend %box_duo;
+  position: relative;
+
+  flex-direction: column;
+  padding: 1rem;
+
+  &_category {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+  }
+
+  &_image {
+    @extend %flex_center;
+    margin-bottom: 0.5rem;
+  }
+
+  &_name {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  &_author {
+    font-weight: 500;
+    font-size: 12px;
+    color: gray;
+  }
+}
+
+// COPY FROM PROBLEMS
+
+.filters {
+  @extend %flex_between;
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  background-color: $actionize_gray;
+  padding: 0.5rem 1rem;
+  border-radius: $border_radius;
+  font-size: 18px;
+  font-weight: 500;
+  width: 9rem;
+  @extend %flex_center;
+  border: 2px solid gray;
+  color: white;
+  &:focus {
+    outline: none;
+    border: 2px solid white;
+  }
+  &::placeholder {
+    color: $actionize_gray_light;
+  }
+}

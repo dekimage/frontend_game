@@ -28,6 +28,7 @@ const initialState = {
     weekly: 0,
     achievements: 0,
   },
+  coursePlayerSlides: [],
 };
 
 const Store = ({ children }) => {

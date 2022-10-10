@@ -72,9 +72,10 @@ export const SliderProgress = ({
   );
 };
 
-export const SliderHeader = ({ rewards }) => {
+export const SliderHeader = ({ title, rewards }) => {
   return (
     <div className={styles.sliderHeader}>
+      <div className={styles.sliderTitle}>{title}</div>
       <div className={styles.grayBubble}>
         <div className={styles.grayBubble_rewards}>
           <img height="14px" src={`${baseUrl}/xp.png`} />

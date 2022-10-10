@@ -851,6 +851,7 @@ export const GET_COURSE_ID = gql`
               id
               index
               storyline
+              responses
               type
               title
               timer
@@ -872,6 +873,7 @@ export const GET_COURSE_ID = gql`
                     }
                     steps {
                       content
+                      timer
                     }
                   }
                 }
@@ -917,6 +919,170 @@ export const GET_COURSE_ID = gql`
 //     }
 //   }
 // `;
+
+export const GET_BOOK_ID = gql`
+  query ($id: ID!) {
+    book(id: $id) {
+      data {
+        id
+        attributes {
+          name
+          author
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          cards {
+            data {
+              id
+              attributes {
+                name
+                rarity
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          course {
+            data {
+              id
+              attributes {
+                name
+                students
+                price
+                discount
+                course_details {
+                  id
+                  duration
+                  actions
+                  concepts
+                  questions
+                  sessions
+                  days
+                }
+                last_updated
+                rating
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          actions {
+            data {
+              id
+              attributes {
+                name
+                duration
+                type
+                level
+                tips
+                stats {
+                  difficulty
+                  fun
+                  short_term
+                  long_term
+                }
+                steps {
+                  content
+                }
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+          realm {
+            data {
+              id
+              attributes {
+                name
+                color
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_BOOKS = gql`
+  query {
+    books {
+      data {
+        id
+        attributes {
+          name
+          author
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          realm {
+            data {
+              id
+              attributes {
+                name
+                color
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
+    }
+  }
+`;
 
 export const GET_PROBLEMS = gql`
   query {

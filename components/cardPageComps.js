@@ -63,6 +63,32 @@ const ActionStat = ({ label, value }) => {
   );
 };
 
+export const ChatAction = ({ action }) => {
+  return (
+    <div className={styles.action}>
+      <div className={styles.action_closed}>
+        <div className={styles.action_img}>
+          {action.image?.url && <img src={`${baseUrl}${action.image.url}`} />}
+        </div>
+        <div className={styles.action_box}>
+          <div className={styles.action_header}>
+            <div className={styles.action_name}>{action.name}</div>
+            <div className={styles.action_grouper}></div>
+          </div>
+          <div className={styles.action_header}>
+            <div className={styles.action_grouper}>
+              <div className={styles.action_type}>{action.type}</div>
+              <div className={styles.action_duration}>
+                {action.duration} min
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Action = ({ action, parent, goNext, isOpen = false }) => {
   const time = new Date();
   const expiryTimestamp = time.setSeconds(time.getSeconds() + action.duration);
