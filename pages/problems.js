@@ -38,6 +38,7 @@ export const GenericDropDown = ({ items, label, callback }) => {
               className={styles.dropDown_item}
               key={i}
               onClick={() => {
+                setIsOpen(!isOpen);
                 setSelectedItem(item);
                 callback(item);
               }}

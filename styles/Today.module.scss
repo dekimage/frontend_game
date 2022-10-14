@@ -10,13 +10,18 @@
 .problemBox {
   @extend %box_duo;
   background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   border: 0;
   margin-bottom: 1rem;
   padding: 0;
+  height: 10rem;
   &_name {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 1rem;
+    width: 80%;
   }
   &_blackScreen {
     border-radius: $border_radius;
@@ -24,7 +29,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.459);
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 1rem;
   }
 }

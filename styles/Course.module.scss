@@ -105,6 +105,13 @@
   padding: 0;
 }
 
+.dayAgain {
+  @extend %flex_center;
+  border-top: 2px solid $actionize_gray;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
 .dayHeader {
   @extend %flex_between;
   width: 100%;
@@ -143,6 +150,9 @@
   @extend %flex_between;
   width: 100%;
   padding: 0.25rem 1rem;
+  &:first-child {
+    border-top: 2px solid $actionize_gray;
+  }
 }
 
 .contentState {
@@ -247,6 +257,7 @@
 }
 
 .courseImage {
+  position: relative;
   background-position: 25% 75%;
   width: 100%;
   height: 150px;
@@ -255,12 +266,19 @@
 .fixed {
   position: fixed;
   background-color: $actionize_black;
-  border-top: 2px solid $actionize_gray;
   bottom: 0;
   width: 100%;
-  height: 5rem;
-  @extend %flex_center;
+  height: 3rem;
+  // @extend %flex_center;
   left: 0px;
   position: fixed;
-  z-index: 10;
+  z-index: 10000;
+}
+
+.curveFancy {
+  background-color: transparent;
+  position: absolute;
+  top: 5rem;
+  z-index: 100;
+  width: 100%;
 }

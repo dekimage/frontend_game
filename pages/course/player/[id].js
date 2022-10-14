@@ -1,263 +1,30 @@
 import { useQuery } from "@apollo/react-hooks";
 import { useState, useEffect, useContext, useRef } from "react";
-import { useTimer } from "react-timer-hook";
-import { addZeroToInteger } from "../../../utils/calculations";
 import { Context } from "../../../context/store";
 import { useRouter } from "next/router";
-
 import _ from "lodash";
-
 import Modal from "../../../components/Modal";
-
 import useModal from "../../../hooks/useModal";
-
 import { normalize } from "../../../utils/calculations";
-
 import { GET_COURSE_ID } from "../../../GQL/query";
-
-import Timer from "../../../components/Timer";
-
 import { ChatAction } from "../../../components/cardPageComps";
-
-import iconCheckmark from "../../../assets/checkmark.svg";
-
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
 import styles from "../../../styles/Player.module.scss";
-
 import {
-  ContentQuestion,
   SliderProgress,
   SliderHeader,
   WarningModal,
-  RepeatScreen,
-  LevelUpScreen,
-  ActionsScreen,
-  RewardsScreen,
-  CompleteScreen,
-  CompleteScreenNoEnergy,
-  FeedbackScreen,
 } from "../../../components/playerComps";
 
-const CatReply = ({ message }) => {
-  return (
-    <div className="chat-thread">
-      <div className="message message-reply">
-        <div className="message-content">
-          <div className="typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <p>{message.reply}</p>
-        </div>
-        <div
-          className="avatar"
-          style={{
-            backgroundImage: `url(${baseUrl}/uploads/dogo_4d4f12c4ed.jpg?updated_at=2022-10-08T13:40:49.569Z)`,
-          }}
-        >
-          avatar
-        </div>
-      </div>
-    </div>
-  );
-};
+import {
+  CatReply,
+  CatContent,
+  ChatCta,
+  SuccessModal,
+  ChatResponses,
+} from "../../../components/playerCourseComps";
 
-const CatContent = ({ message }) => {
-  return (
-    <div className="chat-thread">
-      <div className="message ">
-        <div
-          className="avatar"
-          style={{
-            backgroundImage: `url(${baseUrl}/uploads/cat_a7d3867339.png?updated_at=2022-10-07T12:38:43.522Z)`,
-          }}
-        >
-          avatar
-        </div>
-        <div className="message-content">
-          <div className="typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <p>{message.content}</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
-  const [isShowTimer, setIsShowTimer] = useState(!!lastMessage.timer);
-  const time = new Date();
-
-  useEffect(() => {
-    setIsShowTimer(!!lastMessage.timer);
-  }, [lastMessage]);
-
-  const expiryTimestamp = time.setSeconds(
-    time.getSeconds() + lastMessage.timer
-  );
-  const [isTimerCompleted, setIsTimerCompleted] = useState(false);
-  const onExpire = () => {
-    setIsTimerCompleted(true);
-  };
-
-  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
-    expiryTimestamp,
-    autoStart: false,
-    onExpire: onExpire,
-  });
-
-  const isLastStep = lastMessage.action.steps.length === lastMessage.step;
-
-  const goNextStep = () => {
-    if (lastMessage.nextStepTimer) {
-      const time = new Date();
-      time.setSeconds(time.getSeconds() + lastMessage.nextStepTimer);
-      restart(time, false);
-      setIsTimerCompleted(false);
-    }
-    openNextIdea();
-  };
-
-  return (
-    <div className={styles.ctaStepWrapper}>
-      <div className={styles.ctaStepInfobar}>
-        <div className={styles.ctaStepInfobar_nameAndGreen}>
-          You are now doing {lastMessage.action.name}
-          <div className={styles.greenCircle}></div>
-        </div>
-
-        <div className={styles.infoBarStep}>
-          Step {lastMessage.step}/{lastMessage.action.steps.length}
-        </div>
-      </div>
-      <div className={styles.ctaButtonWrapper}>
-        {!isTimerCompleted ? (
-          <>
-            {isRunning ? (
-              <div className="btn btn-disabled btn-twin">Complete</div>
-            ) : isShowTimer ? (
-              <div className="btn btn-primary btn-twin" onClick={start}>
-                Start Timer
-              </div>
-            ) : (
-              <div className="btn btn-primary btn-twin" onClick={goNextStep}>
-                Continue
-              </div>
-            )}
-            {isShowTimer && (
-              <div className={styles.stepTimer}>
-                <div className={styles.stepTimer_image}>
-                  <ion-icon name="stopwatch-outline"></ion-icon>
-                </div>
-
-                <div className={styles.count}>
-                  <span>{addZeroToInteger(minutes, 2)}</span>:
-                  <span>{addZeroToInteger(seconds, 2)}</span>
-                </div>
-              </div>
-            )}
-          </>
-        ) : isLastStep ? (
-          <>
-            <div className="btn btn-correct btn-twin" onClick={goNext}>
-              Complete Action
-            </div>
-
-            <div className={styles.stepTimer}>
-              <img src={iconCheckmark} height="20px" />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="btn btn-correct btn-twin" onClick={goNextStep}>
-              Complete Step {lastMessage.step}/{lastMessage.action.steps.length}
-            </div>
-
-            <div className={styles.stepTimer}>
-              <img src={iconCheckmark} height="20px" />
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const ChatCta = ({
-  isLastIdea,
-  goNext,
-  openNextIdea,
-  lastMessage,
-  currentIdea,
-}) => {
-  console.log(lastMessage);
-  return (
-    <div className="absolute_bottom">
-      <div className={styles.ctaBox}>
-        {isLastIdea ? (
-          <>
-            <div className={styles.ctaStepInfobar}>
-              Session: {lastMessage.title}
-            </div>
-            <div className={styles.ctaButtonWrapper}>
-              <div className="btn btn-primary" onClick={goNext}>
-                Next Slide
-              </div>
-            </div>
-          </>
-        ) : (
-          <div>
-            {lastMessage.type === "idea" && (
-              <>
-                <div className={styles.ctaStepInfobar}>
-                  <div>Session: {lastMessage.title}</div>
-                  <div className={styles.infoBarStep}>
-                    Idea {currentIdea}/{lastMessage.ideasLength}
-                  </div>
-                </div>
-                <div className={styles.ctaButtonWrapper}>
-                  <div className="btn btn-primary" onClick={openNextIdea}>
-                    Continue
-                  </div>
-                </div>
-              </>
-            )}
-            {lastMessage.type === "step" && (
-              <ButtonWithTimer
-                lastMessage={lastMessage}
-                openNextIdea={openNextIdea}
-                goNext={goNext}
-              />
-            )}
-            {lastMessage.type === "action" && (
-              <>
-                <div className={styles.ctaStepInfobar}>
-                  <div>Get ready for action: {lastMessage.name}</div>
-                  <div className={styles.infoBarStep}>
-                    {lastMessage.steps.length} Steps
-                  </div>
-                </div>
-                <div className={styles.ctaButtonWrapper}>
-                  <div className="btn btn-action" onClick={openNextIdea}>
-                    Start Action
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export const ContentTheory = ({ slide, goNext }) => {
+export const ContentTheory = ({ slide, goNext, lastSlideIndex, i }) => {
   const createChat = (slide) => {
     const action = slide.action;
     const responses = slide.responses;
@@ -273,6 +40,15 @@ export const ContentTheory = ({ slide, goNext }) => {
     });
 
     let chat = ideas;
+
+    if (responses) {
+      chat = chat.concat({
+        responses: responses.responses,
+        type: "responses",
+        index: slide.index,
+      });
+    }
+
     if (action) {
       const actionSteps = action.steps.map((step, i) => {
         const index = i + 1 === action.steps.length ? i : i + 1;
@@ -289,25 +65,16 @@ export const ContentTheory = ({ slide, goNext }) => {
       chat.push({ ...action, type: "action", title: slide.title });
       chat = chat.concat([...actionSteps]);
     }
-    if (responses) {
-      const replies = responses.responses.map((res) => {
-        return { ...res, type: "reply", title: slide.title };
-      });
-      chat = chat.concat([...replies]);
-    }
 
     return chat;
   };
 
-  const ideas = createChat(slide);
-
-  const isFirstSlideFinal = ideas.length === ideas.length;
-
+  const [ideas, setIdeas] = useState(createChat(slide));
   const [activeChat, setActiveChat] = useState([ideas[0]]);
-  const [isLastIdea, setIsLastIdea] = useState(isFirstSlideFinal);
+  const [isLastIdea, setIsLastIdea] = useState(false);
+  const [contentIndex, setContentIndex] = useState(1);
 
   const lastMessage = activeChat[activeChat.length - 1];
-  // console.log(111, ideas);
 
   useEffect(() => {
     if (activeChat !== slide) {
@@ -319,13 +86,14 @@ export const ContentTheory = ({ slide, goNext }) => {
   }, [slide]);
 
   const openNextIdea = () => {
-    const index = activeChat.length;
+    const ideaCount = slide.action == null ? ideas.length : ideas.length + 1;
 
-    if (index === ideas.length) {
+    if (contentIndex + 1 === ideaCount) {
       setIsLastIdea(true);
     }
 
-    setActiveChat([...activeChat, ideas[index]]);
+    setActiveChat([...activeChat, ideas[contentIndex]]);
+    setContentIndex(contentIndex + 1);
 
     // removed after fixing multiple elements mapping
     setCurrentIdea(currentIdea + 1);
@@ -340,8 +108,53 @@ export const ContentTheory = ({ slide, goNext }) => {
     scrollToBottom();
   }, [activeChat]);
 
+  // fix bug of multiple cta's
+  const showCtaStep = i + 1 === lastSlideIndex;
   // removed after fixing multiple elements mapping
   const [currentIdea, setCurrentIdea] = useState(1);
+  const [showResponses, setShowResponses] = useState(true);
+
+  const selectReply = (reply) => {
+    const link = reply.link;
+    const index = activeChat.length;
+    const newState = [...activeChat, { ...reply, type: "reply" }];
+    setActiveChat(newState);
+
+    if (!link) {
+      setContentIndex(contentIndex + 1);
+      setTimeout(() => {
+        setActiveChat([...newState, ideas[index]]);
+      }, 2000);
+    }
+
+    if (link == "examples" || link == "tips") {
+      setTimeout(() => {
+        const examples = ideas[index][link].split("\n\n").map((string) => {
+          return {
+            content: string,
+            type: "idea",
+            ideasLength: 0,
+            title: "",
+          };
+        });
+
+        setActiveChat([...newState, ...examples]);
+      }, 2000);
+    }
+    if (Number.isInteger(link)) {
+      setContentIndex(contentIndex + 1);
+      setTimeout(() => {
+        goNext(_, reply);
+      }, 2000);
+    }
+    if (reply.isGhost) {
+      setContentIndex(contentIndex + 1);
+      setTimeout(() => {
+        goNext(_, reply);
+      }, 2000);
+    }
+    setShowResponses(false);
+  };
 
   return (
     <div className={styles.contentTheory}>
@@ -358,24 +171,24 @@ export const ContentTheory = ({ slide, goNext }) => {
             {message.type === "action" && (
               <ChatAction action={message} startAction={openNextIdea} />
             )}
+            {message.type === "responses" && showResponses && (
+              <ChatResponses message={message} selectReply={selectReply} />
+            )}
           </div>
         );
       })}
 
-      <div
-        style={{
-          marginTop: "4rem",
-        }}
-        ref={bottom}
-      ></div>
+      <div style={{ marginTop: "4rem" }} ref={bottom}></div>
 
-      <ChatCta
-        isLastIdea={isLastIdea}
-        goNext={goNext}
-        openNextIdea={openNextIdea}
-        lastMessage={lastMessage}
-        currentIdea={currentIdea}
-      />
+      {showCtaStep && (
+        <ChatCta
+          isLastIdea={isLastIdea}
+          goNext={goNext}
+          openNextIdea={openNextIdea}
+          lastMessage={lastMessage}
+          currentIdea={currentIdea}
+        />
+      )}
     </div>
   );
 };
@@ -388,29 +201,15 @@ const Player = () => {
   });
 
   const gql_data = data && normalize(data);
-
-  // for testing
-  const states = [
-    "feedback_screen",
-    "complete_screen",
-    "rewards_screen",
-    "actions_screen",
-    "levelup_screen",
-  ];
-
   const [slides, setSlides] = useState(false);
   const [slide, setSlide] = useState(false);
-
   const [chatSlides, setChatSlides] = useState(false);
-
   const { isShowing, openModal, closeModal } = useModal();
-
   const [successModal, setSuccessModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-
+  const [ghosts, setGhosts] = useState([]);
   const [rewards, setRewards] = useState({
     xp: 0,
     stars: 0,
@@ -434,7 +233,16 @@ const Player = () => {
           last_completed_content - 1
         ]
       );
-      setSlides(gql_data.course.days[last_completed_day - 1].contents);
+      setSlides(
+        gql_data.course.days[last_completed_day - 1].contents.filter(
+          (slide) => !slide.is_ghost
+        )
+      );
+      // FIX GHOSTS??
+      const ghosts = gql_data.course.days[
+        last_completed_day - 1
+      ].contents.filter((slide) => slide.is_ghost);
+      setGhosts(ghosts);
 
       setChatSlides([
         gql_data.course.days[last_completed_day - 1].contents[
@@ -444,7 +252,6 @@ const Player = () => {
     }
   }, [gql_data, loading]);
 
-  // const isLatestLevel = store.player.level + 1 === store.player.selectedLevel;
   const isLatestLevel = false;
 
   const updateRewards = (xp = 10, stars = 5) => {
@@ -479,42 +286,20 @@ const Player = () => {
     }
   };
 
-  const goNext = () => {
+  const goNext = (_, reply = false) => {
+    //reply is the link I pass manually with replies...
     const index = slide.index;
     if (index === slides.length) {
       setIsSuccessModalOpen(true);
     } else {
-      setSlide(slides[index]);
-      setChatSlides([...chatSlides, slides[index]]);
+      if (reply.isGhost) {
+        setSlide(77, ghosts[reply.link - 1]);
+        setChatSlides([...chatSlides, ghosts[reply.link + 1]]);
+      } else {
+        setSlide(slides[reply ? reply.link - 1 : index]);
+        setChatSlides([...chatSlides, slides[reply ? reply.link - 1 : index]]);
+      }
     }
-  };
-
-  // const lastMessage = activeChat[activeChat.length - 1];
-
-  const SuccessModal = ({ closePlayer, card, isLatestLevel }) => {
-    const [store, dispatch] = useContext(Context);
-    return (
-      <div>
-        {isLatestLevel ? (
-          <div>
-            Congratualations!! You have completed the theory check-in! Now, it's
-            time for you to do some Actions!
-            <button
-              onClick={() => {
-                closePlayer();
-                updateCard(dispatch, card.id, "complete");
-              }}
-            >
-              Mark as Complete!
-            </button>
-          </div>
-        ) : (
-          <div>
-            <button onClick={closePlayer}>Back to Card</button>
-          </div>
-        )}
-      </div>
-    );
   };
 
   return (
@@ -538,7 +323,15 @@ const Player = () => {
           />
 
           {chatSlides.map((slide, i) => {
-            return <ContentTheory slide={slide} goNext={goNext} key={i} />;
+            return (
+              <ContentTheory
+                slide={slide}
+                goNext={goNext}
+                lastSlideIndex={chatSlides.length}
+                key={i}
+                i={i}
+              />
+            );
           })}
 
           {isWarningModalOpen && (

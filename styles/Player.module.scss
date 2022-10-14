@@ -54,8 +54,8 @@
 
 .ctaBox {
   height: auto;
-  // padding: 1rem;
   display: flex;
+  // padding: 1rem;
   flex-direction: column;
   position: fixed;
   background-color: $actionize_black;
@@ -274,7 +274,7 @@
   background-color: $actionize_black;
   padding: 1rem 0;
   width: 100%;
-  margin: 0 1rem;
+  margin-right: 1rem;
 }
 
 .sliderBar {
@@ -394,4 +394,12 @@ div.grayBubble_rewards * {
   @extend %flex_center;
   width: 100%;
   flex-direction: column;
+}
+
+// RESPONSES
+
+.reply {
+  @extend %box_duo;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
 }

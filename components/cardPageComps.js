@@ -107,6 +107,8 @@ export const Action = ({ action, parent, goNext, isOpen = false }) => {
     onExpire: onExpire,
   });
 
+  console.log(action.image);
+
   return (
     <div className={styles.action}>
       <div className={styles.action_closed} onClick={() => setOpen(!open)}>

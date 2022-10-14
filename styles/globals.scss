@@ -147,6 +147,9 @@ input {
 .mb1 {
   margin-bottom: 1rem;
 }
+.mb2 {
+  margin-bottom: 2rem;
+}
 .mt1 {
   margin-top: 1rem;
 }
@@ -178,7 +181,6 @@ input {
   font-size: 14px;
   width: auto;
   width: 100%;
-  // padding: 0 24px;
   height: 2.5rem;
   padding: 10px 30px;
 
@@ -192,6 +194,12 @@ input {
     font-size: 22px;
     height: 3rem;
   }
+}
+
+.btn-small {
+  padding: 8px 20px;
+  height: 2rem;
+  font-size: 12px;
 }
 .btn-twin {
   border-top-right-radius: 0;
@@ -208,12 +216,22 @@ input {
   width: 100%;
   max-width: 600px;
 }
+.btn-fullSize {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border-radius: 0;
+  min-height: 2rem;
+}
 .btn-primary {
   background: $primary;
   // border-top: 4px solid #678de4;
   // border-bottom: 2px solid #1e4397;
 
   // box-shadow: 0px 5px 0px -0.5px #1e4397;
+}
+.btn-green {
+  background: $actionize_green;
 }
 .btn-correct {
   background: $ux_green;
@@ -443,23 +461,18 @@ ion-icon {
   -webkit-text-fill-color: white;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
-
   border: transparent;
-  background-color: #ff161e;
-  border-top: 4px solid #ff6368;
-  border-bottom: 2px solid #af0006;
-  border-radius: $border_radius;
-  box-shadow: 0px 5px 0px -0.5px #8a0408;
-
+  background-color: $ux_red;
+  // border-top: 4px solid #ff6368;
+  // border-bottom: 2px solid #af0006;
+  // box-shadow: 0px 5px 0px -0.5px #8a0408;
   font-size: 24px;
   font-weight: 900;
-
-  display: inline-block;
-  text-align: center;
-  vertical-align: center;
   width: 30px;
   height: 30px;
   cursor: pointer;
+  @extend %flex_center;
+  border-radius: $border_radius;
 }
 
 .modal-title {
@@ -472,9 +485,9 @@ ion-icon {
 }
 
 .modal-icon {
-  position: absolute;
-  top: -6px;
-  right: 6px;
+  // position: absolute;
+  // top: -6px;
+  // right: 6px;
 }
 
 .modal-close-button {

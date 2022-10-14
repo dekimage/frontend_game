@@ -135,6 +135,7 @@ export const GET_USERCARDS_QUERY = gql`
                       level
                       duration
                       tips
+                      examples
                       stats {
                         difficulty
                         fun
@@ -143,6 +144,14 @@ export const GET_USERCARDS_QUERY = gql`
                       }
                       steps {
                         content
+                      }
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
                       }
                     }
                   }
@@ -302,6 +311,7 @@ export const GET_CARD_ID = gql`
                 level
                 duration
                 tips
+                examples
                 stats {
                   difficulty
                   fun
@@ -310,6 +320,14 @@ export const GET_CARD_ID = gql`
                 }
                 steps {
                   content
+                }
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
                 }
               }
             }
@@ -712,6 +730,7 @@ export const GET_PROBLEM_ID = gql`
                 type
                 level
                 tips
+                examples
                 stats {
                   difficulty
                   fun
@@ -850,6 +869,7 @@ export const GET_COURSE_ID = gql`
             contents {
               id
               index
+              is_ghost
               storyline
               responses
               type
@@ -865,6 +885,7 @@ export const GET_COURSE_ID = gql`
                     level
                     duration
                     tips
+                    examples
                     stats {
                       difficulty
                       fun
@@ -874,6 +895,14 @@ export const GET_COURSE_ID = gql`
                     steps {
                       content
                       timer
+                    }
+                    image {
+                      data {
+                        id
+                        attributes {
+                          url
+                        }
+                      }
                     }
                   }
                 }
@@ -994,6 +1023,7 @@ export const GET_BOOK_ID = gql`
                 type
                 level
                 tips
+                examples
                 stats {
                   difficulty
                   fun
@@ -1272,6 +1302,7 @@ export const GET_USER_ID = gql`
                 level
                 duration
                 tips
+                examples
                 stats {
                   difficulty
                   fun
@@ -1280,6 +1311,14 @@ export const GET_USER_ID = gql`
                 }
                 steps {
                   content
+                }
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
                 }
               }
             }

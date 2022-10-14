@@ -159,7 +159,7 @@ const Curriculum = ({ days, usercourse }) => {
   return (
     <div className={styles.curriculum}>
       {showDays.map((day, i) => (
-        <Day day={day} usercourse={usercourse} key={i} />
+        <Day day={day} usercourse={usercourse} key={i} i={i} />
       ))}
       <div className={styles.seeAll} onClick={() => setShowDays(days)}>
         See All (+{days.length - showDays.length})
@@ -168,7 +168,7 @@ const Curriculum = ({ days, usercourse }) => {
   );
 };
 
-const Day = ({ day, usercourse }) => {
+const Day = ({ day, usercourse, i }) => {
   const getDayState = (day) => {
     if (!usercourse) {
       return { color: "#222", icon: iconPlay };
@@ -233,6 +233,11 @@ const Day = ({ day, usercourse }) => {
           ))}
         </div>
       )}
+      {isOpen && dayLockState === "completed" && (
+        <div className={styles.dayAgain}>
+          <div className="btn btn-green btn-small">Replay Day {i + 1}</div>
+        </div>
+      )}
     </div>
   );
 };
@@ -251,7 +256,7 @@ export const NextContent = ({ course, title, duration, icon }) => {
           <div className={styles.contentNextTitle}>{title}</div>
           <div className={styles.contentDuration}>{duration} min</div>
         </div>
-        <div className={styles.continueButton}>Continue</div>
+        <div className={styles.continueButton}>Play</div>
       </div>
     </Link>
   );
@@ -272,26 +277,38 @@ export const getIconType = (type) => {
 };
 
 const ContentStep = ({ content, usercourse, dayLockState }) => {
+  console.log(dayLockState);
   const getContentState = (content, usercourse) => {
-    if (!usercourse || content.index == usercourse?.last_completed_content) {
+    if (
+      !usercourse ||
+      (content.index == usercourse?.last_completed_content &&
+        !(dayLockState === "completed"))
+    ) {
       return { color: false, icon: false };
     } else {
+      if (
+        content.index < usercourse.last_completed_content ||
+        dayLockState === "completed"
+      ) {
+        return { color: "green", icon: iconCheck, state: "completed" };
+      }
       if (
         content.index > usercourse.last_completed_content ||
         dayLockState === "locked"
       ) {
         return { color: "black", icon: iconLock, state: "locked" };
       }
-      if (content.index < usercourse.last_completed_content) {
-        return { color: "green", icon: iconCheck, state: "completed" };
-      }
     }
   };
 
-  const isNext = usercourse?.last_completed_content == content.index;
+  const isNext =
+    usercourse?.last_completed_content == content.index &&
+    !(dayLockState === "completed");
   const icon = getContentState(content, usercourse).icon;
   const contentState = getContentState(content, usercourse).state;
   const router = useRouter();
+
+  console.log(isNext);
 
   return (
     <>
@@ -307,7 +324,9 @@ const ContentStep = ({ content, usercourse, dayLockState }) => {
           className={styles.contentStep}
           onClick={() => {
             contentState === "completed" &&
-              router.push(`${feUrl}/card/player/${card.id}`);
+              router.push(
+                `${feUrl}/card/player/${usercourse.last_completed_day + 1}`
+              );
           }}
         >
           <div className={styles.contentState}>
@@ -377,9 +396,19 @@ const CoursePurchased = ({ course, usercourse }) => {
         <div
           className={styles.courseImage}
           style={{ backgroundImage: `url(${baseUrl}${course.image.url})` }}
-        ></div>
+        >
+          <div className={styles.curveFancy}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+              <path
+                fill="#171717"
+                fillOpacity="1"
+                d="M0,96L80,128C160,160,320,224,480,213.3C640,203,800,117,960,122.7C1120,128,1280,224,1360,272L1440,320L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
+              ></path>
+            </svg>
+          </div>
+        </div>
 
-        <div className="section">
+        <div className="section mb2">
           <div className={styles.section_name}>
             <div className={styles.nameProgress}>
               <div>
@@ -409,9 +438,11 @@ const CoursePurchased = ({ course, usercourse }) => {
           <Curriculum days={course.days} usercourse={usercourse} />
           <div className={styles.fixed}>
             <Link href={`/course/player/${course.id}`}>
-              <div className="btn btn-action" style={{ fontSize: "20px" }}>
-                Play
-                <img src={iconPlay} height="16px" className="ml5" />
+              <div className="btn btn-action btn-fullSize">
+                Continue
+                <div className="ml5 flex_center">
+                  <img src={iconPlay} height="14px" />
+                </div>
               </div>
             </Link>
           </div>

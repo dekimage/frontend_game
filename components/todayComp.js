@@ -96,11 +96,13 @@ export const ProblemsBox = () => {
     <div
       className={styles.problemBox}
       style={{
-        backgroundImage: `url(${baseUrl}/uploads/2022_09_19_15_35_56_general_Art_AI_Discord_382962de63.png?updated_at=2022-09-19T13:36:15.098Z)`,
+        backgroundImage: `url(${baseUrl}/uploads/problems_807f73b57d.jfif?updated_at=2022-10-11T09:55:36.632Z)`,
       }}
     >
       <div className={styles.problemBox_blackScreen}>
-        <div className={styles.problemBox_name}>Solve everyday problems</div>
+        <div className={styles.problemBox_name}>
+          What problems do you want to solve?
+        </div>
         <Link href="/problems">
           <div className="btn btn-empty">
             <span className={styles.exploreProblemsBtn}>Explore Problems</span>
