@@ -66,9 +66,8 @@
 
 .dropDown {
   position: relative;
-  background-color: $actionize_gray;
-  padding: 0.5rem 1rem;
   border-radius: $border_radius;
+  @extend %box_duo;
   font-size: 18px;
   font-weight: 500;
   width: 9rem;

@@ -16,16 +16,7 @@ import iconEpic from "../assets/epic-rarity.svg";
 import iconLegendary from "../assets/legendary-rarity.svg";
 import { useContext } from "react";
 
-const getMaxQuantity = (level) => {
-  const data = {
-    1: 2,
-    2: 4,
-    3: 6,
-    4: 8,
-    5: 10,
-  };
-  return data[level];
-};
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const CardType = ({ type }) => {
   return <div className={cx(styles.type, styles[type])}>{type}</div>;
@@ -57,38 +48,30 @@ export const ProgressBox = ({
   );
 };
 
-const OpenCard = ({ card, maxQuantity }) => {
+const OpenCard = ({ card }) => {
   return (
-    <>
-      <ProgressBox
-        icon={iconCollection}
-        progress={card.quantity || 1}
-        maxProgress={maxQuantity || 2}
-      />
+    <div className={styles.openBox}>
+      <div className={styles.name}>{card.name}</div>
       <ProgressBox
         icon={iconPlay}
         progress={card.completed || 0}
         maxProgress={5}
       />
-    </>
+    </div>
   );
 };
 
 const ClosedCard = ({ card }) => {
   return (
     <div className={styles.lockBox}>
-      <div className="flex_center">
-        <img
-          src={card.quantity >= 10 ? iconCheck : iconLock}
-          style={{ height: "48px", marginBottom: ".5rem" }}
-        />
-      </div>
-      {card.quantity >= 10 ? "Unlock" : "Locked"}
-      <ProgressBox
-        icon={iconCollection}
-        progress={card.quantity || 0}
-        maxProgress={10}
+      <img
+        src={card.quantity >= 10 ? iconCheck : iconLock}
+        style={{ height: "18px" }}
       />
+      <div className={styles.name}>{card.name}</div>
+      <div className={styles.costBox}>
+        400 <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
+      </div>
     </div>
   );
 };
@@ -96,7 +79,6 @@ const ClosedCard = ({ card }) => {
 const Card = ({ card }) => {
   const [store, dispatch] = useContext(Context);
   const isCollected = card.card;
-  const maxQuantity = getMaxQuantity(card.level);
   const isPremiumLocked =
     card.expansion &&
     card.expansion.name === "Pro" &&
@@ -116,11 +98,6 @@ const Card = ({ card }) => {
         className={cx(styles.card, { [styles.notCollected]: !isColored })}
         style={{ "--background": card.realm.color }}
       >
-        {/* {!isColored && (
-          <div className={styles.lock}>
-            <img src={iconLock} />
-          </div>
-        )} */}
         <div
           className={styles.background}
           style={{ "--background": card.realm.color }}
@@ -129,45 +106,27 @@ const Card = ({ card }) => {
           className={styles.curve}
           style={{ "--background": card.realm.color }}
         ></div>
-        {isColored && (
-          <div className={styles.level}>
-            <span className={styles.level_text}>Lvl</span>
-            {card.level || 1}
-          </div>
-        )}
-        {/* {card.is_new && <div className={styles.isNew}>New!</div>} */}
+
+        <div className={styles.rarity}>
+          {card.rarity === "common" && <img src={iconCommon} />}
+          {card.rarity === "rare" && <img src={iconRare} />}
+          {card.rarity === "epic" && <img src={iconEpic} />}
+          {card.rarity === "legendary" && <img src={iconLegendary} />}
+        </div>
+
         <div className={styles.realmLogo}>
           <img src={card.realm.image.url} />
         </div>
 
         <div className={styles.image}>
           <img
-            src={card.image.url}
+            // src={card.image.url}
+            src={`${baseUrl}${card.image.url}`}
             style={{ filter: !isColored && "grayscale(100%)" }}
           />
         </div>
         <div className={styles.card_body}>
-          {/* <div className={styles.rarity_center}>
-            {isColored ? (
-              <CardType type={"open"} />
-            ) : (
-              <CardType type={card.type} />
-            )}
-          </div> */}
-
-          <div className={styles.name}>{card.name}</div>
-
-          {isColored ? (
-            <OpenCard card={card} maxQuantity={maxQuantity} />
-          ) : (
-            <ClosedCard card={card} />
-          )}
-        </div>
-        <div className={styles.rarity}>
-          {card.rarity === "common" && <img src={iconCommon} />}
-          {card.rarity === "rare" && <img src={iconRare} />}
-          {card.rarity === "epic" && <img src={iconEpic} />}
-          {card.rarity === "legendary" && <img src={iconLegendary} />}
+          {isColored ? <OpenCard card={card} /> : <ClosedCard card={card} />}
         </div>
       </div>
     </Link>
