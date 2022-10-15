@@ -63,6 +63,8 @@ export const claimUserRewardApi = (userCount) =>
 export const claimStreakRewardApi = (rewardCount) =>
   axios.put(`${userUrl}/collect-streak-reward/${rewardCount}`);
 
+export const updateTutorialApi = (tutorialStep) =>
+  axios.put(`${userUrl}/update-tutorial/${tutorialStep}`);
 // ------
 
 // 2. SHOP PAGE

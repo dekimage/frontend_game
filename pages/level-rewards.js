@@ -97,72 +97,69 @@ const LevelRewardsTower = () => {
 
   const proxyNextReward = joinArrays(levelRewards)[4];
 
-  if (loading) {
-    return <div>Loading level Rewards...</div>;
-  }
-  if (error) {
-    return <div>Error Fetching Level Rewards...</div>;
-  }
-
   return (
     <div className="background_dark">
-      <div className={styles.headerr}>
-        <div className={styles.back} onClick={() => router.back()}>
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </div>
-        <div className={styles.label}>Rewards Tower</div>
-      </div>
-      <div className="section_container">
-        <div className={styles.header}>
-          {/* <h1>Rewards Tower</h1> */}
-
-          <div className="mb1">Collect rewards for leveling up!</div>
-          <div className={styles.header_ctabox}>
-            <div className="btn" style={{ width: "120px" }}>
-              Free
+      {error && <div>Error: {error}</div>}
+      {loading && <div>Loading...</div>}
+      {data && (
+        <>
+          <div className={styles.headerr}>
+            <div className={styles.back} onClick={() => router.back()}>
+              <ion-icon name="chevron-back-outline"></ion-icon>
             </div>
-            <div className="btn btn-wrong">Premium</div>
+            <div className={styles.label}>Rewards Tower</div>
           </div>
-        </div>
-        <div className={styles.levelRewardsGrid}>
-          <div className={styles.levelRewardsColumn}>
-            {gql_data &&
-              joinArrays(filterPremium(gql_data.levelrewards, "free")).map(
-                (level, i) => {
-                  return <LevelReward level={level} key={i} />;
-                }
-              )}
-          </div>
-          <div className={styles.levelRewardsColumn}>
-            {gql_data &&
-              filterPremium(gql_data.levelrewards, "free").map((l, i) => (
-                <div className={styles.levelRewardLevel} key={i}>
-                  <div
-                    className={cx([styles.levelRewardLevel__stripe], {
-                      [styles.passed]: l.level <= store.user.level,
-                    })}
-                  ></div>
-                  <div
-                    className={cx([styles.levelRewardLevel__text], {
-                      [styles.passed]: l.level <= store.user.level,
-                    })}
-                  >
-                    {l.level}
-                  </div>
-                </div>
-              ))}
-          </div>
+          <div className="section_container">
+            <div className={styles.header}>
+              {/* <h1>Rewards Tower</h1> */}
 
-          <div className={styles.levelRewardsColumn}>
-            {gql_data &&
-              joinArrays(filterPremium(gql_data.levelrewards, "premium")).map(
-                (level, i) => {
-                  return <LevelReward level={level} key={i} />;
-                }
-              )}
-          </div>
-        </div>
-        {/* <div className={styles.footer}>
+              <div className="mb1">Collect rewards for leveling up!</div>
+              <div className={styles.header_ctabox}>
+                <div className="btn" style={{ width: "120px" }}>
+                  Free
+                </div>
+                <div className="btn btn-wrong">Premium</div>
+              </div>
+            </div>
+            <div className={styles.levelRewardsGrid}>
+              <div className={styles.levelRewardsColumn}>
+                {gql_data &&
+                  joinArrays(filterPremium(gql_data.levelrewards, "free")).map(
+                    (level, i) => {
+                      return <LevelReward level={level} key={i} />;
+                    }
+                  )}
+              </div>
+              <div className={styles.levelRewardsColumn}>
+                {gql_data &&
+                  filterPremium(gql_data.levelrewards, "free").map((l, i) => (
+                    <div className={styles.levelRewardLevel} key={i}>
+                      <div
+                        className={cx([styles.levelRewardLevel__stripe], {
+                          [styles.passed]: l.level <= store.user.level,
+                        })}
+                      ></div>
+                      <div
+                        className={cx([styles.levelRewardLevel__text], {
+                          [styles.passed]: l.level <= store.user.level,
+                        })}
+                      >
+                        {l.level}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              <div className={styles.levelRewardsColumn}>
+                {gql_data &&
+                  joinArrays(
+                    filterPremium(gql_data.levelrewards, "premium")
+                  ).map((level, i) => {
+                    return <LevelReward level={level} key={i} />;
+                  })}
+              </div>
+            </div>
+            {/* <div className={styles.footer}>
           <div className="btn btn-close" onClick={() => router.back()}>
             x
           </div>
@@ -177,7 +174,9 @@ const LevelRewardsTower = () => {
             </div>
           </div>
         </div> */}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

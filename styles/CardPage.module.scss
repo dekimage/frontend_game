@@ -1,32 +1,11 @@
 @import "variables";
 @import "placeholders";
 
-.backButton {
-  @extend %flex_center;
-  position: absolute;
-  height: 2.5rem;
-  width: 2.5rem;
-
-  top: 1rem;
-  left: 0.5rem;
-  background-color: black;
-
-  z-index: 1000000;
-  cursor: pointer;
-  border-radius: 50%;
-  &:hover {
-    background-color: $optimzeColor;
-  }
-}
-
 .favorite {
   @extend %flex_center;
-  position: absolute;
   height: 2.5rem;
   width: 2.5rem;
-  top: 1rem;
-  right: 0.5rem;
-  z-index: 1000000;
+  z-index: 1000;
   cursor: pointer;
   border-radius: 50%;
 }

@@ -70,8 +70,15 @@ export const claimStreakReward = (dispatch, rewardCount) => {
 // ------
 
 // TUTORIAL
-export const completeTutorial = (dispatch) => {
-  dispatch({ type: "END_TUTORIAL" });
+export const updateTutorial = (dispatch, tutorialStep) => {
+  api
+    .updateTutorialApi(tutorialStep)
+    .then(({ data }) => {
+      dispatch({ type: "UPDATE_TUTORIAL", data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // 2. SHOP PAGE

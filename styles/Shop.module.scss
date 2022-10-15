@@ -450,6 +450,7 @@
 
 .subscriptionCta {
   margin-top: 1rem;
+  margin-bottom: 2rem;
   @extend %flex_center;
   flex-direction: column;
 }
@@ -459,7 +460,7 @@
   @extend %flex_start;
   align-items: flex-start;
   flex-direction: column;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   cursor: pointer;
   padding: 0;
   &_priceAndRating {

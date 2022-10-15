@@ -58,6 +58,12 @@
   align-items: center;
 }
 
+%flex_end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 %flex_start {
   display: flex;
   justify-content: flex-start;
@@ -98,7 +104,7 @@
 
 %header {
   @extend %flex_between;
-  font-size: 22px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 500;
   width: 100%;
 }

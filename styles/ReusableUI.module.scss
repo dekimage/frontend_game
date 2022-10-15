@@ -1,0 +1,22 @@
+@import "placeholders";
+@import "variables";
+
+.backButton {
+  @extend %flex_center;
+  position: absolute;
+  height: 2.5rem;
+  width: 2.5rem;
+  border: 2px solid $actionize_gray;
+  position: fixed;
+
+  top: 1.5rem;
+  left: 1.5rem;
+  background-color: black;
+
+  z-index: 1000000;
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    background-color: $optimzeColor;
+  }
+}

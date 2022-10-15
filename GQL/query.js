@@ -136,12 +136,7 @@ export const GET_USERCARDS_QUERY = gql`
                       duration
                       tips
                       examples
-                      stats {
-                        difficulty
-                        fun
-                        short_term
-                        long_term
-                      }
+
                       steps {
                         content
                       }
@@ -258,6 +253,67 @@ export const GET_USERCARDS_QUERY = gql`
   }
 `;
 
+export const GET_ACTION_ID = gql`
+  query ($id: ID!) {
+    action(id: $id) {
+      data {
+        id
+        attributes {
+          name
+          type
+          level
+          duration
+          tips
+          examples
+          steps {
+            content
+          }
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          card {
+            data {
+              id
+              attributes {
+                name
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CARD_ID = gql`
   query ($id: ID!) {
     card(id: $id) {
@@ -312,12 +368,6 @@ export const GET_CARD_ID = gql`
                 duration
                 tips
                 examples
-                stats {
-                  difficulty
-                  fun
-                  short_term
-                  long_term
-                }
                 steps {
                   content
                 }
@@ -731,12 +781,7 @@ export const GET_PROBLEM_ID = gql`
                 level
                 tips
                 examples
-                stats {
-                  difficulty
-                  fun
-                  short_term
-                  long_term
-                }
+
                 steps {
                   content
                 }
@@ -886,12 +931,7 @@ export const GET_COURSE_ID = gql`
                     duration
                     tips
                     examples
-                    stats {
-                      difficulty
-                      fun
-                      short_term
-                      long_term
-                    }
+
                     steps {
                       content
                       timer
@@ -1024,12 +1064,7 @@ export const GET_BOOK_ID = gql`
                 level
                 tips
                 examples
-                stats {
-                  difficulty
-                  fun
-                  short_term
-                  long_term
-                }
+
                 steps {
                   content
                 }
@@ -1303,12 +1338,6 @@ export const GET_USER_ID = gql`
                 duration
                 tips
                 examples
-                stats {
-                  difficulty
-                  fun
-                  short_term
-                  long_term
-                }
                 steps {
                   content
                 }

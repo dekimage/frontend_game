@@ -28,13 +28,13 @@ import {
   CreateActionModal,
   PlayCta,
   FavoriteButton,
-  BackButton,
   UpgradeButton,
   LevelButtons,
   IdeaPlayer,
   Title,
   CardCtaFooter,
 } from "../../components/cardPageComps";
+import { BackButton } from "../../components/reusableUI";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 

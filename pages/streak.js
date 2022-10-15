@@ -97,73 +97,74 @@ const StreakTower = () => {
     });
   };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (loading) {
-    return <div>Loading Streaks...</div>;
-  }
-
   return (
     <div className="background_dark">
       <div className="section">
-        <div className={styles.header}>
-          <div className={styles.back} onClick={() => router.back()}>
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
+        {error && <div>Error: {error}</div>}
+        {loading && <div>Loading...</div>}
+        {data && (
+          <>
+            <div className={styles.header}>
+              <div className={styles.back} onClick={() => router.back()}>
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </div>
 
-          <div className={styles.label}>Highest Streak</div>
-        </div>
+              <div className={styles.label}>Highest Streak</div>
+            </div>
 
-        <div className={styles.streakTitle}>
-          <div style={{ position: "relative" }}>
-            <img src={`${baseUrl}/streak.png`} height="60px" />
-          </div>
+            <div className={styles.streakTitle}>
+              <div style={{ position: "relative" }}>
+                <img src={`${baseUrl}/streak.png`} height="60px" />
+              </div>
 
-          <div className={styles.streakTitle_amount}>
-            {store.user.highest_streak_count}
-          </div>
-        </div>
-        <div className={styles.subTitle}>Log in daily to unlock rewards.</div>
-        <div className={styles.subTitle_muted}>
-          It takes only 1 second to log in and claim.
-        </div>
-        {gql_data && store.user && (
-          <div className={styles.streakContainer}>
-            {mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)
-              .sort((a, b) => a.id - b.id)
-              .map((streak, i) => {
-                const isSelected =
-                  parseInt(streak.streak_count) === selectedStreak.streak_count;
-                return (
-                  <Streak
-                    streak={streak}
-                    key={i}
-                    isSelected={isSelected}
-                    setSelectedStreak={setSelectedStreak}
-                  />
-                );
-              })}
-          </div>
-        )}
-        <div className={styles.fixed}>
-          <div
-            className={cx(
-              "btn",
-              selectedStreak.is_ready && !selectedStreak.is_collected
-                ? "btn-primary"
-                : "btn-disabled"
+              <div className={styles.streakTitle_amount}>
+                {store.user.highest_streak_count}
+              </div>
+            </div>
+            <div className={styles.subTitle}>
+              Log in daily to unlock rewards.
+            </div>
+            <div className={styles.subTitle_muted}>
+              It takes only 1 second to log in and claim.
+            </div>
+            {gql_data && store.user && (
+              <div className={styles.streakContainer}>
+                {mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)
+                  .sort((a, b) => a.id - b.id)
+                  .map((streak, i) => {
+                    const isSelected =
+                      parseInt(streak.streak_count) ===
+                      selectedStreak.streak_count;
+                    return (
+                      <Streak
+                        streak={streak}
+                        key={i}
+                        isSelected={isSelected}
+                        setSelectedStreak={setSelectedStreak}
+                      />
+                    );
+                  })}
+              </div>
             )}
-            onClick={() => {
-              selectedStreak.is_ready &&
-                !selectedStreak.is_collected &&
-                claimStreakReward(dispatch, selectedStreak.streak_count);
-            }}
-          >
-            Claim
-          </div>
-        </div>
+            <div className={styles.fixed}>
+              <div
+                className={cx(
+                  "btn",
+                  selectedStreak.is_ready && !selectedStreak.is_collected
+                    ? "btn-primary"
+                    : "btn-disabled"
+                )}
+                onClick={() => {
+                  selectedStreak.is_ready &&
+                    !selectedStreak.is_collected &&
+                    claimStreakReward(dispatch, selectedStreak.streak_count);
+                }}
+              >
+                Claim
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

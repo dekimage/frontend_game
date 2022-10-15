@@ -37,6 +37,34 @@
   font-size: 12px;
 }
 
+.activityBox {
+  border: 2px solid $actionize_gray;
+  border-radius: $border_radius;
+  margin: 1rem 0;
+  padding: 1rem;
+  cursor: pointer;
+  @extend %flex_center;
+  justify-content: flex-start;
+  position: relative;
+  font-weight: 500;
+  &_text {
+    margin-left: 1rem;
+    flex-grow: 1;
+  }
+  &_notification {
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    background-color: red;
+    font-weight: 700;
+    color: white;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    @extend %flex_center;
+  }
+}
+
 .levelHeader {
   cursor: pointer;
   @extend %box_dark;

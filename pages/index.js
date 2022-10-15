@@ -12,8 +12,8 @@ import Objective from "../components/Objective";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import {
+  RewardLink,
   TutorialModal,
-  ProblemsBox,
   EmptyCourseBox,
   CourseBox,
 } from "../components/todayComp";
@@ -30,10 +30,6 @@ import styles from "../styles/Today.module.scss";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-{
-  /* "https://backendactionise.s3.eu-west-1.amazonaws.com/tutorial_dailyprogress_bf72cd27c2.png?updated_at=2022-06-10T15:03:24.932Z"*/
-}
-
 const Home = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_OBJECTIVES_QUERY);
@@ -46,26 +42,42 @@ const Home = () => {
     joinObjectives(gql_data.objectives, store.user.objectives_json || []);
 
   useEffect(() => {
-    //TODO: FIX TUTORIAL
-    if (store.tutorial < 10) {
+    if (store.user.tutorial_step > 0) {
       openModal();
     }
-    openModal();
   }, [store.user]);
 
   return (
     <div className="background_dark">
       <Header />
+      {/* TUTORIAL MODAL */}
       {store && store.user?.usercourses && gql_data && (
         <div>
-          {store?.tutorialModal && (
-            <Modal
-              isShowing={isShowing}
-              closeModal={closeModal}
-              jsx={<TutorialModal closeModal={closeModal} />}
-            />
-          )}
+          {/* WELCOME */}
+          {/* <div className="section">
+            <div className={styles.header}>
+              Welcome back, {store.user.username}
+            </div>
+          </div> */}
 
+          {/* CONTINUE YOUR PROGRAM */}
+          <div className="section">
+            <div className={styles.header}>Continue your Program</div>
+
+            {store.user.usercourses.length > 0 ? (
+              <CourseBox
+                usercourse={
+                  store.user.usercourses
+                    .sort((a, b) => a.last_completed_day - b.last_completed_day)
+                    .reverse()[0]
+                }
+              />
+            ) : (
+              <EmptyCourseBox />
+            )}
+          </div>
+
+          {/* OBJECTIVES SECTION*/}
           <div className="section">
             <div className={styles.objectivesHeadline}>
               <div className={styles.objectivesHeadline_text}>Objectives</div>
@@ -83,27 +95,38 @@ const Home = () => {
             )}
           </div>
 
+          {/* REWARDS SECTION */}
           <div className="section">
-            <div className={styles.header}>Continue your Program</div>
+            <div className={styles.header}>Rewards</div>
+            <RewardLink
+              img={`${baseUrl}/trophy.png`}
+              link={"/level-rewards"}
+              text={"Level Rewards"}
+              notification={store.notifications.levels}
+            />
+            <RewardLink
+              img={`${baseUrl}/streak.png`}
+              link={"/streak"}
+              text={"Streak Rewards"}
+              notification={store.notifications.streaks}
+            />
 
-            {store.user.usercourses.length > 0 ? (
-              <CourseBox
-                usercourse={
-                  store.user.usercourses
-                    .sort((a, b) => a.last_completed_day - b.last_completed_day)
-                    .reverse()[0]
-                }
-              />
-            ) : (
-              <EmptyCourseBox />
-            )}
-          </div>
-
-          <div className="section">
-            <div className={styles.header}>Problems</div>
-            <ProblemsBox />
+            <RewardLink
+              img={`${baseUrl}/gift.png`}
+              link={"/buddies-rewards"}
+              text={"Buddy Rewards"}
+              notification={store.notifications.friends}
+            />
           </div>
         </div>
+      )}
+
+      {store?.user?.tutorial_step > 0 && (
+        <Modal
+          isShowing={isShowing}
+          closeModal={closeModal}
+          jsx={<TutorialModal closeModal={closeModal} />}
+        />
       )}
 
       <NavBar />

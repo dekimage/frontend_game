@@ -33,23 +33,6 @@ export const Stat = ({ img, number, text, isPercent = false }) => {
   );
 };
 
-export const Activity = ({ img, link, text, notification = 0 }) => {
-  return (
-    <Link href={link}>
-      <div className={styles.activityBox}>
-        {notification !== 0 && (
-          <div className={styles.activityBox_notification}>{notification}</div>
-        )}
-        <div className={styles.activityBox_img}>
-          <img src={img} height="25px" />
-        </div>
-
-        <div className={styles.activityBox_text}>{text}</div>
-      </div>
-    </Link>
-  );
-};
-
 export const Buddy = ({ img, link, name, level }) => {
   return (
     <Link href={link}>

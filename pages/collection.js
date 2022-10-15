@@ -141,7 +141,7 @@ const Home = () => {
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
         <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
-        <div className="flex_between section">
+        <div className="flex_end pr1">
           {realms && (
             <DropDown
               realms={realms}
@@ -149,7 +149,8 @@ const Home = () => {
               setFilter={setDropDownFilters}
             />
           )}
-          <div className={styles.orderBtn}>
+
+          {/* <div className={styles.orderBtn}>
             <div className={styles.sortBtn} onClick={() => switchSortby()}>
               Sort by&nbsp;<span className={styles.label}>{sortBy.label}</span>
             </div>
@@ -163,11 +164,11 @@ const Home = () => {
                 <ion-icon name="chevron-down-outline"></ion-icon>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="section">
-          {gql_data &&
+          {/* {gql_data &&
             gql_data.usersPermissionsUser &&
             store?.user?.usercourses?.length > 0 && (
               <div className={styles.headline}>
@@ -186,7 +187,7 @@ const Home = () => {
                   </div>
                 )}
               </div>
-            )}
+            )} */}
 
           {tab === "Concepts" && cards.length > 0 && (
             <div>

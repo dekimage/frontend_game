@@ -89,133 +89,39 @@ export const ChatAction = ({ action }) => {
   );
 };
 
-export const Action = ({ action, parent, goNext, isOpen = false }) => {
-  const time = new Date();
-  const expiryTimestamp = time.setSeconds(time.getSeconds() + action.duration);
-  const [isTimerCompleted, setIsTimerCompleted] = useState(false);
-  const [open, setOpen] = useState(isOpen);
-  const [store, dispatch] = useContext(Context);
-  const [isShowTips, setIsShowTips] = useState(false);
-
-  const onExpire = () => {
-    setIsTimerCompleted(true);
-  };
-
-  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
-    expiryTimestamp,
-    autoStart: false,
-    onExpire: onExpire,
-  });
-
-  console.log(action.image);
-
+export const Action = ({ action }) => {
   return (
-    <div className={styles.action}>
-      <div className={styles.action_closed} onClick={() => setOpen(!open)}>
-        <div className={styles.action_img}>
-          {action.image?.url && <img src={`${baseUrl}${action.image.url}`} />}
-        </div>
-        <div className={styles.action_box}>
-          <div className={styles.action_header}>
-            <div className={styles.action_name}>{action.name}</div>
-            <div className={styles.action_grouper}></div>
+    <Link href={`/action/${action.id}`}>
+      <div className={styles.action}>
+        <div className={styles.action_closed}>
+          <div className={styles.action_img}>
+            {action.image?.url && <img src={`${baseUrl}${action.image.url}`} />}
           </div>
-          <div className={styles.action_header}>
-            <div className={styles.action_grouper}>
-              <div className={styles.action_type}>{action.type}</div>
-              <div className={styles.action_duration}>
-                {action.duration} min
+          <div className={styles.action_box}>
+            <div className={styles.action_header}>
+              <div className={styles.action_name}>{action.name}</div>
+              <div className={styles.action_grouper}></div>
+            </div>
+            <div className={styles.action_header}>
+              <div className={styles.action_grouper}>
+                <div className={styles.action_type}>{action.type}</div>
+                <div className={styles.action_duration}>
+                  {action.duration} min
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className={styles.action_arrow}>
-          <img src={arrowDown} height="20px" />
-        </div>
-        {action.is_completed && (
-          <div className={styles.action_checkmark}>
-            <img src={`${baseUrl}/checked.png`} height="25px" />
+          <div className={styles.action_arrow}>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
           </div>
-        )}
-      </div>
-
-      {open && (
-        <div className={styles.action_open}>
-          <div className={styles.stats}>
-            {action.stats &&
-              Object.keys(action.stats)
-                .slice(0, 4)
-                .map((key, i) => (
-                  <ActionStat key={i} label={key} value={action.stats[key]} />
-                ))}
-          </div>
-
-          <div className={styles.action_instructions}>
-            <div className={styles.header}>Instructions</div>
-            {action.steps.map((step, i) => {
-              return (
-                <div className={styles.action_open_step} key={i}>
-                  <div className={styles.action_open_stepLabel}>
-                    Step {i + 1}
-                  </div>
-                  {step.content}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className={styles.action_tips}>
-            <div className={styles.header}>
-              <div>Tips</div>
+          {action.is_completed && (
+            <div className={styles.action_checkmark}>
+              <img src={`${baseUrl}/checked.png`} height="25px" />
             </div>
-            {action.tips &&
-              (action.tips.length < 250 ? (
-                <ReactMarkdown
-                  children={action.tips}
-                  className={styles.markdown}
-                />
-              ) : (
-                <>
-                  <ReactMarkdown
-                    children={
-                      isShowTips
-                        ? action.tips
-                        : action.tips.slice(0, 250).concat("...")
-                    }
-                    className={styles.markdown}
-                  />
-                  <div className="flex_center">
-                    <div
-                      className="btn btn-blank"
-                      onClick={() => setIsShowTips(!isShowTips)}
-                    >
-                      {isShowTips ? "show less tips" : "show all tips"}
-                    </div>
-                  </div>
-                </>
-              ))}
-          </div>
-
-          <div className={styles.action_timer}>
-            <div className={styles.header}>Do It</div>
-            <Timer
-              seconds={seconds}
-              minutes={minutes}
-              isRunning={isRunning}
-              start={start}
-              pause={pause}
-              restart={restart}
-              duration={action.duration}
-              isTimerCompleted={isTimerCompleted}
-              setIsTimerCompleted={setIsTimerCompleted}
-              action={action}
-              parent={parent}
-              goNext={goNext}
-            />
-          </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </Link>
   );
 };
 
@@ -658,25 +564,6 @@ export const FavoriteButton = ({ usercard, cardId }) => {
         <img src={`${baseUrl}/notFavorite.png`} height="25px" />
       )}
     </div>
-  );
-};
-
-export const BackButton = ({ routeStatic, routeDynamic, isBack = false }) => {
-  const router = useRouter();
-  return (
-    <>
-      {isBack ? (
-        <div className={styles.backButton} onClick={() => router.back()}>
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </div>
-      ) : (
-        <Link href={`${routeStatic}${routeDynamic}`}>
-          <div className={styles.backButton}>
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
-        </Link>
-      )}
-    </>
   );
 };
 

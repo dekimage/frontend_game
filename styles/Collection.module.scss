@@ -8,8 +8,9 @@
 
 .headline {
   @extend %flex_center;
-  @extend %title;
-  margin: 1rem 0;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 .orderBtn {
   cursor: pointer;

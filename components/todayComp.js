@@ -3,7 +3,7 @@ import cx from "classnames";
 import { Context } from "../context/store";
 import RewardImage from "../components/RewardImage";
 import { tutorialSlides } from "../data/todayData";
-import { claimObjectiveCounter } from "../actions/action";
+import { claimObjectiveCounter, updateTutorial } from "../actions/action";
 import Link from "next/link";
 import styles from "../styles/Today.module.scss";
 
@@ -62,9 +62,7 @@ export const TutorialModal = ({}) => {
   const [store, dispatch] = useContext(Context);
   const [active, setActive] = useState(0);
   const slide = tutorialSlides(store.user.username)[active];
-  const endModal = () => {
-    dispatch({ type: "END_TUTORIAL_MODAL" });
-  };
+
   const nextSlide = () => {
     if (active + 1 === tutorialSlides().length) {
       router.push("/card/player/41");
@@ -74,9 +72,6 @@ export const TutorialModal = ({}) => {
   };
   return (
     <div className={styles.tutorial}>
-      <div className="btn btn-primary" onClick={() => endModal()}>
-        END Modal
-      </div>
       <h1>{slide.title}</h1>
       <img src={slide.image} alt="" height="250px" className="mb1" />
       <div className={styles.tutorial_content}>
@@ -84,10 +79,34 @@ export const TutorialModal = ({}) => {
         <br />
         {slide.content_2 && slide.content_2}
       </div>
+      <div
+        className="btn btn-primary"
+        onClick={() => updateTutorial(dispatch, 0)}
+      >
+        Skip Tutorial
+      </div>
       <div className="btn btn-primary mu1" onClick={() => nextSlide()}>
         {slide.button}
       </div>
     </div>
+  );
+};
+
+export const RewardLink = ({ img, link, text, notification = 0 }) => {
+  return (
+    <Link href={link}>
+      <div className={styles.activityBox}>
+        {notification !== 0 && (
+          <div className={styles.activityBox_notification}>{notification}</div>
+        )}
+        <div className={styles.activityBox_img}>
+          <img src={img} height="25px" />
+        </div>
+
+        <div className={styles.activityBox_text}>{text}</div>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </Link>
   );
 };
 

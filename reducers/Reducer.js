@@ -4,10 +4,16 @@ const Reducer = (store, action) => {
   switch (action.type) {
     case "OPEN_PLAYER":
       return { ...store, player: action.data };
+    case "UPDATE_TUTORIAL":
+      return {
+        ...store,
+        user: {
+          ...store.user,
+          tutorial_step: action.data,
+        },
+      };
     case "END_TUTORIAL":
       return { ...store, tutorial: 10 };
-    case "END_TUTORIAL_MODAL":
-      return { ...store, tutorialModal: false };
     case "FETCH_USER":
       return {
         ...store,

@@ -92,86 +92,91 @@ const FriendsTower = () => {
     });
   };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (loading) {
-    return <div>Loading Streaks...</div>;
-  }
-
   return (
     <div className="background_dark">
       <div className="section">
-        <div className={styles.header}>
-          <div className={styles.back} onClick={() => router.back()}>
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
+        {error && <div>Error: {error}</div>}
+        {loading && <div>Loading...</div>}
+        {data && (
+          <>
+            <div className={styles.header}>
+              <div className={styles.back} onClick={() => router.back()}>
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </div>
 
-          <div className={styles.label}>Buddy Rewards</div>
-        </div>
+              <div className={styles.label}>Buddy Rewards</div>
+            </div>
 
-        <div className={styles.streakTitle}>
-          <div style={{ position: "relative" }}>
-            <img src={`${baseUrl}/user.png`} height="60px" />
-          </div>
+            <div className={styles.streakTitle}>
+              <div style={{ position: "relative" }}>
+                <img src={`${baseUrl}/user.png`} height="60px" />
+              </div>
 
-          <div className={styles.streakTitle_amount}>
-            {store.user.highest_buddy_shares}
-          </div>
-        </div>
-        <div className={styles.subTitle}>
-          Help your buddies improve with you.
-        </div>
-        <div className={styles.subTitle_muted}>
-          For each buddy you bring, both of you get an exclusive reward!
-        </div>
-        {gql_data && store.user && (
-          <div>
-            {mergeStreaks(gql_data.friendrewards, store.user.friends_rewards)
-              .sort((a, b) => a.id - b.id)
-              .map((friendReward, i) => {
-                const isSelected =
-                  parseInt(friendReward.friends_count) ===
-                  selectedReward.friends_count;
-                return (
-                  <FriendReward
-                    friendReward={friendReward}
-                    key={i}
-                    isSelected={isSelected}
-                    setSelectedReward={setSelectedReward}
-                  />
-                );
-              })}
-          </div>
-        )}
-
-        <div className="btn btn-stretch btn-primary mt1 mb1">
-          <img src={`${baseUrl}/add-user.png`} height="20px" className="mr1" />
-          Share Buddy Link
-        </div>
-        <div className="description_muted">
-          * The buddy must confirm their email address and complete the tutorial
-          to unlock the rewards.
-        </div>
-
-        <div className={styles.fixed}>
-          <div
-            className={cx(
-              "btn",
-              selectedReward.is_ready && !selectedReward.is_collected
-                ? "btn-primary btn-stretch"
-                : "btn-disabled btn-stretch"
+              <div className={styles.streakTitle_amount}>
+                {store.user.highest_buddy_shares}
+              </div>
+            </div>
+            <div className={styles.subTitle}>
+              Help your buddies improve with you.
+            </div>
+            <div className={styles.subTitle_muted}>
+              For each buddy you bring, both of you get an exclusive reward!
+            </div>
+            {gql_data && store.user && (
+              <div>
+                {mergeStreaks(
+                  gql_data.friendrewards,
+                  store.user.friends_rewards
+                )
+                  .sort((a, b) => a.id - b.id)
+                  .map((friendReward, i) => {
+                    const isSelected =
+                      parseInt(friendReward.friends_count) ===
+                      selectedReward.friends_count;
+                    return (
+                      <FriendReward
+                        friendReward={friendReward}
+                        key={i}
+                        isSelected={isSelected}
+                        setSelectedReward={setSelectedReward}
+                      />
+                    );
+                  })}
+              </div>
             )}
-            onClick={() => {
-              selectedReward.is_ready &&
-                !selectedReward.is_collected &&
-                claimStreakReward(dispatch, selectedReward.friends_count);
-            }}
-          >
-            Claim
-          </div>
-        </div>
+
+            <div className="btn btn-stretch btn-primary mt1 mb1">
+              <img
+                src={`${baseUrl}/add-user.png`}
+                height="20px"
+                className="mr1"
+              />
+              Share Buddy Link
+            </div>
+            <div className="description_muted">
+              * The buddy must confirm their email address and complete the
+              tutorial to unlock the rewards.
+            </div>
+
+            <div className={styles.fixed}>
+              <div
+                className={cx(
+                  "btn",
+                  selectedReward.is_ready && !selectedReward.is_collected
+                    ? "btn-primary btn-stretch"
+                    : "btn-disabled btn-stretch"
+                )}
+                onClick={() => {
+                  selectedReward.is_ready &&
+                    !selectedReward.is_collected &&
+                    claimStreakReward(dispatch, selectedReward.friends_count);
+                }}
+              >
+                Claim
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

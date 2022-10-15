@@ -1,10 +1,7 @@
 import ReactMarkdown from "react-markdown";
-import { useQuery } from "@apollo/react-hooks";
-import { useState, useEffect, useContext } from "react";
-import { useTimer } from "react-timer-hook";
+
 import { Context } from "../context/store";
-import { useRouter } from "next/router";
-import Timer from "../components/Timer";
+
 import styles from "../styles/Player.module.scss";
 import Link from "next/link";
 import clseIcon from "../assets/close.svg";
@@ -13,11 +10,7 @@ import _ from "lodash";
 import cx from "classnames";
 import StopWatch from "../components/StopWatch";
 
-import Modal from "../components/Modal";
-
-import useModal from "../hooks/useModal";
-
-import { updateCard, completeTutorial } from "../actions/action";
+import { updateCard, updateTutorial } from "../actions/action";
 
 import actionIcon from "../assets/player_actions.svg";
 import rewardsIcon from "../assets/player_rewards.svg";
@@ -25,9 +18,6 @@ import completedIcon from "../assets/player_complete.svg";
 import levelIcon from "../assets/player_lvlup.svg";
 import progressIcon from "../assets/player_progress.svg";
 import noEnergyIcon from "../assets/player_no_energy.svg";
-import { normalize } from "../utils/calculations";
-
-import { GET_CARD_PLAYER } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -37,7 +27,6 @@ export const SliderProgress = ({
   currentSlide,
   setIsWarningModalOpen,
   openModal,
-  goBack,
 }) => {
   return (
     <div className={styles.header}>
@@ -277,7 +266,7 @@ export const RepeatScreen = ({ card, mistakes }) => {
 
       <div className={styles.ctaBox}>
         {isTutorial ? (
-          <Link href={`/`} onClick={() => completeTutorial(dispatch)}>
+          <Link href={`/`} onClick={() => updateTutorial(dispatch, 0)}>
             <div className="btn btn-primary btn-stretch">
               Start your journey
             </div>

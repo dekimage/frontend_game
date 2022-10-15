@@ -40,13 +40,6 @@ const Shop = () => {
   const { data: gql_courses_data } = useQuery(GET_COURSES);
   const { isShowing, openModal, closeModal } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [tab, setTab] = useState("Packs");
-
-  const tabsData = [
-    { label: "Packs", count: -1, link: "packs" },
-    { label: "Programs", count: -1, link: "programs" },
-    { label: "Subscription", count: -1, link: "subscription" },
-  ];
 
   const gql_data = data && normalize(data);
   const courses = gql_courses_data && normalize(gql_courses_data).courses;
@@ -55,42 +48,13 @@ const Shop = () => {
     <div className="background_dark">
       <Header />
 
-      <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
-
-      <div className="section">
-        {/* *** PACKS *** */}
-        <div id="packs"></div>
-        <div className={styles.header}>Packs</div>
-
-        {gql_data && store.user?.boxes && (
-          <Pack
-            box={gql_data.box}
-            setSelectedProduct={setSelectedProduct}
-            openModal={openModal}
-          />
-        )}
-
-        <Modal
-          isShowing={isShowing}
-          closeModal={closeModal}
-          jsx={<BoxModal product={selectedProduct} closeModal={closeModal} />}
-        />
-        <Modal
-          isShowing={store.rewardsModal.isOpen}
-          closeModal={closeModal}
-          showCloseButton={false}
-          jsx={<LootBoxModal />}
-        />
-      </div>
-
       {/* *** COURSES *** */}
       <div className="section">
-        <div id="programs"></div>
         <div className={styles.header}>Programs</div>
         {courses && courses.map((c, i) => <Course course={c} key={i} />)}
       </div>
+      {/* *** SUBSCRIPTION *** */}
       <div className="section">
-        <div id="subscription"></div>
         <div className={styles.subscription_name}>Premium Subscription</div>
         <PremiumSubscription />
         <BenefitsTable />

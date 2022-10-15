@@ -9,6 +9,7 @@
   height: 300px;
   width: auto;
   min-width: 165px;
+  max-width: 200px;
   // background-color: #1f1f1f;
   border-radius: $border_radius;
   @extend %flex_center;

@@ -46,6 +46,12 @@ input {
   text-align: center;
 }
 
+.image-radius {
+  img {
+    border-radius: $border_radius;
+  }
+}
+
 // p {
 //   margin-top: 10px;
 //   font-size: 18px;
@@ -58,6 +64,12 @@ input {
 
 .flex_grow {
   flex-grow: 1;
+}
+.flex_start {
+  @extend %flex_start;
+}
+.flex_end {
+  @extend %flex_end;
 }
 
 .flex_center {

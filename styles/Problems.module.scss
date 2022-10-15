@@ -2,18 +2,17 @@
 @import "placeholders";
 
 .problem {
-  // border: 2px solid $actionize_gray;
   border-radius: $border_radius;
   @extend %flex_between;
   margin: 0.5rem 0;
-  background-color: $actionize_gray;
+  // background-color: $actionize_gray;
+  @extend %box_duo;
 }
 
 .id {
   background-color: $primary;
-  font-size: 20px;
-  height: 100%;
-  padding: 1rem;
+  font-size: 18px;
+  padding: 0.5rem;
   border-radius: $border_radius;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -22,9 +21,9 @@
 
 .name {
   flex-grow: 1;
-  padding-left: 1rem;
-  font-size: 18px;
+  // padding-left: 0.5rem;
   font-weight: 500;
+  text-transform: capitalize;
 }
 
 .tag {
@@ -38,7 +37,7 @@
 
 .iconRight {
   @extend %flex_center;
-  margin-right: 1rem;
+  // margin-right: 1rem;
 }
 
 .filters {
@@ -47,18 +46,18 @@
 }
 
 .searchInput {
-  background-color: $actionize_gray;
+  background-color: $actionize_black;
   padding: 0.5rem 1rem;
   border-radius: $border_radius;
   font-size: 18px;
   font-weight: 500;
   width: 9rem;
   @extend %flex_center;
-  border: 2px solid gray;
+  border: 2px solid $actionize_gray;
   color: white;
   &:focus {
     outline: none;
-    border: 2px solid white;
+    border: 2px solid gray;
   }
   &::placeholder {
     color: $actionize_gray_light;

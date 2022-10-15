@@ -104,14 +104,14 @@ export const Problem = ({ problem, isInside = false }) => {
   return (
     <Link href={`/problem/${id}`}>
       <div className={styles.problem}>
-        <div className={styles.id} style={{ backgroundColor: realm.color }}>
+        {/* <div className={styles.id} style={{ backgroundColor: realm.color }}>
           <span className="text__s">#</span>
           {id}
-        </div>
+        </div> */}
         <div className={styles.name}>{name}</div>
 
-        <div className={styles.tag}>
-          {/* <img src={realm.image.url} /> */}
+        {/* <div className={styles.tag}>
+          <img src={realm.image.url} />
           <img
             src={`${baseUrl}/uploads/Asset_18_513564218e.png`}
             height="15px"
@@ -119,7 +119,7 @@ export const Problem = ({ problem, isInside = false }) => {
           />
 
           {realm.name}
-        </div>
+        </div> */}
         {!isInside && (
           <div className={styles.iconRight}>
             <ion-icon name="chevron-forward-outline"></ion-icon>

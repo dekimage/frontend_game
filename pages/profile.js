@@ -8,13 +8,7 @@ import { useRouter } from "next/router";
 // *** COMPONENTS ***
 import NavBar from "../components/NavBar";
 import { CommunityAction } from "../components/cardPageComps";
-import {
-  Activity,
-  Stat,
-  Buddy,
-  ProfileHeader,
-  Tabs,
-} from "../components/profileComps";
+import { Stat, Buddy, ProfileHeader, Tabs } from "../components/profileComps";
 
 // *** ACTIONS ***
 import { calcTotal } from "../utils/calculations";
@@ -76,30 +70,7 @@ const Profile = () => {
           <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
 
           {/* "https://backendactionise.s3.eu-west-1.amazonaws.com/2022_07_08_10_58_31_Actionise_28d16b97b5.png?updated_at=2022-07-08T08:58:51.431Z" */}
-          {tab === "activity" && (
-            <div className="section">
-              <Activity
-                img={`${baseUrl}/streak.png`}
-                link={"/streak"}
-                text={"Streak Rewards"}
-                notification={store.notifications.streaks}
-              />
-
-              <Activity
-                img={`${baseUrl}/gift.png`}
-                link={"/buddies-rewards"}
-                text={"Buddy Rewards"}
-                notification={store.notifications.friends}
-              />
-
-              <Activity
-                img={`${baseUrl}/trophy.png`}
-                link={"/level-rewards"}
-                text={"Level Rewards"}
-                notification={store.notifications.levels}
-              />
-            </div>
-          )}
+          {tab === "activity" && <div className="section">activities...</div>}
 
           {tab === "buddies" && (
             <div className="section">
