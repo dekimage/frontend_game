@@ -9,8 +9,6 @@ import styles from "../../styles/CardPage.module.scss";
 import Modal from "../../components/Modal";
 import useModal from "../../hooks/useModal";
 
-import { updateCard } from "../../actions/action";
-
 import { Rarity } from "../../components/Rarity";
 
 import { Tabs } from "../../components/profileComps";

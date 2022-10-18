@@ -4,18 +4,11 @@ import { Context } from "../context/store";
 import { useRouter } from "next/router";
 import cx from "classnames";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
 import iconCross from "../assets/close.svg";
 import arrowDown from "../assets/arrow-down-white.png";
 import checkmark1 from "../assets/checkmark-fill.svg";
-import iconCollection from "../assets/progress-play-dark.svg";
-import iconLock from "../assets/lock-white-border.svg";
 
 import { GenericDropDown } from "../pages/problems";
-
-import { useTimer } from "react-timer-hook";
-
-import { static_levels, getMaxQuantity } from "../data/cardPageData";
 
 import {
   updateCard,
@@ -602,30 +595,25 @@ export const Title = ({ name, rightText, rightSeparator }) => {
 
 export const CardCtaFooter = ({ isLocked, card, usercard }) => {
   const [store, dispatch] = useContext(Context);
-  console.log(card);
+  const hasOrbs = store?.user?.stars >= card.cost;
   const router = useRouter();
   return (
     <div className={styles.fixed}>
       {isLocked ? (
-        true ? (
+        hasOrbs ? (
           <div
             className="btn btn-correct"
             onClick={() => {
-              //unlock card
+              updateCard(dispatch, card.id, "unlock");
             }}
           >
             {card.cost}
             <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
           </div>
         ) : (
-          <div
-            className="btn"
-            onClick={() => {
-              //unlock card
-            }}
-          >
-            <ion-icon name="lock-closed-outline"></ion-icon>
-            Unlock Card 400 stars
+          <div className="btn btn-disabled">
+            <span className="text-red">{card.cost}</span>{" "}
+            <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
           </div>
         )
       ) : (
