@@ -11,6 +11,7 @@ import { Rarity } from "../components/Rarity";
 import { claimStreakReward } from "../actions/action";
 
 import { normalize } from "../utils/calculations";
+import { BackButton } from "../components/reusableUI";
 
 // *** STYLES ***
 import cx from "classnames";
@@ -105,9 +106,7 @@ const StreakTower = () => {
         {data && (
           <>
             <div className={styles.header}>
-              <div className={styles.back} onClick={() => router.back()}>
-                <ion-icon name="chevron-back-outline"></ion-icon>
-              </div>
+              <BackButton routeDynamic={""} routeStatic={""} isBack />
 
               <div className={styles.label}>Highest Streak</div>
             </div>

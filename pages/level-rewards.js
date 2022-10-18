@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 // *** COMPONENTS ***
 import RewardImage from "../components/RewardImage";
+import { BackButton } from "../components/reusableUI";
 
 // *** ACTIONS ***
 import { claimLevelReward } from "../actions/action";
@@ -104,9 +105,7 @@ const LevelRewardsTower = () => {
       {data && (
         <>
           <div className={styles.headerr}>
-            <div className={styles.back} onClick={() => router.back()}>
-              <ion-icon name="chevron-back-outline"></ion-icon>
-            </div>
+            <BackButton routeDynamic={""} routeStatic={""} isBack />
             <div className={styles.label}>Rewards Tower</div>
           </div>
           <div className="section_container">

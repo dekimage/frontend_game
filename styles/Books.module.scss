@@ -8,10 +8,9 @@
 .book {
   @extend %box_duo;
   position: relative;
-
   flex-direction: column;
+  max-width: 120px;
   padding: 1rem;
-
   &_category {
     position: absolute;
     top: 6px;
@@ -21,6 +20,9 @@
   &_image {
     @extend %flex_center;
     margin-bottom: 0.5rem;
+    img {
+      border-radius: $border_radius;
+    }
   }
 
   &_name {

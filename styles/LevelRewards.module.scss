@@ -4,9 +4,7 @@
 // DUPLICATE FROM REALM -> MAKE IT REUSABLE COMPONENT HEADER TO USE
 .headerr {
   @extend %header;
-
   padding: 1rem;
-
   position: relative;
 }
 

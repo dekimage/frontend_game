@@ -53,7 +53,7 @@ export const GenericDropDown = ({ items, label, callback }) => {
 };
 
 export const Book = ({ book, isInside = false }) => {
-  const { id, name, image, realm, author } = book;
+  const { id, name, image, author } = book;
 
   return (
     <Link href={`/book/${id}`}>
@@ -64,11 +64,6 @@ export const Book = ({ book, isInside = false }) => {
         </div>
         <div className={styles.book_name}>{name}</div>
         <div className={styles.book_author}>By {author}</div>
-
-        <div className={styles.book_category}>
-          {/* <img src={realm.image.url} /> */}
-          <img src={`${baseUrl}${realm.image.url}`} height="14px" />
-        </div>
       </div>
     </Link>
   );

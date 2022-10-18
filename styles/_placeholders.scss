@@ -103,8 +103,16 @@
 }
 
 %header {
-  @extend %flex_between;
+  @extend %flex_center;
   font-size: 20px;
   font-weight: 500;
   width: 100%;
 }
+
+//for player header if needs changes
+// %header {
+//   @extend %flex_between;
+//   font-size: 20px;
+//   font-weight: 500;
+//   width: 100%;
+// }

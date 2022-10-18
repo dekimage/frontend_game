@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 
 import _ from "lodash";
 import styles from "../../styles/CardPage.module.scss";
-import ProgressBar from "../../components/ProgressBar";
+
 import Modal from "../../components/Modal";
 import useModal from "../../hooks/useModal";
-import cx from "classnames";
 
 import { updateCard } from "../../actions/action";
 
@@ -21,49 +20,32 @@ import { normalize } from "../../utils/calculations";
 import { GET_USERCARDS_QUERY } from "../../GQL/query";
 import { GET_CARD_ID } from "../../GQL/query";
 
-import { getMaxQuantity } from "../../data/cardPageData";
 import {
   ActionsWrapper,
   BasicActionsWrapper,
   CreateActionModal,
-  PlayCta,
   FavoriteButton,
-  UpgradeButton,
-  LevelButtons,
-  IdeaPlayer,
   Title,
   CardCtaFooter,
 } from "../../components/cardPageComps";
 import { BackButton } from "../../components/reusableUI";
 
-const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 const CardPage = ({ dataUserCard, dataCard }) => {
   const [store, dispatch] = useContext(Context);
-  const router = useRouter();
   const proxyUserCard = {
-    level: 1,
     completed: 0,
-    quantity: dataCard.card.is_open ? 1 : 0,
     proxy: true,
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
 
   const { isShowing, openModal, closeModal } = useModal();
-  const [selectedLevel, setSelectedLevel] = useState(
-    usercard && usercard.completed + 1
-  );
-  const [activeTab, setActiveTab] = useState("community");
 
-  const maxQuantity = getMaxQuantity(usercard.level) || 10;
+  const [activeTab, setActiveTab] = useState("community");
 
   const card = dataCard.card;
 
-  const isPremiumLocked =
-    card.expansion.name === "Pro" &&
-    store.user.expansions.filter((e) => e.name === "Pro").length === 0;
-
-  const isLevelUnlocked = usercard.proxy ? card.is_open : usercard.is_unlocked;
+  const isLocked = !(usercard.proxy ? card.is_open : usercard.is_unlocked);
+  console.log(isLocked);
 
   const mergeActions = (usercard, actions, checkingArray, keyword) => {
     const result = actions.map((action) => {
@@ -86,12 +68,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     { label: "added", count: usercard?.community_actions_claimed?.length },
     { label: "my", count: usercard?.my_community_actions?.length },
   ];
-
-  useEffect(() => {
-    if (dataUserCard && dataUserCard.is_new) {
-      updateCard(dispatch, card.id, "new_disable");
-    }
-  }, [dataUserCard]);
 
   const communityActions =
     dataUserCard &&
@@ -123,8 +99,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   return (
     <div className="section_container">
       <div className={styles.card}>
-        <FavoriteButton usercard={usercard} cardId={card.id} />
-
         <BackButton routeDynamic={card.realm.id} routeStatic={"/realm/"} />
 
         <img className={styles.image} src={card.image.url} />
@@ -145,111 +119,79 @@ const CardPage = ({ dataUserCard, dataCard }) => {
               <img src={card.realm.image.url} height="28px" />
             </div>
             <div className={styles.name}>{card.name}</div>
+            <FavoriteButton
+              isFavorite={usercard.is_favorite}
+              id={card.id}
+              type="card"
+            />
           </div>
         </div>
 
         <Rarity rarity={card.rarity} />
 
-        <div className={styles.section_level}>
-          <div className={styles.level}>
-            <span style={{ fontSize: "40px" }}>{usercard.level}</span> lvl
-          </div>
-
-          <div className={styles.progress_box}>
-            <span>
-              {usercard.quantity}/{isLevelUnlocked ? maxQuantity : 10}
-            </span>
-            <ProgressBar
-              progress={usercard.quantity}
-              max={isLevelUnlocked ? maxQuantity : 10}
-              isReadyToClaim={usercard.quantity >= maxQuantity}
-            />
-          </div>
-
-          <UpgradeButton
-            isLevelUnlocked={isLevelUnlocked}
-            usercard={usercard}
-            maxQuantity={maxQuantity}
-          />
-        </div>
-
         <div className={styles.description}>{card.description}</div>
 
-        <Title
-          name={"Progress"}
-          rightText={usercard.completed}
-          rightSeparator={5}
-        />
+        <Title name="Sessions" />
 
-        <LevelButtons
-          usercard={usercard}
-          selectedLevel={selectedLevel}
-          setSelectedLevel={setSelectedLevel}
-        />
+        {/* <IdeaPlayer cardId={card.id} /> */}
 
-        <Title name="Ideas" />
-
-        <IdeaPlayer cardId={card.id} />
-
-        <Title name="Actions" rightText={`Level ${selectedLevel}`} />
+        <Title name="Actions" />
 
         <BasicActionsWrapper
-          isLevelUnlocked={isLevelUnlocked}
           card={card}
           usercard={usercard}
           mergeActions={mergeActions}
-          selectedLevel={selectedLevel}
         />
-
-        <div className="btn  btn-primary mb1 mt1" onClick={() => openModal()}>
-          + Create New Action
-        </div>
       </div>
-      <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
+      {!isLocked && (
+        <>
+          <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
 
-      {activeTab === "community" && card.communityactions && (
-        <ActionsWrapper
-          actions={card.communityactions}
-          label={"Community Actions"}
-          type={"community"}
-          emptyDescription={"Be the first one to create a community action."}
-        />
-      )}
+          {activeTab === "community" && card.communityactions && (
+            <ActionsWrapper
+              actions={card.communityactions}
+              label={"Community Actions"}
+              type={"community"}
+              openModal={openModal}
+              emptyDescription={
+                "Be the first one to create a community action."
+              }
+            />
+          )}
 
-      {activeTab === "my" && (
-        <ActionsWrapper
-          actions={myActions}
-          label={"My Actions"}
-          type={"my"}
-          emptyDescription={"You haven't created any actions for this card."}
-        />
-      )}
-      {activeTab === "added" && (
-        <ActionsWrapper
-          actions={addedActions}
-          label={"Added Actions"}
-          type={"added"}
-          emptyDescription={" You don't have any added actions yet."}
-        />
-      )}
+          {activeTab === "my" && (
+            <ActionsWrapper
+              actions={myActions}
+              label={"My Actions"}
+              type={"my"}
+              openModal={openModal}
+              emptyDescription={
+                "You haven't created any actions for this card."
+              }
+            />
+          )}
+          {activeTab === "added" && (
+            <ActionsWrapper
+              actions={addedActions}
+              label={"Added Actions"}
+              type={"added"}
+              openModal={openModal}
+              emptyDescription={" You don't have any added actions yet."}
+            />
+          )}
 
-      {isShowing && (
-        <Modal
-          isShowing={isShowing}
-          closeModal={closeModal}
-          jsx={<CreateActionModal closeModal={closeModal} card={card} />}
-        />
+          {isShowing && (
+            <Modal
+              isShowing={isShowing}
+              closeModal={closeModal}
+              jsx={<CreateActionModal closeModal={closeModal} card={card} />}
+            />
+          )}
+        </>
       )}
 
       {card && (
-        <CardCtaFooter
-          isPremiumLocked={isPremiumLocked}
-          isLevelUnlocked={isLevelUnlocked}
-          card={card}
-          usercard={usercard}
-          selectedLevel={selectedLevel}
-          maxQuantity={maxQuantity}
-        />
+        <CardCtaFooter isLocked={isLocked} card={card} usercard={usercard} />
       )}
     </div>
   );

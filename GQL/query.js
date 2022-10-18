@@ -38,6 +38,7 @@ export const GET_CARD_PLAYER = gql`
           description
           type
           rarity
+          cost
           image {
             data {
               id
@@ -100,6 +101,7 @@ export const GET_USERCARDS_QUERY = gql`
                 description
                 type
                 rarity
+                cost
                 is_open
                 realm {
                   data {
@@ -281,6 +283,7 @@ export const GET_ACTION_ID = gql`
               id
               attributes {
                 name
+                cost
                 image {
                   data {
                     id
@@ -323,6 +326,7 @@ export const GET_CARD_ID = gql`
           name
           description
           type
+          cost
           rarity
           is_open
           image {
@@ -453,6 +457,24 @@ export const GET_REALM_ID = gql`
             }
           }
 
+          books {
+            data {
+              id
+              attributes {
+                name
+                author
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
           courses {
             data {
               id
@@ -492,6 +514,7 @@ export const GET_REALM_ID = gql`
                 description
                 type
                 rarity
+                cost
                 is_open
                 image {
                   data {
@@ -652,6 +675,7 @@ export const GET_COLLECTION = gql`
                     attributes {
                       name
                       rarity
+                      cost
                       type
                       is_open
                       image {
@@ -1416,6 +1440,7 @@ export const GET_USER_ID = gql`
                     attributes {
                       name
                       rarity
+                      cost
                       type
                       is_open
                       image {

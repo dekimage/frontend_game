@@ -43,6 +43,8 @@
 }
 
 .headerMobile {
+  position: fixed;
+  width: 100%;
   @include media_bg {
     display: none;
   }

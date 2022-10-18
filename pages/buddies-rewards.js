@@ -5,6 +5,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
 // *** COMPONENTS ***
 import { Rarity } from "../components/Rarity";
+import { BackButton } from "../components/reusableUI";
 
 // *** ACTIONS ***
 import { claimStreakReward } from "../actions/action";
@@ -100,9 +101,7 @@ const FriendsTower = () => {
         {data && (
           <>
             <div className={styles.header}>
-              <div className={styles.back} onClick={() => router.back()}>
-                <ion-icon name="chevron-back-outline"></ion-icon>
-              </div>
+              <BackButton routeDynamic={""} routeStatic={""} isBack />
 
               <div className={styles.label}>Buddy Rewards</div>
             </div>

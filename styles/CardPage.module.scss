@@ -98,12 +98,13 @@
   @extend %flex_center;
   position: relative;
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   text-align: center;
   margin-bottom: 0.5rem;
 }
 
 .name {
+  width: 100%;
   font-size: 1.5rem;
   margin-bottom: 0;
 }
@@ -180,7 +181,7 @@
   width: 100%;
   @extend %flex_between;
   justify-content: space-between;
-  margin-top: 2rem;
+
   margin-bottom: 0.5rem;
   // flex-direction: row;
 }
@@ -197,6 +198,8 @@
 
 .description {
   margin-top: 1.5rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
 }
 
 .action {
@@ -365,7 +368,7 @@
 .tabs {
   @extend %flex_between;
   width: 100%;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 .tabsButton {
   width: 50%;
@@ -479,4 +482,8 @@
   ol {
     padding-left: 1rem;
   }
+}
+
+.actionWrapper {
+  min-height: 15rem;
 }

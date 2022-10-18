@@ -105,6 +105,7 @@
 
 .unlockByCard {
   @extend %box_duo;
+  color: $ux_red;
 }
 
 .cardRequired {

@@ -36,21 +36,34 @@ export const ActionsWrapper = ({
   length,
   actions,
   emptyDescription,
+  openModal,
 }) => {
   return (
-    <>
+    <div className={styles.actionWrapper}>
       <div className={styles.header}>
         <div>{label}</div>
         {/* <div>{length}</div> */}
       </div>
+      {label === "My Actions" && actions?.length > 0 && (
+        <div className="btn  btn-primary mt1" onClick={() => openModal()}>
+          + Create New Action
+        </div>
+      )}
       {actions?.length > 0 ? (
         actions.map((action, i) => {
           return <CommunityAction action={action} type={type} key={i} />;
         })
       ) : (
-        <div className={styles.emptyActions}>{emptyDescription}</div>
+        <>
+          <div className={styles.emptyActions}>
+            {emptyDescription}
+            <div className="btn  btn-primary mt1" onClick={() => openModal()}>
+              + Create New Action
+            </div>
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 
@@ -125,18 +138,11 @@ export const Action = ({ action }) => {
   );
 };
 
-export const BasicActionsWrapper = ({
-  isLevelUnlocked,
-  card,
-  usercard,
-  mergeActions,
-  selectedLevel,
-}) => {
+export const BasicActionsWrapper = ({ card, usercard, mergeActions }) => {
   return (
     <div style={{ width: "100%" }}>
-      {isLevelUnlocked ? (
-        card.actions && usercard.completed_actions ? (
-          mergeActions(
+      {card.actions && usercard.completed_actions
+        ? mergeActions(
             usercard,
             card.actions,
             usercard.completed_actions,
@@ -144,22 +150,9 @@ export const BasicActionsWrapper = ({
           ).map((action, i) => {
             return <Action action={action} key={i} />;
           })
-        ) : (
-          card.actions
-            .filter((a) => a.level === selectedLevel)
-            .map((action, i) => {
-              return <Action action={action} key={i} />;
-            })
-        )
-      ) : (
-        <div className={styles.emptyActions}>
-          <img
-            src={iconLock}
-            style={{ height: "35px", marginBottom: "1rem" }}
-          />
-          Complete the Ideas for this level to unlock Actions.
-        </div>
-      )}
+        : card.actions.map((action, i) => {
+            return <Action action={action} key={i} />;
+          })}
     </div>
   );
 };
@@ -551,96 +544,20 @@ export const PlayCta = ({
   );
 };
 
-export const FavoriteButton = ({ usercard, cardId }) => {
+export const FavoriteButton = ({ isFavorite, id, type }) => {
+  //type == "action" or "card"
   const [store, dispatch] = useContext(Context);
+
   return (
     <div
       className={styles.favorite}
-      onClick={() => updateCard(dispatch, cardId, "favorite")}
+      onClick={() => updateCard(dispatch, id, `favorite_${type}`)}
     >
-      {usercard.is_favorite ? (
+      {isFavorite ? (
         <img src={`${baseUrl}/favorite.png`} height="25px" />
       ) : (
         <img src={`${baseUrl}/notFavorite.png`} height="25px" />
       )}
-    </div>
-  );
-};
-
-export const UpgradeButton = ({ isLevelUnlocked, usercard, maxQuantity }) => {
-  return (
-    <div>
-      {isLevelUnlocked ? (
-        usercard.quantity >= maxQuantity ? (
-          <div
-            className="btn btn-action"
-            onClick={() => updateCard(dispatch, card.id, "upgrade")}
-          >
-            Upgrade
-          </div>
-        ) : (
-          <div className="btn btn-disabled">Upgrade</div>
-        )
-      ) : usercard && usercard.quantity >= 10 ? (
-        <div
-          className="btn btn-action"
-          onClick={() => updateCard(dispatch, card.id, "unlock")}
-        >
-          <img src={iconCollection} height="14px" /> 10 Unlock
-        </div>
-      ) : (
-        <div className="btn btn-disabled">Unlock</div>
-      )}
-    </div>
-  );
-};
-
-export const LevelButtons = ({ usercard, selectedLevel, setSelectedLevel }) => {
-  return (
-    <div className={styles.section_levels}>
-      {static_levels.map((level, i) => {
-        return (
-          <div className={styles.level_box} key={i}>
-            {level.lvl < usercard.completed + 1 && (
-              <div
-                className={cx(styles.btn_play_passed, {
-                  [styles.btn_play_active]: selectedLevel === level.lvl,
-                })}
-                onClick={() => setSelectedLevel(level.lvl)}
-              >
-                <ion-icon name="play"></ion-icon>
-              </div>
-            )}
-            {level.lvl == usercard.completed + 1 && (
-              <div
-                className={cx(styles.btn_play_orange, {
-                  [styles.btn_play_active]: selectedLevel === level.lvl,
-                })}
-                onClick={() => setSelectedLevel(level.lvl)}
-              >
-                <ion-icon name="play"></ion-icon>
-              </div>
-            )}
-            {level.lvl > usercard.completed + 1 &&
-              usercard.level >= level.required && (
-                <div
-                  className={cx(styles.btn_play_grayopen, {
-                    [styles.btn_play_active]: selectedLevel === level.lvl,
-                  })}
-                >
-                  <ion-icon name="play"></ion-icon>
-                </div>
-              )}
-            {level.lvl > usercard.completed + 1 &&
-              usercard.level < level.required && (
-                <div className={styles.btn_play_graylocked}>
-                  <ion-icon name="lock-closed-outline"></ion-icon>
-                </div>
-              )}
-            {level.lvl}
-          </div>
-        );
-      })}
     </div>
   );
 };
@@ -683,58 +600,49 @@ export const Title = ({ name, rightText, rightSeparator }) => {
   );
 };
 
-export const CardCtaFooter = ({
-  isPremiumLocked,
-  isLevelUnlocked,
-  card,
-  usercard,
-  selectedLevel,
-  maxQuantity,
-}) => {
+export const CardCtaFooter = ({ isLocked, card, usercard }) => {
   const [store, dispatch] = useContext(Context);
+  console.log(card);
   const router = useRouter();
   return (
     <div className={styles.fixed}>
-      {isPremiumLocked ? (
-        <div
-          className="btn"
-          onClick={() => {
-            router.push(`${feUrl}/shop`);
-          }}
-        >
-          <ion-icon name="lock-closed-outline"></ion-icon>
-          Purchase Expansion
-        </div>
-      ) : card.is_open ? (
-        <PlayCta
-          card={card}
-          maxQuantity={maxQuantity}
-          selectedLevel={selectedLevel}
-          dispatch={dispatch}
-          usercard={usercard}
-          isLevelUnlocked={isLevelUnlocked}
-        />
-      ) : !card.is_unlocked ? (
-        <div
-          className={cx(usercard.quantity >= 10 ? "btn btn-action" : "btn")}
-          onClick={() =>
-            usercard.quantity >= 10 && updateCard(dispatch, card.id, "unlock")
-          }
-        >
-          <ion-icon name="lock-closed-outline"></ion-icon>
-          <div className="ml5">
-            {usercard.quantity >= 10 ? "Unlock" : "Collect 10 to Unlock"}
+      {isLocked ? (
+        true ? (
+          <div
+            className="btn btn-correct"
+            onClick={() => {
+              //unlock card
+            }}
+          >
+            {card.cost}
+            <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
+          </div>
+        ) : (
+          <div
+            className="btn"
+            onClick={() => {
+              //unlock card
+            }}
+          >
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            Unlock Card 400 stars
+          </div>
+        )
+      ) : (
+        <div className={styles.fixed}>
+          <div
+            className="btn btn-action"
+            onClick={() => {
+              dispatch({
+                type: "OPEN_PLAYER",
+                data: { level: usercard.completed, selectedLevel },
+              });
+              router.push(`${feUrl}/card/player/${card.id}`);
+            }}
+          >
+            Play Session
           </div>
         </div>
-      ) : (
-        <PlayCta
-          card={card}
-          maxQuantity={maxQuantity}
-          selectedLevel={selectedLevel}
-          dispatch={dispatch}
-          usercard={usercard}
-          isLevelUnlocked={isLevelUnlocked}
-        />
       )}
     </div>
   );

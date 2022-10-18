@@ -19,14 +19,6 @@
   font-size: 20px;
 }
 
-.tag {
-  font-size: 12px;
-  padding: 0.25rem 0.5rem;
-  border-radius: $border_radius;
-  margin-right: 1rem;
-  background-color: $primary;
-}
-
 .image {
   @extend %flex_center;
   img {

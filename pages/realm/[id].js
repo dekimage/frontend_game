@@ -12,6 +12,9 @@ import { Tabs } from "../../components/profileComps";
 import { Problem } from "../problems";
 import { Course } from "../../components/shopComps";
 import { normalize } from "../../utils/calculations";
+import { BackButton } from "../../components/reusableUI";
+
+import { Book } from "../books";
 
 import { GET_REALM_ID } from "../../GQL/query";
 
@@ -21,12 +24,12 @@ const Cards = () => {
   const { data, loading, error } = useQuery(GET_REALM_ID, {
     variables: { id: router.query.id },
   });
-  const [tab, setTab] = useState("Concepts");
+  const [tab, setTab] = useState("Cards");
 
   const tabsData = [
-    { label: "Concepts", count: -1, link: "Concepts" },
+    { label: "Cards", count: -1, link: "Cards" },
     { label: "Problems", count: -1, link: "Problems" },
-    { label: "Programs", count: -1, link: "Programs" },
+    { label: "Books", count: -1, link: "Books" },
   ];
 
   const gql_data = data && normalize(data);
@@ -67,11 +70,8 @@ const Cards = () => {
         <div>
           <div className="section">
             <div className={styles.header}>
-              <Link href="/learn">
-                <div className={styles.back}>
-                  <ion-icon name="chevron-back-outline"></ion-icon>
-                </div>
-              </Link>
+              <BackButton routeDynamic={""} routeStatic={"/learn"} />
+
               <div className={styles.realmLogo}>
                 <img
                   src={gql_data.realm.image.url}
@@ -85,31 +85,42 @@ const Cards = () => {
 
           <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
           <div className="section">
-            <div id="Concepts" className={styles.sectionHeader}>
-              Concepts
-            </div>
-            <div className={styles.grid}>
-              {store.user &&
-                joinCards(gql_data.realm.cards, usercards)
-                  .sort((a, b) => b.is_open - a.is_open)
-                  .map((card, i) => <Card card={card} key={i} />)}
-            </div>
-            <div id="Problems" className={styles.sectionHeader}>
-              Problems
-            </div>
-            <div className={styles.problemsWrap}>
-              {gql_data.realm.problems.map((problem, i) => (
-                <Problem problem={problem} key={i} />
-              ))}
-            </div>
-            <div id="Programs" className={styles.sectionHeader}>
-              Programs
-            </div>
-            <div className={styles.problemsWrap}>
-              {gql_data.realm.courses.map((course, i) => (
-                <Course course={course} key={i} />
-              ))}
-            </div>
+            {tab === "Cards" && (
+              <>
+                <div className={styles.grid}>
+                  {store.user &&
+                    joinCards(gql_data.realm.cards, usercards)
+                      .sort((a, b) => b.is_open - a.is_open)
+                      .map((card, i) => <Card card={card} key={i} />)}
+                </div>
+                <div className={styles.problemsWrap}>
+                  {gql_data.realm.courses.map((course, i) => (
+                    <Course course={course} key={i} />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {tab === "Problems" && (
+              <>
+                <div className={styles.sectionHeader}>
+                  Common {gql_data.realm.name} Problems
+                </div>
+                <div className={styles.problemsWrap}>
+                  {gql_data.realm.problems.map((problem, i) => (
+                    <Problem problem={problem} key={i} />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {tab === "Books" && (
+              <div className={styles.grid}>
+                {gql_data.realm.books.map((book, i) => (
+                  <Book book={book} key={i} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
