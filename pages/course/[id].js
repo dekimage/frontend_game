@@ -154,7 +154,7 @@ const CourseSales = ({ course }) => {
   );
 };
 
-const Curriculum = ({ days, usercourse }) => {
+export const Curriculum = ({ days, usercourse }) => {
   const [showDays, setShowDays] = useState(days.slice(0, 5));
 
   return (
@@ -162,9 +162,11 @@ const Curriculum = ({ days, usercourse }) => {
       {showDays.map((day, i) => (
         <Day day={day} usercourse={usercourse} key={i} i={i} />
       ))}
-      <div className={styles.seeAll} onClick={() => setShowDays(days)}>
-        See All (+{days.length - showDays.length})
-      </div>
+      {days.length > 5 && (
+        <div className={styles.seeAll} onClick={() => setShowDays(days)}>
+          See All (+{days.length - showDays.length})
+        </div>
+      )}
     </div>
   );
 };
@@ -172,7 +174,7 @@ const Curriculum = ({ days, usercourse }) => {
 const Day = ({ day, usercourse, i }) => {
   const getDayState = (day) => {
     if (!usercourse) {
-      return { color: "#222", icon: iconPlay };
+      return { color: "#222", icon: iconPlay, state: "locked" };
     } else {
       if (day.index > usercourse.last_completed_day) {
         return { color: "gray", icon: iconLock, state: "locked" };
@@ -185,10 +187,15 @@ const Day = ({ day, usercourse, i }) => {
       }
     }
   };
+
   const [isOpen, setIsOpen] = useState(getDayState(day).state === "next");
   const color = getDayState(day).color;
   const icon = getDayState(day).icon;
   const dayLockState = getDayState(day).state;
+
+  useEffect(() => {
+    setIsOpen(getDayState(day).state === "next");
+  }, [usercourse]);
 
   const completedSessions =
     dayLockState === "locked"
@@ -236,7 +243,12 @@ const Day = ({ day, usercourse, i }) => {
       )}
       {isOpen && dayLockState === "completed" && (
         <div className={styles.dayAgain}>
-          <div className="btn btn-green btn-small">Replay Day {i + 1}</div>
+          <div className="btn btn-green ">Replay Day {i + 1}</div>
+        </div>
+      )}
+      {isOpen && dayLockState === "next" && (
+        <div className={styles.dayAgain}>
+          <div className="btn btn-action">Play Session</div>
         </div>
       )}
     </div>
@@ -278,7 +290,6 @@ export const getIconType = (type) => {
 };
 
 const ContentStep = ({ content, usercourse, dayLockState }) => {
-  console.log(dayLockState);
   const getContentState = (content, usercourse) => {
     if (
       !usercourse ||
@@ -302,56 +313,52 @@ const ContentStep = ({ content, usercourse, dayLockState }) => {
     }
   };
 
-  const isNext =
-    usercourse?.last_completed_content == content.index &&
-    !(dayLockState === "completed");
+  // const isNext =
+  //   usercourse?.last_completed_content == content.index &&
+  //   !(dayLockState === "completed");
   const icon = getContentState(content, usercourse).icon;
   const contentState = getContentState(content, usercourse).state;
   const router = useRouter();
 
-  console.log(isNext);
-
   return (
     <>
-      {isNext ? (
-        <NextContent
-          title={content.title}
-          duration={content.duration}
-          icon={getIconType(content.type).icon}
-          course={usercourse.course}
-        />
-      ) : (
-        <div
-          className={styles.contentStep}
-          onClick={() => {
-            contentState === "completed" &&
-              router.push(
-                `${feUrl}/card/player/${usercourse.last_completed_day + 1}`
-              );
-          }}
-        >
-          <div className={styles.contentState}>
-            <div className={styles.contentTypeBackground}>
-              <img
-                src={getIconType(content.type).icon}
-                height="13px"
-                style={{ zIndex: "200" }}
-              />
-            </div>
+      {/* <NextContent
+        title={content.title}
+        duration={content.duration}
+        icon={getIconType(content.type).icon}
+        course={usercourse.course}
+      /> */}
 
-            <div className={styles.line}></div>
+      <div
+        className={styles.contentStep}
+        onClick={() => {
+          contentState === "completed" &&
+            router.push(
+              `${feUrl}/card/player/${usercourse.last_completed_day + 1}`
+            );
+        }}
+      >
+        <div className={styles.contentState}>
+          <div className={styles.contentTypeBackground}>
+            <img
+              src={getIconType(content.type).icon}
+              height="13px"
+              style={{ zIndex: "200" }}
+            />
           </div>
-          <div className={styles.contentTitle}>
-            {icon && (
-              <div className={styles.contentStateIcon}>
-                <img src={icon} height="12px" />
-              </div>
-            )}
-            {content.title}
-          </div>
-          <div className={styles.contentDuration}>{content.duration} min</div>
+
+          <div className={styles.line}></div>
         </div>
-      )}
+        <div className={styles.contentTitle}>
+          {/* {icon && (
+            <div className={styles.contentStateIcon}>
+              <img src={icon} height="12px" />
+            </div>
+          )} */}
+          {content.title}
+        </div>
+        <div className={styles.contentDuration}>{content.duration} min</div>
+      </div>
     </>
   );
 };

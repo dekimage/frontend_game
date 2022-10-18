@@ -120,8 +120,8 @@ const Card = ({ card }) => {
 
         <div className={styles.image}>
           <img
-            // src={card.image.url}
-            src={`${baseUrl}${card.image.url}`}
+            src={card.image.url}
+            // src={`${baseUrl}${card.image.url}`}
             style={{ filter: !isColored && "grayscale(100%)" }}
           />
         </div>

@@ -26,6 +26,7 @@ import {
   Title,
   CardCtaFooter,
 } from "../../components/cardPageComps";
+import { Curriculum } from "../course/[id]";
 import { BackButton } from "../../components/reusableUI";
 
 const CardPage = ({ dataUserCard, dataCard }) => {
@@ -43,7 +44,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   const card = dataCard.card;
 
   const isLocked = !(usercard.proxy ? card.is_open : usercard.is_unlocked);
-  console.log(isLocked);
 
   const mergeActions = (usercard, actions, checkingArray, keyword) => {
     const result = actions.map((action) => {
@@ -94,6 +94,12 @@ const CardPage = ({ dataUserCard, dataCard }) => {
       "is_claimed"
     );
 
+  const cardToUserCourse = {
+    last_completed_day: usercard.completed + 1,
+    last_completed_content: 1,
+    course: { id: 1 },
+  };
+
   return (
     <div className="section_container">
       <div className={styles.card}>
@@ -130,6 +136,8 @@ const CardPage = ({ dataUserCard, dataCard }) => {
         <div className={styles.description}>{card.description}</div>
 
         <Title name="Sessions" />
+
+        <Curriculum days={card.days} usercourse={cardToUserCourse} />
 
         {/* <IdeaPlayer cardId={card.id} /> */}
 

@@ -621,10 +621,11 @@ export const CardCtaFooter = ({ isLocked, card, usercard }) => {
           <div
             className="btn btn-action"
             onClick={() => {
-              dispatch({
-                type: "OPEN_PLAYER",
-                data: { level: usercard.completed, selectedLevel },
-              });
+              // for quiz
+              // dispatch({
+              //   type: "OPEN_PLAYER",
+              //   data: { level: usercard.completed, selectedLevel },
+              // });
               router.push(`${feUrl}/card/player/${card.id}`);
             }}
           >

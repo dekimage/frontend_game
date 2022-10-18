@@ -345,6 +345,55 @@ export const GET_CARD_ID = gql`
               }
             }
           }
+          days {
+            id
+            index
+            contents {
+              id
+              index
+              is_ghost
+              storyline
+              responses
+              type
+              title
+              timer
+              duration
+              action {
+                data {
+                  id
+                  attributes {
+                    name
+                    type
+                    level
+                    duration
+                    tips
+                    examples
+
+                    steps {
+                      content
+                      timer
+                    }
+                    image {
+                      data {
+                        id
+                        attributes {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              question {
+                data {
+                  id
+                  attributes {
+                    name
+                  }
+                }
+              }
+            }
+          }
           realm {
             data {
               id

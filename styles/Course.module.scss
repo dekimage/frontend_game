@@ -97,6 +97,9 @@
 }
 
 // CURRICULUM
+.curriculum {
+  width: 100%;
+}
 .day {
   @extend %box_duo;
   @extend %flex_start;

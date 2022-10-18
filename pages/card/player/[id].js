@@ -1,86 +1,83 @@
-import { useQuery } from "@apollo/react-hooks";
-import { useState, useEffect, useContext } from "react";
-
+import { gql, useQuery } from "@apollo/react-hooks";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Context } from "../../../context/store";
 import { useRouter } from "next/router";
-
 import _ from "lodash";
-
 import Modal from "../../../components/Modal";
-
 import useModal from "../../../hooks/useModal";
-
 import { normalize } from "../../../utils/calculations";
-
-import { GET_CARD_PLAYER } from "../../../GQL/query";
-
+import { GET_CARD_ID } from "../../../GQL/query";
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 import {
-  ContentQuestion,
   SliderProgress,
   SliderHeader,
   WarningModal,
-  RepeatScreen,
-  LevelUpScreen,
-  ActionsScreen,
-  RewardsScreen,
-  CompleteScreen,
-  CompleteScreenNoEnergy,
-  FeedbackScreen,
 } from "../../../components/playerComps";
+
+import { SuccessModal } from "../../../components/playerCourseComps";
+
+import { ContentTheory } from "../../course/player/[id]";
 
 const Player = () => {
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
-  const { data, loading, error } = useQuery(GET_CARD_PLAYER, {
+  const { data, loading, error } = useQuery(GET_CARD_ID, {
     variables: { id: router.query.id },
   });
 
   const gql_data = data && normalize(data);
-
-  useEffect(() => {
-    if (!loading && gql_data) {
-      setSlide(gql_data.card.slides[0]);
-      setSlides(gql_data.card.slides);
-    }
-  }, [gql_data, loading]);
-
-  // for testing
-  const states = [
-    "feedback_screen",
-    "complete_screen",
-    "rewards_screen",
-    "actions_screen",
-    "levelup_screen",
-  ];
-
   const [slides, setSlides] = useState(false);
   const [slide, setSlide] = useState(false);
-
+  const [chatSlides, setChatSlides] = useState(false);
   const { isShowing, openModal, closeModal } = useModal();
-
-  // const [successModal, setSuccessModal] = useState(states[1]);
   const [successModal, setSuccessModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-
-  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
-  const [isQuestionScreen, setIsQuestionScreen] = useState(true);
-
-  const [repeatSlides, setRepeatSlides] = useState([]);
-
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [ghosts, setGhosts] = useState([]);
   const [rewards, setRewards] = useState({
     xp: 0,
     stars: 0,
     gems: 0,
   });
 
-  const [mistakes, setMistakes] = useState(0);
+  useEffect(() => {
+    const usercard =
+      store?.user?.usercards &&
+      store.user.usercards.filter(
+        (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
+      )[0];
 
-  const isLatestLevel = store.player.level + 1 === store.player.selectedLevel;
+    const last_completed_content = 1;
+    const last_completed_day = usercard && usercard.completed;
 
-  const hasEnergy = store.user.energy > 0;
+    if (!loading && gql_data) {
+      setSlide(
+        gql_data.card.days[last_completed_day].contents[
+          last_completed_content - 1
+        ]
+      );
+      setSlides(
+        gql_data.card.days[last_completed_day].contents.filter(
+          (slide) => !slide.is_ghost
+        )
+      );
+      // FIX GHOSTS??
+      const ghosts = gql_data.card.days[last_completed_day].contents.filter(
+        (slide) => slide.is_ghost
+      );
+      setGhosts(ghosts);
+
+      setChatSlides([
+        gql_data.card.days[last_completed_day].contents[
+          last_completed_content - 1
+        ],
+      ]);
+    }
+  }, [gql_data, loading]);
+
+  const isLatestLevel = false;
 
   const updateRewards = (xp = 10, stars = 5) => {
     setRewards({
@@ -91,48 +88,43 @@ const Player = () => {
   };
 
   const closePlayer = () => {
-    router.push(`${feUrl}/card/${router.query.id}`);
-  };
-
-  const recordResults = (answerId, answerCorrect) => {};
-
-  const addWrongAnswerForLater = (slide) => {
-    setRepeatSlides([...repeatSlides, slide]);
+    router.back();
   };
 
   const onContinue = () => {
     const index = slides.findIndex((s) => s.id === slide.id);
     if (index === slides.length - 1) {
-      if (repeatSlides.length) {
-        //shuffle if I want
-        setSlides(repeatSlides);
-        setSlide(repeatSlides[0]);
-        setRepeatSlides([]);
+      if (isLatestLevel) {
+        setSuccessModal("complete_screen");
       } else {
-        if (isLatestLevel) {
-          setSuccessModal("complete_screen");
-        } else {
-          setSuccessModal("repeat_screen");
-        }
+        setSlide(slides[index + 1]);
       }
-    } else {
-      setSlide(slides[index + 1]);
     }
-    setIsQuestionScreen(true);
   };
 
-  const onAnswer = (answer) => {
-    if (answer.is_correct) {
-      setIsCorrectAnswer(true);
-      updateRewards();
-      recordResults(answer.id, { is_correct: true });
+  const goBack = () => {
+    const index = slide.index;
+    if (index === 1) {
+      closePlayer();
     } else {
-      setMistakes(mistakes + 1);
-      setIsCorrectAnswer(false);
-      addWrongAnswerForLater(slide);
-      recordResults(answer.id, { is_correct: false });
+      setSlide(slides[index - 2]);
     }
-    setIsQuestionScreen(false);
+  };
+
+  const goNext = (_, reply = false) => {
+    //reply is the link I pass manually with replies...
+    const index = slide.index;
+    if (index === slides.length) {
+      setIsSuccessModalOpen(true);
+    } else {
+      if (reply.isGhost) {
+        setSlide(77, ghosts[reply.link - 1]);
+        setChatSlides([...chatSlides, ghosts[reply.link + 1]]);
+      } else {
+        setSlide(slides[reply ? reply.link - 1 : index]);
+        setChatSlides([...chatSlides, slides[reply ? reply.link - 1 : index]]);
+      }
+    }
   };
 
   return (
@@ -146,78 +138,26 @@ const Player = () => {
             currentSlide={slides && slides.findIndex((s) => s.id === slide.id)}
             setIsWarningModalOpen={setIsWarningModalOpen}
             openModal={openModal}
+            goBack={goBack}
           />
 
-          <SliderHeader rewards={rewards} closePlayer={closePlayer} />
+          <SliderHeader
+            title={slide.title}
+            rewards={rewards}
+            closePlayer={closePlayer}
+          />
 
-          {!successModal && (
-            <ContentQuestion
-              slide={slide}
-              onContinue={onContinue}
-              onAnswer={onAnswer}
-              isQuestionScreen={isQuestionScreen}
-              isCorrectAnswer={isCorrectAnswer}
-              setIsModalOpen={setIsModalOpen}
-              successModal={successModal}
-            />
-          )}
-
-          {successModal === "repeat_screen" && (
-            <RepeatScreen
-              closePlayer={closePlayer}
-              card={gql_data.card}
-              mistakes={mistakes}
-            />
-          )}
-          {successModal === "complete_screen" && hasEnergy && (
-            <CompleteScreen
-              closePlayer={closePlayer}
-              card={gql_data.card}
-              rewards={rewards}
-              setSuccessModal={setSuccessModal}
-            />
-          )}
-          {successModal === "complete_screen" && !hasEnergy && (
-            <CompleteScreenNoEnergy
-              closePlayer={closePlayer}
-              card={gql_data.card}
-              rewards={rewards}
-              setSuccessModal={setSuccessModal}
-            />
-          )}
-
-          {successModal === "rewards_screen" && (
-            <RewardsScreen
-              closePlayer={closePlayer}
-              card={gql_data.card}
-              setSuccessModal={setSuccessModal}
-              rewards={rewards}
-            />
-          )}
-
-          {successModal === "actions_screen" && (
-            <ActionsScreen
-              closePlayer={closePlayer}
-              card={gql_data.card}
-              setSuccessModal={setSuccessModal}
-            />
-          )}
-
-          {successModal === "feedback_screen" && (
-            <FeedbackScreen
-              closePlayer={closePlayer}
-              card={gql_data.card}
-              setSuccessModal={setSuccessModal}
-            />
-          )}
-
-          {successModal === "levelup_screen" && (
-            <LevelUpScreen
-              closePlayer={closePlayer}
-              card={gql_data.card}
-              setSuccessModal={setSuccessModal}
-            />
-          )}
+          {chatSlides.map((slide, i) => {
+            return (
+              <ContentTheory
+                slide={slide}
+                goNext={goNext}
+                lastSlideIndex={chatSlides.length}
+                key={i}
+                i={i}
+              />
+            );
+          })}
 
           {isWarningModalOpen && (
             <Modal
@@ -232,6 +172,14 @@ const Player = () => {
               }
             />
           )}
+
+          {isSuccessModalOpen && (
+            <SuccessModal
+              closePlayer={closePlayer}
+              card={data.card}
+              isLatestLevel={isLatestLevel}
+            />
+          )}
         </div>
       )}
     </div>
@@ -239,15 +187,3 @@ const Player = () => {
 };
 
 export default Player;
-
-{
-  /* {slide.type === "action" && (
-            <ContentAction
-              actions={slide.actions}
-              goNext={goNext}
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-              skipAction={skipAction}
-            />
-          )} */
-}
