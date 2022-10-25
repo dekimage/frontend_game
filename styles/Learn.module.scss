@@ -18,6 +18,9 @@
   width: 100%;
   padding: 12px;
   padding-right: 0;
+  @extend %flex_between;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .realm_name {
@@ -53,15 +56,6 @@
 .progressIcon {
   margin-top: 0.25rem;
   margin-right: 0.25rem;
-}
-
-.comingsoon {
-  background-color: $darkEggHeadRed;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: $border_radius;
-  padding: 0.25rem 0.75rem;
-  display: inline-block;
 }
 
 .header {

@@ -43,7 +43,10 @@ const CardPage = ({ dataUserCard, dataCard }) => {
 
   const card = dataCard.card;
 
-  const isLocked = !(usercard.proxy ? card.is_open : usercard.is_unlocked);
+  const isUnlocked = true;
+  // card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
+
+  console.log(usercard);
 
   const mergeActions = (usercard, actions, checkingArray, keyword) => {
     const result = actions.map((action) => {
@@ -149,7 +152,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           mergeActions={mergeActions}
         />
       </div>
-      {!isLocked && (
+      {isUnlocked && (
         <>
           <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
 
@@ -197,7 +200,11 @@ const CardPage = ({ dataUserCard, dataCard }) => {
       )}
 
       {card && (
-        <CardCtaFooter isLocked={isLocked} card={card} usercard={usercard} />
+        <CardCtaFooter
+          isUnlocked={isUnlocked}
+          card={card}
+          usercard={usercard}
+        />
       )}
     </div>
   );

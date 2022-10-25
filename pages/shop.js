@@ -47,6 +47,7 @@ const Shop = () => {
   return (
     <div className="background_dark">
       <Header />
+      <div className="headerSpace"></div>
 
       {/* *** COURSES *** */}
       <div className="section">

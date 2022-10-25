@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import NavBar from "../components/NavBar";
 import { CommunityAction } from "../components/cardPageComps";
 import { Stat, Buddy, ProfileHeader, Tabs } from "../components/profileComps";
+import Header from "../components/Header";
 
 // *** ACTIONS ***
 import { calcTotal } from "../utils/calculations";
@@ -40,6 +41,8 @@ const Profile = () => {
     <div className="background_dark">
       {store?.user && (
         <div className="section-container">
+          <Header />
+          <div className="headerSpace"></div>
           <ProfileHeader />
 
           <div className={styles.stats}>

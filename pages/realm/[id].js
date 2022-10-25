@@ -52,6 +52,7 @@ const Cards = () => {
           rarity: card.rarity,
           type: card.type,
           realm: card.realm,
+          cost: card.cost,
           name: card.name,
           expansion: card.expansion,
         };

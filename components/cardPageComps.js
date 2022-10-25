@@ -593,13 +593,13 @@ export const Title = ({ name, rightText, rightSeparator }) => {
   );
 };
 
-export const CardCtaFooter = ({ isLocked, card, usercard }) => {
+export const CardCtaFooter = ({ isUnlocked, card, usercard }) => {
   const [store, dispatch] = useContext(Context);
   const hasOrbs = store?.user?.stars >= card.cost;
   const router = useRouter();
   return (
     <div className={styles.fixed}>
-      {isLocked ? (
+      {!isUnlocked ? (
         hasOrbs ? (
           <div
             className="btn btn-correct"

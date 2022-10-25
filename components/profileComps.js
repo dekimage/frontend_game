@@ -60,20 +60,20 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
   const user = isBuddy ? buddy : store.user;
   return (
     <div className={styles.profileHeader}>
-      <div className={styles.escape} onClick={() => router.back()}>
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </div>
+      <div className="ml1"></div>
       <div className={styles.profileHeader_box}>
         <div className={styles.avatarBox}>
           <div className={styles.avatar}>
+            <div className={styles.level}>{user.level}</div>
             <img
               // src={`${baseUrl}/${store.user.image.url}`
               src={`${baseUrl}/avatar-test.png`}
               height="66px"
             />
           </div>
-          <div className={styles.level}>{user.level}</div>
+
           <div className={styles.username}>{user.username}</div>
+          <div className={styles.level_progress}>LEVEL {user.level}</div>
           <ProgressBar progress={user.xp} max={50} />
 
           <div className={styles.xp}>XP {user.xp}/50</div>

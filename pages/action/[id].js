@@ -51,9 +51,16 @@ export const ActionCta = ({
   );
 };
 
-const ActionPage = ({ action, isUnlocked, user }) => {
+const ActionPage = ({ action, user }) => {
   const [store, dispatch] = useContext(Context);
   const [isShowTips, setIsShowTips] = useState(false);
+
+  const usercard = user.usercards.filter(
+    (usercard) => usercard.card.id === parseInt(action.card.id)
+  )[0];
+
+  // const isUnlocked = action.card.is_open || (usercard && usercard.is_unlocked);
+  const isUnlocked = true;
 
   const isActionFavorite =
     user.favorite_actions.filter((a) => a.id == action.id).length > 0;
@@ -66,7 +73,7 @@ const ActionPage = ({ action, isUnlocked, user }) => {
         <div className="section">
           <ImageUI
             className={"image-radius"}
-            imgUrl={action.image.url}
+            imgUrl={action.image?.url}
             width="100%"
           />
         </div>
@@ -164,6 +171,7 @@ const ActionPage = ({ action, isUnlocked, user }) => {
 const Action = () => {
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
+
   const {
     data: action,
     loading,
@@ -172,13 +180,36 @@ const Action = () => {
     variables: { id: router.query.id },
   });
   const gql_action = action && normalize(action);
-  console.log(store.user);
-  const isUnlocked =
-    store?.user?.actions?.filter(
-      (a) => a.id === parseInt(gql_action?.action?.id)
-    ).length > 0;
+
+  // const isUnlocked =
+  //   store?.user?.actions?.filter(
+  //     (a) => a.id === parseInt(gql_action?.action?.id)
+  //   ).length > 0;
+
+  // const isUnlocked = true;
 
   useEffect(() => {}, [store.user]);
+
+  const isEmpty = (obj) => {
+    if (obj === undefined) {
+      return false;
+    }
+    return Object.keys(obj).length === 0;
+  };
+
+  const Safe = ({ loading, error }) => {
+    return (
+      <div className="background_dark">
+        {error && <div>Error: {error}</div>}
+        {loading && (
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="background_dark">
@@ -189,12 +220,8 @@ const Action = () => {
           <div></div>
         </div>
       )}
-      {gql_action && store.user && (
-        <ActionPage
-          action={gql_action.action}
-          isUnlocked={isUnlocked}
-          user={store.user}
-        />
+      {gql_action && !isEmpty(store.user) && (
+        <ActionPage action={gql_action.action} user={store.user} />
       )}
     </div>
   );

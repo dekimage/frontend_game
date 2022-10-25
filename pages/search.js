@@ -9,6 +9,7 @@ import { normalize } from "../utils/calculations";
 import { Tabs } from "../components/profileComps";
 import { Course } from "../components/shopComps";
 import { Problem } from "./problems";
+import { BackButton } from "../components/reusableUI";
 
 const SearchBar = () => {
   const [search, setSearch] = useState("");
@@ -21,16 +22,16 @@ const SearchBar = () => {
   const [isInputOpen, setIsInputOpen] = useState(false);
   const router = useRouter();
 
-  const [tab, setTab] = useState("Concepts");
+  const [tab, setTab] = useState("Cards");
 
   const tabsData = [
-    { label: "Concepts", count: -1, link: "cards" },
-    { label: "Problems", count: -1, link: "problems" },
-    { label: "Programs", count: -1, link: "courses" },
+    { label: "Cards", count: -1 },
+    { label: "Problems", count: -1 },
+    { label: "Programs", count: -1 },
   ];
 
   const filterTab = (tab) => {
-    if (tab === "Concepts") {
+    if (tab === "Cards") {
       return "cards";
     }
     if (tab === "Problems") {
@@ -55,7 +56,7 @@ const SearchBar = () => {
           if (tab === "Problems") {
             setResultProblems(normalize(res).data);
           }
-          if (tab === "Concepts") {
+          if (tab === "Cards") {
             setResultCards(normalize(res).data);
           }
           if (tab === "Programs") {
@@ -109,18 +110,20 @@ const SearchBar = () => {
 
   return (
     <div className="background_dark">
+      <BackButton isBack />
       <div className="section">
-        <Tabs
-          tabState={tab}
-          setTab={setTab}
-          tabs={tabsData}
-          callback={callback}
-          value={search}
-        />
+        <div className="header">Search</div>
+      </div>
+
+      <Tabs
+        tabState={tab}
+        setTab={setTab}
+        tabs={tabsData}
+        callback={callback}
+        value={search}
+      />
+      <div className="section">
         <div className={styles.searchBox} onFocus={() => setIsInputOpen(true)}>
-          <div className={styles.backButton} onClick={() => router.back()}>
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
           <input
             type="text"
             value={search}
@@ -165,7 +168,7 @@ const SearchBar = () => {
                   </div>
                 )}
               </div>
-              {tab === "Concepts" && (
+              {tab === "Cards" && (
                 <div className={styles.isSearching}>
                   {resultCards &&
                     resultCards.length > 0 &&

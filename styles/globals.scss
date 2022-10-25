@@ -28,6 +28,9 @@ input {
 }
 
 /* Medium.com TYPOGRAPHY*/
+.header {
+  @extend %header;
+}
 
 .title {
   font-size: 20px;
@@ -50,6 +53,10 @@ input {
   img {
     border-radius: $border_radius;
   }
+}
+
+.headerSpace {
+  padding-top: 3rem;
 }
 
 // p {

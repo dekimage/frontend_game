@@ -50,6 +50,7 @@ const Home = () => {
   return (
     <div className="background_dark">
       <Header />
+      <div className="headerSpace"></div>
       {/* TUTORIAL MODAL */}
       {store && store.user?.usercourses && gql_data && (
         <div>

@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookie from "js-cookie";
 
 const backendAPi = process.env.NEXT_PUBLIC_API_URL;
+
 const baseUrl = `${backendAPi}/api`;
 const userUrl = "/usercard";
 

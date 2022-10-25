@@ -137,6 +137,7 @@ const Home = () => {
   return (
     <div className="background_dark">
       <Header />
+      <div className="headerSpace"></div>
       <div>
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}

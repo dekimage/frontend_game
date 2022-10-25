@@ -62,6 +62,7 @@ const OpenCard = ({ card }) => {
 };
 
 const ClosedCard = ({ card }) => {
+  console.log(card);
   return (
     <div className={styles.lockBox}>
       <img
@@ -70,7 +71,8 @@ const ClosedCard = ({ card }) => {
       />
       <div className={styles.name}>{card.name}</div>
       <div className={styles.costBox}>
-        400 <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
+        {card.cost}
+        <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
       </div>
     </div>
   );

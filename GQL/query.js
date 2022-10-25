@@ -284,6 +284,7 @@ export const GET_ACTION_ID = gql`
               attributes {
                 name
                 cost
+                is_open
                 image {
                   data {
                     id

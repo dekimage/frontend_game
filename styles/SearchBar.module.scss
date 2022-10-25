@@ -15,6 +15,7 @@
   padding: 0.25rem 0;
   position: relative;
   z-index: 1000;
+  padding-left: 0.5rem;
 
   input {
     color: $gray_lighter;
@@ -99,9 +100,9 @@
   font-size: 18px;
   font-weight: 500;
   width: 100%;
-  top: 4rem;
+  top: 8rem;
   left: 0;
-  margin-top: 4rem;
+
   position: absolute;
   z-index: 1000;
   border-radius: $border_radius;
