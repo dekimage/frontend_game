@@ -50,7 +50,7 @@ const Player = () => {
       )[0];
 
     const last_completed_content = 1;
-    const last_completed_day = usercard && usercard.completed;
+    const last_completed_day = (usercard && usercard.completed) || 0;
 
     if (!loading && gql_data) {
       setSlide(
