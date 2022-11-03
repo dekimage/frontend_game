@@ -29,17 +29,21 @@ export const ContentTheory = ({ slide, goNext, lastSlideIndex, i }) => {
     const action = slide.action;
     const responses = slide.responses;
 
-    const ideasLength = slide.storyline.split("\n\n").length;
-    const ideas = slide.storyline.split("\n\n").map((string) => {
-      return {
-        content: string,
-        type: "idea",
-        title: slide.title,
-        ideasLength,
-      };
-    });
+    const hasStoryline = !!slide.storyline;
 
-    let chat = ideas;
+    const ideasLength = hasStoryline && slide.storyline.split("\n\n").length;
+    const ideas =
+      hasStoryline &&
+      slide.storyline.split("\n\n").map((string) => {
+        return {
+          content: string,
+          type: "idea",
+          title: slide.title,
+          ideasLength,
+        };
+      });
+
+    let chat = hasStoryline ? ideas : [];
 
     if (responses) {
       chat = chat.concat({
