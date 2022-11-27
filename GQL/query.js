@@ -1,5 +1,39 @@
 import { gql } from "apollo-boost";
 
+export const GET_ARTIFACTS_QUERY = gql`
+  query {
+    artifacts(pagination: { limit: 100 }) {
+      data {
+        id
+        attributes {
+          name
+          short_name
+          type
+          require
+          obtained_by_description
+          rarity
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
+    }
+  }
+`;
+
 export const GET_OBJECTIVES_QUERY = gql`
   query {
     objectives {
@@ -14,6 +48,7 @@ export const GET_OBJECTIVES_QUERY = gql`
           requirement_amount
           reward_type
           reward_amount
+          is_premium
         }
       }
       meta {
@@ -616,12 +651,13 @@ export const GET_STREAKS_QUERY = gql`
         attributes {
           reward_amount
           streak_count
-          reward_card {
+          reward_type
+          artifact {
             data {
               id
               attributes {
                 name
-                rarity
+                short_name
                 image {
                   data {
                     id
@@ -633,11 +669,12 @@ export const GET_STREAKS_QUERY = gql`
               }
             }
           }
-          reward_box {
+          reward_card {
             data {
               id
               attributes {
                 name
+                rarity
                 image {
                   data {
                     id
@@ -671,6 +708,23 @@ export const GET_FRIENDS_QUERY = gql`
         attributes {
           reward_amount
           friends_count
+          artifact {
+            data {
+              id
+              attributes {
+                name
+                short_name
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
           reward_card {
             data {
               id
@@ -765,6 +819,146 @@ export const GET_COLLECTION = gql`
   }
 `;
 
+export const GET_USER_RECENTS = gql`
+  query ($id: ID!) {
+    usersPermissionsUser(id: $id) {
+      data {
+        id
+        attributes {
+          last_completed_cards {
+            data {
+              id
+              attributes {
+                name
+                description
+                type
+                rarity
+                cost
+                is_open
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          last_completed_actions {
+            data {
+              id
+              attributes {
+                name
+                duration
+                type
+                level
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_USER_FAVORITES = gql`
+  query ($id: ID!) {
+    usersPermissionsUser(id: $id) {
+      data {
+        id
+        attributes {
+          favorite_cards {
+            data {
+              id
+              attributes {
+                name
+                description
+                type
+                rarity
+                cost
+                is_open
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          favorite_actions {
+            data {
+              id
+              attributes {
+                name
+                duration
+                type
+                level
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_USER_STATS = gql`
   query ($id: ID!) {
     usersPermissionsUser(id: $id) {
@@ -838,6 +1032,46 @@ export const GET_PROBLEM_ID = gql`
                     id
                     attributes {
                       url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          cards {
+            data {
+              id
+              attributes {
+                name
+                description
+                type
+                rarity
+                cost
+                is_open
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -1340,6 +1574,23 @@ export const GET_REWARDS_QUERY = gql`
           is_premium
           reward_type
           reward_amount
+          artifact {
+            data {
+              id
+              attributes {
+                name
+                short_name
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
       meta {
@@ -1402,19 +1653,18 @@ export const GET_USER_ID = gql`
           highest_streak_count
           highest_buddy_shares
           is_subscribed
-          actions {
+          stats
+
+          claimed_artifacts {
             data {
               id
               attributes {
                 name
+                short_name
                 type
-                level
-                duration
-                tips
-                examples
-                steps {
-                  content
-                }
+                require
+                obtained_by_description
+                rarity
                 image {
                   data {
                     id
@@ -1426,37 +1676,67 @@ export const GET_USER_ID = gql`
               }
             }
           }
-          communityactions {
+
+          last_completed_cards {
             data {
               id
               attributes {
                 name
-                votes
-                reports
-                duration
-                steps {
-                  content
-                }
+                description
                 type
+                rarity
+                cost
+                is_open
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
-          last_unlocked_cards {
+
+          last_completed_actions {
             data {
               id
               attributes {
                 name
+                duration
+                type
+                level
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
               }
             }
           }
-          last_unlocked_cards {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
+
           followedBy {
             data {
               id
@@ -1470,89 +1750,6 @@ export const GET_USER_ID = gql`
               id
               attributes {
                 username
-              }
-            }
-          }
-          usercards {
-            data {
-              id
-              attributes {
-                is_new
-                is_favorite
-                completed
-                quantity
-                glory_points
-                level
-                is_unlocked
-                card {
-                  data {
-                    id
-                    attributes {
-                      name
-                      rarity
-                      cost
-                      type
-                      is_open
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                      realm {
-                        data {
-                          id
-                          attributes {
-                            name
-                            color
-                            image {
-                              data {
-                                id
-                                attributes {
-                                  url
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_USER_IDAGAGAGAG = gql`
-  query ($id: ID!) {
-    user(id: $id) {
-      data {
-        id
-        attributes {
-          name
-          description
-          require
-          price
-          price_type
-          image {
-            data {
-              attributes {
-                url
-              }
-            }
-          }
-          expansion {
-            data {
-              id
-              attributes {
-                name
               }
             }
           }

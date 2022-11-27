@@ -57,6 +57,7 @@
   border: 2px solid $actionize_gray;
   border-radius: $border_radius;
   height: 60px;
+  position: relative;
 }
 .levelRewardLevel {
   @extend %flex_center;
@@ -115,5 +116,26 @@
     padding: 0.2rem;
     right: 0;
     top: 0;
+  }
+}
+
+.lock {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  img {
+    height: 24px;
+  }
+}
+
+.freeLabel {
+  width: 100%;
+  @extend %flex_center;
+  flex: 0.66;
+  @extend %box_duo;
+  font-size: 18px;
+  font-weight: 500;
+  &.premium {
+    background-color: $secondary;
   }
 }

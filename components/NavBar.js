@@ -30,16 +30,16 @@ const mobileNavLinks = [
     link: "/shop",
   },
   {
-    icon: iconLearn,
-    activeIcon: iconLearnActive,
-    text: "Learn",
+    icon: iconCollection,
+    activeIcon: iconCollectionActive,
+    text: "Explore",
     link: "/learn",
   },
   {
-    icon: iconCollection,
-    activeIcon: iconCollectionActive,
-    text: "Collection",
-    link: "/collection",
+    icon: iconLearn,
+    activeIcon: iconLearnActive,
+    text: "Problems",
+    link: "/problems",
   },
   {
     icon: iconProfile,

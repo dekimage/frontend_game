@@ -3,6 +3,7 @@ import cx from "classnames";
 import { useContext, useState } from "react";
 import { Context } from "../context/store";
 import Link from "next/link";
+import { ImageUI } from "./reusableUI";
 
 // *** ACTIONS ***
 import {
@@ -102,6 +103,17 @@ const getHeight = (amount) => {
   return heights[amount];
 };
 
+export const PaymentSoonModal = ({ closeModal }) => {
+  return (
+    <div>
+      Thanks for being here! Currently the app is in Testing Beta. Payments will
+      be avialable once it launches on Playstore (Android) & App Store (IOS). If
+      you wish to be notified when it fully launhes as mobile app, you can join
+      the wait list here.
+    </div>
+  );
+};
+
 export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
   const {
     amount,
@@ -126,20 +138,24 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
         openModal(true);
       }}
     >
-      <div className={styles.box_name}>{name}</div>
+      {/* <div className={styles.box_name}>{name}</div> */}
       <div className={styles.boxModal_amount}>
         {gems.amount}
-        <span className={styles.boxModal_bonus}> + {gems.bonus_amount}</span>
+        {gems.bonus_amount && (
+          <span className={styles.boxModal_bonus}> + {gems.bonus_amount}</span>
+        )}
       </div>
 
-      <div className="mt1 mb1">
-        {image && <img src={image.url} alt="" height={`${height}px`} />}
+      <div className="mb1">
+        {/* {image && <img src={image.url} alt="" height={`${height}px`} />} */}
+        {/* {image && <ImageUI imgUrl={image.url} height="60px" />} */}
+        <ImageUI imgUrl={`/${gems.type}.png`} height="40px" />
       </div>
       <div
         className={styles.box_cta}
-        onClick={() => purchaseProduct(dispatch, 2)}
+        // onClick={() => purchaseProduct(dispatch, 2)}
       >
-        $ {price}
+        ${price}
       </div>
     </div>
   );
@@ -184,102 +200,34 @@ export const Pack = ({ box, setSelectedProduct, openModal }) => {
 };
 
 export const BoxModal = ({ product, closeModal }) => {
-  const box = product.type !== "gems" && product;
-  const gems = product.type === "gems" && product;
   const [store, dispatch] = useContext(Context);
-  let cantBuy = false;
-  if (box) {
-    cantBuy =
-      box.price_type === "stars"
-        ? box.price > store.user.stars
-        : box.price > store.user.gems;
-  }
-
-  const noPacks = store.user.boxes[box.id] > 0;
 
   return (
     <div>
-      {box && (
-        <div className={styles.boxModal}>
-          <div className={styles.boxModal_name}>{box.name}</div>
-          <div>
-            <img src={box.image.url} alt="" height="250px" />
-          </div>
-          <div className={styles.boxModal_label}>Chance to contain:</div>
-          <DropLabel />
-          <div className={styles.boxModal_quantity}>
-            You have {store.user.boxes[box.id]} pack
-            {store.user.boxes[box.id] == 1 ? "" : "s"}.
-          </div>
-          {noPacks ? (
-            <div
-              className="btn btn-stretch btn-primary"
-              onClick={() => {
-                openPack(dispatch, box.id);
-                closeModal();
-              }}
-            >
-              Open
-            </div>
-          ) : (
-            <div
-              className="btn btn-stretch btn-primary"
-              onClick={() => {
-                purchaseLootBox(dispatch, box.id);
-                closeModal();
-              }}
-            >
-              {box.price_type == "stars" && (
-                <img
-                  height="18px"
-                  className="mr5"
-                  src={`${baseUrl}/stars.png`}
-                />
-              )}
-              {box.price_type == "gems" && (
-                <img
-                  height="18px"
-                  className="mr5"
-                  src={`${baseUrl}/gems.png`}
-                />
-              )}
-              <span
-                className={cx(styles.boxModal_cta, {
-                  [styles.boxModal_ctaRed]: cantBuy,
-                })}
-              >
-                {box.price}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-      {gems && (
-        <div className={styles.boxModal}>
-          <div className={styles.boxModal_name}>{gems.name}</div>
-          <img src={gems.image.url} height={"100px"} alt="" />
-          <div className={styles.boxModal_amount}>
-            {gems.amount}
-            <span className={styles.boxModal_bonus}>
-              {" "}
-              + {gems.bonus_amount}
-            </span>
-            <img height="14px" src={`${baseUrl}/gems.png`} className="ml5" />
-          </div>
-          <span className={styles.boxModal_bonusLabel}>
-            First Purchase Bonus
+      <div className={styles.boxModal}>
+        <div className={styles.boxModal_name}>{product.name}</div>
+        {product.image && (
+          <img src={product.image.url} height={"100px"} alt="" />
+        )}
+        <div className={styles.boxModal_amount}>
+          {product.amount}
+          <span className={styles.boxModal_bonus}>
+            {" "}
+            + {product.bonus_amount}
           </span>
-          <div
-            className="btn btn-primary"
-            onClick={() => {
-              // purchaseProduct(dispatch, gems.id, "android");
-              closeModal();
-            }}
-          >
-            $ {gems.price}
-          </div>
+          <img height="14px" src={`${baseUrl}/gems.png`} className="ml5" />
         </div>
-      )}
+        <span className={styles.boxModal_bonusLabel}>First Purchase Bonus</span>
+        <div
+          className="btn btn-primary"
+          onClick={() => {
+            // purchaseProduct(dispatch, gems.id, "android");
+            closeModal();
+          }}
+        >
+          $ {product.price}
+        </div>
+      </div>
     </div>
   );
 };

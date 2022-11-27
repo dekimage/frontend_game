@@ -3,12 +3,15 @@ import { useRouter } from "next/router";
 import Reducer from "../reducers/Reducer";
 import * as api from "../api";
 import Cookie from "js-cookie";
+import { fetchUser } from "../actions/action";
 
 const AUTH_TOKEN = Cookie.get("token");
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const initialState = {
   tutorialModal: true,
+  isLoading: false,
+  error: null,
   tutorial: 0,
   player: {},
   isAuthenticated: false,
@@ -36,16 +39,7 @@ const Store = ({ children }) => {
   const router = useRouter();
   useEffect(() => {
     if (AUTH_TOKEN) {
-      api
-        .fetchUserApi()
-        .then((response) => {
-          // console.log(response.data);
-          dispatch({ type: "FETCH_USER", data: response.data });
-        })
-        .catch((err) => {
-          console.log(err);
-          router.push(`/login`);
-        });
+      fetchUser(dispatch);
     } else {
       router.push(`/login`);
     }

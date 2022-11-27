@@ -172,3 +172,7 @@ export const normalize = (data) => {
 
   return data;
 };
+
+export const getXpLimit = (level) => {
+  return 100 + level * 10 * 1.6;
+};

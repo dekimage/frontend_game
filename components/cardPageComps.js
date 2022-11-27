@@ -1,4 +1,3 @@
-import styles from "../styles/CardPage.module.scss";
 import { useState, useEffect, useContext } from "react";
 import { Context } from "../context/store";
 import { useRouter } from "next/router";
@@ -19,6 +18,8 @@ import {
 } from "../actions/action";
 
 import Timer from "../components/Timer";
+
+import styles from "../styles/CardPage.module.scss";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -133,7 +134,7 @@ export const Action = ({ action }) => {
 
 export const BasicActionsWrapper = ({ card, usercard, mergeActions }) => {
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", marginBottom: "2rem" }}>
       {card.actions && usercard.completed_actions
         ? mergeActions(
             usercard,

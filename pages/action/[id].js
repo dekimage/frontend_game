@@ -59,8 +59,8 @@ const ActionPage = ({ action, user }) => {
     (usercard) => usercard.card.id === parseInt(action.card.id)
   )[0];
 
-  // const isUnlocked = action.card.is_open || (usercard && usercard.is_unlocked);
-  const isUnlocked = true;
+  const isUnlocked = action.card.is_open || (usercard && usercard.is_unlocked);
+  // const isUnlocked = true;
 
   const isActionFavorite =
     user.favorite_actions.filter((a) => a.id == action.id).length > 0;
@@ -69,7 +69,7 @@ const ActionPage = ({ action, user }) => {
     <div className="section_container">
       <div className={styles.card}>
         {/* <FavoriteButton usercard={usercard} cardId={card.id} /> */}
-        <BackButton routeDynamic={action.card.id} routeStatic={"/card/"} />
+        <BackButton isBack />
         <div className="section">
           <ImageUI
             className={"image-radius"}

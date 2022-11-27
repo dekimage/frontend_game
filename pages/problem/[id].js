@@ -1,16 +1,20 @@
 import { useQuery } from "@apollo/react-hooks";
-import { Context } from "../../context/store";
+
 import { useRouter } from "next/router";
+
+import Card from "../../components/Card";
 
 import Link from "next/link";
 import _ from "lodash";
 // import styles from "../../styles/Problem.module.scss";
 import ReactMarkdown from "react-markdown";
 import { Action } from "../../components/cardPageComps";
+import CardsMapper from "../../components/CardsMapper";
 
 import NavBar from "../../components/NavBar";
 import ExpandableComponent from "../../components/ExpandableComponent";
 import { normalize } from "../../utils/calculations";
+import { joinCards } from "../../utils/joins";
 import { Course } from "../../components/shopComps";
 
 import { GET_PROBLEM_ID } from "../../GQL/query";
@@ -37,11 +41,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const ActionsMapper = ({ actions, type }) => {
   let filteredActions = actions;
-  // if (type === "instant") {
-  //   filteredActions = actions.filter((a) => a.type === "trigger");
-  // } else if (type === "longterm") {
-  //   filteredActions = actions.filter((a) => a.type === "habit");
-  // }
+
   return (
     <div>
       {filteredActions.map((a, i) => (
@@ -60,6 +60,7 @@ const ProblemPageView = ({ problem }) => {
     expected_time_type,
     expected_time_amount,
     actions,
+    cards,
     course,
     realm,
   } = problem;
@@ -72,7 +73,7 @@ const ProblemPageView = ({ problem }) => {
       </div>
       <Problem problem={problem} isInside />
 
-      <ExpandableComponent
+      {/* <ExpandableComponent
         name={"Source of Problem:"}
         icon={iconSource}
         children={
@@ -80,7 +81,7 @@ const ProblemPageView = ({ problem }) => {
             <ReactMarkdown children={source} />
           </div>
         }
-      />
+      /> */}
       <ExpandableComponent
         name={"Instant Solutions"}
         tag={"free"}
@@ -91,18 +92,18 @@ const ProblemPageView = ({ problem }) => {
         name={"Long-Term Solutions"}
         tag={"free"}
         icon={iconLongTerm}
-        children={<ActionsMapper actions={actions} />}
+        children={<CardsMapper cards={cards} />}
       />
       {/* <ExpandableComponent
         name={"Similar Problems:"}
         url={`${baseUrl}/similar.png`}
         children={<AlternateNames otherNames={other_names} />}
       /> */}
-      <ExpandableComponent
+      {/* <ExpandableComponent
         name={"Program to solve this problem"}
         icon={iconProgram}
         children={<Course course={course} />}
-      />
+      /> */}
     </div>
   );
 };

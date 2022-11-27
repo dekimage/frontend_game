@@ -35,11 +35,12 @@
   flex-wrap: wrap;
 }
 
-// .boxes {
-//   display: grid;
-//   grid-template-columns: repeat(2, minmax(150px, 2fr));
-//   grid-template-rows: repeat(2, minmax(150px, 2fr));
-// }
+.boxes {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(150px, 2fr));
+  grid-template-rows: repeat(2, minmax(150px, 2fr));
+}
 
 .box {
   position: relative;
@@ -57,7 +58,7 @@
   &_name {
     text-align: center;
     font-weight: 500;
-    padding: 1rem;
+    padding-top: 0.5rem;
   }
   &_quantity {
     @extend %flex_center;
@@ -143,7 +144,8 @@
     margin-bottom: 1rem;
   }
   &_amount {
-    @extend %subTitle;
+    // @extend %subTitle;
+    font-size: 28px;
     margin: 0.5rem 0;
   }
   &_bonus {
@@ -494,5 +496,39 @@
     background-color: rgba(0, 0, 0, 0.384);
     padding: 1rem;
     border-radius: $border_radius;
+  }
+}
+
+.proxySubs {
+  @extend %box_duo;
+  @extend %flex_between;
+  margin-top: 1rem;
+  flex-direction: column;
+
+  &_title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  &_price {
+    font-size: 24px;
+    font-weight: 500;
+    color: $secondary;
+    margin-bottom: 0.5rem;
+  }
+  &_benefit {
+    color: $actionize_gray_light;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  &_infinity {
+    position: absolute;
+    font-size: 60px;
+    top: -30px;
+    right: 20px;
+  }
+  &_image {
+    position: relative;
+    @extend %flex_center;
   }
 }

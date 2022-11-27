@@ -7,6 +7,9 @@
   margin: 0.5rem 0;
   // background-color: $actionize_gray;
   @extend %box_duo;
+  border: transparent;
+
+  margin: 0;
 }
 
 .id {

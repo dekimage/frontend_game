@@ -156,6 +156,11 @@ const Problems = () => {
   return (
     <div className="background_dark">
       <Header />
+      <div className="headerSpace"></div>
+
+      <div className="section">
+        <div className="header">Solve Your Problems</div>
+      </div>
 
       <div className="section">
         {error && <div>Error: {error}</div>}

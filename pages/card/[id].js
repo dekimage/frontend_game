@@ -6,26 +6,21 @@ import { useRouter } from "next/router";
 import _ from "lodash";
 import styles from "../../styles/CardPage.module.scss";
 
-import Modal from "../../components/Modal";
-import useModal from "../../hooks/useModal";
-
 import { Rarity } from "../../components/Rarity";
 
 import { Tabs } from "../../components/profileComps";
 
 import { normalize } from "../../utils/calculations";
 
-import { GET_USERCARDS_QUERY } from "../../GQL/query";
-import { GET_CARD_ID } from "../../GQL/query";
+import { GET_USERCARDS_QUERY, GET_CARD_ID } from "../../GQL/query";
 
 import {
-  ActionsWrapper,
   BasicActionsWrapper,
-  CreateActionModal,
   FavoriteButton,
   Title,
   CardCtaFooter,
 } from "../../components/cardPageComps";
+
 import { Curriculum } from "../course/[id]";
 import { BackButton } from "../../components/reusableUI";
 
@@ -37,9 +32,9 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
 
-  const { isShowing, openModal, closeModal } = useModal();
+  // const { isShowing, openModal, closeModal } = useModal();
 
-  const [activeTab, setActiveTab] = useState("community");
+  // const [activeTab, setActiveTab] = useState("community");
 
   const card = dataCard.card;
 
@@ -64,44 +59,46 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     return result;
   };
 
-  const tabsData = [
-    { label: "community", count: card?.communityactions?.length },
-    { label: "added", count: usercard?.community_actions_claimed?.length },
-    { label: "my", count: usercard?.my_community_actions?.length },
-  ];
+  // const tabsData = [
+  //   { label: "community", count: card?.communityactions?.length },
+  //   { label: "added", count: usercard?.community_actions_claimed?.length },
+  //   { label: "my", count: usercard?.my_community_actions?.length },
+  // ];
 
-  const communityActions =
-    dataUserCard &&
-    mergeActions(
-      usercard,
-      card.communityactions,
-      usercard.community_actions_claimed,
-      "is_claimed"
-    );
+  // const communityActions =
+  //   dataUserCard &&
+  //   mergeActions(
+  //     usercard,
+  //     card.communityactions,
+  //     usercard.community_actions_claimed,
+  //     "is_claimed"
+  //   );
 
-  const addedActions =
-    dataUserCard &&
-    mergeActions(
-      usercard,
-      usercard.community_actions_claimed,
-      usercard.community_actions_completed,
-      "is_completed"
-    );
+  // const addedActions =
+  //   dataUserCard &&
+  //   mergeActions(
+  //     usercard,
+  //     usercard.community_actions_claimed,
+  //     usercard.community_actions_completed,
+  //     "is_completed"
+  //   );
 
-  const myActions =
-    dataUserCard &&
-    mergeActions(
-      usercard,
-      usercard.my_community_actions,
-      usercard.community_actions_claimed,
-      "is_claimed"
-    );
+  // const myActions =
+  //   dataUserCard &&
+  //   mergeActions(
+  //     usercard,
+  //     usercard.my_community_actions,
+  //     usercard.community_actions_claimed,
+  //     "is_claimed"
+  //   );
 
   const cardToUserCourse = {
     last_completed_day: usercard.completed + 1,
     last_completed_content: 1,
     course: { id: 1 },
   };
+
+  console.log(card);
 
   return (
     <div className="section_container">
@@ -152,7 +149,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           mergeActions={mergeActions}
         />
       </div>
-      {isUnlocked && (
+      {/* {isUnlocked && (
         <>
           <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
 
@@ -197,7 +194,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             />
           )}
         </>
-      )}
+      )} */}
 
       {card && (
         <CardCtaFooter

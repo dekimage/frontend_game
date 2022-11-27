@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 // *** COMPONENTS ***
 import RewardImage from "../components/RewardImage";
@@ -20,6 +21,8 @@ import styles from "../styles/LevelRewards.module.scss";
 import { normalize } from "../utils/calculations";
 import { GET_REWARDS_QUERY } from "../GQL/query";
 
+import iconLock from "../assets/lock-white.svg";
+
 const LevelReward = ({
   level: {
     id,
@@ -29,6 +32,8 @@ const LevelReward = ({
     reward_amount,
     isCollected,
     isReadyToCollect,
+    is_premium,
+    artifact = false,
   },
 }) => {
   const [store, dispatch] = useContext(Context);
@@ -45,18 +50,15 @@ const LevelReward = ({
         amount={reward_amount}
         isCollected={isCollected}
         isReadyToCollect={isReadyToCollect}
+        isUserPremium={store.user.is_subscribed}
+        isPremium={is_premium}
+        artifact={artifact}
       />
-      {/* {isPremiumLock && <div>"Requires Premium"</div>} */}
-
-      {/* <div>{isCollected ? "COMPLETE DONE" : "NOT COMPLETE"}</div> */}
-
-      {/* <button
-        onClick={() =>
-          isReadyToCollect && collectLevelReward(dispatch, level)
-        }
-      >
-        {isReadyToCollect ? "ready to collect!" : "not ready yet"}
-      </button> */}
+      {isPremiumLock && (
+        <div className={styles.lock}>
+          <img src={iconLock} height="13px" />
+        </div>
+      )}
     </div>
   );
 };
@@ -84,7 +86,7 @@ const LevelRewardsTower = () => {
     levels.forEach((level) => {
       const isCollected =
         !!store.user.rewards_tower && !!store.user.rewards_tower[level.id];
-      const isReadyToCollect = store.user.level >= level.level;
+      const isReadyToCollect = store.user.level >= level.level && !isCollected;
 
       const isPremiumLock = !store.user.is_subscribed && level.is_premium;
       level.isCollected = isCollected;
@@ -114,10 +116,29 @@ const LevelRewardsTower = () => {
 
               <div className="mb1">Collect rewards for leveling up!</div>
               <div className={styles.header_ctabox}>
-                <div className="btn" style={{ width: "120px" }}>
-                  Free
+                <div
+                  className={styles.freeLabel}
+                  style={{ marginRight: "1rem" }}
+                >
+                  Free Tier
                 </div>
-                <div className="btn btn-wrong">Premium</div>
+                {store.user.is_subscribed ? (
+                  <div
+                    className={styles.freeLabel}
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    Pro Tier
+                  </div>
+                ) : (
+                  <Link href="/shop">
+                    <div
+                      className={`${styles.freeLabel} ${styles.premium}`}
+                      style={{ marginLeft: "1rem" }}
+                    >
+                      Unlock Premium
+                    </div>
+                  </Link>
+                )}
               </div>
             </div>
             <div className={styles.levelRewardsGrid}>

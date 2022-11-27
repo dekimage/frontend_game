@@ -13,6 +13,7 @@ import { Problem } from "../problems";
 import { Course } from "../../components/shopComps";
 import { normalize } from "../../utils/calculations";
 import { BackButton } from "../../components/reusableUI";
+import { joinCards } from "../../utils/joins";
 
 import { Book } from "../books";
 
@@ -24,44 +25,16 @@ const Cards = () => {
   const { data, loading, error } = useQuery(GET_REALM_ID, {
     variables: { id: router.query.id },
   });
-  const [tab, setTab] = useState("Cards");
+  // const [tab, setTab] = useState("Cards");
 
-  const tabsData = [
-    { label: "Cards", count: -1, link: "Cards" },
-    { label: "Problems", count: -1, link: "Problems" },
-    { label: "Books", count: -1, link: "Books" },
-  ];
+  // const tabsData = [
+  //   { label: "Cards", count: -1, link: "Cards" },
+  //   { label: "Problems", count: -1, link: "Problems" },
+  //   { label: "Books", count: -1, link: "Books" },
+  // ];
 
   const gql_data = data && normalize(data);
   const usercards = store.user && store.user.usercards;
-  const joinCards = (cards, usercards) => {
-    // remove as user will always have at least 1 usercard
-    if (!usercards) {
-      return cards;
-    }
-    const joinedCards = cards.map((card) => {
-      let collectionCard = usercards.filter(
-        (c) => c.card.id === parseInt(card.id)
-      );
-      if (collectionCard) {
-        const mergedCard = {
-          ...collectionCard[0],
-          id: card.id,
-          image: card.image,
-          is_open: card.is_open,
-          rarity: card.rarity,
-          type: card.type,
-          realm: card.realm,
-          cost: card.cost,
-          name: card.name,
-          expansion: card.expansion,
-        };
-        return mergedCard;
-      }
-      return card;
-    });
-    return joinedCards;
-  };
 
   return (
     <div className="background_dark">
@@ -84,25 +57,21 @@ const Cards = () => {
             </div>
           </div>
 
-          <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
+          {/* <Tabs tabState={tab} setTab={setTab} tabs={tabsData} /> */}
           <div className="section">
-            {tab === "Cards" && (
-              <>
-                <div className={styles.grid}>
-                  {store.user &&
-                    joinCards(gql_data.realm.cards, usercards)
-                      .sort((a, b) => b.is_open - a.is_open)
-                      .map((card, i) => <Card card={card} key={i} />)}
-                </div>
-                <div className={styles.problemsWrap}>
-                  {gql_data.realm.courses.map((course, i) => (
-                    <Course course={course} key={i} />
-                  ))}
-                </div>
-              </>
-            )}
+            <div className={styles.grid}>
+              {store.user &&
+                joinCards(gql_data.realm.cards, usercards)
+                  .sort((a, b) => b.is_open - a.is_open)
+                  .map((card, i) => <Card card={card} key={i} />)}
+            </div>
+            {/* <div className={styles.problemsWrap}>
+              {gql_data.realm.courses.map((course, i) => (
+                <Course course={course} key={i} />
+              ))}
+            </div> */}
 
-            {tab === "Problems" && (
+            {/* {tab === "Problems" && (
               <>
                 <div className={styles.sectionHeader}>
                   Common {gql_data.realm.name} Problems
@@ -121,7 +90,7 @@ const Cards = () => {
                   <Book book={book} key={i} />
                 ))}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}

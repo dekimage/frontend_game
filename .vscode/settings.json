@@ -1,0 +1,8 @@
+{
+  "files.exclude": {
+    "**/.svg": true
+  },
+  "search.exclude": {
+    "**/.svg": true
+  }
+}

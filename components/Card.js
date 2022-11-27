@@ -117,7 +117,7 @@ const Card = ({ card }) => {
         </div>
 
         <div className={styles.realmLogo}>
-          <img src={card.realm.image.url} />
+          {card.realm?.image && <img src={card.realm.image.url} />}
         </div>
 
         <div className={styles.image}>

@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookie from "js-cookie";
 
 const backendAPi = process.env.NEXT_PUBLIC_API_URL;
+// const backendAPi = "https://backend-actionise.herokuapp.com";
 
 const baseUrl = `${backendAPi}/api`;
 const userUrl = "/usercard";
@@ -40,6 +41,12 @@ export const loginApi = (identifier, password) =>
   );
 
 // ------
+
+export const resetUserApi = () => axios.put(`${userUrl}/reset-user`);
+
+//0. PROFILE PAGE
+export const claimArtifactApi = (artifactId) =>
+  axios.put(`${userUrl}/claim-artifact/${artifactId}`);
 
 // 1. HOME PAGE
 export const startQuizApi = () => axios.put(`${userUrl}/start-quiz`);

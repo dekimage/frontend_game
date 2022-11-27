@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../styles/ProgressBar.module.scss";
 import cx from "classnames";
-const ProgressBar = ({ progress, max, isReadyToClaim }) => {
+const ProgressBar = ({ progress, max, isReadyToClaim, withNumber }) => {
   // delete if numbers are correct
   let progressCapped = progress;
   if (progressCapped > max) {
@@ -13,7 +13,11 @@ const ProgressBar = ({ progress, max, isReadyToClaim }) => {
         className={cx([styles.filled], { [styles.action]: isReadyToClaim })}
         style={{ "--progress": (progressCapped / max) * 100 }}
       ></div>
-      <div className={styles.progressNumber}>{/* {progress || 0}/{max} */}</div>
+      {withNumber && (
+        <div className={styles.progressNumber}>
+          {progress || 0}/{max}
+        </div>
+      )}
     </div>
   );
 };

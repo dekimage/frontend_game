@@ -4,6 +4,10 @@ const Reducer = (store, action) => {
   switch (action.type) {
     case "OPEN_PLAYER":
       return { ...store, player: action.data };
+    case "LOADING":
+      return { ...store, isLoading: true };
+    case "SET_ERROR":
+      return { ...store, isLoading: false, error: action.data };
     case "UPDATE_TUTORIAL":
       return {
         ...store,
@@ -19,17 +23,18 @@ const Reducer = (store, action) => {
         ...store,
         user: action.data,
         isAuthenticated: true,
+        isLoading: false,
         notifications: {
-          streaks: calcRewardReady(
-            staticRewards.streaks,
-            action.data.highest_streak_count,
-            action.data.streak_rewards
-          ),
-          friends: calcRewardReady(
-            staticRewards.friends,
-            action.data.highest_buddy_shares,
-            action.data.friends_rewards
-          ),
+          // streaks: calcRewardReady(
+          //   staticRewards.streaks,
+          //   action.data.highest_streak_count,
+          //   action.data.streak_rewards
+          // ),
+          // friends: calcRewardReady(
+          //   staticRewards.friends,
+          //   action.data.highest_buddy_shares,
+          //   action.data.friends_rewards
+          // ),
           // levels: calcLevelRewards(
           //   action.data.level,
           //   action.data.rewards_tower,
@@ -52,25 +57,43 @@ const Reducer = (store, action) => {
           //   action.data.updatedRewards.quantity,
         },
       };
+
+      return {
+        ...store,
+        rewardsModal: {
+          box: action.data.data.box,
+          results: action.data.data.results,
+          isOpen: true,
+        },
+        user: {
+          ...store.user,
+          collection_json: action.data.collection_json,
+          stars: action.data.stars,
+          gems: action.data.gems,
+        },
+      };
+
+    case "CLAIM_ARTIFACT":
+      return { ...store };
+    // update artifact claimed + stats
+
     case "CLAIM_OBJECTIVE":
       return {
         ...store,
-        user: {
-          ...store.user,
-          objectives_json: action.data.user_objectives,
-          [action.data.updatedRewards.rewardType]:
-            action.data.updatedRewards.quantity,
+        rewardsModal: {
+          isOpen: true,
+          rewards: action.data.rewards,
         },
+        isLoading: false,
+        // user: {
+        //   ...store.user,
+        //   objectives_json: action.data.user_objectives,
+        //   xp: action.data.rewards.xp,
+        //   level: action.data.rewards.level,
+        //   stars: action.data.rewards.stars + store.user.stars,
+        // },
       };
-    case "EQUIP_ITEM":
-      return {
-        ...store,
-        user: {
-          ...store.user,
-          equipped_items: action.data.equipped_items,
-          inventory: action.data.inventory,
-        },
-      };
+
     case "UPDATE_CARD":
       return {
         ...store,
@@ -120,16 +143,14 @@ const Reducer = (store, action) => {
       return {
         ...store,
         rewardsModal: {
-          box: "",
-          results: [],
+          xp: null,
+          level: null,
+          stars: null,
+          artifact: null,
           isOpen: false,
         },
       };
-    case "UPDATE_USER_GLOBAL":
-      return {
-        ...store,
-        user: action.data,
-      };
+
     default:
       return store;
   }

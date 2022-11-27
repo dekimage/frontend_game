@@ -35,6 +35,10 @@ const Learn = () => {
       <div className="headerSpace"></div>
 
       <div className="section">
+        <div className="header">Explore Categories</div>
+      </div>
+
+      <div className="section">
         {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
         {gql_data && realmHash && (
@@ -43,7 +47,7 @@ const Learn = () => {
               <Realm realm={realm} key={i} />
             ))}
 
-            <ProblemsBox />
+            {/* <ProblemsBox /> */}
 
             {gql_data.realms.map((realm, i) => (
               <Realm

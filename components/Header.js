@@ -38,16 +38,16 @@ const mobileNavLinks = [
     link: "/shop",
   },
   {
-    icon: iconLearn,
-    activeIcon: iconLearnActive,
-    text: "Learn",
+    icon: iconCollection,
+    activeIcon: iconCollectionActive,
+    text: "Explore",
     link: "/learn",
   },
   {
-    icon: iconCollection,
-    activeIcon: iconCollectionActive,
-    text: "Collection",
-    link: "/collection",
+    icon: iconLearn,
+    activeIcon: iconLearnActive,
+    text: "Problems",
+    link: "/problems",
   },
   {
     icon: iconProfile,
@@ -93,7 +93,18 @@ const NavLink = ({ link, img, currency }) => {
     <Link href={`/${link}`}>
       <div className={styles.currency}>
         <img height="12px" src={`${baseUrl}/${img}`} />
-        <div>{store.user[currency]}</div>
+        {currency !== "energy" && <div>{store.user[currency]}</div>}
+        {currency === "energy" && (
+          <div>
+            {store.user.is_subscribed ? (
+              <div>&#8734;</div>
+            ) : (
+              <div>
+                {store.user[currency]} / {store.user.max_energy}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </Link>
   );

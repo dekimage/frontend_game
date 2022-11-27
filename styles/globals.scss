@@ -30,6 +30,8 @@ input {
 /* Medium.com TYPOGRAPHY*/
 .header {
   @extend %header;
+  font-size: 22px;
+  text-transform: capitalize;
 }
 
 .title {
@@ -469,6 +471,8 @@ ion-icon {
   position: relative;
   border-radius: $border_radius;
   max-width: 400px;
+  min-width: 200px;
+  min-height: 200px;
   height: auto;
   padding: 1rem;
   @extend %subTitle;

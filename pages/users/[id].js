@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 // *** COMPONENTS ***
 import NavBar from "../../components/NavBar";
 import { CommunityAction } from "../../components/cardPageComps";
+import { Artifact } from "../profile";
 import {
   Activity,
   Stat,
@@ -15,6 +16,8 @@ import {
   ProfileHeader,
   Tabs,
 } from "../../components/profileComps";
+
+import CardsMapper from "../../components/CardsMapper";
 
 import { normalize } from "../../utils/calculations";
 
@@ -32,7 +35,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const tabsData = [
   { label: "activity", count: -1 },
   { label: "buddies", count: -1 },
-  { label: "content", count: -1 },
+  { label: "artifacts", count: -1 },
 ];
 
 const User = () => {
@@ -46,10 +49,10 @@ const User = () => {
 
   const [tab, setTab] = useState("activity");
 
-  const completionProgress =
-    user?.usercards && calcTotal(user.usercards, "completed", true);
-  const collectionProgress =
-    user?.usercards && calcTotal(user.usercards, "collected", true);
+  // const completionProgress =
+  //   user?.usercards && calcTotal(user.usercards, "completed", true);
+  // const collectionProgress =
+  //   user?.usercards && calcTotal(user.usercards, "collected", true);
 
   const followers = store?.user?.followers;
 
@@ -58,7 +61,9 @@ const User = () => {
       {user && followers && (
         <div className="section-container">
           <ProfileHeader buddy={user} isBuddy />
-          <div className="flex_center mt1">
+
+          {/* FOLLOW */}
+          {/* <div className="flex_center mt1">
             {followers.filter((b) => b.id == user.id).length > 0 ? (
               <div
                 onClick={() => followBuddy(dispatch, user.id)}
@@ -74,20 +79,20 @@ const User = () => {
                 + Follow
               </div>
             )}
-          </div>
+          </div> */}
 
           <div className={styles.stats}>
             <Stat
-              number={collectionProgress}
+              number={user.stats?.card_unlock || 0}
               img={`${baseUrl}/legendary-cards.png`}
-              text={"Collection"}
-              isPercent
+              text={"Cards Unlocked"}
+              max={store.user.cards_count}
             />
             <Stat
-              number={completionProgress}
+              number={user.stats?.master_cards || 0}
               img={`${baseUrl}/rise.png`}
-              text={"Progress"}
-              isPercent
+              text={"Cards Completed"}
+              max={store.user.cards_count}
             />
             <Stat
               number={user.highest_streak_count}
@@ -95,15 +100,26 @@ const User = () => {
               text={"Highest Streak"}
             />
             <Stat
-              number={user.actions?.length}
+              number={user.stats?.action_complete || 0}
               img={`${baseUrl}/energy.png`}
               text={"Actions Done"}
+            />
+            <Stat
+              number={user.stats?.claimed_artifacts || 0}
+              img={`${baseUrl}/energy.png`}
+              text={"Artifacts"}
+              max={store.user.artifacts_count}
             />
           </div>
 
           <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
 
-          {tab === "activity" && <div className="section">collection...</div>}
+          {tab === "activity" && (
+            <div className="section">
+              <div>Last Completed Cards</div>
+              <CardsMapper cards={user.last_completed_cards} />
+            </div>
+          )}
 
           {tab === "buddies" && (
             <div className="section">
@@ -130,14 +146,17 @@ const User = () => {
             </div>
           )}
 
-          {tab === "content" && (
+          {tab === "artifacts" && (
             <div className="section">
               <div className={styles.header}>
-                <div>Created Actions</div> {user.communityactions?.length || 0}
+                <div>Artifacts</div> {user.stats?.claimed_artifacts || 0}/
+                {store.user.artifacts_count}
               </div>
-              {user.communityactions?.map((a) => (
-                <CommunityAction action={a} type={"my"} key={a.id} />
-              ))}
+              <div className={styles.artifactsWrapper}>
+                {store.user.artifacts.map((artifact, i) => {
+                  return <Artifact key={i} artifact={artifact} />;
+                })}
+              </div>
             </div>
           )}
         </div>

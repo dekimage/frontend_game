@@ -11,6 +11,7 @@ import ProgressBar from "../components/ProgressBar";
 import { followBuddy } from "../actions/action";
 
 import settingsIcon from "../assets/menu-settings-dark.svg";
+import { getXpLimit } from "../utils/calculations";
 
 // *** STYLES ***
 import styles from "../styles/Profile.module.scss";
@@ -18,7 +19,7 @@ import cx from "classnames";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export const Stat = ({ img, number, text, isPercent = false }) => {
+export const Stat = ({ img, number, text, max, isPercent = false }) => {
   return (
     <div className={styles.statsBox}>
       <div className={styles.statsBox_img}>
@@ -26,6 +27,7 @@ export const Stat = ({ img, number, text, isPercent = false }) => {
       </div>
       <div className={styles.statsBox_number}>
         {number}
+        {max && `/${max}`}
         {isPercent && "%"}
       </div>
       <div className={styles.statsBox_text}>{text}</div>
@@ -58,6 +60,7 @@ export const Buddy = ({ img, link, name, level }) => {
 export const ProfileHeader = ({ buddy, isBuddy = false }) => {
   const [store, dispatch] = useContext(Context);
   const user = isBuddy ? buddy : store.user;
+  const maxLevel = getXpLimit(user.level);
   return (
     <div className={styles.profileHeader}>
       <div className="ml1"></div>
@@ -74,9 +77,11 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
 
           <div className={styles.username}>{user.username}</div>
           <div className={styles.level_progress}>LEVEL {user.level}</div>
-          <ProgressBar progress={user.xp} max={50} />
+          <ProgressBar progress={user.xp} max={maxLevel} />
 
-          <div className={styles.xp}>XP {user.xp}/50</div>
+          <div className={styles.xp}>
+            XP {user.xp}/{maxLevel}
+          </div>
           {/* <div className="btn btn-action" onClick={() => followBuddy()}>
             Follow
           </div> */}
@@ -102,13 +107,16 @@ export const Tabs = ({
   callback = false,
   value = false,
 }) => {
-  const TabHoc = ({ children, tab, tabState, link }) => {
+  const tabWidth = tabs.length === 2 ? "50%" : "33.3%";
+
+  const TabHoc = ({ children, tab, tabState, link, tabWidth }) => {
     return (
       <div
         className={cx(
           styles.tabsButton,
           tabState === tab.label && styles.active
         )}
+        style={{ width: tabWidth }}
       >
         {link ? (
           <a href={link ? `#${link}` : ""}>
@@ -126,6 +134,7 @@ export const Tabs = ({
         tab={tab}
         tabState={tabState}
         link={link}
+        tabWidth={tabWidth}
         children={
           <div
             onClick={() => {
@@ -155,6 +164,7 @@ export const Tabs = ({
             setTab={setTab}
             tab={t}
             link={t.link}
+            tabWidth={tabWidth}
           />
         );
       })}

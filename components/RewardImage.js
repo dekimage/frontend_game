@@ -14,12 +14,13 @@ const RewardImage = ({
   isPremium = false,
   isUserPremium = false,
   isTask = false,
+  artifact,
 }) => {
   return (
     <div
       className={cx([styles.reward], {
         [styles.premium]: isPremium,
-        [styles.action]: isReadyToCollect && !isCollected,
+        [styles.action]: isReadyToCollect && !isCollected && isUserPremium,
         [styles.done]: isCollected,
         [styles.task]: isTask,
       })}
@@ -30,13 +31,10 @@ const RewardImage = ({
         </div>
       )}
 
-      {isPremium && !isUserPremium && (
-        <div className={styles.lock}>
-          <ion-icon name="lock-closed-outline"></ion-icon>
-        </div>
-      )}
-
       <div className={styles.reward_image}>
+        {reward == "loot" && (
+          <img height="8px" src={`${baseUrl}/loot-box.png`} />
+        )}
         {reward == "stars" && <img height="8px" src={`${baseUrl}/star.png`} />}
         {reward == "streak" && (
           <img height="8px" src={`${baseUrl}/streak.png`} />
@@ -44,9 +42,12 @@ const RewardImage = ({
         {reward == "gems" && (
           <img src={`${baseUrl}/gems.png`} height="12px" className="mb5" />
         )}
+        {reward == "artifact" && artifact?.image && (
+          <img src={`${baseUrl}${artifact.image.url}`} />
+        )}
       </div>
 
-      <div className={styles.reward_amount}>{amount}</div>
+      {amount > 1 && <div className={styles.reward_amount}>{amount || 1}</div>}
     </div>
   );
 };

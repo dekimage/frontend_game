@@ -23,10 +23,14 @@ const Objective = ({
     reward_amount,
     isCollected,
     progress,
+    is_premium,
   },
   dispatch,
+  isUserPremium,
 }) => {
   const timeColor = time_type === "daily" ? "#009c68" : "#1e67ac";
+  const premiumColor = "orange";
+  const isPremium = is_premium && !isUserPremium;
   return (
     <div
       className={cx(styles.objective, {
@@ -35,14 +39,25 @@ const Objective = ({
       })}
       key={id}
     >
-      <div
-        className={styles.objective_timeType}
-        style={{
-          backgroundColor: timeColor,
-        }}
-      >
-        {time_type}
-      </div>
+      {isPremium ? (
+        <div
+          className={styles.objective_timeType}
+          style={{
+            backgroundColor: premiumColor,
+          }}
+        >
+          Premium
+        </div>
+      ) : (
+        <div
+          className={styles.objective_timeType}
+          style={{
+            backgroundColor: timeColor,
+          }}
+        >
+          {time_type}
+        </div>
+      )}
       {/* REWARD COMPONENT */}
 
       <RewardImage reward={reward_type} amount={reward_amount} isTask={true} />
@@ -84,6 +99,7 @@ const Objective = ({
         onClick={() =>
           !isCollected &&
           progress >= requirement_amount &&
+          !isPremium &&
           claimObjective(dispatch, id)
         }
       >
@@ -97,7 +113,16 @@ const Objective = ({
         ) : (
           <>
             {progress >= requirement_amount ? (
-              <div className={styles.btn_objective__active}>Claim!</div>
+              isPremium ? (
+                <div
+                  className={styles.btn_objective__active}
+                  onClick={() => Router.push(`/shop`)}
+                >
+                  Upgrade
+                </div>
+              ) : (
+                <div className={styles.btn_objective__active}>Claim!</div>
+              )
             ) : (
               <div
                 className={styles.btn_objective__disabled}

@@ -40,7 +40,7 @@
 .activityBox {
   border: 2px solid $actionize_gray;
   border-radius: $border_radius;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   padding: 1rem;
   cursor: pointer;
   @extend %flex_center;
@@ -92,11 +92,8 @@
 }
 .objectivesHeadline {
   @extend %flex_between;
+  margin-top: 1rem;
 
-  &_text {
-    @extend %header;
-    margin-left: 0.25rem;
-  }
   &_number {
     font-size: 18px;
     font-weight: 500;
@@ -258,7 +255,7 @@
   border-radius: $border_radius;
   padding: 0.5rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   // gap: 1rem;
 }
 .objectiveTab {
@@ -344,4 +341,9 @@
 .progressCircle {
   height: 50px;
   width: 50px;
+}
+
+.favoritesToday {
+  @extend %box_duo;
+  justify-content: center;
 }

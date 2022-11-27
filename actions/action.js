@@ -12,14 +12,61 @@ export const actionCreator = (dispatch, apiFunc, type, data) => {
     });
 };
 
+export const resetUser = (dispatch) => {
+  dispatch({ type: "LOADING" });
+  api
+    .resetUserApi()
+    .then((res) => {
+      fetchUser(dispatch);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+//0. Fetch User
+export const fetchUser = (dispatch) => {
+  dispatch({ type: "LOADING" });
+  api
+    .fetchUserApi()
+    .then((response) => {
+      // console.log(response.data);
+      dispatch({ type: "FETCH_USER", data: response.data });
+    })
+    .catch((err) => {
+      console.log(err);
+      // router.push(`/login`);
+    });
+};
+
+// 0. PROFILE PAGE
+
+export const claimArtifact = (dispatch, artifactId) => {
+  dispatch({ type: "LOADING" });
+  api
+    .claimArtifactApi(artifactId)
+    .then(({ data }) => {
+      dispatch({ type: "CLAIM_ARTIFACT", data });
+      fetchUser(dispatch);
+    })
+    .catch((err) => {
+      dispatch({ type: "SET_ERROR", data: err });
+      console.log(err);
+    });
+};
+
 // 1. HOME PAGE
+
 export const claimObjective = (dispatch, objectiveId) => {
+  dispatch({ type: "LOADING" });
   api
     .claimObjectiveApi(objectiveId)
     .then(({ data }) => {
       dispatch({ type: "CLAIM_OBJECTIVE", data });
+      fetchUser(dispatch);
     })
     .catch((err) => {
+      dispatch({ type: "SET_ERROR", data: err });
       console.log(err);
     });
 };
@@ -137,6 +184,9 @@ export const updateCard = (dispatch, cardId, action) => {
     .updateCardApi(cardId, action)
     .then(({ data }) => {
       dispatch({ type: "UPDATE_CARD", data });
+      if (action === "favorite") {
+        toast("Favorited. View all favorites here link...");
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -241,7 +291,7 @@ export const interactCommunityAction = (dispatch, actionId, intent) => {
     });
 };
 
-// 6. ACTIONS FROM CARD ORIGINAL
+// 6. ACTIONS FROM CARD ORIGINAL (QUIZ)
 export const completeAction = (dispatch, actionId, intent) => {
   api
     .completeActionApi(actionId, intent)

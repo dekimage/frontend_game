@@ -18,6 +18,7 @@
     width: 30px;
     height: 30px;
   }
+
   img {
     position: absolute;
     top: 0.3rem;
@@ -32,7 +33,7 @@
     background-color: $actionize_black;
   }
   &.premium {
-    border: 3px solid $ux_red;
+    // border: 3px solid $ux_red;
   }
   &.action {
     border: 3px solid $secondary;
@@ -57,21 +58,6 @@
   img {
     height: 30px;
     width: 30px;
-    opacity: 100% !important;
-  }
-}
-
-.lock {
-  position: absolute;
-  top: 60%;
-  left: 75%;
-  background-color: $actionize_gray;
-  border: 2px solid $premium_color;
-  border-radius: $border_radius;
-  padding: 0.1rem;
-  img {
-    height: 20px;
-    width: 20px;
     opacity: 100% !important;
   }
 }

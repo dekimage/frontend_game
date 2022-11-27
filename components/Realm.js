@@ -15,12 +15,12 @@ export const Realm = ({ realm, completed, collected }) => {
         <div className={styles.realm_body}>
           <div className={styles.realm_name}>{realm.name}</div>
           <div className={styles.realm_description}>{realm.description}</div>
-          <ProgressBox
+          {/* <ProgressBox
             icon={iconPlay}
             progress={completed || 0}
             maxProgress={100}
             isPercent
-          />
+          /> */}
         </div>
         <div className={styles.realm_image}>
           {realm.image && <img className="image" src={realm.image.url} />}
