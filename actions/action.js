@@ -24,6 +24,20 @@ export const resetUser = (dispatch) => {
     });
 };
 
+// QUERY
+// Random Card GET
+// export const getRandomCard = (dispatch) => {
+//   dispatch({ type: "LOADING" });
+//   api
+//     .getRandomCardApi()
+//     .then((response) => {
+//       dispatch({ type: "FETCH_USER", data: response.data });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
 //0. Fetch User
 export const fetchUser = (dispatch) => {
   dispatch({ type: "LOADING" });
@@ -36,6 +50,21 @@ export const fetchUser = (dispatch) => {
     .catch((err) => {
       console.log(err);
       // router.push(`/login`);
+    });
+};
+
+// AVATAR SAVE
+export const saveAvatar = (dispatch, avatarId) => {
+  dispatch({ type: "LOADING" });
+  api
+    .saveAvatarApi(avatarId)
+    .then(({ data }) => {
+      dispatch({ type: "SAVE_AVATAR", data });
+      fetchUser(dispatch);
+    })
+    .catch((err) => {
+      dispatch({ type: "SET_ERROR", data: err });
+      console.log(err);
     });
 };
 

@@ -1,21 +1,16 @@
 import { useQuery } from "@apollo/react-hooks";
-import { Context } from "../../context/store";
 import { useRouter } from "next/router";
 
-import Link from "next/link";
-import _ from "lodash";
 // import styles from "../../styles/Problem.module.scss";
 import ReactMarkdown from "react-markdown";
 import { Action } from "../../components/cardPageComps";
 
-import NavBar from "../../components/NavBar";
 import ExpandableComponent from "../../components/ExpandableComponent";
-import { normalize } from "../../utils/calculations";
+import NavBar from "../../components/NavBar";
 import { Course } from "../../components/shopComps";
+import { normalize } from "../../utils/calculations";
 
 import { GET_BOOK_ID } from "../../GQL/query";
-
-import iconSource from "../../assets/source.svg";
 
 import styles from "../../styles/Book.module.scss";
 

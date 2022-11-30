@@ -86,8 +86,14 @@ const Home = () => {
           <div className="section">
             <RewardLink
               img={`${baseUrl}/favorite.png`}
-              link={"/favorites"}
+              link={"/"}
               text={"Favorites"}
+              notification={store.notifications.levels}
+            />
+            <RewardLink
+              img={`${baseUrl}/random.png`}
+              link={"/random"}
+              text={"Random"}
               notification={store.notifications.levels}
             />
             <RewardLink

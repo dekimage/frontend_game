@@ -205,3 +205,28 @@
     height: 100px;
   }
 }
+
+.avatarModal {
+  color: white;
+  @extend %flex_center;
+  flex-direction: column;
+}
+.avatarWrapper {
+  @extend %flex_center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.avatar {
+  padding: 0.5rem;
+  margin: 0.25rem;
+  @extend %flex_center;
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  border: 2px solid $actionize_black;
+  background-color: $actionize_gray_light;
+  &.active {
+    border: 3px solid $secondary;
+    box-shadow: $readyToCollect;
+  }
+}

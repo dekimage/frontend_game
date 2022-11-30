@@ -3,12 +3,15 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import Link from "next/link";
 import router from "next/router";
+import { useQuery } from "@apollo/react-hooks";
+import { GET_AVATARS } from "../GQL/query";
+import { normalize } from "../utils/calculations";
 
 // *** COMPONENTS ***
 import ProgressBar from "../components/ProgressBar";
 
 // *** ACTIONS ***
-import { followBuddy } from "../actions/action";
+import { saveAvatar } from "../actions/action";
 
 import settingsIcon from "../assets/menu-settings-dark.svg";
 import { getXpLimit } from "../utils/calculations";
@@ -16,6 +19,9 @@ import { getXpLimit } from "../utils/calculations";
 // *** STYLES ***
 import styles from "../styles/Profile.module.scss";
 import cx from "classnames";
+import useModal from "../hooks/useModal";
+import Modal from "./Modal";
+import { ImageUI } from "./reusableUI";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -57,8 +63,70 @@ export const Buddy = ({ img, link, name, level }) => {
   );
 };
 
+const AvatarImage = ({ avatar, setSelected, selected }) => {
+  const isSelected = avatar.image.id == selected?.image.id;
+  return (
+    <div
+      className={cx([styles.avatar], {
+        [styles.active]: isSelected,
+      })}
+      onClick={() => setSelected(avatar)}
+    >
+      <ImageUI
+        imgUrl={avatar.image.url}
+        height="50px"
+        className={styles.avatar_image}
+      />
+      {/* <div className={styles.avatar_name}>{avatar.name}</div> */}
+      {/* <div className={styles.avatar_require}>{avatar.require_level}</div>
+      <div className={styles.avatar_require}>{avatar.require_artifact}</div>
+      <div className={styles.avatar_isOpen}>{avatar.is_open}</div> */}
+    </div>
+  );
+};
+
+const ChangeAvatarModal = ({ closeModal }) => {
+  const { data, loading, error } = useQuery(GET_AVATARS);
+  const [selected, setSelected] = useState();
+  const [store, dispatch] = useContext(Context);
+  const avatars = data && normalize(data).avatars;
+
+  return (
+    <div className={styles.avatarModal}>
+      {loading || (error && <div>Loading...</div>)}
+      <div className="header">Change Avatar</div>
+      {avatars && (
+        <div className={styles.avatarWrapper}>
+          {avatars.map((a, i) => {
+            return (
+              <AvatarImage
+                avatar={a}
+                key={i}
+                setSelected={setSelected}
+                selected={selected}
+              />
+            );
+          })}
+        </div>
+      )}
+      <div
+        className={`btn btn-${selected ? "success" : "disabled"} mt1`}
+        onClick={() => {
+          if (selected) {
+            saveAvatar(dispatch, selected.id);
+          }
+          closeModal();
+        }}
+      >
+        Save
+      </div>
+    </div>
+  );
+};
+
 export const ProfileHeader = ({ buddy, isBuddy = false }) => {
   const [store, dispatch] = useContext(Context);
+  const { isShowing, openModal, closeModal } = useModal();
   const user = isBuddy ? buddy : store.user;
   const maxLevel = getXpLimit(user.level);
   return (
@@ -70,7 +138,8 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
             <div className={styles.level}>{user.level}</div>
             <img
               // src={`${baseUrl}/${store.user.image.url}`
-              src={`${baseUrl}/avatar-test.png`}
+              onClick={openModal}
+              src={`${baseUrl}${user.avatar.image.url}`}
               height="66px"
             />
           </div>
@@ -96,6 +165,11 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
           </Link>
         )}
       </div>
+      <Modal
+        isShowing={isShowing}
+        closeModal={closeModal}
+        jsx={<ChangeAvatarModal closeModal={closeModal} />}
+      />
     </div>
   );
 };

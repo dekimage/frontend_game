@@ -61,7 +61,7 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
               {is_collected ? (
                 <img src={`${baseUrl}/checked.png`} height="20px" />
               ) : (
-                <img src={`${baseUrl}${reward.image.url}`} />
+                reward.image && <img src={`${baseUrl}${reward.image.url}`} />
               )}
               {!is_collected && (
                 <div className={styles.streak_amount}>

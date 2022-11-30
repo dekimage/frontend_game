@@ -14,6 +14,8 @@ import { normalize } from "../../utils/calculations";
 
 import { GET_USERCARDS_QUERY, GET_CARD_ID } from "../../GQL/query";
 
+import { updateCard } from "../../actions/action";
+
 import {
   BasicActionsWrapper,
   FavoriteButton,
@@ -23,6 +25,7 @@ import {
 
 import { Curriculum } from "../course/[id]";
 import { BackButton } from "../../components/reusableUI";
+import ProgressBar from "../../components/ProgressBar";
 
 const CardPage = ({ dataUserCard, dataCard }) => {
   const [store, dispatch] = useContext(Context);
@@ -31,8 +34,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     proxy: true,
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
-
-  // const { isShowing, openModal, closeModal } = useModal();
 
   // const [activeTab, setActiveTab] = useState("community");
 
@@ -58,39 +59,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     });
     return result;
   };
-
-  // const tabsData = [
-  //   { label: "community", count: card?.communityactions?.length },
-  //   { label: "added", count: usercard?.community_actions_claimed?.length },
-  //   { label: "my", count: usercard?.my_community_actions?.length },
-  // ];
-
-  // const communityActions =
-  //   dataUserCard &&
-  //   mergeActions(
-  //     usercard,
-  //     card.communityactions,
-  //     usercard.community_actions_claimed,
-  //     "is_claimed"
-  //   );
-
-  // const addedActions =
-  //   dataUserCard &&
-  //   mergeActions(
-  //     usercard,
-  //     usercard.community_actions_claimed,
-  //     usercard.community_actions_completed,
-  //     "is_completed"
-  //   );
-
-  // const myActions =
-  //   dataUserCard &&
-  //   mergeActions(
-  //     usercard,
-  //     usercard.my_community_actions,
-  //     usercard.community_actions_claimed,
-  //     "is_claimed"
-  //   );
 
   const cardToUserCourse = {
     last_completed_day: usercard.completed + 1,
@@ -131,7 +99,22 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
         </div>
 
-        <Rarity rarity={card.rarity} />
+        <div
+          className="btn btn-primary mb1"
+          onClick={() => updateCard(dispatch, card.id, "complete")}
+        >
+          Complete Card
+        </div>
+
+        {/* <Rarity rarity={card.rarity} /> */}
+
+        <Rarity rarity={usercard.league} />
+
+        <ProgressBar
+          progress={usercard.completed}
+          max={usercard.completed_progress_max}
+          withNumber
+        />
 
         <div className={styles.description}>{card.description}</div>
 
@@ -149,52 +132,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           mergeActions={mergeActions}
         />
       </div>
-      {/* {isUnlocked && (
-        <>
-          <Tabs tabState={activeTab} setTab={setActiveTab} tabs={tabsData} />
-
-          {activeTab === "community" && card.communityactions && (
-            <ActionsWrapper
-              actions={card.communityactions}
-              label={"Community Actions"}
-              type={"community"}
-              openModal={openModal}
-              emptyDescription={
-                "Be the first one to create a community action."
-              }
-            />
-          )}
-
-          {activeTab === "my" && (
-            <ActionsWrapper
-              actions={myActions}
-              label={"My Actions"}
-              type={"my"}
-              openModal={openModal}
-              emptyDescription={
-                "You haven't created any actions for this card."
-              }
-            />
-          )}
-          {activeTab === "added" && (
-            <ActionsWrapper
-              actions={addedActions}
-              label={"Added Actions"}
-              type={"added"}
-              openModal={openModal}
-              emptyDescription={" You don't have any added actions yet."}
-            />
-          )}
-
-          {isShowing && (
-            <Modal
-              isShowing={isShowing}
-              closeModal={closeModal}
-              jsx={<CreateActionModal closeModal={closeModal} card={card} />}
-            />
-          )}
-        </>
-      )} */}
 
       {card && (
         <CardCtaFooter

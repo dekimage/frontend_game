@@ -1,5 +1,37 @@
 import { gql } from "apollo-boost";
 
+export const GET_AVATARS = gql`
+  query {
+    avatars {
+      data {
+        id
+        attributes {
+          name
+          is_open
+          require_level
+          require_artifact
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
+    }
+  }
+`;
+
 export const GET_ARTIFACTS_QUERY = gql`
   query {
     artifacts(pagination: { limit: 100 }) {
@@ -93,7 +125,7 @@ export const GET_CARD_PLAYER = gql`
           }
           slides {
             id
-            question
+
             idea_title
             idea_content
             image {
@@ -124,10 +156,12 @@ export const GET_USERCARDS_QUERY = gql`
           is_favorite
           level
           completed
+          completed_progress_max
           quantity
           is_new
           glory_points
           is_unlocked
+          league
           card {
             data {
               id
@@ -155,14 +189,7 @@ export const GET_USERCARDS_QUERY = gql`
                     }
                   }
                 }
-                expansion {
-                  data {
-                    id
-                    attributes {
-                      name
-                    }
-                  }
-                }
+
                 actions {
                   data {
                     id
@@ -373,14 +400,7 @@ export const GET_CARD_ID = gql`
               }
             }
           }
-          expansion {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
+
           days {
             id
             index
@@ -417,14 +437,6 @@ export const GET_CARD_ID = gql`
                         }
                       }
                     }
-                  }
-                }
-              }
-              question {
-                data {
-                  id
-                  attributes {
-                    name
                   }
                 }
               }
@@ -573,7 +585,7 @@ export const GET_REALM_ID = gql`
                   duration
                   actions
                   concepts
-                  questions
+
                   sessions
                   days
                 }
@@ -609,14 +621,7 @@ export const GET_REALM_ID = gql`
                     }
                   }
                 }
-                expansion {
-                  data {
-                    id
-                    attributes {
-                      name
-                    }
-                  }
-                }
+
                 realm {
                   data {
                     id
@@ -1542,14 +1547,6 @@ export const GET_REALMS = gql`
               }
             }
           }
-          expansion {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
         }
       }
       meta {
@@ -1620,14 +1617,6 @@ export const GET_BOX_ID = gql`
             data {
               attributes {
                 url
-              }
-            }
-          }
-          expansion {
-            data {
-              id
-              attributes {
-                name
               }
             }
           }
@@ -1777,14 +1766,6 @@ export const GET_BOXES = gql`
               }
             }
           }
-          expansion {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
         }
       }
       meta {
@@ -1826,26 +1807,6 @@ export const GET_BOXES = gql`
           pageSize
           total
           pageCount
-        }
-      }
-    }
-
-    expansion(id: 2) {
-      data {
-        id
-        attributes {
-          name
-          description
-          price
-          discount_price
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
         }
       }
     }

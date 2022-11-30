@@ -45,6 +45,9 @@ export const loginApi = (identifier, password) =>
 export const resetUserApi = () => axios.put(`${userUrl}/reset-user`);
 
 //0. PROFILE PAGE
+
+export const saveAvatarApi = (avatarId) =>
+  axios.put(`${userUrl}/save-avatar/${avatarId}`);
 export const claimArtifactApi = (artifactId) =>
   axios.put(`${userUrl}/claim-artifact/${artifactId}`);
 

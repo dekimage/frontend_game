@@ -1,0 +1,31 @@
+{
+  "For Loop": {
+    "prefix": ["Template", "for-const"],
+    "body": ["for (const ${2:element} of ${1:array}) {", "\t$0", "}"],
+    "description": "A for loop."
+  },
+  "GraphQl Data": {
+    "prefix": ["gql"],
+    "body": [
+      "const { data, loading, error } = useQuery(GET_REALMS);",
+      "const gql_data = data && normalize(data);"
+    ],
+    "description": "Gql data boilerplate"
+  },
+  "Import GQL": {
+    "prefix": ["igql"],
+    "body": [
+      "import { useQuery } from \"@apollo/react-hooks\";",
+      "import { ${1:GQL_QUERY} } from \"../GQL/query\";",
+      "import { normalize } from \"../utils/calculations\";"
+    ],
+    "description": "Import Gql boilerplate"
+  },
+  "Component": {
+    "prefix": ["comp"],
+    "body": [
+      "const ${1:Component} = ({${2:props}}) => { return ( <div className={styles.${3:classname}}>$0</div>) }"
+    ],
+    "description": "Functional Component"
+  }
+}
