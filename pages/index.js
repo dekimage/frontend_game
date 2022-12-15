@@ -90,12 +90,12 @@ const Home = () => {
               text={"Favorites"}
               notification={store.notifications.levels}
             />
-            <RewardLink
+            {/* <RewardLink
               img={`${baseUrl}/random.png`}
               link={"/random"}
               text={"Random"}
               notification={store.notifications.levels}
-            />
+            /> */}
             <RewardLink
               img={`${baseUrl}/streak.png`}
               link={"/recent"}

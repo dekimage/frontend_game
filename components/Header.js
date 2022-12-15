@@ -77,11 +77,6 @@ const currencies = [
   },
   {
     link: "shop",
-    currency: "gems",
-    img: "gems.png",
-  },
-  {
-    link: "shop",
     currency: "stars",
     img: "stars.png",
   },

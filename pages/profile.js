@@ -223,36 +223,38 @@ const Profile = () => {
           <div className="headerSpace"></div>
           <ProfileHeader />
 
-          <div className={styles.stats}>
-            <Stat
-              number={store.user.stats.card_unlock}
-              img={`${baseUrl}/legendary-cards.png`}
-              text={"Cards Unlocked"}
-              max={store.user.cards_count}
-            />
-            <Stat
-              number={store.user.stats.master_cards}
-              img={`${baseUrl}/rise.png`}
-              text={"Cards Completed"}
-              max={store.user.cards_count}
-            />
-            <Stat
-              number={store.user.highest_streak_count}
-              img={`${baseUrl}/streak.png`}
-              text={"Highest Streak"}
-            />
-            <Stat
-              number={store.user.stats.action_complete}
-              img={`${baseUrl}/energy.png`}
-              text={"Actions Done"}
-            />
-            <Stat
-              number={store.user.stats.claimed_artifacts || 0}
-              img={`${baseUrl}/energy.png`}
-              text={"Artifacts"}
-              max={store.user.artifacts_count}
-            />
-          </div>
+          {store.user.stats && (
+            <div className={styles.stats}>
+              <Stat
+                number={store.user.stats.card_unlock}
+                img={`${baseUrl}/legendary-cards.png`}
+                text={"Cards Unlocked"}
+                max={store.user.cards_count}
+              />
+              <Stat
+                number={store.user.stats.master_cards}
+                img={`${baseUrl}/rise.png`}
+                text={"Cards Completed"}
+                max={store.user.cards_count}
+              />
+              <Stat
+                number={store.user.highest_streak_count}
+                img={`${baseUrl}/streak.png`}
+                text={"Highest Streak"}
+              />
+              <Stat
+                number={store.user.stats.action_complete}
+                img={`${baseUrl}/energy.png`}
+                text={"Actions Done"}
+              />
+              <Stat
+                number={store.user.stats.claimed_artifacts || 0}
+                img={`${baseUrl}/energy.png`}
+                text={"Artifacts"}
+                max={store.user.artifacts_count}
+              />
+            </div>
+          )}
 
           <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
 
