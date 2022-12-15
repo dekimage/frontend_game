@@ -86,7 +86,7 @@ const Home = () => {
           <div className="section">
             <RewardLink
               img={`${baseUrl}/favorite.png`}
-              link={"/"}
+              link={"/favorites"}
               text={"Favorites"}
               notification={store.notifications.levels}
             />

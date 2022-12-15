@@ -1750,34 +1750,6 @@ export const GET_USER_ID = gql`
 
 export const GET_BOXES = gql`
   query {
-    boxes {
-      data {
-        id
-        attributes {
-          name
-          description
-          require
-          price
-          price_type
-          image {
-            data {
-              attributes {
-                url
-              }
-            }
-          }
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          total
-          pageCount
-        }
-      }
-    }
-
     products {
       data {
         id
