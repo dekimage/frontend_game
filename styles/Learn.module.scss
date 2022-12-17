@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 112px;
+  height: 90px;
   margin-bottom: 24px;
   // background-color: $actionize_gray;
   border: 2px solid $actionize_gray;
@@ -26,7 +26,8 @@
 }
 
 .realm_name {
-  font-size: 24px;
+  font-size: 20px;
+  padding-bottom: 8px;
   font-weight: 500;
   color: white;
 }
@@ -38,11 +39,11 @@
 }
 
 .realm_image {
-  width: 112px;
-  height: 112px;
+  width: 80px;
+  height: 80px;
   @extend %flex_center;
   img {
-    height: 65px;
+    height: 45px;
   }
 }
 .realm_progressBox {
