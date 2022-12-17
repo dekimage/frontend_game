@@ -17,7 +17,9 @@
 
 .realm_body {
   width: 100%;
+
   padding: 12px;
+  padding-top: 40px;
   padding-right: 0;
   @extend %flex_between;
   flex-direction: column;
@@ -25,13 +27,13 @@
 }
 
 .realm_name {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
   color: white;
 }
 
 .realm_description {
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 4px;
   margin-bottom: 8px;
   color: rgb(214, 214, 214);
