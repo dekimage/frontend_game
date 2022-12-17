@@ -19,9 +19,8 @@
   width: 100%;
 
   padding: 12px;
-  padding-top: 40px;
   padding-right: 0;
-  @extend %flex_between;
+  @extend %flex_start;
   flex-direction: column;
   align-items: flex-start;
 }
@@ -34,8 +33,7 @@
 
 .realm_description {
   font-size: 14px;
-  margin-top: 4px;
-  margin-bottom: 8px;
+
   color: rgb(214, 214, 214);
 }
 
