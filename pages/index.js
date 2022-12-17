@@ -14,13 +14,15 @@ import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import { TutorialModal } from "../components/todayComp";
 
+import { Tabs } from "../components/profileComps";
+
 import RewardsModal from "../components/RewardsModal";
 import { RewardLink } from "../components/todayComp";
 
 // *** FUNCTIONS ***
 import { normalize } from "../utils/calculations";
 import { joinObjectives } from "../functions/todayFunc";
-import { resetUser } from "../actions/action";
+import { resetUser, acceptReferral } from "../actions/action";
 
 // *** GQL ***
 import { GET_OBJECTIVES_QUERY } from "../GQL/query";
@@ -34,12 +36,18 @@ const calculateNotifications = () => {
   return 2;
 };
 
+const tabsData = [
+  { label: "daily", count: -1 },
+  { label: "weekly", count: -1 },
+];
+
 const Home = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_OBJECTIVES_QUERY);
   const gql_data = data && normalize(data);
 
   const { isShowing, openModal, closeModal } = useModal();
+  const [tab, setTab] = useState("Daily");
 
   const objectivesData =
     gql_data &&
@@ -68,59 +76,57 @@ const Home = () => {
       {store && store.user?.usercourses && gql_data && (
         <div>
           {/* WELCOME */}
-          <div className="section">
-            <div className={styles.header}>
+          {/* <div className="section"> */}
+          {/* <div className={styles.header}>
               Welcome back, {store.user.username}
-            </div>
-            {/* <div
+            </div> */}
+          {/* <div
               className="btn btn-primary"
               onClick={() => resetUser(dispatch)}
             >
               Reset User
             </div> */}
-          </div>
+          {/* </div> */}
 
           {/* OBJECTIVES FILTERS */}
 
           {/* OBJECTIVES SECTION*/}
-          <div className="section">
-            <RewardLink
-              img={`${baseUrl}/favorite.png`}
-              link={"/favorites"}
-              text={"Favorites"}
-              notification={store.notifications.levels}
-            />
-            {/* <RewardLink
-              img={`${baseUrl}/random.png`}
-              link={"/random"}
-              text={"Random"}
-              notification={store.notifications.levels}
-            /> */}
-            <RewardLink
-              img={`${baseUrl}/streak.png`}
-              link={"/recent"}
-              text={"Recent"}
-              notification={store.notifications.streaks}
-            />
-            <div className={styles.objectivesHeadline}>
-              <div className="header">
-                {/* {objectivesTabOpen}  */}
-                Objectives
+          <div>
+            {!store.user.is_referral_accepted && (
+              <div
+                className="btn btn-action"
+                onClick={() => acceptReferral(dispatch)}
+              >
+                Claim Buddy Reward
               </div>
+            )}
+            <div className="section">
+              <div className={styles.objectivesHeadline}>
+                <div className="header">Objectives</div>
 
-              {/* FIXME: */}
-              <span className={styles.objectivesHeadline_number}>
-                {getCompletedObjectivesCount(objectivesData, objectivesTabOpen)}
-                /
-                {
-                  objectivesData.filter(
-                    (o) => o.time_type === objectivesTabOpen
-                  ).length
-                }
-              </span>
+                {/* FIXME: */}
+                <span className={styles.objectivesHeadline_number}>
+                  {getCompletedObjectivesCount(
+                    objectivesData,
+                    objectivesTabOpen
+                  )}
+                  /
+                  {
+                    objectivesData.filter(
+                      (o) => o.time_type === objectivesTabOpen
+                    ).length
+                  }
+                </span>
+              </div>
             </div>
             <div>
-              <div className={styles.objectiveTabsGrid}>
+              <Tabs
+                tabState={objectivesTabOpen}
+                setTab={setObjectivesTabOpen}
+                tabs={tabsData}
+              />
+
+              {/* <div className={styles.objectiveTabsGrid}>
                 <div
                   className={cx(styles.objectiveTab, {
                     [styles.active]: objectivesTabOpen == "daily",
@@ -152,26 +158,49 @@ const Home = () => {
                     )}
                   </div>
                 </div>
-              </div>
+              </div>*/}
             </div>
 
             {gql_data && (
-              <div>
-                {objectivesData
-                  .filter((o) => o.time_type === objectivesTabOpen)
-                  .map((obj, i) => (
-                    <Objective
-                      objective={obj}
-                      dispatch={dispatch}
-                      isUserPremium={store.user.is_subscribed}
-                      key={i}
-                    />
-                  ))}
+              <div className="section">
+                <div>
+                  {objectivesData
+                    .filter((o) => o.time_type === objectivesTabOpen)
+                    .map((obj, i) => (
+                      <Objective
+                        objective={obj}
+                        dispatch={dispatch}
+                        isUserPremium={store.user.is_subscribed}
+                        key={i}
+                      />
+                    ))}
+                </div>
               </div>
             )}
           </div>
         </div>
       )}
+
+      <div className="section">
+        <RewardLink
+          img={`${baseUrl}/favorite.png`}
+          link={"/favorites"}
+          text={"Favorites"}
+          notification={store.notifications.levels}
+        />
+        {/* <RewardLink
+              img={`${baseUrl}/random.png`}
+              link={"/random"}
+              text={"Random"}
+              notification={store.notifications.levels}
+            /> */}
+        <RewardLink
+          img={`${baseUrl}/streak.png`}
+          link={"/recent"}
+          text={"Recent"}
+          notification={store.notifications.streaks}
+        />
+      </div>
 
       {store?.user?.tutorial_step > 0 && (
         <Modal

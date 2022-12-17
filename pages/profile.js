@@ -321,6 +321,7 @@ const Profile = () => {
                 />
                 Share Buddy Link
               </div>
+              <div>Link: http://localhost:3000/login?ref={store.user.id}</div>
             </div>
           )}
 

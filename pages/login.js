@@ -129,7 +129,13 @@ const Login = () => {
               <div
                 onClick={() => {
                   setLoading(true);
-                  signup(dispatch, data.username, data.email, data.password);
+                  signup(
+                    dispatch,
+                    data.username,
+                    data.email,
+                    data.password,
+                    router.query.ref && router.query.ref
+                  );
                 }}
                 className="btn btn-stretch btn-primary"
               >

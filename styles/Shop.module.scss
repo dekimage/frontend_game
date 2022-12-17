@@ -1,6 +1,25 @@
 @import "placeholders";
 @import "variables";
 
+.proLabel {
+  // background: linear-gradient(
+  //   49deg,
+  //   rgba(179, 51, 233, 1) 0%,
+  //   rgba(128, 255, 219, 1) 89%,
+  //   rgba(53, 212, 117, 1) 100%
+  // );
+  // background: linear-gradient(to right, #00f260, #0575e6);
+  background: linear-gradient(to right, #fc5c7d, #6a82fb);
+  border-radius: 10px;
+  @extend %flex_center;
+  // font-family: "Teko", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  width: 56px;
+  height: 24px;
+  margin-left: 0.5rem;
+}
+
 .subscription {
   @extend %box_duo;
   @extend %flex_center;
@@ -119,7 +138,8 @@
 
 .header {
   @extend %header;
-  margin-bottom: 0.75rem;
+  font-size: 22px;
+  margin-bottom: 1.25rem;
 }
 
 // BOX MODAL
@@ -508,7 +528,8 @@
   &_title {
     font-size: 20px;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    @extend %flex_center;
   }
   &_price {
     font-size: 24px;

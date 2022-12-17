@@ -92,7 +92,8 @@
 }
 .objectivesHeadline {
   @extend %flex_between;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  // margin-bottom: 1rem;
 
   &_number {
     font-size: 18px;
@@ -150,11 +151,14 @@
 
 .objective {
   position: relative;
-  background-color: $actionize_gray;
+  // background-color: $actionize_gray;
+
   color: white;
   @extend %box_dark;
+  @extend %box_duo;
   cursor: pointer;
-  margin: 1rem 0;
+  border: 2px solid $actionize_gray;
+  margin: 1.2rem 0;
   display: grid;
   grid-template-columns: minmax(0px, 3.5rem) 1fr minmax(0px, 5rem);
   gap: 1rem;

@@ -23,6 +23,18 @@ export const resetUser = (dispatch) => {
       console.log(err);
     });
 };
+export const acceptReferral = (dispatch) => {
+  dispatch({ type: "LOADING" });
+  api
+    .acceptReferralApi()
+    .then((res) => {
+      console.log(res);
+      fetchUser(dispatch);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 // QUERY
 // Random Card GET

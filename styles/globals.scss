@@ -5,8 +5,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, Ubuntu, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  // font-family: "Teko", sans-serif;
+
   scroll-behavior: smooth;
 }
 
@@ -30,7 +33,7 @@ input {
 /* Medium.com TYPOGRAPHY*/
 .header {
   @extend %header;
-  font-size: 22px;
+  font-size: 24px;
   text-transform: capitalize;
 }
 
@@ -173,6 +176,15 @@ input {
 }
 .mt1 {
   margin-top: 1rem;
+}
+.mt15 {
+  margin-top: 1.5rem;
+}
+.mt2 {
+  margin-top: 2rem;
+}
+.mb2 {
+  margin-bottom: 2rem;
 }
 .ml1 {
   margin-left: 1rem;

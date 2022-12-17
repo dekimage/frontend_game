@@ -68,7 +68,7 @@
 .tabs {
   @extend %flex_between;
   width: 100%;
-  margin: 1rem 0;
+  // margin: 1rem 0;
   border-bottom: 2px solid $actionize_gray;
   top: 3rem;
   z-index: 200;

@@ -23,6 +23,10 @@ const MyApp = ({ Component, pageProps }) => {
       <Head>
         <title>Actionise</title>
         {/* <link href="../public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
+        <style>
+          @import
+          url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500&display=swap');
+        </style>
         <script
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"

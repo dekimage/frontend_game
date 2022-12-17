@@ -18,13 +18,14 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
 export const fetchUserApi = () => axios.get("/usercard/me");
 
 // AUTH API
-export const signupApi = (username, email, password) =>
+export const signupApi = (username, email, password, sharedByUserId) =>
   axios.post(
     "/auth/local/register",
     {
       username,
       email,
       password,
+      shared_by: sharedByUserId ? sharedByUserId : null,
     },
     {
       headers: { Authorization: "" },
@@ -45,6 +46,8 @@ export const loginApi = (identifier, password) =>
 export const resetUserApi = () => axios.put(`${userUrl}/reset-user`);
 
 //0. PROFILE PAGE
+
+export const acceptReferralApi = () => axios.put(`${userUrl}/accept-referral/`);
 
 export const saveAvatarApi = (avatarId) =>
   axios.put(`${userUrl}/save-avatar/${avatarId}`);

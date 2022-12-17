@@ -2,9 +2,15 @@ import Router from "next/router";
 import Cookie from "js-cookie";
 import * as api from "../api";
 
-export const signup = (dispatch, username, email, password) => {
+export const signup = (
+  dispatch,
+  username,
+  email,
+  password,
+  sharedByUserId = false
+) => {
   api
-    .signupApi(username, email, password)
+    .signupApi(username, email, password, sharedByUserId)
     .then(({ data }) => {
       dispatch({ type: "FETCH_USER", data: data.user });
       Cookie.set("token", data.jwt);
