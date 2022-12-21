@@ -7,33 +7,24 @@ import { useRouter } from "next/router";
 import Modal from "../components/Modal";
 import useModal from "../hooks/useModal";
 
-import {
-  claimObjective,
-  updateCard,
-  claimLevelReward,
-  claimUserReward,
-  claimStreakReward,
-  claimArtifact,
-} from "../actions/action";
+import { claimArtifact } from "../actions/action";
 
 // *** COMPONENTS ***
 import NavBar from "../components/NavBar";
-import { CommunityAction } from "../components/cardPageComps";
 import { Stat, Buddy, ProfileHeader, Tabs } from "../components/profileComps";
 import Header from "../components/Header";
 import { RewardLink } from "../components/todayComp";
 import { ImageUI } from "../components/reusableUI";
+import ProgressBar from "../components/ProgressBar";
 
 // *** GQL ***
 import { GET_ARTIFACTS_QUERY } from "../GQL/query";
 import { normalize } from "../utils/calculations";
 
 // *** ACTIONS ***
-import { calcTotal } from "../utils/calculations";
 
 // *** STYLES ***
 import styles from "../styles/Profile.module.scss";
-import ProgressBar from "../components/ProgressBar";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -146,7 +137,6 @@ export const Artifact = ({ artifact }) => {
 const Profile = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_ARTIFACTS_QUERY);
-  const router = useRouter();
   const [tab, setTab] = useState("Rewards");
 
   const transformArtifacts = (
@@ -196,13 +186,6 @@ const Profile = () => {
     });
     return progressArray;
   };
-
-  const completionProgress =
-    store?.user?.usercards &&
-    calcTotal(store.user.usercards, "completed", true);
-  const collectionProgress =
-    store?.user?.usercards &&
-    calcTotal(store.user.usercards, "collected", true);
 
   const tabsData = [
     { label: "Rewards", count: -1 },

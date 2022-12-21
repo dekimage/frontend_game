@@ -25,7 +25,7 @@ const Learn = () => {
 
       <div className="section">
         {error && <div>Error: {error}</div>}
-        {loading && <div>Loading...</div>}
+        {loading && <div className="lds-dual-ring"></div>}
         {gql_data && (
           <div>
             {tutorialRealm.map((realm, i) => (

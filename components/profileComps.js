@@ -136,11 +136,9 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
         <div className={styles.avatarBox}>
           <div className={styles.avatar}>
             <div className={styles.level}>{user.level}</div>
-            <img
-              onClick={openModal}
-              src={`${baseUrl}${user.avatar?.image.url}`}
-              height="66px"
-            />
+            <div onClick={openModal}>
+              <ImageUI url={user.avatar?.image.url} height="66px" />
+            </div>
           </div>
 
           <div className={styles.username}>{user.username}</div>

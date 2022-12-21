@@ -41,3 +41,28 @@ export const BackButton = ({ routeStatic, routeDynamic, isBack = false }) => {
     </>
   );
 };
+
+export const Button = ({ type, isDisabled, isLoading, onClick, children }) => {
+  const handleOnClick = (onClick) => (e) => {
+    if (!onClick || isDisabled || isLoading) {
+      return;
+    }
+    onClick(e);
+  };
+
+  const fullClass = cx(`btn btn-${type}`, className, {
+    isDisabled,
+    isLoading,
+  });
+
+  return (
+    <div
+      tabIndex="0"
+      className={fullClass}
+      onClick={() => handleOnClick(onClick)}
+    >
+      {isLoading && <div className="lds-dual-ring"></div>}
+      <div className="btn--content">{children}</div>
+    </div>
+  );
+};
