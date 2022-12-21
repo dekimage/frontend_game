@@ -59,7 +59,7 @@ export const SliderHeader = ({ title, rewards }) => {
   return (
     <div className={styles.sliderHeader}>
       <div className={styles.sliderTitle}>{title}</div>
-      <div className={styles.grayBubble}>
+      {/* <div className={styles.grayBubble}>
         <div className={styles.grayBubble_rewards}>
           <img height="14px" src={`${baseUrl}/xp.png`} />
           <span>{rewards.xp}</span>
@@ -70,7 +70,7 @@ export const SliderHeader = ({ title, rewards }) => {
 
           <span> {rewards.gems}</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

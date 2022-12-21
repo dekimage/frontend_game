@@ -97,6 +97,10 @@ const Reducer = (store, action) => {
     case "UPDATE_CARD":
       return {
         ...store,
+        // rewardsModal: {
+        //   isOpen: true,
+        //   rewards: action.data.rewards,
+        // },
         user: {
           ...store.user,
           collection_json: action.data.updated_collection_json,

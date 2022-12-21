@@ -148,8 +148,8 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
 
       <div className="mb1">
         {/* {image && <img src={image.url} alt="" height={`${height}px`} />} */}
-        {/* {image && <ImageUI imgUrl={image.url} height="60px" />} */}
-        <ImageUI imgUrl={`/${gems.type}.png`} height="40px" />
+        {/* {image && <ImageUI url={image.url} height="60px" />} */}
+        <ImageUI url={`/${gems.type}.png`} height="40px" />
       </div>
       <div
         className={styles.box_cta}

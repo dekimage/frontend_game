@@ -73,7 +73,7 @@ const AvatarImage = ({ avatar, setSelected, selected }) => {
       onClick={() => setSelected(avatar)}
     >
       <ImageUI
-        imgUrl={avatar.image.url}
+        url={avatar.image.url}
         height="50px"
         className={styles.avatar_image}
       />

@@ -11,7 +11,7 @@ import ProgressBar from "./ProgressBar";
 import { getXpLimit } from "../utils/calculations";
 const baseUrl = "https://backend-actionise.herokuapp.com";
 
-const RewardsModal = () => {
+export const RewardsModal = (defaultPage = "xp") => {
   const [store, dispatch] = useContext(Context);
   const user = store.user;
 
@@ -19,7 +19,7 @@ const RewardsModal = () => {
 
   const { isLevelnew, level, xp, stars, artifact } = rewardsModal.rewards;
 
-  const [page, setPage] = useState("xp");
+  const [page, setPage] = useState(defaultPage);
   const [counter, setCounter] = useState(artifact ? 3 : 2);
 
   const nextPage = () => {

@@ -5,6 +5,7 @@ import cx from "classnames";
 
 import { Context } from "../context/store";
 import { ImageUI } from "../components/reusableUI";
+import { Rarity } from "../components/Rarity";
 
 import iconCheck from "../assets/checkmark.svg";
 import iconPlay from "../assets/progress-collection-dark.svg";
@@ -57,6 +58,8 @@ const OpenCard = ({ card }) => {
         progress={card.completed || 0}
         maxProgress={5}
       />
+      {/* <Rarity rarity={usercard.league} /> */}
+      <Rarity rarity="grandmaster" />
     </div>
   );
 };

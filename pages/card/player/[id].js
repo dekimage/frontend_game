@@ -68,6 +68,7 @@ const Player = () => {
       const ghosts = gql_data.card.days[last_completed_day].contents.filter(
         (slide) => slide.is_ghost
       );
+
       setGhosts(ghosts);
 
       setChatSlides([
@@ -78,30 +79,30 @@ const Player = () => {
     }
   }, [gql_data, loading]);
 
-  const isLatestLevel = false;
+  // const isLatestLevel = false;
 
-  const updateRewards = (xp = 10, stars = 5) => {
-    setRewards({
-      ...rewards,
-      ["xp"]: rewards.xp + xp,
-      ["stars"]: rewards.stars + stars,
-    });
-  };
+  // const updateRewards = (xp = 10, stars = 5) => {
+  //   setRewards({
+  //     ...rewards,
+  //     ["xp"]: rewards.xp + xp,
+  //     ["stars"]: rewards.stars + stars,
+  //   });
+  // };
 
   const closePlayer = () => {
     router.back();
   };
 
-  const onContinue = () => {
-    const index = slides.findIndex((s) => s.id === slide.id);
-    if (index === slides.length - 1) {
-      if (isLatestLevel) {
-        setSuccessModal("complete_screen");
-      } else {
-        setSlide(slides[index + 1]);
-      }
-    }
-  };
+  // const onContinue = () => {
+  //   const index = slides.findIndex((s) => s.id === slide.id);
+  //   if (index === slides.length - 1) {
+  //     if (isLatestLevel) {
+  //       setSuccessModal("complete_screen");
+  //     } else {
+  //       setSlide(slides[index + 1]);
+  //     }
+  //   }
+  // };
 
   const goBack = () => {
     const index = slide.index;
@@ -175,10 +176,16 @@ const Player = () => {
           )}
 
           {isSuccessModalOpen && (
-            <SuccessModal
-              closePlayer={closePlayer}
-              card={data.card}
-              isLatestLevel={isLatestLevel}
+            <Modal
+              isShowing={isSuccessModalOpen}
+              closeModal={closeModal}
+              jsx={
+                <SuccessModal
+                  closePlayer={closePlayer}
+                  card={data.card}
+                  // isLatestLevel={isLatestLevel}
+                />
+              }
             />
           )}
         </div>

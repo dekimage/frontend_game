@@ -3,11 +3,22 @@ import Link from "next/link";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 import styles from "../styles/ReusableUI.module.scss";
 // src={`${baseUrl}/gift.png`}
+const dev = process.env.NODE_ENV == "development";
 
-export const ImageUI = ({ className = "", imgUrl, height, width }) => {
+export const ImageUI = ({
+  className = "",
+  url,
+  isPublic = false,
+  height = "auto",
+  width = "auto",
+}) => {
   return (
     <div className={className}>
-      <img height={height} width={width} src={`${baseUrl}${imgUrl}`} />
+      <img
+        height={height}
+        width={width}
+        src={dev || isPublic ? `${baseUrl}${url}` : `${url}`}
+      />
     </div>
   );
 };

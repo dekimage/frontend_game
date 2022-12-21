@@ -8,6 +8,10 @@
 //   font-weight: 700;
 // }
 
+.cardPlayerSuccessModal {
+  color: white;
+}
+
 .contentTheory {
   position: relative;
   margin-bottom: 1rem;
@@ -294,7 +298,6 @@
   @extend %flex_between;
   color: white;
   margin-bottom: 1rem;
-  justify-content: flex-between;
 }
 
 .sliderTitle {

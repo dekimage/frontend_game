@@ -44,10 +44,7 @@ export const ArtifactModal = ({ artifact, className, openModal }) => {
     <div>
       <div className={`${styles.artifactDetails} ${className}`}>
         {artifact.image && (
-          <ImageUI
-            imgUrl={artifact.image.url}
-            className={styles.artifactImage}
-          />
+          <ImageUI url={artifact.image.url} className={styles.artifactImage} />
         )}
         <div className={styles.artifactDetails_name}>
           {artifact.isCollected ? artifact.name : "???"}
@@ -96,7 +93,7 @@ export const Artifact = ({ artifact }) => {
             )}
             {artifact.image && (
               <ImageUI
-                imgUrl={artifact.image.url}
+                url={artifact.image.url}
                 className={styles.artifactImage}
               />
             )}
@@ -105,7 +102,7 @@ export const Artifact = ({ artifact }) => {
         ) : (
           <>
             <ImageUI
-              imgUrl={
+              url={
                 "/uploads/badge_53e61dc737.png?updated_at=2022-11-14T15:37:26.713Z"
               }
             />

@@ -13,28 +13,21 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 //MAYBE IN CARD PLAYER?
-export const SuccessModal = ({ closePlayer, card, isLatestLevel }) => {
+export const SuccessModal = ({ closePlayer, card }) => {
   const [store, dispatch] = useContext(Context);
+  console.log(card, "card");
   return (
-    <div>
-      {isLatestLevel ? (
-        <div>
-          Congratualations!! You have completed the theory check-in! Now, it's
-          time for you to do some Actions!
-          <button
-            onClick={() => {
-              closePlayer();
-              updateCard(dispatch, card.id, "complete");
-            }}
-          >
-            Mark as Complete!
-          </button>
-        </div>
-      ) : (
-        <div>
-          <button onClick={closePlayer}>Back to Card</button>
-        </div>
-      )}
+    <div className={styles.cardPlayerSuccessModal}>
+      Congratualations! You have completed this card!
+      <div
+        className="btn btn-success"
+        onClick={() => {
+          closePlayer();
+          updateCard(dispatch, card.id, "complete");
+        }}
+      >
+        Mark as Complete!
+      </div>
     </div>
   );
 };

@@ -83,7 +83,7 @@ const Shop = () => {
           </div>
           <div className={styles.proxySubs_benefits}>
             <div className={styles.proxySubs_image}>
-              <ImageUI imgUrl={"/energy.png"} height="60px" />
+              <ImageUI url={"/energy.png"} height="60px" />
               <div className={styles.proxySubs_infinity}>&#8734;</div>
             </div>
             <div className={styles.proxySubs_benefit}>+ Unlimited Energy</div>

@@ -73,12 +73,12 @@ const ActionPage = ({ action, user }) => {
         <div className="section">
           <ImageUI
             className={"image-radius"}
-            imgUrl={action.image?.url}
+            url={action.image?.url}
             width="100%"
           />
         </div>
 
-        {/* <ImageUI imgUrl={action.card.realm.image.url} height="28px" /> */}
+        {/* <ImageUI url={action.card.realm.image.url} height="28px" /> */}
         <div className={styles.name_section}>
           <div className="flex_between">
             <div className={styles.name}>{action.name}</div>

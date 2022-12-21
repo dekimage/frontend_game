@@ -16,6 +16,11 @@ import { GET_USERCARDS_QUERY, GET_CARD_ID } from "../../GQL/query";
 
 import { updateCard } from "../../actions/action";
 
+//send to player
+import Modal from "../../components/Modal";
+import useModal from "../../hooks/useModal";
+import { RewardsModal } from "../../components/RewardsModal";
+
 import {
   BasicActionsWrapper,
   FavoriteButton,
@@ -42,7 +47,7 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   const isUnlocked = true;
   // card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
 
-  console.log(usercard);
+  // console.log(usercard);
 
   const mergeActions = (usercard, actions, checkingArray, keyword) => {
     const result = actions.map((action) => {
@@ -66,7 +71,9 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     course: { id: 1 },
   };
 
-  console.log(card);
+  // console.log(card);
+  console.log(store.rewardsModal);
+  const { isShowing, openModal, closeModal } = useModal();
 
   return (
     <div className="section_container">
@@ -140,6 +147,14 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           usercard={usercard}
         />
       )}
+
+      <Modal
+        isShowing={store.rewardsModal.isOpen}
+        closeModal={closeModal}
+        showCloseButton={false}
+        jsx={<RewardsModal defaultPage={"artifact"} />}
+        isSmall
+      />
     </div>
   );
 };

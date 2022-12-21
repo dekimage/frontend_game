@@ -964,44 +964,6 @@ export const GET_USER_FAVORITES = gql`
   }
 `;
 
-export const GET_USER_STATS = gql`
-  query ($id: ID!) {
-    usersPermissionsUser(id: $id) {
-      data {
-        id
-        attributes {
-          usercards {
-            data {
-              attributes {
-                completed
-                quantity
-                is_unlocked
-                level
-                card {
-                  data {
-                    id
-                    attributes {
-                      is_open
-                      realm {
-                        data {
-                          id
-                          attributes {
-                            name
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 export const GET_PROBLEM_ID = gql`
   query ($id: ID!) {
     problem(id: $id) {
