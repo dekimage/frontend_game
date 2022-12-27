@@ -57,7 +57,8 @@ const OpenCard = ({ card }) => {
       <ProgressBox
         icon={iconPlay}
         progress={card.completed || 0}
-        maxProgress={card.completed_progress_max}
+        // maxProgress={card.completed_progress_max}
+        maxProgress={5}
       />
       {!(card.league == "unranked") && (
         <div className={styles.leagueBox}>
