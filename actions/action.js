@@ -225,6 +225,7 @@ export const updateCard = (dispatch, cardId, action) => {
     .updateCardApi(cardId, action)
     .then(({ data }) => {
       dispatch({ type: "UPDATE_CARD", data });
+      fetchUser(dispatch);
       if (action === "favorite") {
         toast("Favorited. View all favorites here link...");
       }

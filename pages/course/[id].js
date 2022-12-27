@@ -154,13 +154,19 @@ const CourseSales = ({ course }) => {
   );
 };
 
-export const Curriculum = ({ days, usercourse }) => {
+export const Curriculum = ({ days, usercourse, cardName = false }) => {
   const [showDays, setShowDays] = useState(days.slice(0, 5));
 
   return (
     <div className={styles.curriculum}>
       {showDays.map((day, i) => (
-        <Day day={day} usercourse={usercourse} key={i} i={i} />
+        <Day
+          day={day}
+          usercourse={usercourse}
+          cardName={cardName}
+          key={i}
+          i={i}
+        />
       ))}
       {days.length > 5 && (
         <div className={styles.seeAll} onClick={() => setShowDays(days)}>
@@ -171,7 +177,7 @@ export const Curriculum = ({ days, usercourse }) => {
   );
 };
 
-const Day = ({ day, usercourse, i }) => {
+const Day = ({ day, usercourse, cardName = false, i }) => {
   const getDayState = (day) => {
     if (!usercourse) {
       return { color: "#222", icon: iconPlay, state: "locked" };
@@ -214,7 +220,10 @@ const Day = ({ day, usercourse, i }) => {
           />
         </div>
         <div className={styles.labelBox}>
-          <div className={styles.label}>Day {day.index}</div>
+          {/* <div className={styles.label}>Day {day.index}</div> */}
+          {/* For single Day -> card name, for course/or multiple sessions put Day
+          1,2,3 back */}
+          <div className={styles.label}>{cardName}</div>
           <div className={styles.progress}>
             {usercourse
               ? `${completedSessions}/${day.contents.length} completed`
@@ -241,7 +250,7 @@ const Day = ({ day, usercourse, i }) => {
           ))}
         </div>
       )}
-      {isOpen && dayLockState === "completed" && (
+      {/* {isOpen && dayLockState === "completed" && (
         <div className={styles.dayAgain}>
           <div className="btn btn-green ">Replay Day {i + 1}</div>
         </div>
@@ -250,7 +259,7 @@ const Day = ({ day, usercourse, i }) => {
         <div className={styles.dayAgain}>
           <div className="btn btn-action">Play Session</div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

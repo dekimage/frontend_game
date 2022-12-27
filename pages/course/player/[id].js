@@ -24,7 +24,13 @@ import {
   ChatResponses,
 } from "../../../components/playerCourseComps";
 
-export const ContentTheory = ({ slide, goNext, lastSlideIndex, i }) => {
+export const ContentTheory = ({
+  slide,
+  goNext,
+  lastSlideIndex,
+  i,
+  increaseSteps = false, // for actions player only to move progressbar
+}) => {
   const createChat = (slide) => {
     const action = slide.action;
     const responses = slide.responses;
@@ -101,6 +107,8 @@ export const ContentTheory = ({ slide, goNext, lastSlideIndex, i }) => {
 
     // removed after fixing multiple elements mapping
     setCurrentIdea(currentIdea + 1);
+
+    increaseSteps && increaseSteps();
   };
 
   // make it scroll

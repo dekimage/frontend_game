@@ -50,16 +50,21 @@ export const ProgressBox = ({
 };
 
 const OpenCard = ({ card }) => {
+  console.log(card);
   return (
     <div className={styles.openBox}>
       <div className={styles.name}>{card.name}</div>
       <ProgressBox
         icon={iconPlay}
         progress={card.completed || 0}
-        maxProgress={5}
+        maxProgress={card.completed_progress_max}
       />
-      {/* <Rarity rarity={usercard.league} /> */}
-      <Rarity rarity="grandmaster" />
+      {!(card.league == "unranked") && (
+        <div className={styles.leagueBox}>
+          <Rarity rarity={card.league} />
+        </div>
+      )}
+      {/* <Rarity rarity="grandmaster" /> */}
     </div>
   );
 };

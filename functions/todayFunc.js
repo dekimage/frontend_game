@@ -1,36 +1,3 @@
-import { objectiveCounterRewardsTable } from "../data/rewards";
-
-export const joinObjectivesCounter = (
-  objectives_counter,
-  objectives_json,
-  objectives,
-  temporal_type
-) => {
-  if (!objectives_json || !objectives) {
-    return;
-  }
-  const objectivesIds = objectives.map((obj) => obj.id); // find only daily/weekly
-  let joinedObjectives = [];
-  for (const id in objectiveCounterRewardsTable[temporal_type]) {
-    const isReadyToCollect =
-      id <=
-      Object.keys(objectives_json).filter(
-        (id) => objectivesIds.includes(id) && objectives_json[id].isCollected
-      ).length;
-    const isCollected =
-      objectives_counter[temporal_type] &&
-      !!objectives_counter[temporal_type][id];
-    joinedObjectives.push({
-      ...objectiveCounterRewardsTable[temporal_type][id],
-      isReadyToCollect,
-      isCollected,
-      objectiveId: id,
-      temporal_type,
-    });
-  }
-  return joinedObjectives;
-};
-
 export const joinObjectives = (objectives, objectives_json) => {
   return objectives.map((obj) => {
     if (objectives_json[obj.id]) {

@@ -324,6 +324,7 @@ export const GET_ACTION_ID = gql`
         id
         attributes {
           name
+          description
           type
           level
           duration
@@ -331,6 +332,7 @@ export const GET_ACTION_ID = gql`
           examples
           steps {
             content
+            timer
           }
           image {
             data {

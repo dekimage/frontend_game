@@ -20,7 +20,7 @@ import { GET_STREAKS_QUERY } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const Streak = ({ streak, isSelected, setSelectedStreak }) => {
+const Streak = ({ streak, dispatch }) => {
   const {
     reward_type,
     artifact,
@@ -45,13 +45,15 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
     <div
       className={cx(
         styles.streak,
-        isSelected && [styles.active],
         is_ready && [styles.isReady],
         is_collected && [styles.isCollected]
       )}
-      onClick={() =>
-        setSelectedStreak({ streak_count, is_ready, is_collected })
-      }
+      onClick={() => {
+        is_ready && !is_collected && claimStreakReward(dispatch, streak_count);
+      }}
+      // onClick={() =>
+      //   setSelectedStreak({ streak_count, is_ready, is_collected })
+      // }
     >
       {reward && (
         <>
@@ -88,8 +90,6 @@ const Streak = ({ streak, isSelected, setSelectedStreak }) => {
 const StreakTower = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_STREAKS_QUERY);
-  const [selectedStreak, setSelectedStreak] = useState(0);
-  const router = useRouter();
 
   const gql_data = data && normalize(data);
 
@@ -154,37 +154,12 @@ const StreakTower = () => {
                 {mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)
                   .sort((a, b) => a.id - b.id)
                   .map((streak, i) => {
-                    const isSelected =
-                      parseInt(streak.streak_count) ===
-                      selectedStreak.streak_count;
                     return (
-                      <Streak
-                        streak={streak}
-                        key={i}
-                        isSelected={isSelected}
-                        setSelectedStreak={setSelectedStreak}
-                      />
+                      <Streak streak={streak} key={i} dispatch={dispatch} />
                     );
                   })}
               </div>
             )}
-            <div className={styles.fixed}>
-              <div
-                className={cx(
-                  "btn",
-                  selectedStreak.is_ready && !selectedStreak.is_collected
-                    ? "btn-primary"
-                    : "btn-disabled"
-                )}
-                onClick={() => {
-                  selectedStreak.is_ready &&
-                    !selectedStreak.is_collected &&
-                    claimStreakReward(dispatch, selectedStreak.streak_count);
-                }}
-              >
-                Claim
-              </div>
-            </div>
           </>
         )}
       </div>

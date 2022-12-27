@@ -30,15 +30,15 @@ export const ActionCta = ({
   return (
     <div className={styles.actionCta}>
       {isUnlocked ? (
-        <div
-          className={cx(energy > 0 ? "btn btn-primary" : "btn btn-disabled")}
-          onClick={() => {
-            updateCard(dispatch, actionId, "complete_action");
-          }}
-        >
-          Do this action {energy}/1
-          <img src={`${baseUrl}/energy.png`} height="20px" className="ml5" />
-        </div>
+        <Link href={`/action/player/${actionId}`}>
+          <div
+            className={cx(energy > 0 ? "btn btn-primary" : "btn btn-disabled")}
+          >
+            Play
+            <span className="ml5 md">1</span>
+            <img src={`${baseUrl}/energy.png`} height="20px" />
+          </div>
+        </Link>
       ) : (
         <Link href={`/card/${cardId}`}>
           <div className="btn btn-primary">
@@ -70,16 +70,12 @@ const ActionPage = ({ action, user }) => {
       <div className={styles.card}>
         {/* <FavoriteButton usercard={usercard} cardId={card.id} /> */}
         <BackButton isBack />
-        <div className="section">
-          <ImageUI
-            className={"image-radius"}
-            url={action.image?.url}
-            width="100%"
-          />
+        <div className="section flex_center">
+          <ImageUI url={action.image?.url} width="75px" height="75px" />
         </div>
 
         {/* <ImageUI url={action.card.realm.image.url} height="28px" /> */}
-        <div className={styles.name_section}>
+        <div className="section">
           <div className="flex_between">
             <div className={styles.name}>{action.name}</div>
             <FavoriteButton
@@ -92,6 +88,7 @@ const ActionPage = ({ action, user }) => {
             <div className={styles.action_type}>{action.type}</div>
             <div className={styles.action_duration}>{action.duration} min</div>
           </div>
+          <div className="pt1">{action.description}</div>
         </div>
 
         {!isUnlocked && (
@@ -104,56 +101,6 @@ const ActionPage = ({ action, user }) => {
               <Card card={action.card} />
             </div>
           </div>
-        )}
-        {isUnlocked && (
-          <>
-            <div className={styles.action_instructions}>
-              <div className={styles.header}>Instructions</div>
-              {action.steps.map((step, i) => {
-                return (
-                  <div className={styles.action_open_step} key={i}>
-                    <div className={styles.action_open_stepLabel}>
-                      Step {i + 1}
-                    </div>
-                    {step.content}
-                  </div>
-                );
-              })}
-            </div>
-            <div className={styles.action_tips}>
-              <div className={styles.header}>
-                <div>Tips</div>
-              </div>
-              <div className={styles.tips}>
-                {action.tips &&
-                  (action.tips.length < 250 ? (
-                    <ReactMarkdown
-                      children={action.tips}
-                      className={styles.markdown}
-                    />
-                  ) : (
-                    <>
-                      <ReactMarkdown
-                        children={
-                          isShowTips
-                            ? action.tips
-                            : action.tips.slice(0, 250).concat("...")
-                        }
-                        className={styles.markdown}
-                      />
-                      <div className="flex_center">
-                        <div
-                          className="btn btn-blank"
-                          onClick={() => setIsShowTips(!isShowTips)}
-                        >
-                          {isShowTips ? "show less tips" : "show all tips"}
-                        </div>
-                      </div>
-                    </>
-                  ))}
-              </div>
-            </div>
-          </>
         )}
 
         <ActionCta

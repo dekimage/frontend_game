@@ -8,7 +8,7 @@ import { Rarity } from "../components/Rarity";
 import { BackButton } from "../components/reusableUI";
 
 // *** ACTIONS ***
-import { claimStreakReward } from "../actions/action";
+import { claimUserReward } from "../actions/action";
 
 import { normalize } from "../utils/calculations";
 
@@ -19,7 +19,7 @@ import { GET_FRIENDS_QUERY } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const FriendReward = ({ friendReward, isSelected, setSelectedReward }) => {
+const FriendReward = ({ friendReward, dispatch }) => {
   const { reward_card, reward_amount, friends_count, is_collected, is_ready } =
     friendReward;
 
@@ -27,11 +27,12 @@ const FriendReward = ({ friendReward, isSelected, setSelectedReward }) => {
     <div
       className={cx(
         styles.streak,
-        isSelected && [styles.active],
         is_ready && [styles.isReady],
         is_collected && [styles.isCollected]
       )}
-      onClick={() => setSelectedReward({ friends_count })}
+      onClick={() => {
+        is_ready && !is_collected && claimUserReward(dispatch, friends_count);
+      }}
     >
       <div className="flex_center">
         <div className={styles.image}>
@@ -129,15 +130,11 @@ const FriendsTower = () => {
                 )
                   .sort((a, b) => a.id - b.id)
                   .map((friendReward, i) => {
-                    const isSelected =
-                      parseInt(friendReward.friends_count) ===
-                      selectedReward.friends_count;
                     return (
                       <FriendReward
                         friendReward={friendReward}
                         key={i}
-                        isSelected={isSelected}
-                        setSelectedReward={setSelectedReward}
+                        dispatch={dispatch}
                       />
                     );
                   })}
@@ -155,24 +152,6 @@ const FriendsTower = () => {
             <div className="description_muted">
               * The buddy must confirm their email address and complete the
               tutorial to unlock the rewards.
-            </div>
-
-            <div className={styles.fixed}>
-              <div
-                className={cx(
-                  "btn",
-                  selectedReward.is_ready && !selectedReward.is_collected
-                    ? "btn-primary btn-stretch"
-                    : "btn-disabled btn-stretch"
-                )}
-                onClick={() => {
-                  selectedReward.is_ready &&
-                    !selectedReward.is_collected &&
-                    claimStreakReward(dispatch, selectedReward.friends_count);
-                }}
-              >
-                Claim
-              </div>
             </div>
           </>
         )}

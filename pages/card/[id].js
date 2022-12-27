@@ -32,20 +32,22 @@ import { Curriculum } from "../course/[id]";
 import { BackButton } from "../../components/reusableUI";
 import ProgressBar from "../../components/ProgressBar";
 
-const CardPage = ({ dataUserCard, dataCard }) => {
+const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   const [store, dispatch] = useContext(Context);
   const proxyUserCard = {
     completed: 0,
     proxy: true,
+    completed_progress_max: 3,
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
+  console.log(usercard);
 
   // const [activeTab, setActiveTab] = useState("community");
 
   const card = dataCard.card;
 
-  const isUnlocked = true;
-  // card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
+  const isUnlocked =
+    card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
 
   // console.log(usercard);
 
@@ -71,7 +73,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
     course: { id: 1 },
   };
 
-  // console.log(card);
   console.log(store.rewardsModal);
   const { isShowing, openModal, closeModal } = useModal();
 
@@ -108,7 +109,10 @@ const CardPage = ({ dataUserCard, dataCard }) => {
 
         <div
           className="btn btn-primary mb1"
-          onClick={() => updateCard(dispatch, card.id, "complete")}
+          onClick={() => {
+            updateCard(dispatch, card.id, "complete");
+            getUserCard({ variables: { id: usercard.id } });
+          }}
         >
           Complete Card
         </div>
@@ -127,7 +131,11 @@ const CardPage = ({ dataUserCard, dataCard }) => {
 
         <Title name="Sessions" />
 
-        <Curriculum days={card.days} usercourse={cardToUserCourse} />
+        <Curriculum
+          days={card.days}
+          usercourse={cardToUserCourse}
+          cardName={card.name}
+        />
 
         {/* <IdeaPlayer cardId={card.id} /> */}
 
@@ -170,8 +178,10 @@ const Card = () => {
     variables: { id: router.query.id },
   });
   const gql_card = card && normalize(card);
-  const [getUserCard, { data, loading, error }] =
-    useLazyQuery(GET_USERCARDS_QUERY);
+  const [getUserCard, { data, loading, error }] = useLazyQuery(
+    GET_USERCARDS_QUERY,
+    { fetchPolicy: "network-only" }
+  );
   const gql_usercard = data && normalize(data);
 
   useEffect(() => {
@@ -202,6 +212,7 @@ const Card = () => {
         <CardPage
           dataCard={gql_card}
           dataUserCard={gql_usercard && gql_usercard.usercard}
+          getUserCard={getUserCard}
         />
       )}
     </div>
