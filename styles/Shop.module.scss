@@ -68,11 +68,13 @@
   @extend %box_duo;
   justify-content: space-between;
   cursor: pointer;
+  border-bottom: none;
 
   border-radius: $border_radius;
   flex-direction: column;
   padding: 0;
   color: white;
+  height: 200px;
 
   &_name {
     text-align: center;
@@ -113,10 +115,15 @@
   }
   &_cta {
     border-radius: $border_radius;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     font-weight: 500;
     padding: 0.5rem;
-    background-color: $primary;
-    width: 100%;
+    // background-color: $primary;
+    // background-color: #3ecf8e;
+    background-color: #f69b5a;
+
+    width: 102%;
     @extend %flex_center;
   }
   &_cta > *:first-child {
@@ -519,17 +526,31 @@
   }
 }
 
+.proCtaButton {
+  font-size: 18px;
+  font-weight: 500;
+  background-color: #f69b5a;
+  width: 101%;
+  @extend %flex_center;
+  height: 42px;
+  border-bottom-left-radius: $border_radius;
+  border-bottom-right-radius: $border_radius;
+}
+
 .proxySubs {
   @extend %box_duo;
   @extend %flex_between;
   margin-top: 1rem;
   flex-direction: column;
+  padding: 0;
+  border-bottom: none;
 
   &_title {
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 1rem;
     @extend %flex_center;
+    margin-top: 1rem;
   }
   &_price {
     font-size: 24px;
@@ -541,6 +562,10 @@
     color: $actionize_gray_light;
     font-size: 14px;
     font-weight: 500;
+  }
+  &_benefitsBox {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
   }
   &_infinity {
     position: absolute;

@@ -86,12 +86,16 @@ const Shop = () => {
               <ImageUI url={"/energy.png"} height="60px" />
               <div className={styles.proxySubs_infinity}>&#8734;</div>
             </div>
-            <div className={styles.proxySubs_benefit}>+ Unlimited Energy</div>
-            <div className={styles.proxySubs_benefit}>+ Objectives PLUS</div>
-            <div className={styles.proxySubs_benefit}>+ Level Rewards PLUS</div>
+            <div className={styles.proxySubs_benefitsBox}>
+              <div className={styles.proxySubs_benefit}>+ Unlimited Energy</div>
+              <div className={styles.proxySubs_benefit}>+ Extra Objectives</div>
+              <div className={styles.proxySubs_benefit}>
+                + Extra Level Rewards
+              </div>
+            </div>
           </div>
-          <div className={styles.proxySubs_price}>$4.99 / Mo</div>
-          <div className="btn btn-primary">Purchase PLUS</div>
+          {/* <div className={styles.proxySubs_price}>$4.99 / Mo</div> */}
+          <div className={styles.proCtaButton}>$4.99 / Mo</div>
         </div>
       </div>
 
