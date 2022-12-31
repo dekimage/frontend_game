@@ -122,7 +122,7 @@
     // background-color: $primary;
     // background-color: #3ecf8e;
     background-color: #f69b5a;
-
+    background-color: $secondary;
     width: 102%;
     @extend %flex_center;
   }
@@ -529,7 +529,8 @@
 .proCtaButton {
   font-size: 18px;
   font-weight: 500;
-  background-color: #f69b5a;
+  // background-color: #f69b5a;
+  background-color: $secondary;
   width: 101%;
   @extend %flex_center;
   height: 42px;

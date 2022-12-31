@@ -27,6 +27,10 @@ const MyApp = ({ Component, pageProps }) => {
           @import
           url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500&display=swap');
         </style>
+        <style>
+          @import
+          url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500&display=swap');
+        </style>
         <script
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"

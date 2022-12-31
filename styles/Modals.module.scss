@@ -1,0 +1,62 @@
+@import "variables";
+@import "placeholders";
+.shareBuddyModal {
+  @extend %flex_center;
+  flex-direction: column;
+  &_title {
+    @extend %header;
+  }
+
+  &_reward {
+    border: 2px solid $secondary;
+    border-radius: $border_radius;
+    padding: 0.5rem;
+  }
+}
+
+.ctaLink {
+  @extend %flex_start;
+  flex-direction: row;
+  input {
+    background-color: $actionize_gray;
+    border-radius: $border_radius;
+    padding: 1rem 0.25rem;
+    max-height: 56px;
+    font-size: 12px;
+    color: white;
+  }
+  &_copy {
+    background-color: $primary;
+    padding: 1rem;
+    border-radius: 20%;
+    &.green {
+      background-color: $ux_green;
+    }
+  }
+}
+
+.perkBox {
+  @extend %flex_start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.perk {
+  @extend %flex_start;
+  padding: 1rem 0;
+  align-items: flex-start;
+  &_iterate {
+    @extend %flex_center;
+    background-color: $primary;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    font-size: 20px;
+    font-weight: 500;
+    margin-right: 0.75rem;
+  }
+  &_content {
+    @extend %flex_center;
+    align-items: center;
+    height: 30px;
+  }
+}

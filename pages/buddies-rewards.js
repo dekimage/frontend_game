@@ -6,7 +6,9 @@ import { useRouter } from "next/router";
 // *** COMPONENTS ***
 import { Rarity } from "../components/Rarity";
 import { BackButton } from "../components/reusableUI";
-
+import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
+import Modal from "../components/Modal";
+import useModal from "../hooks/useModal";
 // *** ACTIONS ***
 import { claimUserReward } from "../actions/action";
 
@@ -20,8 +22,30 @@ import { GET_FRIENDS_QUERY } from "../GQL/query";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const FriendReward = ({ friendReward, dispatch }) => {
-  const { reward_card, reward_amount, friends_count, is_collected, is_ready } =
-    friendReward;
+  const {
+    reward_type,
+    reward_card,
+    reward_amount,
+    friends_count,
+    is_collected,
+    is_ready,
+    artifact,
+  } = friendReward;
+
+  const calculateReward = (reward_type) => {
+    if (reward_type === "artifact") {
+      return {
+        name: artifact.short_name,
+        image: artifact.image,
+        rarity: artifact.rarity,
+      };
+    }
+    if (reward_type === "card") {
+      return reward_card;
+    }
+    return false;
+  };
+  const reward = calculateReward(reward_type);
 
   return (
     <div
@@ -34,33 +58,40 @@ const FriendReward = ({ friendReward, dispatch }) => {
         is_ready && !is_collected && claimUserReward(dispatch, friends_count);
       }}
     >
-      <div className="flex_center">
-        <div className={styles.image}>
-          {is_collected ? (
-            <img src={`${baseUrl}/checked.png`} height="20px" />
-          ) : (
-            <img src={reward_card.image.url} alt="" />
-          )}
-          {!is_collected && (
-            <div className={styles.streak_amount}>x{reward_amount || 1}</div>
-          )}
+      {is_collected && (
+        <div className={styles.completedMark}>
+          <img src={`${baseUrl}/checked.png`} height="20px" />
         </div>
-
-        <div className={styles.streak_name}>
-          <div className="ml1">
-            <div className={styles.streak_name}>{reward_card.name}</div>
-            <Rarity rarity={reward_card.rarity} />
-          </div>
-          <div className={styles.gemReward}>
-            <div className={styles.gemReward_name}>+ 10</div>
-            <img src={`${baseUrl}/gem.png`} alt="" height="14px" />
-          </div>
-        </div>
-      </div>
+      )}
 
       <div className={styles.streakIcon}>
         <img src={`${baseUrl}/user.png`} alt="" />
         <div className={styles.streakIcon_amount}>{friends_count}</div>
+      </div>
+
+      {is_ready && !is_collected ? (
+        "Claim"
+      ) : (
+        <div>Buddy Reward {friends_count}</div>
+      )}
+
+      <div className="flex_center">
+        <div className={styles.image}>
+          <img src={reward.image?.url} alt="" />
+          {!is_collected && (
+            <div className={styles.streak_amount}>x{reward_amount || 1}</div>
+          )}
+        </div>
+        <div className={styles.streak_name}>
+          {/* <div className="ml1">
+            <div className={styles.streak_name}>{reward.name}</div>
+            <Rarity rarity={reward.rarity} />
+          </div> */}
+          <div className={styles.gemReward}>
+            <div className={styles.gemReward_name}> 400</div>
+            <img src={`${baseUrl}/star.png`} alt="" height="14px" />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -69,8 +100,8 @@ const FriendReward = ({ friendReward, dispatch }) => {
 const FriendsTower = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_FRIENDS_QUERY);
-  const [selectedReward, setSelectedReward] = useState(0);
   const router = useRouter();
+  const { isShowing, openModal, closeModal } = useModal();
 
   const gql_data = data && normalize(data);
 
@@ -122,6 +153,10 @@ const FriendsTower = () => {
             <div className={styles.subTitle_muted}>
               For each buddy you bring, both of you get an exclusive reward!
             </div>
+            <div className="flex_between">
+              <div className="title">Shared Buddies </div>
+              <div className="title">{store.user.highest_buddy_shares}/10</div>
+            </div>
             {gql_data && store.user && (
               <div>
                 {mergeStreaks(
@@ -141,7 +176,10 @@ const FriendsTower = () => {
               </div>
             )}
 
-            <div className="btn btn-stretch btn-primary mt1 mb1">
+            <div
+              className="btn btn-stretch btn-primary mt1 mb1"
+              onClick={openModal}
+            >
               <img
                 src={`${baseUrl}/add-user.png`}
                 height="20px"
@@ -149,12 +187,14 @@ const FriendsTower = () => {
               />
               Share Buddy Link
             </div>
-            <div className="description_muted">
-              * The buddy must confirm their email address and complete the
-              tutorial to unlock the rewards.
-            </div>
           </>
         )}
+        <Modal
+          isShowing={isShowing}
+          closeModal={closeModal}
+          isSmall
+          jsx={<ShareBuddyModal id={store.user.id} />}
+        />
       </div>
     </div>
   );

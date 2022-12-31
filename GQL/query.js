@@ -715,6 +715,7 @@ export const GET_FRIENDS_QUERY = gql`
         attributes {
           reward_amount
           friends_count
+          reward_type
           artifact {
             data {
               id

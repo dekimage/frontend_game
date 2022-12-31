@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
+import cx from "classnames";
 import { useRouter } from "next/router";
 
 import Modal from "../components/Modal";
@@ -20,6 +21,7 @@ import ProgressBar from "../components/ProgressBar";
 // *** GQL ***
 import { GET_ARTIFACTS_QUERY } from "../GQL/query";
 import { normalize } from "../utils/calculations";
+import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
 
 // *** ACTIONS ***
 
@@ -30,11 +32,11 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 //POTENTIALLY ADD SIMPLE DATA TABLE TO DISPLAY PROGRESS ON ALL ARTIFACTS?
 
-export const ArtifactModal = ({ artifact, className, openModal }) => {
+export const ArtifactModal = ({ artifact, className }) => {
   return (
     <div>
       <div className={`${styles.artifactDetails} ${className}`}>
-        {artifact.image && (
+        {artifact.image && artifact.isClaimed && (
           <ImageUI url={artifact.image.url} className={styles.artifactImage} />
         )}
         <div className={styles.artifactDetails_name}>
@@ -42,10 +44,37 @@ export const ArtifactModal = ({ artifact, className, openModal }) => {
         </div>
         <div className={styles.artifactDetails_rarity}>{artifact.rarity}</div>
         <div className={styles.artifactDetails_obtainedBy}>
-          {artifact.obtained_by_description}
+          Obtained By: {artifact.obtained_by_description}
         </div>
+        {!artifact.isClaimed && (
+          <div className={styles.artifactProgress}>
+            <ArtifactProgress artifact={artifact} />
+          </div>
+        )}
       </div>
     </div>
+  );
+};
+
+const ArtifactProgress = ({ artifact }) => {
+  return (
+    <>
+      <ProgressBar
+        progress={
+          artifact.progress >= artifact.require
+            ? artifact.require
+            : artifact.progress
+        }
+        max={artifact.require || 1}
+        isReadyToClaim
+      />
+      <div>
+        {artifact.progress >= artifact.require
+          ? artifact.require
+          : artifact.progress}
+        /{artifact.require}
+      </div>
+    </>
   );
 };
 
@@ -69,19 +98,22 @@ export const Artifact = ({ artifact }) => {
 
   return (
     <>
-      <div className={styles.artifact} onClick={openModal}>
+      {/* artifact.isClaimed */}
+      <div
+        className={cx(styles.artifact, {
+          [styles.readyToClaim]: artifact.isCollected && !artifact.isClaimed,
+        })}
+        onClick={() => {
+          if (!artifact.isClaimed && artifact.isCollected) {
+            claimArtifact(dispatch, artifact.id);
+          }
+          openModal();
+        }}
+      >
         {artifact.isCollected ? (
           <>
-            <div>{artifact.isClaimed ? "claimed" : "unclaimed"}</div>
             <div>{artifact.short_name}</div>
-            {!artifact.isClaimed && (
-              <div
-                className="btn btn-action"
-                onClick={() => claimArtifact(dispatch, artifact.id)}
-              >
-                Claim
-              </div>
-            )}
+
             {artifact.image && (
               <ImageUI
                 url={artifact.image.url}
@@ -89,6 +121,7 @@ export const Artifact = ({ artifact }) => {
               />
             )}
             <div className={styles.artifact_name}>{artifact.name}</div>
+            {!artifact.isClaimed && <ArtifactProgress artifact={artifact} />}
           </>
         ) : (
           <>
@@ -100,21 +133,7 @@ export const Artifact = ({ artifact }) => {
 
             <div className={styles.artifact_name}>{artifact.name}</div>
 
-            <ProgressBar
-              progress={
-                artifact.progress >= artifact.require
-                  ? artifact.require
-                  : artifact.progress
-              }
-              max={artifact.require || 1}
-              isReadyToClaim={false}
-            />
-            <div>
-              {artifact.progress >= artifact.require
-                ? artifact.require
-                : artifact.progress}
-              /{artifact.require}
-            </div>
+            <ArtifactProgress artifact={artifact} />
           </>
         )}
       </div>
@@ -194,6 +213,7 @@ const Profile = () => {
   ];
 
   const gql_data = data && normalize(data);
+  const { isShowing, openModal, closeModal } = useModal();
 
   return (
     <div className="background_dark">
@@ -293,7 +313,10 @@ const Profile = () => {
                   key={b.id}
                 />
               ))} */}
-              <div className="btn btn-stretch btn-primary mt1 mb1">
+              <div
+                className="btn btn-stretch btn-primary mt1 mb1"
+                onClick={openModal}
+              >
                 <img
                   src={`${baseUrl}/add-user.png`}
                   height="20px"
@@ -301,9 +324,15 @@ const Profile = () => {
                 />
                 Share Buddy Link
               </div>
-              <div>Link: http://localhost:3000/login?ref={store.user.id}</div>
             </div>
           )}
+
+          <Modal
+            isShowing={isShowing}
+            closeModal={closeModal}
+            isSmall
+            jsx={<ShareBuddyModal id={store.user.id} />}
+          />
 
           {tab === "artifacts" && (
             <div className="section">

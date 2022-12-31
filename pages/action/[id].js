@@ -70,9 +70,22 @@ const ActionPage = ({ action, user }) => {
       <div className={styles.card}>
         {/* <FavoriteButton usercard={usercard} cardId={card.id} /> */}
         <BackButton isBack />
-        <div className="section flex_center">
+        <div
+          className="section flex_center"
+          style={{ zIndex: 100, position: "relative" }}
+        >
           <ImageUI url={action.image?.url} width="75px" height="75px" />
         </div>
+
+        <div
+          className={styles.background}
+          style={{ "--background": "#F4BE58" }}
+        ></div>
+
+        <div
+          className={styles.curve}
+          style={{ "--background": "#F4BE58" }}
+        ></div>
 
         {/* <ImageUI url={action.card.realm.image.url} height="28px" /> */}
         <div className="section">

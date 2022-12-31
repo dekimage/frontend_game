@@ -169,17 +169,28 @@
   gap: 1rem;
 }
 
+.artifactProgress {
+  @extend %flex_center;
+  flex-direction: column;
+  width: 70%;
+}
+
 .artifact {
   @extend %box_duo;
   @extend %flex_center;
   flex-direction: column;
   min-height: 100px;
+  font-size: 16px;
+  font-weight: 500;
   img {
     height: 50px;
   }
   &_name {
     text-transform: capitalize;
     @extend %flex_center;
+  }
+  &.readyToClaim {
+    box-shadow: 0px 0px 8px 1.5px rgba($color: #ffc74e, $alpha: 1);
   }
 }
 
@@ -196,6 +207,7 @@
     font-size: 20px;
     font-weight: 500;
     color: $primary;
+    text-transform: capitalize;
   }
   &_obtainedBy {
     font-size: 16px;
