@@ -108,6 +108,8 @@ export const Problem = ({ problem, isInside = false }) => {
           <span className="text__s">#</span>
           {id}
         </div> */}
+
+        <img src={`${realm.image.url}`} height="15px" className="mr5" />
         <div className={styles.name}>{name}</div>
 
         {/* <div className={styles.tag}>
@@ -162,20 +164,21 @@ const Problems = () => {
         <div className="header">Solve Your Problems</div>
       </div>
 
-      <div className="section">
+      <div>
         {error && <div>Error: {error}</div>}
         {(loading || realmsLoading) && <div>Loading...</div>}
+        <div className="section" style={{ padding: "0 1rem" }}>
+          <div className={styles.filters}>
+            <input
+              onChange={(e) => setQuery(e.target.value)}
+              className={styles.searchInput}
+              placeholder="Search..."
+            />
 
-        <div className={styles.filters}>
-          <input
-            onChange={(e) => setQuery(e.target.value)}
-            className={styles.searchInput}
-            placeholder="Search..."
-          />
-
-          {realms && (
-            <DropDown realms={realms} filter={filter} setFilter={setFilter} />
-          )}
+            {realms && (
+              <DropDown realms={realms} filter={filter} setFilter={setFilter} />
+            )}
+          </div>
         </div>
 
         {gql_data && (
