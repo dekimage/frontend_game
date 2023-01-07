@@ -390,6 +390,7 @@ export const GET_CARD_ID = gql`
         attributes {
           name
           description
+          benefits
           type
           cost
           rarity

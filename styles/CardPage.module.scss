@@ -1,6 +1,28 @@
 @import "variables";
 @import "placeholders";
 
+.benefits {
+  @extend %flex_start;
+  width: 100%;
+  height: 100%;
+}
+
+.masteryWrapper {
+  @extend %flex_center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.mastery {
+  @extend %flex_center;
+  @extend %box_duo;
+  // flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin: 1rem;
+}
+
 .favorite {
   @extend %flex_center;
   height: 2.5rem;

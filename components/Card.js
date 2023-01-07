@@ -60,11 +60,11 @@ const OpenCard = ({ card }) => {
         // maxProgress={card.completed_progress_max}
         maxProgress={5}
       />
-      {!(card.league == "unranked") && (
+      {/* {!(card.league == "unranked") && (
         <div className={styles.leagueBox}>
           <Rarity rarity={card.league} />
         </div>
-      )}
+      )} */}
       {/* <Rarity rarity="grandmaster" /> */}
     </div>
   );

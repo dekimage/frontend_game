@@ -2,7 +2,7 @@ import { useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { useState, useEffect, useContext } from "react";
 import { Context } from "../../context/store";
 import { useRouter } from "next/router";
-
+import ReactMarkdown from "react-markdown";
 import _ from "lodash";
 import styles from "../../styles/CardPage.module.scss";
 
@@ -107,7 +107,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           </div>
         </div>
 
-        <div
+        {/* <div
           className="btn btn-primary mb1"
           onClick={() => {
             updateCard(dispatch, card.id, "complete");
@@ -115,19 +115,34 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           }}
         >
           Complete Card
-        </div>
-
-        {/* <Rarity rarity={card.rarity} /> */}
-
-        <Rarity rarity={usercard.league} />
-
-        <ProgressBar
-          progress={usercard.completed}
-          max={usercard.completed_progress_max}
-          withNumber
-        />
+        </div> */}
 
         <div className={styles.description}>{card.description}</div>
+
+        <Title name="Benefits" />
+        <div className={styles.benefits}>
+          <ReactMarkdown children={card.benefits} />
+        </div>
+
+        <div className={styles.masteryWrapper}>
+          <div className={styles.mastery}>
+            Sessions Complete
+            <div className="mt1 mb1">
+              <Rarity rarity={usercard.league} />
+            </div>
+            <ProgressBar
+              progress={usercard.completed}
+              max={usercard.completed_progress_max}
+              withNumber
+            />
+            <div className="mb1"></div>
+          </div>
+
+          <div className={styles.mastery}>
+            Rarity
+            <Rarity rarity={card.rarity} />
+          </div>
+        </div>
 
         <Title name="Sessions" />
 
