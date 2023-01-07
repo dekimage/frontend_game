@@ -40,7 +40,6 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
     completed_progress_max: 3,
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
-  console.log(usercard);
 
   // const [activeTab, setActiveTab] = useState("community");
 
@@ -48,8 +47,6 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
 
   const isUnlocked =
     card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
-
-  // console.log(usercard);
 
   const mergeActions = (usercard, actions, checkingArray, keyword) => {
     const result = actions.map((action) => {
@@ -73,7 +70,6 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
     course: { id: 1 },
   };
 
-  console.log(store.rewardsModal);
   const { isShowing, openModal, closeModal } = useModal();
 
   return (

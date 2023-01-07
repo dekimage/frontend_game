@@ -15,7 +15,6 @@ const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 //MAYBE IN CARD PLAYER?
 export const SuccessModal = ({ closePlayer, card }) => {
   const [store, dispatch] = useContext(Context);
-  console.log(card, "card");
   return (
     <div className={styles.cardPlayerSuccessModal}>
       Congratualations! You have completed this card!

@@ -5,6 +5,13 @@
   @extend %flex_start;
   width: 100%;
   height: 100%;
+  ul {
+    padding: 0;
+    margin: 0 1rem;
+    p {
+      margin: 0.5rem 0;
+    }
+  }
 }
 
 .masteryWrapper {

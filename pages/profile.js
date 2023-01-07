@@ -287,8 +287,11 @@ const Profile = () => {
 
           {tab === "buddies" && (
             <div className="section">
-              <div className={styles.header}>
-                <div>Shared Buddies</div>{" "}
+              <div
+                className={styles.header}
+                style={{ justifyContent: "space-between" }}
+              >
+                <div>Shared Buddies</div>
                 {store.user.shared_buddies?.length || 0}
                 /10
               </div>

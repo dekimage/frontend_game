@@ -8,7 +8,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import ReactMarkdown from "react-markdown";
 import { Rating } from "../../components/Rating";
 import Link from "next/link";
-import _ from "lodash";
+import _, { forEach } from "lodash";
 import styles from "../../styles/Course.module.scss";
 import ProgressBar from "../../components/ProgressBar";
 import iconLock from "../../assets/lock-white.svg";
@@ -210,6 +210,17 @@ const Day = ({ day, usercourse, cardName = false, i }) => {
       ? day.contents.length
       : usercourse?.last_completed_content - 1;
 
+  const sumDurationSessions = (sessions) => {
+    let sum = 0;
+    sessions.forEach((s) => {
+      if (!s.duration) {
+        return;
+      }
+      sum = sum + s.duration;
+    });
+    return sum;
+  };
+
   return (
     <div className={styles.day}>
       <div className={styles.dayHeader} onClick={() => setIsOpen(!isOpen)}>
@@ -225,9 +236,9 @@ const Day = ({ day, usercourse, cardName = false, i }) => {
           1,2,3 back */}
           <div className={styles.label}>{cardName}</div>
           <div className={styles.progress}>
-            {usercourse
-              ? `${completedSessions}/${day.contents.length} completed`
-              : `${day.contents.length} steps`}
+            {/* ? `${completedSessions}/${day.contents.length} completed` */}
+            {/* {usercourse && `${day.contents.length} steps`} */}
+            {sumDurationSessions(day.contents)} min
           </div>
         </div>
         <div className={styles.iconDown}>
@@ -288,7 +299,7 @@ export const getIconType = (type) => {
   if (type === "concept") {
     return { icon: iconConcept };
   }
-  if (type === "training" || type === "technique") {
+  if (type === "action" || type === "technique") {
     return { icon: iconAction };
   }
   if (type === "question") {
