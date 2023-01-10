@@ -105,8 +105,6 @@ const SearchBar = () => {
     );
   };
 
-  //bobsan
-
   return (
     <div className="background_dark">
       <BackButton isBack />
