@@ -2,6 +2,14 @@
 @import "placeholders";
 
 // export this to placeholder repeated in profile.css
+
+.acceptReferralBox {
+  @extend %box_duo;
+  @extend %flex_center;
+  flex-direction: column;
+  margin: 1rem;
+}
+
 .header {
   @extend %header;
   margin-bottom: 0.75rem;

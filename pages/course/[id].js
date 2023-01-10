@@ -349,15 +349,7 @@ const ContentStep = ({ content, usercourse, dayLockState }) => {
         course={usercourse.course}
       /> */}
 
-      <div
-        className={styles.contentStep}
-        onClick={() => {
-          contentState === "completed" &&
-            router.push(
-              `${feUrl}/card/player/${usercourse.last_completed_day + 1}`
-            );
-        }}
-      >
+      <div className={styles.contentStep}>
         <div className={styles.contentState}>
           <div className={styles.contentTypeBackground}>
             <img

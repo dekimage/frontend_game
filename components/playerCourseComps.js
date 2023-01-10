@@ -8,6 +8,7 @@ import iconCheckmark from "../assets/checkmark.svg";
 import _ from "lodash";
 
 import { updateCard } from "../actions/action";
+import ReactMarkdown from "react-markdown";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -41,7 +42,9 @@ export const CatReply = ({ message }) => {
             <span></span>
             <span></span>
           </div>
-          <p>{message.reply}</p>
+          <p>
+            <ReactMarkdown children={message.reply} />
+          </p>
         </div>
         <div
           className="avatar"
@@ -74,7 +77,10 @@ export const CatContent = ({ message }) => {
             <span></span>
             <span></span>
           </div>
-          <p>{message.content}</p>
+
+          <p>
+            <ReactMarkdown children={message.content} />
+          </p>
         </div>
       </div>
     </div>

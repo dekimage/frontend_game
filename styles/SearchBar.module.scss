@@ -1,5 +1,14 @@
 @import "variables.scss";
 @import "placeholders.scss";
+
+.searchBtn {
+  background-color: $actionize_gray_light;
+  border-radius: $border_radius;
+  @extend %flex_center;
+  width: 60px;
+  height: 40px;
+}
+
 .backButton {
   @extend %flex_center;
   padding: 0 0.5rem;
@@ -12,7 +21,6 @@
   min-width: 20rem;
   background-color: $actionize_gray;
   border-radius: $border_radius;
-  padding: 0.25rem 0;
   position: relative;
   z-index: 1000;
   padding-left: 0.5rem;

@@ -126,7 +126,7 @@ const Objective = ({
             ) : (
               <div
                 className={styles.btn_objective__disabled}
-                onClick={() => Router.push(`/${link}`)}
+                onClick={() => Router.push(`/${link ? link : "learn"}`)}
               >
                 Go
               </div>

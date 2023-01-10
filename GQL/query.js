@@ -606,7 +606,7 @@ export const GET_REALM_ID = gql`
             }
           }
 
-          cards {
+          cards(pagination: { limit: 15 }) {
             data {
               id
               attributes {

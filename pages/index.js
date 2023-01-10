@@ -93,11 +93,23 @@ const Home = () => {
           {/* OBJECTIVES SECTION*/}
           <div>
             {!store.user.is_referral_accepted && (
-              <div
-                className="btn btn-action"
-                onClick={() => acceptReferral(dispatch)}
-              >
-                Claim Buddy Reward
+              <div className={styles.acceptReferralBox}>
+                <div className="header">Welcome Gift</div>
+                <div className="pb1 pt1">
+                  Gain 400 <img height="16px" src={`${baseUrl}/stars.png`} />{" "}
+                  because a buddy shared you an invite
+                </div>
+                <div
+                  className="btn btn-action"
+                  onClick={() => acceptReferral(dispatch)}
+                >
+                  Claim 400{" "}
+                  <img
+                    height="18px"
+                    src={`${baseUrl}/stars.png`}
+                    className="ml5"
+                  />
+                </div>
               </div>
             )}
             <div className="section">

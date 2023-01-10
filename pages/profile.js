@@ -232,10 +232,9 @@ const Profile = () => {
                 max={store.user.cards_count}
               />
               <Stat
-                number={store.user.stats.master_cards}
+                number={store.user.stats.cards_complete}
                 img={`${baseUrl}/rise.png`}
-                text={"Cards Completed"}
-                max={store.user.cards_count}
+                text={"Sessions Completed"}
               />
               <Stat
                 number={store.user.highest_streak_count}
@@ -252,6 +251,10 @@ const Profile = () => {
                 img={`${baseUrl}/energy.png`}
                 text={"Artifacts"}
                 max={store.user.artifacts_count}
+              />
+              <Stat
+                img={`${baseUrl}/user.png`}
+                text={store.user.is_subscribed ? "Pro User" : "Free User"}
               />
             </div>
           )}

@@ -12,12 +12,15 @@ import { Problem } from "./problems";
 import { BackButton } from "../components/reusableUI";
 import CardsMapper from "../components/CardsMapper";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const SearchBar = () => {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState([]);
   const [resultProblems, setResultProblems] = useState([]);
   const [resultCards, setResultCards] = useState([]);
   const [resultActions, setResultActions] = useState([]);
+  const [showNothing, setShowNothing] = useState(true);
 
   const [isSearching, setIsSearching] = useState(false);
   const [isInputOpen, setIsInputOpen] = useState(false);
@@ -47,7 +50,8 @@ const SearchBar = () => {
     setSearch("");
   };
 
-  const onSearch = debounce((value) => {
+  const onSearch = (value) => {
+    setShowNothing(false);
     const query = `?filters[name][$contains]=${value}&populate=%2A`;
     if (search.length > 0) {
       setIsSearching(true);
@@ -70,20 +74,13 @@ const SearchBar = () => {
           console.log(err);
         });
     }
-  }, 1500);
+  };
 
   const onChange = (e) => {
+    setShowNothing(true);
     e.preventDefault();
     const value = e.target.value.toLowerCase();
     setSearch(value);
-    setIsSearching(true);
-
-    if (value.length > 0) {
-      onSearch(value);
-    }
-    if (value.length < 1) {
-      setResult([]);
-    }
   };
 
   const onClose = (e) => {
@@ -92,7 +89,6 @@ const SearchBar = () => {
     }
     setSearch("");
     setResult([]);
-    setIsSearching(false);
   };
 
   const SearchCard = ({ card }) => {
@@ -132,6 +128,10 @@ const SearchBar = () => {
             placeholder={`Search ${tab}...`}
           />
 
+          <div className={styles.searchBtn} onClick={() => onSearch(search)}>
+            <img height="18px" src={`${baseUrl}/search.png`} />
+          </div>
+
           {search.length > 0 && (
             <div className="btn-search clear" onClick={() => onClose()}>
               {/* <img src={closeIcon} style={{ height: "15px" }} /> */}
@@ -156,18 +156,30 @@ const SearchBar = () => {
           {search.length > 0 && (
             <div className={styles.searchResult_box}>
               <div className={styles.isSearching}>
-                {!isSearching && <div>Search Results for: "{search}"</div>}
-                {isSearching && "Searching..."}
-
-                {!isSearching && result.length === 0 && search.length > 0 && (
-                  <div className={styles.noResults}>
-                    <img
-                      style={{ height: "200px", marginBottom: "1rem" }}
-                      src="https://backendactionise.s3.eu-west-1.amazonaws.com/strong_sit_f2e5f0f1a5.png"
-                    />
-                    No Results Found...
+                {!isSearching && showNothing && (
+                  <div>
+                    Click the{" "}
+                    <img height="18px" src={`${baseUrl}/search.png`} /> to
+                    search for "{search}"
                   </div>
                 )}
+                {isSearching && "Searching..."}
+
+                {!showNothing &&
+                  !isSearching &&
+                  result.length === 0 &&
+                  search.length > 0 && (
+                    <>
+                      <div>Search Results for: "{search}"</div>
+                      <div className={styles.noResults}>
+                        <img
+                          style={{ height: "200px", marginBottom: "1rem" }}
+                          src="https://backendactionise.s3.eu-west-1.amazonaws.com/strong_sit_f2e5f0f1a5.png"
+                        />
+                        No Results Found...
+                      </div>
+                    </>
+                  )}
               </div>
               {tab === "Cards" && (
                 <div className={styles.isSearching}>

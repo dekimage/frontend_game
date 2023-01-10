@@ -95,7 +95,9 @@ const Shop = () => {
             </div>
           </div>
           {/* <div className={styles.proxySubs_price}>$4.99 / Mo</div> */}
-          <div className={styles.proCtaButton}>$4.99 / Mo</div>
+          <div onClick={openModal} className={styles.proCtaButton}>
+            $4.99 / Mo
+          </div>
         </div>
       </div>
 
