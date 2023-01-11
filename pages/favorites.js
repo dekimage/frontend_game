@@ -19,7 +19,7 @@ const Favorites = () => {
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
   const { data, loading, error } = useQuery(GET_USER_FAVORITES, {
-    variables: { id: store.user.id },
+    variables: { id: store?.user?.id },
   });
   const [tab, setTab] = useState("Cards");
 
@@ -41,12 +41,9 @@ const Favorites = () => {
     }
   }, [gql_data]);
 
-  const usercards = store.user && store.user.usercards;
-
   return (
     <div className="background_dark">
-      {error && <div>Error: {error}</div>}
-      {loading && <div>Loading...</div>}
+      {loading && error && <div>Loading...</div>}
       {gql_data && (
         <div>
           <div className="section">
@@ -75,6 +72,7 @@ const Favorites = () => {
                 )}
               </div>
             )}
+
             {tab === "Actions" && (
               <div className={styles.grid}>
                 {favoriteActions.length ? (
