@@ -209,7 +209,7 @@ const Profile = () => {
   const tabsData = [
     { label: "Rewards", count: -1 },
     { label: "buddies", count: -1 },
-    { label: "artifacts", count: -1 },
+    { label: "artifacts", count: store.notifications.artifacts || -1 },
   ];
 
   const gql_data = data && normalize(data);
@@ -249,7 +249,7 @@ const Profile = () => {
               <Stat
                 number={store.user.stats.claimed_artifacts || 0}
                 img={`${baseUrl}/energy.png`}
-                text={"Artifacts"}
+                text={"Achievements"}
                 max={store.user.artifacts_count}
               />
               <Stat
@@ -302,7 +302,7 @@ const Profile = () => {
                 <Buddy
                   name={b.username}
                   link={`/users/${b.id}`}
-                  // img={b.profile.url}
+                  img={b.avatar?.image.url}
                   level={b.level}
                   key={b.id}
                 />

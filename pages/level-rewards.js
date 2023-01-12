@@ -50,6 +50,7 @@ const LevelReward = ({
         amount={reward_amount}
         isCollected={isCollected}
         isReadyToCollect={isReadyToCollect}
+        isPremiumLock={isPremiumLock}
         isUserPremium={store.user.is_subscribed}
         isPremium={is_premium}
         artifact={artifact}

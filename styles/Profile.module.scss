@@ -91,7 +91,9 @@
 .tabCounter {
   margin-left: 0.5rem;
   @extend %flex_center;
-  background-color: $actionize_gray;
+  color: white;
+  // background-color: $actionize_gray;
+  background-color: $ux_red;
   border-radius: $border_radius;
   height: 1.5rem;
   width: 1.5rem;

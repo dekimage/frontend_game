@@ -46,26 +46,34 @@ export const calcRewardReady = (
   const notifCount = notCollected.length;
   return notifCount;
 };
-export const calcLevelRewards = (level, level_rewards, levels, is_premium) => {
-  const availableArr = levels.filter((l) => l <= level);
-  const filtered = availableArr.map((l) =>
-    level_rewards.filter((el) => el.level === l)
+
+export const calcArtifactsReady = (artifacts, claimedArtifacts) => {
+  const claimedArtifactsIds = claimedArtifacts.map((a) => a.id);
+  const readyToClaimArtifacts = artifacts.filter(
+    (a) => !claimedArtifactsIds.includes(a.id)
+  ).length;
+  return readyToClaimArtifacts;
+};
+
+export const calcLevelRewards = (
+  level_rewards, // users json
+  allLevelRewards, // all objects
+  is_subscribed
+) => {
+  const claimedLevels = level_rewards.map((lr) => lr.id);
+  const readyToClaimLevels = allLevelRewards.filter(
+    (alr) => !claimedLevels.includes(alr.id)
   );
 
-  const collectedArr = filtered.filter((r) => r.length > 0);
-  let collected = 0;
-  collectedArr.forEach((el) => {
-    if (el.length === 1) {
-      collected++;
-    }
-    if (el.length === 2) {
-      collected = collected + 2;
-    }
-  });
+  let notificationsCount;
 
-  return is_premium
-    ? filtered.length * 2 - collected
-    : filtered.length - collected;
+  if (is_subscribed) {
+    notificationsCount = readyToClaimLevels.length;
+  } else {
+    notificationsCount = readyToClaimLevels.filter((l) => !l.is_premium).length;
+  }
+
+  return notificationsCount;
 };
 
 export const normalize = (data) => {

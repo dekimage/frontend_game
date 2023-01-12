@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 
 // *** COMPONENTS ***
 import NavBar from "../../components/NavBar";
+import Header from "../../components/Header";
 import { CommunityAction } from "../../components/cardPageComps";
 import { Artifact } from "../profile";
 import {
@@ -59,11 +60,15 @@ const User = () => {
   return (
     <div className="background_dark">
       {user && followers && (
-        <div className="section-container">
-          <ProfileHeader buddy={user} isBuddy />
+        <>
+          <Header />
 
-          {/* FOLLOW */}
-          {/* <div className="flex_center mt1">
+          <div className="section-container">
+            <div className="headerSpace"></div>
+            <ProfileHeader buddy={user} isBuddy />
+
+            {/* FOLLOW */}
+            {/* <div className="flex_center mt1">
             {followers.filter((b) => b.id == user.id).length > 0 ? (
               <div
                 onClick={() => followBuddy(dispatch, user.id)}
@@ -81,85 +86,89 @@ const User = () => {
             )}
           </div> */}
 
-          <div className={styles.stats}>
-            <Stat
-              number={user.stats?.card_unlock || 0}
-              img={`${baseUrl}/legendary-cards.png`}
-              text={"Cards Unlocked"}
-              max={store.user.cards_count}
-            />
-            <Stat
-              number={user.stats?.master_cards || 0}
-              img={`${baseUrl}/rise.png`}
-              text={"Cards Completed"}
-              max={store.user.cards_count}
-            />
-            <Stat
-              number={user.highest_streak_count}
-              img={`${baseUrl}/streak.png`}
-              text={"Highest Streak"}
-            />
-            <Stat
-              number={user.stats?.action_complete || 0}
-              img={`${baseUrl}/energy.png`}
-              text={"Actions Done"}
-            />
-            <Stat
-              number={user.stats?.claimed_artifacts || 0}
-              img={`${baseUrl}/energy.png`}
-              text={"Artifacts"}
-              max={store.user.artifacts_count}
-            />
+            <div className={styles.stats}>
+              <Stat
+                number={user.stats?.card_unlock || 0}
+                img={`${baseUrl}/legendary-cards.png`}
+                text={"Cards Unlocked"}
+                max={store.user.cards_count}
+              />
+              <Stat
+                number={user.stats?.cards_complete || 0}
+                img={`${baseUrl}/rise.png`}
+                text={"Sessions Completed"}
+              />
+              <Stat
+                number={user.highest_streak_count || 0}
+                img={`${baseUrl}/streak.png`}
+                text={"Highest Streak"}
+              />
+              <Stat
+                number={user.stats?.action_complete || 0}
+                img={`${baseUrl}/energy.png`}
+                text={"Actions Done"}
+              />
+              <Stat
+                number={user.stats?.claimed_artifacts || 0}
+                img={`${baseUrl}/energy.png`}
+                text={"Achievements"}
+                max={store.user.artifacts_count}
+              />
+              <Stat
+                img={`${baseUrl}/user.png`}
+                text={user.is_subscribed ? "Pro User" : "Free User"}
+              />
+            </div>
+
+            <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
+
+            {tab === "activity" && (
+              <div className="section">
+                <div>Last Completed Cards</div>
+                <CardsMapper cards={user.last_completed_cards} />
+              </div>
+            )}
+
+            {tab === "buddies" && (
+              <div className="section">
+                <div className={styles.header}>
+                  <div>Following</div> {user.followers?.length || 0}/50
+                </div>
+                {user.followers?.map((b) => (
+                  <Buddy
+                    name={b.username}
+                    link={`/users/${b.id}`}
+                    img={b.avatar?.image.url}
+                    level={b.level}
+                    key={b.id}
+                  />
+                ))}
+                <div className="btn btn-stretch btn-primary mt1 mb1">
+                  <img
+                    src={`${baseUrl}/add-user.png`}
+                    height="20px"
+                    className="mr1"
+                  />
+                  Share Buddy Link
+                </div>
+              </div>
+            )}
+
+            {tab === "artifacts" && (
+              <div className="section">
+                <div className={styles.header}>
+                  <div>Artifacts</div> {user.stats?.claimed_artifacts || 0}/
+                  {store.user.artifacts_count}
+                </div>
+                <div className={styles.artifactsWrapper}>
+                  {store.user.artifacts.map((artifact, i) => {
+                    return <Artifact key={i} artifact={artifact} />;
+                  })}
+                </div>
+              </div>
+            )}
           </div>
-
-          <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
-
-          {tab === "activity" && (
-            <div className="section">
-              <div>Last Completed Cards</div>
-              <CardsMapper cards={user.last_completed_cards} />
-            </div>
-          )}
-
-          {tab === "buddies" && (
-            <div className="section">
-              <div className={styles.header}>
-                <div>Following</div> {user.followers?.length || 0}/50
-              </div>
-              {user.followers?.map((b) => (
-                <Buddy
-                  name={b.username}
-                  link={`/users/${b.id}`}
-                  // img={b.profile.url}
-                  level={b.level}
-                  key={b.id}
-                />
-              ))}
-              <div className="btn btn-stretch btn-primary mt1 mb1">
-                <img
-                  src={`${baseUrl}/add-user.png`}
-                  height="20px"
-                  className="mr1"
-                />
-                Share Buddy Link
-              </div>
-            </div>
-          )}
-
-          {tab === "artifacts" && (
-            <div className="section">
-              <div className={styles.header}>
-                <div>Artifacts</div> {user.stats?.claimed_artifacts || 0}/
-                {store.user.artifacts_count}
-              </div>
-              <div className={styles.artifactsWrapper}>
-                {store.user.artifacts.map((artifact, i) => {
-                  return <Artifact key={i} artifact={artifact} />;
-                })}
-              </div>
-            </div>
-          )}
-        </div>
+        </>
       )}
 
       <NavBar />

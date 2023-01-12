@@ -32,7 +32,6 @@ export const calculateNotifications = (gql_data, store) => {
   const notifications = {
     daily: filterObjectives(allTasks, "daily").length,
     weekly: filterObjectives(allTasks, "weekly").length,
-    achievements: filterObjectives(allTasks, "achievements").length,
   };
   return notifications;
 };

@@ -1,4 +1,8 @@
-import { calcLevelRewards, calcRewardReady } from "../utils/calculations";
+import {
+  calcLevelRewards,
+  calcRewardReady,
+  calcArtifactsReady,
+} from "../utils/calculations";
 import { staticRewards } from "../data/rewards";
 const Reducer = (store, action) => {
   switch (action.type) {
@@ -25,22 +29,25 @@ const Reducer = (store, action) => {
         isAuthenticated: true,
         isLoading: false,
         notifications: {
-          // streaks: calcRewardReady(
-          //   staticRewards.streaks,
-          //   action.data.highest_streak_count,
-          //   action.data.streak_rewards
-          // ),
-          // friends: calcRewardReady(
-          //   staticRewards.friends,
-          //   action.data.highest_buddy_shares,
-          //   action.data.friends_rewards
-          // ),
-          // levels: calcLevelRewards(
-          //   action.data.level,
-          //   action.data.rewards_tower,
-          //   staticRewards.levels,
-          //   action.data.is_premium
-          // ),
+          streaks: calcRewardReady(
+            staticRewards.streaks,
+            action.data.highest_streak_count,
+            action.data.streak_rewards
+          ),
+          friends: calcRewardReady(
+            staticRewards.friends,
+            action.data.highest_buddy_shares,
+            action.data.friends_rewards
+          ),
+          levels: calcLevelRewards(
+            action.data.levelrewards,
+            action.data.levelRewards,
+            action.data.is_subscribed
+          ),
+          artifacts: calcArtifactsReady(
+            action.data.artifacts,
+            action.data.claimed_artifacts
+          ),
         },
       };
     case "REMOVE_USER":

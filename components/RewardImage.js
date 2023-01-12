@@ -11,6 +11,7 @@ const RewardImage = ({
   amount,
   isCollected,
   isReadyToCollect,
+  isPremiumLock,
   isPremium = false,
   isUserPremium = false,
   isTask = false,
@@ -20,7 +21,7 @@ const RewardImage = ({
     <div
       className={cx([styles.reward], {
         [styles.premium]: isPremium,
-        [styles.action]: isReadyToCollect && !isCollected && isUserPremium,
+        [styles.action]: isReadyToCollect && !isCollected && !isPremiumLock,
         [styles.done]: isCollected,
         [styles.task]: isTask,
       })}

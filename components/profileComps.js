@@ -41,20 +41,19 @@ export const Stat = ({ img, number, text, max, isPercent = false }) => {
   );
 };
 
-export const Buddy = ({ img, link, name, level }) => {
+export const Buddy = ({ img, link, name }) => {
   return (
     <Link href={link}>
       <div className={styles.buddyBox}>
         <div className={styles.buddyAvatar}>
-          <img
-            // src={`${baseUrl}/${store.user.image.url}`
-
-            src={`${baseUrl}/avatar-test.png`}
-          />
+          {img ? (
+            <ImageUI url={img} height="66px" />
+          ) : (
+            <img src={`${baseUrl}/avatar-test.png`} />
+          )}
         </div>
         <div className={styles.buddyBox_name}>{name}</div>
 
-        <div className={styles.buddyBox_level}>{level} Lvl</div>
         <div className={styles.arrowRight}>
           <ion-icon name="chevron-forward-outline"></ion-icon>
         </div>
@@ -135,8 +134,11 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
       <div className={styles.profileHeader_box}>
         <div className={styles.avatarBox}>
           <div className={styles.avatar}>
-            <div className={styles.level}>{user.level}</div>
-            <div onClick={openModal}>
+            <div
+              onClick={() => {
+                !isBuddy && openModal();
+              }}
+            >
               <ImageUI url={user.avatar?.image.url} height="66px" />
             </div>
           </div>
@@ -180,23 +182,41 @@ export const Tabs = ({
 }) => {
   const tabWidth = tabs.length === 2 ? "50%" : "33.3%";
 
-  const TabHoc = ({ children, tab, tabState, link, tabWidth }) => {
+  const TabHoc = ({ children, tab, setTab, tabState, link, tabWidth }) => {
     return (
-      <div
-        className={cx(
-          styles.tabsButton,
-          tabState === tab.label && styles.active
-        )}
-        style={{ width: tabWidth }}
-      >
+      <>
         {link ? (
           <a href={link ? `#${link}` : ""}>
-            <div>{children}</div>
+            <div
+              className={cx(
+                styles.tabsButton,
+                tabState === tab.label && styles.active
+              )}
+              onClick={() => {
+                setTab(tab.label);
+                callback && callback(value);
+              }}
+              style={{ width: tabWidth }}
+            >
+              <div>{children}</div>
+            </div>
           </a>
         ) : (
-          <div>{children}</div>
+          <div
+            className={cx(
+              styles.tabsButton,
+              tabState === tab.label && styles.active
+            )}
+            onClick={() => {
+              setTab(tab.label);
+              callback && callback(value);
+            }}
+            style={{ width: tabWidth }}
+          >
+            <div>{children}</div>
+          </div>
         )}
-      </div>
+      </>
     );
   };
   const Tab = ({ tabState, setTab, tab, link }) => {
@@ -206,14 +226,9 @@ export const Tabs = ({
         tabState={tabState}
         link={link}
         tabWidth={tabWidth}
+        setTab={setTab}
         children={
-          <div
-            onClick={() => {
-              setTab(tab.label);
-              callback && callback(value);
-            }}
-            className="flex_center"
-          >
+          <div className="flex_center">
             {tab.label}
             {tab.count !== -1 && (
               <div className={styles.tabCounter}>

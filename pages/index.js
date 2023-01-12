@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { Context } from "../context/store";
 import cx from "classnames";
-// import { calculateNotifications } from "../utils/calculations";
 
 // *** COMPONENTS ***
 import useModal from "../hooks/useModal";
@@ -21,7 +20,7 @@ import { RewardLink } from "../components/todayComp";
 
 // *** FUNCTIONS ***
 import { normalize } from "../utils/calculations";
-import { joinObjectives } from "../functions/todayFunc";
+import { joinObjectives, calculateNotifications } from "../functions/todayFunc";
 import { resetUser, acceptReferral } from "../actions/action";
 
 // *** GQL ***
@@ -31,15 +30,6 @@ import { GET_OBJECTIVES_QUERY } from "../GQL/query";
 import styles from "../styles/Today.module.scss";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const calculateNotifications = () => {
-  return 2;
-};
-
-const tabsData = [
-  { label: "daily", count: -1 },
-  { label: "weekly", count: -1 },
-];
 
 const Home = () => {
   const [store, dispatch] = useContext(Context);
@@ -64,6 +54,14 @@ const Home = () => {
       openModal();
     }
   }, [store.user]);
+
+  const notif =
+    gql_data && store.user && calculateNotifications(gql_data, store);
+
+  const tabsData = [
+    { label: "daily", count: notif?.daily || -1 },
+    { label: "weekly", count: notif?.weekly || -1 },
+  ];
 
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
 

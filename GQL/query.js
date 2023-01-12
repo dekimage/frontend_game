@@ -1610,6 +1610,22 @@ export const GET_USER_ID = gql`
           is_subscribed
           stats
 
+          avatar {
+            data {
+              id
+              attributes {
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
           claimed_artifacts {
             data {
               id
