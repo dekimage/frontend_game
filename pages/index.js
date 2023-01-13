@@ -114,7 +114,6 @@ const Home = () => {
               <div className={styles.objectivesHeadline}>
                 <div className="header">Objectives</div>
 
-                {/* FIXME: */}
                 <span className={styles.objectivesHeadline_number}>
                   {getCompletedObjectivesCount(
                     objectivesData,
