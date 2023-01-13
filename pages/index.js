@@ -65,13 +65,15 @@ const Home = () => {
 
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
 
+  console.log(111, gql_data);
+
   return (
     <div className="background_dark">
       <Header />
       <div className="headerSpace"></div>
 
       {/* TUTORIAL MODAL */}
-      {store && store.user?.usercourses && gql_data && (
+      {store && store.user && gql_data && (
         <div>
           {/* WELCOME */}
           {/* <div className="section"> */}
@@ -85,8 +87,6 @@ const Home = () => {
               Reset User
             </div> */}
           {/* </div> */}
-
-          {/* OBJECTIVES FILTERS */}
 
           {/* OBJECTIVES SECTION*/}
           <div>
@@ -134,40 +134,6 @@ const Home = () => {
                 setTab={setObjectivesTabOpen}
                 tabs={tabsData}
               />
-
-              {/* <div className={styles.objectiveTabsGrid}>
-                <div
-                  className={cx(styles.objectiveTab, {
-                    [styles.active]: objectivesTabOpen == "daily",
-                  })}
-                  onClick={() => setObjectivesTabOpen("daily")}
-                >
-                  <div className={styles.objectiveTab_text}>
-                    Daily
-                    {calculateNotifications(gql_data, store).daily > 0 && (
-                      <div className={styles.objectiveTabCounter}>
-                        {calculateNotifications(gql_data, store).daily}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  className={cx(styles.objectiveTab, {
-                    [styles.active]: objectivesTabOpen == "weekly",
-                  })}
-                  onClick={() => setObjectivesTabOpen("weekly")}
-                >
-                  <div className={styles.objectiveTab_text}>
-                    Weekly{" "}
-                    {calculateNotifications(gql_data, store).weekly > 0 && (
-                      <div className={styles.objectiveTabCounter}>
-                        {calculateNotifications(gql_data, store).weekly}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>*/}
             </div>
 
             {gql_data && (
@@ -195,19 +161,12 @@ const Home = () => {
           img={`${baseUrl}/favorite.png`}
           link={"/favorites"}
           text={"Favorites"}
-          notification={store.notifications.levels}
         />
-        {/* <RewardLink
-              img={`${baseUrl}/random.png`}
-              link={"/random"}
-              text={"Random"}
-              notification={store.notifications.levels}
-            /> */}
+
         <RewardLink
           img={`${baseUrl}/streak.png`}
           link={"/recent"}
           text={"Recent"}
-          notification={store.notifications.streaks}
         />
       </div>
 
