@@ -29,21 +29,21 @@ const Reducer = (store, action) => {
         isAuthenticated: true,
         isLoading: false,
         notifications: {
-          streaks: calcRewardReady(
-            staticRewards.streaks,
-            action.data.highest_streak_count,
-            action.data.streak_rewards
-          ),
-          friends: calcRewardReady(
-            staticRewards.friends,
-            action.data.highest_buddy_shares,
-            action.data.friends_rewards
-          ),
-          levels: calcLevelRewards(
-            action.data.levelrewards,
-            action.data.levelRewards,
-            action.data.is_subscribed
-          ),
+          // streaks: calcRewardReady(
+          //   staticRewards.streaks,
+          //   action.data.highest_streak_count,
+          //   action.data.streak_rewards
+          // ),
+          // friends: calcRewardReady(
+          //   staticRewards.friends,
+          //   action.data.highest_buddy_shares,
+          //   action.data.friends_rewards
+          // ),
+          // levels: calcLevelRewards(
+          //   action.data.levelrewards,
+          //   action.data.levelRewards,
+          //   action.data.is_subscribed
+          // ),
           artifacts: calcArtifactsReady(
             action.data.artifacts,
             action.data.claimed_artifacts
