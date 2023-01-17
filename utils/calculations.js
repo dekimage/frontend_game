@@ -60,6 +60,7 @@ export const calcLevelRewards = (
   allLevelRewards, // all objects
   is_subscribed
 ) => {
+  console.log({ level_rewards, allLevelRewards, is_subscribed });
   const claimedLevels = level_rewards.map((lr) => lr.id);
   const readyToClaimLevels = allLevelRewards.filter(
     (alr) => !claimedLevels.includes(alr.id)

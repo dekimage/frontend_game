@@ -39,11 +39,11 @@ const Reducer = (store, action) => {
           //   action.data.highest_buddy_shares,
           //   action.data.friends_rewards
           // ),
-          // levels: calcLevelRewards(
-          //   action.data.levelrewards,
-          //   action.data.levelRewards,
-          //   action.data.is_subscribed
-          // ),
+          levels: calcLevelRewards(
+            action.data.levelrewards,
+            action.data.levelRewards,
+            action.data.is_subscribed
+          ),
           artifacts: calcArtifactsReady(
             action.data.artifacts,
             action.data.claimed_artifacts
