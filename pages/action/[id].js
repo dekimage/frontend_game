@@ -148,7 +148,7 @@ const Action = () => {
 
   // const isUnlocked = true;
 
-  useEffect(() => {}, [store.user]);
+  // useEffect(() => {}, [store.user]);
 
   const isEmpty = (obj) => {
     if (obj === undefined) {

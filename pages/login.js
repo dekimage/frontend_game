@@ -24,7 +24,7 @@ const Login = () => {
 
   useEffect(() => {
     if (store.isAuthenticated) {
-      // router.push("/"); redirect if you're already logged in
+      router.push("/"); //redirect if you're already logged in
     }
   }, [store, data]);
 

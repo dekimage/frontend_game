@@ -90,7 +90,7 @@ const Home = () => {
 
           {/* OBJECTIVES SECTION*/}
           <div>
-            {!store.user.is_referral_accepted && (
+            {!store.user.is_referral_accepted && store.user.shared_by?.id && (
               <div className={styles.acceptReferralBox}>
                 <div className="header">Welcome Gift</div>
                 <div className="pb1 pt1">

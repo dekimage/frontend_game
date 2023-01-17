@@ -39,6 +39,7 @@ const Store = ({ children }) => {
   const router = useRouter();
   useEffect(() => {
     if (AUTH_TOKEN) {
+      console.log("STORE???");
       fetchUser(dispatch);
     } else {
       router.push(`/login`);
