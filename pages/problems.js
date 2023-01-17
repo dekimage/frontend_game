@@ -82,7 +82,7 @@ export const DropDown = ({ realms, filter, setFilter }) => {
               onClick={() => setFilter(realm.name)}
             >
               {realm?.image && (
-                <img src={realm.image.url} height="15px" className="mr5" />
+                <img src={realm?.image?.url} height="15px" className="mr5" />
               )}
 
               {realm?.name}
@@ -106,7 +106,7 @@ export const Problem = ({ problem, isInside = false }) => {
         </div> */}
 
         {realm?.image && (
-          <img src={realm.image.url} height="15px" className="mr5" />
+          <img src={realm?.image?.url} height="15px" className="mr5" />
         )}
         <div className={styles.name}>{name}</div>
 

@@ -50,6 +50,9 @@ export const calcRewardReady = (
 };
 
 export const calcArtifactsReady = (artifacts, claimedArtifacts) => {
+  if (!claimedArtifacts) {
+    return 0;
+  }
   const claimedArtifactsIds = claimedArtifacts.map((a) => a.id);
   const readyToClaimArtifacts = artifacts.filter(
     (a) => !claimedArtifactsIds.includes(a.id)
@@ -62,6 +65,9 @@ export const calcLevelRewards = (
   allLevelRewards, // all objects
   is_subscribed
 ) => {
+  if (!level_rewards) {
+    return 0;
+  }
   const claimedLevels = level_rewards.map((lr) => lr.id);
   const readyToClaimLevels = allLevelRewards.filter(
     (alr) => !claimedLevels.includes(alr.id)
