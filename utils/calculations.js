@@ -39,7 +39,7 @@ export const calcRewardReady = (
   userCollection
 ) => {
   //init new collection
-  let userCollectionFixed = userCollection || {};
+  let userCollectionFixed = userCollection || { 1: false };
   // @staticRewards = [1, 3, 5, 7, 14...] => streak points
   // @currentCount = highest_streak = 20
   // @userCollection = {"1": true, "2": true, "3": true}
