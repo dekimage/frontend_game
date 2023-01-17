@@ -91,7 +91,10 @@ const Settings = () => {
       <div className={styles.footer}>
         <div>Logged in as: {store.user.email}</div>
         <div>Version 1.0.0.4 (2210)</div>
-        <div className="btn btn-primary btn-stretch mt1" onClick={logout}>
+        <div
+          className="btn btn-primary btn-stretch mt1"
+          onClick={() => logout(dispatch)}
+        >
           Log Out
         </div>
       </div>

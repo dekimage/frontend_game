@@ -36,7 +36,7 @@ export const login = (dispatch, identifier, password) => {
     });
 };
 
-export const logout = () => {
+export const logout = (dispatch) => {
   dispatch({ type: "REMOVE_USER" });
   Cookie.remove("token");
   Router.push("/");
