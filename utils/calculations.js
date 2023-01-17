@@ -38,11 +38,13 @@ export const calcRewardReady = (
   currentCount,
   userCollection
 ) => {
+  //init new collection
+  let userCollectionFixed = userCollection || {};
   // @staticRewards = [1, 3, 5, 7, 14...] => streak points
   // @currentCount = highest_streak = 20
   // @userCollection = {"1": true, "2": true, "3": true}
   const availableArr = staticRewards.filter((r) => r <= currentCount);
-  const notCollected = availableArr.filter((r) => !userCollection[r]);
+  const notCollected = availableArr.filter((r) => !userCollectionFixed[r]);
   const notifCount = notCollected.length;
   return notifCount;
 };
