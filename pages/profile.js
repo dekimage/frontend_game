@@ -270,20 +270,20 @@ const Profile = () => {
                 img={`${baseUrl}/trophy.png`}
                 link={"/level-rewards"}
                 text={"Level Rewards"}
-                notification={store.notifications.levels}
+                notification={store.notifications?.levels}
               />
               <RewardLink
                 img={`${baseUrl}/streak.png`}
                 link={"/streak"}
                 text={"Streak Rewards"}
-                notification={store.notifications.streaks}
+                notification={store.notifications?.streaks}
               />
 
               <RewardLink
                 img={`${baseUrl}/gift.png`}
                 link={"/buddies-rewards"}
                 text={"Buddy Rewards"}
-                notification={store.notifications.friends}
+                notification={store.notifications?.friends}
               />
             </div>
           )}
