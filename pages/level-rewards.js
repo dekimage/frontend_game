@@ -13,7 +13,6 @@ import { BackButton } from "../components/reusableUI";
 import { claimLevelReward } from "../actions/action";
 
 // *** DATA ***
-import { levelRewards } from "../data/rewards";
 
 // *** STYLES ***
 import cx from "classnames";
@@ -98,8 +97,6 @@ const LevelRewardsTower = () => {
 
     return levels;
   };
-
-  const proxyNextReward = joinArrays(levelRewards)[4];
 
   return (
     <div className="background_dark">
