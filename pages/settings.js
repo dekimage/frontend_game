@@ -6,6 +6,7 @@ import { gql } from "apollo-boost";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import router from "next/router";
+import { logout } from "../actions/auth";
 
 // *** COMPONENTS ***
 
@@ -90,7 +91,9 @@ const Settings = () => {
       <div className={styles.footer}>
         <div>Logged in as: {store.user.email}</div>
         <div>Version 1.0.0.4 (2210)</div>
-        <div className="btn btn-primary btn-stretch mt1">Log Out</div>
+        <div className="btn btn-primary btn-stretch mt1" onClick={logout}>
+          Log Out
+        </div>
       </div>
     </div>
   );
