@@ -7,6 +7,7 @@ import cx from "classnames";
 // *** COMPONENTS ***
 import useModal from "../hooks/useModal";
 import Modal from "../components/Modal";
+import Timer from "../components/reusable/Timer";
 
 import Objective from "../components/Objective";
 import Header from "../components/Header";
@@ -16,18 +17,21 @@ import { TutorialModal } from "../components/todayComp";
 import { Tabs } from "../components/profileComps";
 
 import RewardsModal from "../components/RewardsModal";
+import EnergyModal from "../components/EnergyModal";
+
 import { RewardLink } from "../components/todayComp";
 
 // *** FUNCTIONS ***
 import { normalize } from "../utils/calculations";
 import { joinObjectives, calculateNotifications } from "../functions/todayFunc";
-import { resetUser, acceptReferral } from "../actions/action";
+import { resetUser, acceptReferral, fetchUser } from "../actions/action";
 
 // *** GQL ***
 import { GET_OBJECTIVES_QUERY } from "../GQL/query";
 
 // *** STYLES ***
 import styles from "../styles/Today.module.scss";
+import Countdown from "../components/Countdown";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -65,13 +69,10 @@ const Home = () => {
 
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
 
-  console.log(111, gql_data);
-
   return (
     <div className="background_dark">
       <Header />
       <div className="headerSpace"></div>
-
       {/* TUTORIAL MODAL */}
       {store && store.user && gql_data && (
         <div>
@@ -87,7 +88,6 @@ const Home = () => {
               Reset User
             </div> */}
           {/* </div> */}
-
           {/* OBJECTIVES SECTION*/}
           <div>
             {!store.user.is_referral_accepted && store.user.shared_by?.id && (
@@ -110,6 +110,12 @@ const Home = () => {
                 </div>
               </div>
             )}
+            <div
+              className="btn btn-primary"
+              onClick={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
+            >
+              Open Energy Modal test
+            </div>
             <div className="section">
               <div className={styles.objectivesHeadline}>
                 <div className="header">Objectives</div>
@@ -136,8 +142,10 @@ const Home = () => {
               />
             </div>
 
+            <Countdown tab={objectivesTabOpen} isObjectives />
+
             {gql_data && (
-              <div className="section">
+              <div className="section" style={{ paddingTop: 0 }}>
                 <div>
                   {objectivesData
                     .filter((o) => o.time_type === objectivesTabOpen)
@@ -155,7 +163,6 @@ const Home = () => {
           </div>
         </div>
       )}
-
       <div className="section">
         <RewardLink
           img={`${baseUrl}/favorite.png`}
@@ -169,7 +176,6 @@ const Home = () => {
           text={"Recent"}
         />
       </div>
-
       {store?.user?.tutorial_step > 0 && (
         <Modal
           isShowing={isShowing}
@@ -179,13 +185,18 @@ const Home = () => {
       )}
 
       <Modal
+        isShowing={store.energyModal}
+        closeModal={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
+        jsx={<EnergyModal />}
+        isSmall
+      />
+      <Modal
         isShowing={store.rewardsModal.isOpen}
         closeModal={closeModal}
         showCloseButton={false}
         jsx={<RewardsModal />}
         isSmall
       />
-
       <NavBar />
     </div>
   );

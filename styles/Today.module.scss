@@ -63,12 +63,12 @@
     position: absolute;
     left: -3px;
     top: -5px;
-    background-color: red;
+    background-color: $ux_red;
     font-weight: 700;
     color: white;
     height: 25px;
     width: 25px;
-    border-radius: 50%;
+    border-radius: $border_radius;
     @extend %flex_center;
   }
 }

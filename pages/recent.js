@@ -25,8 +25,8 @@ const Recents = () => {
   const [tab, setTab] = useState("Cards");
 
   const tabsData = [
-    { label: "Cards", count: -1, link: "Cards" },
-    { label: "Actions", count: -1, link: "Actions" },
+    { label: "Cards", count: -1 },
+    { label: "Actions", count: -1 },
   ];
 
   const gql_data = data && normalize(data).usersPermissionsUser;

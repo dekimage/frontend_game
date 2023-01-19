@@ -50,7 +50,6 @@ export const ProgressBox = ({
 };
 
 const OpenCard = ({ card }) => {
-  console.log(card);
   return (
     <div className={styles.openBox}>
       <div className={styles.name}>{card.name}</div>

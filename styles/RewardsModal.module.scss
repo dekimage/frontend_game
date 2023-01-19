@@ -1,0 +1,52 @@
+@import "variables";
+@import "placeholders";
+
+.ctaBox {
+  @extend %flex_center;
+}
+
+.rewardsModal {
+  @extend %flex_center;
+  color: white;
+  flex-direction: column;
+  background-color: $actionize_black;
+}
+
+.rewardsBox {
+  @extend %flex_center;
+  flex-direction: column;
+  width: 70%;
+  height: 70%;
+}
+
+.xp {
+  font-weight: 500;
+  font-size: 20px;
+  margin-top: 0.5rem;
+  color: #de93b9;
+}
+
+.xp_progress {
+  font-size: 12px;
+  font-weight: 500;
+  color: $actionize_gray_light;
+  margin-bottom: 1rem;
+}
+
+.level_progress {
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+  font-size: 16px;
+}
+
+.levelUp {
+  color: $secondary;
+  margin-top: 1rem;
+  font-size: 24px;
+}
+
+.stars {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  color: #80ec98;
+}

@@ -44,7 +44,8 @@ export const ArtifactModal = ({ artifact, className }) => {
         </div>
         <div className={styles.artifactDetails_rarity}>{artifact.rarity}</div>
         <div className={styles.artifactDetails_obtainedBy}>
-          Obtained By: {artifact.obtained_by_description}
+          <div>Obtained By: </div>
+          {artifact.obtained_by_description}
         </div>
         {!artifact.isClaimed && (
           <div className={styles.artifactProgress}>

@@ -1,0 +1,7 @@
+@import "variables";
+@import "placeholders";
+
+.energyModal {
+  @extend %flex_center;
+  flex-direction: column;
+}

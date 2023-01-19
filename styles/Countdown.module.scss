@@ -1,0 +1,26 @@
+@import "variables";
+@import "placeholders";
+
+.countdown {
+  @extend %flex_around;
+  align-items: center;
+  border-radius: $border_radius;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 0.5rem;
+}
+
+.timerEnergy {
+  @extend %flex_center;
+  background-color: $actionize_gray;
+  border-radius: $border_radius;
+}
+.timerEnergy_inner {
+  @extend %flex_center;
+  align-items: center;
+  padding: 0 0.5rem;
+  font-size: 14px;
+  img {
+    @extend %flex_center;
+  }
+}

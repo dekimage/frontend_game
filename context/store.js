@@ -23,6 +23,7 @@ const initialState = {
     isOpen: false,
     results: [],
   },
+  energyModal: false,
   notifications: {
     streaks: 0,
     friends: 0,
@@ -39,7 +40,6 @@ const Store = ({ children }) => {
   const router = useRouter();
   useEffect(() => {
     if (AUTH_TOKEN) {
-      console.log("STORE???");
       fetchUser(dispatch);
     } else {
       router.push(`/login`);

@@ -1,0 +1,11 @@
+@import "variables";
+@import "placeholders";
+
+.timer {
+  @extend %flex_center;
+  background-color: $actionize_gray_light;
+  border-radius: $border_radius;
+  padding: 0.25rem 0.5rem;
+  font-weight: 500;
+  font-size: 12px;
+}

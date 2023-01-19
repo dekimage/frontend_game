@@ -127,6 +127,7 @@ export const claimLevelReward = (dispatch, id) => {
     .collectLevelRewardApi(id)
     .then(({ data }) => {
       dispatch({ type: "UPDATE_LEVEL_REWARDS", data });
+      fetchUser(dispatch);
     })
     .catch((err) => {
       console.log(err);
@@ -138,6 +139,7 @@ export const claimUserReward = (dispatch, userCount) => {
     .claimUserRewardApi(userCount)
     .then(({ data }) => {
       dispatch({ type: "UPDATE_USER_REWARDS", data });
+      fetchUser(dispatch);
     })
     .catch((err) => {
       console.log(err);
@@ -149,6 +151,7 @@ export const claimStreakReward = (dispatch, rewardCount) => {
     .claimStreakRewardApi(rewardCount)
     .then(({ data }) => {
       dispatch({ type: "UPDATE_STREAK_REWARDS", data });
+      fetchUser(dispatch);
     })
     .catch((err) => {
       console.log(err);

@@ -50,6 +50,11 @@ const Reducer = (store, action) => {
           ),
         },
       };
+    case "OPEN_ENERGY_MODAL":
+      return {
+        ...store,
+        energyModal: !store.energyModal,
+      };
     case "REMOVE_USER":
       return { user: {}, isAuthenticated: false };
     case "DEV_TEST":
