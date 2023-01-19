@@ -79,7 +79,7 @@ const SearchBar = () => {
   const onChange = (e) => {
     setShowNothing(true);
     e.preventDefault();
-    const value = e.target.value.toLowerCase();
+    const value = e.target.value;
     setSearch(value);
   };
 
