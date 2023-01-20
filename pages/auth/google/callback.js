@@ -6,12 +6,10 @@ import router from "next/router";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const GoogleCallback = ({ id_token, query }) => {
-  console.log("google callback");
   const [store, dispatch] = useContext(Context);
   useEffect(() => {
-    console.log("use effecyt");
     const fetchData = async () => {
-      console.log("i work");
+      console.log({ query });
       try {
         // Make GET request to API endpoint with ID token
         const response = await axios.get(
