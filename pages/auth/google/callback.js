@@ -6,9 +6,12 @@ import router from "next/router";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const GoogleCallback = ({ id_token, query }) => {
+  console.log("google callback");
   const [store, dispatch] = useContext(Context);
   useEffect(() => {
+    console.log("use effecyt");
     const fetchData = async () => {
+      console.log("i work");
       try {
         // Make GET request to API endpoint with ID token
         const response = await axios.get(
@@ -34,16 +37,13 @@ const GoogleCallback = ({ id_token, query }) => {
         // Handle error
       }
     };
+
     fetchData();
   }, []);
 
   return (
     <div>
-      {userData ? (
-        <p>User data: {JSON.stringify(userData)}</p>
-      ) : (
-        <p>Loading user data...</p>
-      )}
+      <p>Loading user data...</p>
     </div>
   );
 };
