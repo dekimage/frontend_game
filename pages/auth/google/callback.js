@@ -43,3 +43,5 @@ const GoogleCallback = ({ id_token, query }) => {
 GoogleCallback.getInitialProps = async ({ query }) => {
   return { id_token: query.id_token, query };
 };
+
+export default GoogleCallback;
