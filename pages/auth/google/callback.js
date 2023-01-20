@@ -5,7 +5,7 @@ import { Context } from "../../../context/store";
 import router from "next/router";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const GoogleCallback = ({ id_token, query }) => {
+const GoogleCallback = ({ access_token, query }) => {
   const [store, dispatch] = useContext(Context);
   useEffect(() => {
     const fetchData = async () => {
@@ -13,7 +13,7 @@ const GoogleCallback = ({ id_token, query }) => {
       try {
         // Make GET request to API endpoint with ID token
         const response = await axios.get(
-          `${baseUrl}/api/auth/google/callback?access_token=${id_token}`
+          `${baseUrl}/api/auth/google/callback?access_token=${access_token}`
           // {
           //   headers: {
           //     Authorization: `Bearer ${id_token}`,
@@ -47,7 +47,7 @@ const GoogleCallback = ({ id_token, query }) => {
 };
 
 GoogleCallback.getInitialProps = async ({ query }) => {
-  return { id_token: query.id_token, query };
+  return { access_token: query.access_token, query };
 };
 
 export default GoogleCallback;
