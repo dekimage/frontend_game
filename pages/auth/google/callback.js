@@ -1,27 +1,35 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import Cookie from "js-cookie";
+import { Context } from "../../../context/store";
+import router from "next/router";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const GoogleCallback = ({ id_token, query }) => {
-  const [userData, setUserData] = useState(null);
-  console.log({ id_token, query });
-
+  const [store, dispatch] = useContext(Context);
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Make GET request to API endpoint with ID token
         const response = await axios.get(
-          `${baseUrl}/auth/google/callback?access_token=${id_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${id_token}`,
-            },
-          }
+          `${baseUrl}/api/auth/google/callback?access_token=${id_token}`
+          // {
+          //   headers: {
+          //     Authorization: `Bearer ${id_token}`,
+          //   },
+          // }
         );
-        setUserData(response.data);
+        console.log(response.data);
         // Make second API call using user data
-        const secondResponse = await axios.post(`bk/api/user`, userData);
-        // Handle success
+        Cookie.remove("token");
+        Cookie.remove("userId");
+        Cookie.set("token", response.data.jwt);
+        Cookie.set("userId", response.data.user.id);
+        dispatch({ type: "FETCH_USER", data: response.data.user });
+        router.push("/");
+        console.log({ responseData: response.data });
+
+        // const secondResponse = await axios.post(`bk/api/user`, userData);
       } catch (error) {
         // Handle error
       }
