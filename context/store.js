@@ -6,6 +6,7 @@ import Cookie from "js-cookie";
 import { fetchUser } from "../actions/action";
 
 const AUTH_TOKEN = Cookie.get("token");
+
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const initialState = {
@@ -39,7 +40,7 @@ const Store = ({ children }) => {
   const [store, dispatch] = useReducer(Reducer, initialState);
   const router = useRouter();
   useEffect(() => {
-    if (AUTH_TOKEN) {
+    if (AUTH_TOKEN && !router.route.includes("/auth/google/callback")) {
       fetchUser(dispatch);
     } else {
       router.push(`/login`);

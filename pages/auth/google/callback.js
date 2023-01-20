@@ -28,7 +28,6 @@ const GoogleCallback = ({ access_token, query }) => {
         Cookie.set("userId", response.data.user.id);
         dispatch({ type: "FETCH_USER", data: response.data.user });
         router.push("/");
-        console.log({ responseData: response.data });
 
         // const secondResponse = await axios.post(`bk/api/user`, userData);
       } catch (error) {
