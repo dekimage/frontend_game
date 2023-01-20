@@ -149,9 +149,12 @@ const Login = () => {
           </div>
         )}
         <div className={styles.oauthSection}>
-          <div className="btn btn-google">
-            <img height="18px" src={`${baseUrl}/google.png`} />
-          </div>
+          <a href={`${baseUrl}/api/connect/google/callback`}>
+            <div className="btn btn-google">
+              <img height="18px" src={`${baseUrl}/google.png`} />
+            </div>
+          </a>
+
           <div className="btn btn-facebook">
             <img height="18px" src={`${baseUrl}/facebook.png`} />
           </div>
