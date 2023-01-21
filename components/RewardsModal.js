@@ -65,10 +65,10 @@ export const RewardsModal = ({ defaultPage = "xp" }) => {
             <div className={styles.levelUp}>LEVEL UP!</div>
             <div className={styles.level_progress}>Level {level}</div>
             {/* calc progress current */}
-            <ProgressBar progress={user.xp + xp} max={getXpLimit(level)} />
+            <ProgressBar progress={user.xp} max={getXpLimit(level)} />
 
             <div className={styles.xp_progress}>
-              XP {user.xp + xp}/{getXpLimit(level)}
+              XP {user.xp}/{getXpLimit(level)}
             </div>
           </div>
         ) : (
@@ -77,10 +77,10 @@ export const RewardsModal = ({ defaultPage = "xp" }) => {
             <div className={styles.xp}>+ {xp} XP</div>
 
             <div className={styles.level_progress}>Level {user.level}</div>
-            <ProgressBar progress={user.xp + xp} max={getXpLimit(user.level)} />
+            <ProgressBar progress={user.xp} max={getXpLimit(user.level)} />
 
             <div className={styles.xp_progress}>
-              XP {user.xp + xp}/{getXpLimit(user.level)}
+              XP {user.xp}/{getXpLimit(user.level)}
             </div>
           </div>
         ))}

@@ -9,7 +9,7 @@ import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import Modal from "../components/Modal";
 import LootBoxModal from "../components/LootBoxModal";
-
+import iconCheckmark from "../assets/checkmark.svg";
 import { Tabs } from "../components/profileComps";
 
 import {
@@ -83,14 +83,21 @@ const Shop = () => {
           </div>
           <div className={styles.proxySubs_benefits}>
             <div className={styles.proxySubs_image}>
-              <ImageUI url={"/energy.png"} height="60px" />
+              <ImageUI url={"/energy.png"} isPublic height="60px" />
               <div className={styles.proxySubs_infinity}>&#8734;</div>
             </div>
             <div className={styles.proxySubs_benefitsBox}>
-              <div className={styles.proxySubs_benefit}>+ Unlimited Energy</div>
-              <div className={styles.proxySubs_benefit}>+ Extra Objectives</div>
               <div className={styles.proxySubs_benefit}>
-                + Extra Level Rewards
+                <img src={iconCheckmark} height="18px" className="mr5" />
+                Unlimited Energy
+              </div>
+              <div className={styles.proxySubs_benefit}>
+                <img src={iconCheckmark} height="18px" className="mr5" /> Extra
+                Objectives
+              </div>
+              <div className={styles.proxySubs_benefit}>
+                <img src={iconCheckmark} height="18px" className="mr5" /> Extra
+                Level Rewards
               </div>
             </div>
           </div>

@@ -1,13 +1,15 @@
 import { useState } from "react";
 import cx from "classnames";
 import styles from "../../styles/Modals.module.scss";
+import { ImageUI } from "../reusableUI";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const ShareBuddyModal = ({ id }) => {
   const [copyButton, setCopyButton] = useState("Copy");
   const perks = [
     { content: "Share your referral link" },
     { content: "Your buddy creates an account" },
     { content: "Logs in to the app & claims gift" },
-    { content: "Both of you get + 400 ..star img.." },
+    { content: "Both of you get + 400 stars" },
   ];
   const Perk = ({ content, i }) => {
     return (
@@ -21,7 +23,9 @@ const ShareBuddyModal = ({ id }) => {
     <div className={styles.shareBuddyModal}>
       <div className={styles.shareBuddyModal_title}>Refer & Earn</div>
       <div className={styles.shareBuddyModal_title}>box present img</div>
-      <div className={styles.shareBuddyModal_reward}>+ 400 ..starimg..</div>
+      <div className={styles.shareBuddyModal_reward}>
+        + 400 <img src={`${baseUrl}/star.png`} alt="" height="14px" />
+      </div>
       <div className={styles.perkBox}>
         {perks.map((p, i) => {
           return <Perk key={i} i={i} content={p.content} />;

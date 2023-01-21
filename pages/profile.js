@@ -58,25 +58,29 @@ export const ArtifactModal = ({ artifact, className }) => {
 };
 
 const ArtifactProgress = ({ artifact }) => {
-  return (
-    <>
-      <ProgressBar
-        progress={
-          artifact.progress >= artifact.require
+  if (artifact.type !== "random") {
+    return (
+      <>
+        <ProgressBar
+          progress={
+            artifact.progress >= artifact.require
+              ? artifact.require
+              : artifact.progress
+          }
+          max={artifact.require || 1}
+          isReadyToClaim
+        />
+        <div>
+          {artifact.progress >= artifact.require
             ? artifact.require
-            : artifact.progress
-        }
-        max={artifact.require || 1}
-        isReadyToClaim
-      />
-      <div>
-        {artifact.progress >= artifact.require
-          ? artifact.require
-          : artifact.progress}
-        /{artifact.require}
-      </div>
-    </>
-  );
+            : artifact.progress}
+          /{artifact.require}
+        </div>
+      </>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export const Artifact = ({ artifact }) => {
@@ -121,8 +125,16 @@ export const Artifact = ({ artifact }) => {
                 className={styles.artifactImage}
               />
             )}
+
             <div className={styles.artifact_name}>{artifact.name}</div>
-            {!artifact.isClaimed && <ArtifactProgress artifact={artifact} />}
+
+            {!(artifact.isCollected && !artifact.isClaimed) && (
+              <ArtifactProgress artifact={artifact} />
+            )}
+
+            {artifact.isCollected && !artifact.isClaimed && (
+              <div className="btn btn-action">Claim</div>
+            )}
           </>
         ) : (
           <>
@@ -210,7 +222,7 @@ const Profile = () => {
   const tabsData = [
     { label: "Rewards", count: -1 },
     { label: "buddies", count: -1 },
-    { label: "artifacts", count: store.notifications.artifacts || -1 },
+    { label: "achievements", count: store.notifications.artifacts || -1 },
   ];
 
   const gql_data = data && normalize(data);
@@ -341,7 +353,7 @@ const Profile = () => {
             jsx={<ShareBuddyModal id={store.user.id} />}
           />
 
-          {tab === "artifacts" && (
+          {tab === "achievements" && (
             <div className="section">
               <div className={styles.artifactsWrapper}>
                 {transformArtifacts(

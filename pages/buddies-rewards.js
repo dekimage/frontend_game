@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
 // *** COMPONENTS ***
 import { Rarity } from "../components/Rarity";
-import { BackButton } from "../components/reusableUI";
+import { BackButton, ImageUI } from "../components/reusableUI";
 import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
 import Modal from "../components/Modal";
 import useModal from "../hooks/useModal";
@@ -77,7 +77,8 @@ const FriendReward = ({ friendReward, dispatch }) => {
 
       <div className="flex_center">
         <div className={styles.image}>
-          <img src={reward.image?.url} alt="" />
+          <ImageUI url={reward.image?.url} />
+
           {!is_collected && (
             <div className={styles.streak_amount}>x{reward_amount || 1}</div>
           )}

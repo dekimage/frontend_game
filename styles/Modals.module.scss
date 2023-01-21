@@ -9,27 +9,39 @@
   }
 
   &_reward {
-    border: 2px solid $secondary;
+    border: 2px solid $actionize_gray_light;
     border-radius: $border_radius;
     padding: 0.5rem;
+    margin-top: 1rem;
   }
 }
 
 .ctaLink {
-  @extend %flex_start;
+  @extend %flex_center;
   flex-direction: row;
+  margin: 2rem 0;
+
+  width: 100%;
   input {
     background-color: $actionize_gray;
     border-radius: $border_radius;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     padding: 1rem 0.25rem;
-    max-height: 56px;
+    height: 44px;
     font-size: 12px;
     color: white;
+    flex-grow: 1;
   }
   &_copy {
+    height: 44px;
     background-color: $primary;
-    padding: 1rem;
-    border-radius: 20%;
+    border-radius: $border_radius;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    @extend %flex_center;
+    padding: 0.5rem 1rem;
+
     &.green {
       background-color: $ux_green;
     }

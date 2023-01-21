@@ -112,6 +112,7 @@
   border-radius: $border_radius;
   border: 2px solid $actionize_gray;
   font-size: 14px;
+  flex-direction: column;
   &_img {
     @extend %flex_center;
     margin: 0 0.35rem;
@@ -190,6 +191,7 @@
   &_name {
     text-transform: capitalize;
     @extend %flex_center;
+    text-align: center;
   }
   &.readyToClaim {
     box-shadow: 0px 0px 8px 1.5px rgba($color: #ffc74e, $alpha: 1);
