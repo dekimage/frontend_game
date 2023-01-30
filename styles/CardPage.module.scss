@@ -22,8 +22,8 @@
 }
 
 .mastery {
-  @extend %flex_center;
-  @extend %box_duo;
+  @extend %flex_between;
+  // @extend %box_duo;
   // flex-direction: column;
   width: 100%;
   height: 100%;

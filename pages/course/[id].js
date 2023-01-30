@@ -154,30 +154,7 @@ const CourseSales = ({ course }) => {
   );
 };
 
-export const Curriculum = ({ days, usercourse, cardName = false }) => {
-  const [showDays, setShowDays] = useState(days.slice(0, 5));
-
-  return (
-    <div className={styles.curriculum}>
-      {showDays.map((day, i) => (
-        <Day
-          day={day}
-          usercourse={usercourse}
-          cardName={cardName}
-          key={i}
-          i={i}
-        />
-      ))}
-      {days.length > 5 && (
-        <div className={styles.seeAll} onClick={() => setShowDays(days)}>
-          See All (+{days.length - showDays.length})
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Day = ({ day, usercourse, cardName = false, i }) => {
+export const Day = ({ day, usercourse, cardName = false }) => {
   const getDayState = (day) => {
     if (!usercourse) {
       return { color: "#222", icon: iconPlay, state: "locked" };
@@ -194,21 +171,10 @@ const Day = ({ day, usercourse, cardName = false, i }) => {
     }
   };
 
-  const [isOpen, setIsOpen] = useState(getDayState(day).state === "next");
+  const [isOpen, setIsOpen] = useState(true);
   const color = getDayState(day).color;
   const icon = getDayState(day).icon;
   const dayLockState = getDayState(day).state;
-
-  useEffect(() => {
-    setIsOpen(getDayState(day).state === "next");
-  }, [usercourse]);
-
-  const completedSessions =
-    dayLockState === "locked"
-      ? 0
-      : dayLockState === "completed"
-      ? day.contents.length
-      : usercourse?.last_completed_content - 1;
 
   const sumDurationSessions = (sessions) => {
     let sum = 0;

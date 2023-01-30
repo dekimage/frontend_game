@@ -7,7 +7,7 @@ import iconCheckmark from "../assets/checkmark.svg";
 
 import _ from "lodash";
 
-import { updateCard } from "../actions/action";
+import { updateCard, skipAction } from "../actions/action";
 import ReactMarkdown from "react-markdown";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -42,9 +42,9 @@ export const CatReply = ({ message }) => {
             <span></span>
             <span></span>
           </div>
-          <p>
+          <div className={styles.p}>
             <ReactMarkdown children={message.reply} />
-          </p>
+          </div>
         </div>
         <div
           className="avatar"
@@ -78,9 +78,9 @@ export const CatContent = ({ message }) => {
             <span></span>
           </div>
 
-          <p>
+          <div className={styles.p}>
             <ReactMarkdown children={message.content} />
-          </p>
+          </div>
         </div>
       </div>
     </div>
@@ -97,6 +97,34 @@ export const ChatResponses = ({ message, selectReply }) => {
           </div>
         );
       })}
+    </div>
+  );
+};
+
+const SkipAction = ({ isLastStep, goNext, goNextStep }) => {
+  const [store, dispatch] = useContext(Context);
+
+  const handleSkipAction = async () => {
+    const response = await skipAction(dispatch);
+    if (response.success) {
+      isLastStep ? goNext() : goNextStep();
+    } else {
+      //show some error about no sufficent funds
+      console.log("not enough stars");
+    }
+  };
+  return (
+    <div
+      className="btn btn-primary"
+      onClick={() => {
+        handleSkipAction();
+      }}
+    >
+      Skip
+      <div className={`${styles.costBox} ml5`}>
+        25
+        <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
+      </div>
     </div>
   );
 };
@@ -167,7 +195,6 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
                 <div className={styles.stepTimer_image}>
                   <ion-icon name="stopwatch-outline"></ion-icon>
                 </div>
-
                 <div className={styles.count}>
                   <span>{addZeroToInteger(minutes, 2)}</span>:
                   <span>{addZeroToInteger(seconds, 2)}</span>
@@ -197,6 +224,13 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
           </>
         )}
       </div>
+      {isRunning && !isTimerCompleted && isShowTimer && (
+        <SkipAction
+          isLastStep={isLastStep}
+          goNext={goNext}
+          goNextStep={goNextStep}
+        />
+      )}
     </div>
   );
 };

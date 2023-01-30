@@ -391,6 +391,7 @@ export const GET_CARD_ID = gql`
           name
           description
           benefits
+          last_day
           type
           cost
           rarity
@@ -816,6 +817,76 @@ export const GET_COLLECTION = gql`
                           }
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_USER_OPEN_TICKETS = gql`
+  query ($id: ID!) {
+    usersPermissionsUser(id: $id) {
+      data {
+        id
+        attributes {
+          card_tickets {
+            data {
+              id
+              attributes {
+                name
+                description
+                type
+                rarity
+                cost
+                is_open
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          action_tickets {
+            data {
+              id
+              attributes {
+                name
+                duration
+                type
+                level
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
                     }
                   }
                 }

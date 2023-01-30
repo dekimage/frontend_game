@@ -10,6 +10,8 @@ const Reducer = (store, action) => {
       return { ...store, player: action.data };
     case "LOADING":
       return { ...store, isLoading: true };
+    case "STOP_LOADING":
+      return { ...store, isLoading: false };
     case "SET_ERROR":
       return { ...store, isLoading: false, error: action.data };
     case "UPDATE_TUTORIAL":
@@ -54,6 +56,23 @@ const Reducer = (store, action) => {
       return {
         ...store,
         energyModal: !store.energyModal,
+      };
+
+    case "BUY_CARD_TICKET":
+      return {
+        ...store,
+        user: {
+          ...store.user,
+          card_tickets: action.data.card_tickets,
+        },
+      };
+    case "BUY_ACTION_TICKET":
+      return {
+        ...store,
+        user: {
+          ...store.user,
+          action_tickets: action.data.action_tickets,
+        },
       };
     case "REMOVE_USER":
       return { user: {}, isAuthenticated: false };

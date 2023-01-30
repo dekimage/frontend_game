@@ -104,10 +104,14 @@ export const updateCardApi = (cardId, action) =>
     action,
   });
 
+export const buyCardTicketApi = (id, type) =>
+  axios.put(`${userUrl}/buyCardTicket/${id}`, { type });
+
+export const skipActionApi = () => axios.put(`${userUrl}/skip-action`);
+
 // ------
 
 // 4. PROFILE PAGE
-export const resetEnergyApi = () => axios.put(`${userUrl}/reset-energy`);
 
 export const generateBuddyLinkApi = () =>
   axios.put(`${userUrl}/generate-buddy-link`);

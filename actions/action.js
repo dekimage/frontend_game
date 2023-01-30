@@ -238,17 +238,41 @@ export const updateCard = (dispatch, cardId, action) => {
     });
 };
 
-// 4. PROFILE PAGE
-export const resetEnergy = (dispatch) => {
+//type == "card" || "action"
+export const buyCardTicket = (dispatch, id, type, callback) => {
+  dispatch({ type: "LOADING" });
   api
-    .resetEnergyApi()
+    .buyCardTicketApi(id, type)
     .then(({ data }) => {
-      dispatch({ type: "RESET_ENERGY", data });
+      dispatch({
+        type: type == "card" ? "BUY_CARD_TICKET" : "BUY_ACTION_TICKET",
+        data,
+      });
+      setTimeout(() => callback(), 2000);
+
+      // fetchUser(dispatch);
     })
     .catch((err) => {
       console.log(err);
     });
 };
+
+export const skipAction = async (dispatch) => {
+  dispatch({ type: "LOADING" });
+  return api
+    .skipActionApi()
+    .then(({ data }) => {
+      dispatch({ type: "STOP_LOADING" });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: "STOP_LOADING" });
+      return { err };
+    });
+};
+
+// 4. PROFILE PAGE
 export const generateBuddyLink = (dispatch) => {
   api
     .generateBuddyLinkApi()

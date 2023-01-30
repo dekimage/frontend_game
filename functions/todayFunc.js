@@ -23,10 +23,10 @@ export const filterObjectives = (objectives, time_type) => {
   return objectives.filter((obj) => obj.time_type === time_type);
 };
 
-export const calculateNotifications = (gql_data, store) => {
+export const calculateNotifications = (gql_data, user) => {
   const allTasks = joinObjectives(
     gql_data.objectives,
-    store.user.objectives_json || []
+    user.objectives_json || []
   ).filter((o) => !o.isCollected && o.progress >= o.requirement_amount);
 
   const notifications = {

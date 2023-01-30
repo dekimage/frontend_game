@@ -28,7 +28,7 @@ import {
   CardCtaFooter,
 } from "../../components/cardPageComps";
 
-import { Curriculum } from "../course/[id]";
+import { Day } from "../course/[id]";
 import { BackButton } from "../../components/reusableUI";
 import ProgressBar from "../../components/ProgressBar";
 
@@ -103,6 +103,24 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           </div>
         </div>
 
+        <div className={styles.masteryWrapper}>
+          <div className={styles.mastery}>
+            Sessions Complete
+            <Rarity rarity={usercard.league} />
+          </div>
+
+          <ProgressBar
+            progress={usercard.completed}
+            max={usercard.completed_progress_max}
+            withNumber
+          />
+
+          <div className={styles.mastery}>
+            Rarity
+            <Rarity rarity={card.rarity} />
+          </div>
+        </div>
+
         {/* <div
           className="btn btn-primary mb1"
           onClick={() => {
@@ -120,30 +138,10 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           <ReactMarkdown children={card.benefits} />
         </div>
 
-        <div className={styles.masteryWrapper}>
-          <div className={styles.mastery}>
-            Sessions Complete
-            <div className="mt1 mb1">
-              <Rarity rarity={usercard.league} />
-            </div>
-            <ProgressBar
-              progress={usercard.completed}
-              max={usercard.completed_progress_max}
-              withNumber
-            />
-            <div className="mb1"></div>
-          </div>
+        <Title name="Program" />
 
-          <div className={styles.mastery}>
-            Rarity
-            <Rarity rarity={card.rarity} />
-          </div>
-        </div>
-
-        <Title name="Sessions" />
-
-        <Curriculum
-          days={card.days}
+        <Day
+          day={card.days[card.last_day || 0]}
           usercourse={cardToUserCourse}
           cardName={card.name}
         />

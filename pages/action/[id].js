@@ -15,30 +15,64 @@ import styles from "../../styles/Action.module.scss";
 import { normalize } from "../../utils/calculations";
 
 import { GET_ACTION_ID } from "../../GQL/query";
-import { updateCard } from "../../actions/action";
+import { buyCardTicket } from "../../actions/action";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export const ActionCta = ({
-  dispatch,
-  isUnlocked,
-  energy,
-  actionId,
-  cardId,
-}) => {
+export const ActionCta = ({ isUnlocked, energy, actionId, cardId }) => {
+  const [store, dispatch] = useContext(Context);
   const router = useRouter();
+  const actionTickets = store?.user?.action_tickets || [];
+  const is_subscribed = store?.user?.is_subscribed;
+  console.log({ actionTickets });
+  const isTicketPurchased = !!actionTickets?.find((a) => a.id == actionId);
+
+  const openPlayerAfterTicket = () => {
+    router.push(`${feUrl}/action/player/${actionId}`);
+  };
+
   return (
     <div className={styles.actionCta}>
       {isUnlocked ? (
-        <Link href={`/action/player/${actionId}`}>
-          <div
-            className={cx(energy > 0 ? "btn btn-primary" : "btn btn-disabled")}
-          >
-            Play
-            <span className="ml5 md">1</span>
-            <img src={`${baseUrl}/energy.png`} height="20px" />
-          </div>
-        </Link>
+        <div>
+          {isTicketPurchased || is_subscribed ? (
+            <div
+              className="btn btn-primary"
+              onClick={() => {
+                router.push(`${feUrl}/action/player/${actionId}`);
+              }}
+            >
+              Play
+            </div>
+          ) : (
+            <div
+              className={cx(
+                energy > 0 ? "btn btn-primary" : "btn btn-disabled"
+              )}
+              onClick={() => {
+                if (energy > 0) {
+                  buyCardTicket(
+                    dispatch,
+                    actionId,
+                    "action",
+                    openPlayerAfterTicket
+                  );
+                }
+              }}
+            >
+              {store.isLoading ? (
+                <div>Spinner</div>
+              ) : (
+                <div>
+                  Play
+                  <span className="ml5 md">1</span>
+                  <img src={`${baseUrl}/energy.png`} height="20px" />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       ) : (
         <Link href={`/card/${cardId}`}>
           <div className="btn btn-primary">
@@ -119,7 +153,6 @@ const ActionPage = ({ action, user }) => {
         <ActionCta
           isUnlocked={isUnlocked}
           energy={user.energy}
-          dispatch={dispatch}
           actionId={action.id}
           cardId={action.card.id}
         />

@@ -33,19 +33,26 @@ import { GET_OBJECTIVES_QUERY } from "../GQL/query";
 import styles from "../styles/Today.module.scss";
 import Countdown from "../components/Countdown";
 
+import { withUser } from "../Hoc/withUser";
+
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const Home = () => {
-  const [store, dispatch] = useContext(Context);
-  const { loading, error, data } = useQuery(GET_OBJECTIVES_QUERY);
-  const gql_data = data && normalize(data);
-
+const Home = (props) => {
+  const { user, data, dispatch, store } = props;
   const { isShowing, openModal, closeModal } = useModal();
-  const [tab, setTab] = useState("Daily");
 
-  const objectivesData =
-    gql_data &&
-    joinObjectives(gql_data.objectives, store.user.objectives_json || []);
+  const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
+
+  useEffect(() => {
+    if (user.tutorial_step > 0) {
+      openModal();
+    }
+  }, [user]);
+
+  const objectivesData = joinObjectives(
+    data.objectives,
+    user.objectives_json || []
+  );
 
   const getCompletedObjectivesCount = (objectivesData, openTab) => {
     return objectivesData.filter(
@@ -53,116 +60,88 @@ const Home = () => {
     ).length;
   };
 
-  useEffect(() => {
-    if (store.user.tutorial_step > 0) {
-      openModal();
-    }
-  }, [store.user]);
-
-  const notif =
-    gql_data && store.user && calculateNotifications(gql_data, store);
+  const notif = calculateNotifications(data, user);
 
   const tabsData = [
     { label: "daily", count: notif?.daily || -1 },
     { label: "weekly", count: notif?.weekly || -1 },
   ];
 
-  const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
-
   return (
     <div className="background_dark">
       <Header />
       <div className="headerSpace"></div>
-      {/* TUTORIAL MODAL */}
-      {store && store.user && gql_data && (
+
+      <div>
         <div>
-          {/* WELCOME */}
-          {/* <div className="section"> */}
-          {/* <div className={styles.header}>
-              Welcome back, {store.user.username}
-            </div> */}
-          {/* <div
-              className="btn btn-primary"
-              onClick={() => resetUser(dispatch)}
-            >
-              Reset User
-            </div> */}
-          {/* </div> */}
-          {/* OBJECTIVES SECTION*/}
+          {!user.is_referral_accepted && user.shared_by?.id && (
+            <div className={styles.acceptReferralBox}>
+              <div className="header">Welcome Gift</div>
+              <div className="pb1 pt1">
+                Gain 400 <img height="16px" src={`${baseUrl}/stars.png`} />{" "}
+                because a buddy shared you an invite
+              </div>
+              <div
+                className="btn btn-action"
+                onClick={() => acceptReferral(dispatch)}
+              >
+                Claim 400
+                <img
+                  height="18px"
+                  src={`${baseUrl}/stars.png`}
+                  className="ml5"
+                />
+              </div>
+            </div>
+          )}
+          <div
+            className="btn btn-primary"
+            onClick={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
+          >
+            Open Energy Modal test
+          </div>
+          <div className="section">
+            <div className={styles.objectivesHeadline}>
+              <div className="header">Objectives</div>
+
+              <span className={styles.objectivesHeadline_number}>
+                {getCompletedObjectivesCount(objectivesData, objectivesTabOpen)}
+                /
+                {
+                  objectivesData.filter(
+                    (o) => o.time_type === objectivesTabOpen
+                  ).length
+                }
+              </span>
+            </div>
+          </div>
           <div>
-            {!store.user.is_referral_accepted && store.user.shared_by?.id && (
-              <div className={styles.acceptReferralBox}>
-                <div className="header">Welcome Gift</div>
-                <div className="pb1 pt1">
-                  Gain 400 <img height="16px" src={`${baseUrl}/stars.png`} />{" "}
-                  because a buddy shared you an invite
-                </div>
-                <div
-                  className="btn btn-action"
-                  onClick={() => acceptReferral(dispatch)}
-                >
-                  Claim 400{" "}
-                  <img
-                    height="18px"
-                    src={`${baseUrl}/stars.png`}
-                    className="ml5"
-                  />
-                </div>
-              </div>
-            )}
-            <div
-              className="btn btn-primary"
-              onClick={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
-            >
-              Open Energy Modal test
-            </div>
-            <div className="section">
-              <div className={styles.objectivesHeadline}>
-                <div className="header">Objectives</div>
+            <Tabs
+              tabState={objectivesTabOpen}
+              setTab={setObjectivesTabOpen}
+              tabs={tabsData}
+            />
+          </div>
 
-                <span className={styles.objectivesHeadline_number}>
-                  {getCompletedObjectivesCount(
-                    objectivesData,
-                    objectivesTabOpen
-                  )}
-                  /
-                  {
-                    objectivesData.filter(
-                      (o) => o.time_type === objectivesTabOpen
-                    ).length
-                  }
-                </span>
-              </div>
-            </div>
+          <Countdown tab={objectivesTabOpen} isObjectives />
+
+          <div className="section" style={{ paddingTop: 0 }}>
             <div>
-              <Tabs
-                tabState={objectivesTabOpen}
-                setTab={setObjectivesTabOpen}
-                tabs={tabsData}
-              />
+              {objectivesData
+                .filter((o) => o.time_type === objectivesTabOpen)
+                .map((obj, i) => (
+                  <Objective
+                    objective={obj}
+                    dispatch={dispatch}
+                    isUserPremium={user.is_subscribed}
+                    key={i}
+                  />
+                ))}
             </div>
-
-            <Countdown tab={objectivesTabOpen} isObjectives />
-
-            {gql_data && (
-              <div className="section" style={{ paddingTop: 0 }}>
-                <div>
-                  {objectivesData
-                    .filter((o) => o.time_type === objectivesTabOpen)
-                    .map((obj, i) => (
-                      <Objective
-                        objective={obj}
-                        dispatch={dispatch}
-                        isUserPremium={store.user.is_subscribed}
-                        key={i}
-                      />
-                    ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
-      )}
+      </div>
+
       <div className="section">
         <RewardLink
           img={`${baseUrl}/favorite.png`}
@@ -175,15 +154,20 @@ const Home = () => {
           link={"/recent"}
           text={"Recent"}
         />
+
+        <RewardLink
+          img={`${baseUrl}/energy.png`}
+          link={"/open-today"}
+          text={"Open Today"}
+        />
       </div>
-      {store?.user?.tutorial_step > 0 && (
+      {user.tutorial_step > 0 && (
         <Modal
           isShowing={isShowing}
           closeModal={closeModal}
           jsx={<TutorialModal closeModal={closeModal} />}
         />
       )}
-
       <Modal
         isShowing={store.energyModal}
         closeModal={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
@@ -202,4 +186,28 @@ const Home = () => {
   );
 };
 
-export default Home;
+// export default Home;
+export default withUser(Home, GET_OBJECTIVES_QUERY);
+
+{
+  /* WELCOME */
+}
+{
+  /* <div className="section"> */
+}
+{
+  /* <div className={styles.header}>
+              Welcome back, {user.username}
+            </div> */
+}
+{
+  /* <div
+              className="btn btn-primary"
+              onClick={() => resetUser(dispatch)}
+            >
+              Reset User
+            </div> */
+}
+{
+  /* </div> */
+}

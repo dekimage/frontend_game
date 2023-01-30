@@ -18,7 +18,7 @@ import {
 
 import { SuccessModal } from "../../../components/playerCourseComps";
 
-import { ContentTheory } from "../../course/player/[id]";
+import { ContentTheory } from "../../../components/ContentTheory";
 
 const ActionPlayer = () => {
   const router = useRouter();
@@ -44,6 +44,13 @@ const ActionPlayer = () => {
   console.log(oneSlide);
 
   useEffect(() => {
+    if (store.user && action) {
+      const actionTickets = store.user.action_tickets || [];
+      if (!actionTickets.find((a) => a.id == action.id)) {
+        router.push("/learn");
+      }
+    }
+    dispatch({ type: "STOP_LOADING" });
     if (!loading && action) {
       setSlide(oneSlide);
       setSlides([oneSlide]);

@@ -6,6 +6,7 @@ import Link from "next/link";
 import iconCross from "../assets/close.svg";
 import arrowDown from "../assets/arrow-down-white.png";
 import checkmark1 from "../assets/checkmark-fill.svg";
+import { buyCardTicket } from "../actions/action";
 
 import { GenericDropDown } from "../pages/problems";
 
@@ -594,14 +595,24 @@ export const Title = ({ name, rightText, rightSeparator }) => {
   );
 };
 
-export const CardCtaFooter = ({ isUnlocked, card, usercard }) => {
+export const CardCtaFooter = ({ isUnlocked, card }) => {
   const [store, dispatch] = useContext(Context);
-  const hasOrbs = store?.user?.stars >= card.cost;
+  const hasStars = store?.user?.stars >= card.cost;
+  const energy = store?.user?.energy;
+  const cardTickets = store?.user?.card_tickets;
+  const is_subscribed = store?.user?.is_subscribed;
+  const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
+
   const router = useRouter();
+
+  const openPlayerAfterTicket = () => {
+    router.push(`${feUrl}/card/player/${card.id}`);
+  };
+
   return (
     <div className={styles.fixed}>
       {!isUnlocked ? (
-        hasOrbs ? (
+        hasStars ? (
           <div
             className="btn btn-correct"
             onClick={() => {
@@ -619,19 +630,42 @@ export const CardCtaFooter = ({ isUnlocked, card, usercard }) => {
         )
       ) : (
         <div className={styles.fixed}>
-          <div
-            className="btn btn-action"
-            onClick={() => {
-              // for quiz
-              // dispatch({
-              //   type: "OPEN_PLAYER",
-              //   data: { level: usercard.completed, selectedLevel },
-              // });
-              router.push(`${feUrl}/card/player/${card.id}`);
-            }}
-          >
-            Play Session
-          </div>
+          {isTicketPurchased || is_subscribed ? (
+            <div
+              className="btn btn-primary"
+              onClick={() => {
+                router.push(`${feUrl}/card/player/${card.id}`);
+              }}
+            >
+              {store.isLoading ? <div>Spinner</div> : <div>Play</div>}
+            </div>
+          ) : (
+            <div
+              className={cx(
+                energy > 0 ? "btn btn-primary" : "btn btn-disabled"
+              )}
+              onClick={() => {
+                if (energy > 0) {
+                  buyCardTicket(
+                    dispatch,
+                    card.id,
+                    "card",
+                    openPlayerAfterTicket
+                  );
+                }
+              }}
+            >
+              {store.isLoading ? (
+                <div>Spinner</div>
+              ) : (
+                <div>
+                  Play
+                  <span className="ml5 md">1</span>
+                  <img src={`${baseUrl}/energy.png`} height="20px" />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

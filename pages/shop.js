@@ -2,25 +2,17 @@
 import { useContext, useState } from "react";
 import { Context } from "../context/store";
 import { useQuery } from "@apollo/react-hooks";
-import Link from "next/link";
 
 // *** COMPONENTS ***
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import Modal from "../components/Modal";
-import LootBoxModal from "../components/LootBoxModal";
-import iconCheckmark from "../assets/checkmark.svg";
-import { Tabs } from "../components/profileComps";
 
-import {
-  Pack,
-  BoxModal,
-  PremiumSubscription,
-  BenefitsTable,
-  Course,
-  GemsProduct,
-  PaymentSoonModal,
-} from "../components/shopComps";
+import { PremiumSubscription, BenefitsTable } from "../components/shopComps";
+
+import iconCheckmark from "../assets/checkmark.svg";
+
+import { GemsProduct, PaymentSoonModal } from "../components/shopComps";
 
 // *** STYLES ***
 import styles from "../styles/Shop.module.scss";
@@ -30,21 +22,17 @@ import useModal from "../hooks/useModal";
 import { normalize } from "../utils/calculations";
 
 // *** GQL ***
-import { GET_BOXES, GET_COURSES } from "../GQL/query";
+import { GET_BOXES } from "../GQL/query";
 import { ImageUI } from "../components/reusableUI";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
 const Shop = () => {
-  const [store, dispatch] = useContext(Context);
-
   const { loading, error, data } = useQuery(GET_BOXES);
   // const { data: gql_courses_data } = useQuery(GET_COURSES);
   const { isShowing, openModal, closeModal } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const gql_data = data && normalize(data);
-  // const courses = gql_courses_data && normalize(gql_courses_data).courses;
+
   const getEnergy = (products) => {
     return products.filter((p) => p.type === "energy");
   };
@@ -57,14 +45,7 @@ const Shop = () => {
       <Header />
       <div className="headerSpace"></div>
 
-      {/* *** COURSES *** */}
-      {/* <div className="section">
-        <div className={styles.header}>Programs</div>
-        {courses && courses.map((c, i) => <Course course={c} key={i} />)}
-      </div> */}
-      {/* *** SUBSCRIPTION *** */}
-
-      {/* <div className="section">
+      <div className="section">
         <div className="header">Premium Subscription</div>
         <PremiumSubscription />
         <BenefitsTable />
@@ -74,7 +55,8 @@ const Shop = () => {
             Billed Monthly. Cancel anytime.
           </div>
         </div>
-      </div> */}
+      </div>
+
       <div className="section">
         <div className={styles.header}>Subscription</div>
         <div className={styles.proxySubs}>

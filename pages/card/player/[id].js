@@ -17,7 +17,7 @@ import {
 
 import { SuccessModal } from "../../../components/playerCourseComps";
 
-import { ContentTheory } from "../../course/player/[id]";
+import { ContentTheory } from "../../../components/ContentTheory";
 
 const Player = () => {
   const router = useRouter();
@@ -43,41 +43,36 @@ const Player = () => {
   });
 
   useEffect(() => {
+    if (store.user && gql_data) {
+      const cardTickets = store.user.card_tickets || [];
+      if (!cardTickets.find((c) => c.id == gql_data.card.id)) {
+        router.push("/learn");
+      }
+    }
+    dispatch({ type: "STOP_LOADING" });
     const usercard =
       store?.user?.usercards &&
       store.user.usercards.filter(
         (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
       )[0];
 
-    const last_completed_content = 1;
-    const last_completed_day = 1;
+    // const last_completed_content = 1;
     // const last_completed_day = (usercard && usercard.completed) || 0;
 
-    if (!loading && gql_data) {
-      setSlide(
-        gql_data.card.days[last_completed_day].contents[
-          last_completed_content - 1
-        ]
-      );
-      setSlides(
-        gql_data.card.days[last_completed_day].contents.filter(
-          (slide) => !slide.is_ghost
-        )
-      );
+    if (gql_data) {
+      const { card } = gql_data;
+      const sessionIndex = card.last_day || 0;
+      const slidesArray = card.days[sessionIndex].contents;
+
+      setSlide(slidesArray[0]);
+      setSlides(slidesArray.filter((slide) => !slide.is_ghost));
+      setChatSlides([slidesArray[0]]);
+
       // FIX GHOSTS??
-      const ghosts = gql_data.card.days[last_completed_day].contents.filter(
-        (slide) => slide.is_ghost
-      );
-
+      const ghosts = slidesArray.filter((slide) => slide.is_ghost);
       setGhosts(ghosts);
-
-      setChatSlides([
-        gql_data.card.days[last_completed_day].contents[
-          last_completed_content - 1
-        ],
-      ]);
     }
-  }, [gql_data, loading]);
+  }, [gql_data, store.user]);
 
   // const isLatestLevel = false;
 
@@ -134,7 +129,7 @@ const Player = () => {
       {error && <div>Error: {error}</div>}
       {loading && <div>Loading...</div>}
       {gql_data && store.user && slide && (
-        <div className="section">
+        <>
           <SliderProgress
             maxSlides={slides.length}
             currentSlide={slides && slides.findIndex((s) => s.id === slide.id)}
@@ -148,47 +143,48 @@ const Player = () => {
             rewards={rewards}
             closePlayer={closePlayer}
           />
+          <div className="section" style={{ paddingTop: "4rem" }}>
+            {chatSlides.map((slide, i) => {
+              return (
+                <ContentTheory
+                  slide={slide}
+                  goNext={goNext}
+                  lastSlideIndex={chatSlides.length}
+                  key={i}
+                  i={i}
+                />
+              );
+            })}
 
-          {chatSlides.map((slide, i) => {
-            return (
-              <ContentTheory
-                slide={slide}
-                goNext={goNext}
-                lastSlideIndex={chatSlides.length}
-                key={i}
-                i={i}
+            {isWarningModalOpen && (
+              <Modal
+                isShowing={isShowing}
+                closeModal={closeModal}
+                isSmall={true}
+                jsx={
+                  <WarningModal
+                    setIsWarningModalOpen={setIsWarningModalOpen}
+                    closePlayer={closePlayer}
+                  />
+                }
               />
-            );
-          })}
+            )}
 
-          {isWarningModalOpen && (
-            <Modal
-              isShowing={isShowing}
-              closeModal={closeModal}
-              isSmall={true}
-              jsx={
-                <WarningModal
-                  setIsWarningModalOpen={setIsWarningModalOpen}
-                  closePlayer={closePlayer}
-                />
-              }
-            />
-          )}
-
-          {isSuccessModalOpen && (
-            <Modal
-              isShowing={isSuccessModalOpen}
-              closeModal={closeModal}
-              jsx={
-                <SuccessModal
-                  closePlayer={closePlayer}
-                  card={data.card}
-                  // isLatestLevel={isLatestLevel}
-                />
-              }
-            />
-          )}
-        </div>
+            {isSuccessModalOpen && (
+              <Modal
+                isShowing={isSuccessModalOpen}
+                closeModal={closeModal}
+                jsx={
+                  <SuccessModal
+                    closePlayer={closePlayer}
+                    card={data.card}
+                    // isLatestLevel={isLatestLevel}
+                  />
+                }
+              />
+            )}
+          </div>
+        </>
       )}
     </div>
   );

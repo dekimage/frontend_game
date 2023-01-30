@@ -8,6 +8,15 @@
 //   font-weight: 700;
 // }
 
+//imported from card styles copy paste
+.costBox {
+  background-color: $actionize_black;
+  padding: 0.25rem 0.5rem;
+  border-radius: $border_radius;
+  @extend %flex_between;
+  align-items: center;
+}
+
 .cardPlayerSuccessModal {
   color: white;
 }
@@ -266,6 +275,10 @@
 
 .header {
   @extend %header;
+  background-color: $actionize_black;
+  z-index: 500000;
+  position: fixed;
+  padding: 0.5rem 1rem;
 }
 .escapeBtn {
   @extend %flex_center;
@@ -275,7 +288,6 @@
 .sliderProgress {
   @extend %flex_center;
   justify-content: space-around;
-  background-color: $actionize_black;
   padding: 1rem 0;
   width: 100%;
   margin-right: 1rem;
@@ -297,7 +309,13 @@
 .sliderHeader {
   @extend %flex_between;
   color: white;
-  margin-bottom: 1rem;
+  background-color: $actionize_black;
+
+  margin-top: 2.5rem;
+  padding-bottom: 0.5rem;
+  position: fixed;
+  z-index: 10000000;
+  width: 100%;
 }
 
 .sliderTitle {
