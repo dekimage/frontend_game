@@ -1,7 +1,14 @@
 import React from "react";
-import styles from "../styles/ProgressBar.module.scss";
 import cx from "classnames";
-const ProgressBar = ({ progress, max, isReadyToClaim, withNumber }) => {
+import styles from "../styles/ProgressBar.module.scss";
+
+const ProgressBar = ({
+  progress,
+  max,
+  isReadyToClaim,
+  withNumber,
+  fontSize = 12,
+}) => {
   // delete if numbers are correct
   let progressCapped = progress;
   if (progressCapped > max) {
@@ -14,7 +21,7 @@ const ProgressBar = ({ progress, max, isReadyToClaim, withNumber }) => {
         style={{ "--progress": (progressCapped / max) * 100 }}
       ></div>
       {withNumber && (
-        <div className={styles.progressNumber}>
+        <div className={styles.progressNumber} style={{ fontSize: fontSize }}>
           {progress || 0}/{max}
         </div>
       )}

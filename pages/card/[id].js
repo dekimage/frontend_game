@@ -1,36 +1,34 @@
-import { useQuery, useLazyQuery } from "@apollo/react-hooks";
-import { useState, useEffect, useContext } from "react";
-import { Context } from "../../context/store";
-import { useRouter } from "next/router";
-import ReactMarkdown from "react-markdown";
-import _ from "lodash";
-import styles from "../../styles/CardPage.module.scss";
-
-import { Rarity } from "../../components/Rarity";
-
-import { Tabs } from "../../components/profileComps";
-
-import { normalize } from "../../utils/calculations";
-
-import { GET_USERCARDS_QUERY, GET_CARD_ID } from "../../GQL/query";
-
-import { updateCard } from "../../actions/action";
-
-//send to player
-import Modal from "../../components/Modal";
-import useModal from "../../hooks/useModal";
-import { RewardsModal } from "../../components/RewardsModal";
-
 import {
   BasicActionsWrapper,
+  CardCtaFooter,
   FavoriteButton,
   Title,
-  CardCtaFooter,
 } from "../../components/cardPageComps";
+import { GET_CARD_ID, GET_USERCARDS_QUERY } from "../../GQL/query";
+import { useContext, useEffect, useState } from "react";
+import { useLazyQuery, useQuery } from "@apollo/react-hooks";
 
-import { Day } from "../course/[id]";
 import { BackButton } from "../../components/reusableUI";
+import { Context } from "../../context/store";
+import { Day } from "../course/[id]";
+import { FirstTimeBonusModal } from "../../components/Modals/FirstTimeBonusModal";
+import HelperPopup from "../../components/reusable/HelperModal";
+import Modal from "../../components/Modal";
 import ProgressBar from "../../components/ProgressBar";
+import { RanksModal } from "../../components/Modals/RanksModal";
+import { Rarity } from "../../components/Rarity";
+import ReactMarkdown from "react-markdown";
+import { RewardsModal } from "../../components/RewardsModal";
+import { Tabs } from "../../components/profileComps";
+import _ from "lodash";
+import iconCheckmark from "../../assets/checkmark.svg";
+import { normalize } from "../../utils/calculations";
+import styles from "../../styles/CardPage.module.scss";
+import { updateCard } from "../../actions/action";
+import useModal from "../../hooks/useModal";
+import { useRouter } from "next/router";
+
+//send to player
 
 const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   const [store, dispatch] = useContext(Context);
@@ -105,20 +103,24 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
 
         <div className={styles.masteryWrapper}>
           <div className={styles.mastery}>
-            Sessions Complete
+            <Title name="Sessions Completed" />
+
             <Rarity rarity={usercard.league} />
+            <div style={{ marginLeft: ".5rem" }}></div>
+            <HelperPopup HelperModal={RanksModal} />
           </div>
 
           <ProgressBar
             progress={usercard.completed}
             max={usercard.completed_progress_max}
             withNumber
+            fontSize={16}
           />
 
-          <div className={styles.mastery}>
+          {/* <div className={styles.mastery}>
             Rarity
             <Rarity rarity={card.rarity} />
-          </div>
+          </div> */}
         </div>
 
         {/* <div
@@ -136,6 +138,12 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
         <Title name="Benefits" />
         <div className={styles.benefits}>
           <ReactMarkdown children={card.benefits} />
+        </div>
+
+        <div className={styles.alertWarning}>
+          <img src={iconCheckmark} height="20px" />
+          First Time Bonus Available!
+          <HelperPopup HelperModal={FirstTimeBonusModal} className="ml1" />
         </div>
 
         <Title name="Program" />

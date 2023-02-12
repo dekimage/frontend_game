@@ -51,6 +51,9 @@ export const acceptReferralApi = () => axios.put(`${userUrl}/accept-referral/`);
 
 export const saveAvatarApi = (avatarId) =>
   axios.put(`${userUrl}/save-avatar/${avatarId}`);
+
+export const getRandomCardApi = () => axios.put(`${userUrl}/getRandomCard`);
+
 export const claimArtifactApi = (artifactId) =>
   axios.put(`${userUrl}/claim-artifact/${artifactId}`);
 

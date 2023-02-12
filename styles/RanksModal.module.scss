@@ -1,0 +1,38 @@
+@import "variables";
+@import "placeholders";
+.title {
+  font-size: 28px;
+}
+
+.rank {
+  padding: 0.5rem 0;
+  @extend %flex_center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ranksMap {
+  width: 100%;
+  max-height: 400px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.ranksMap::-webkit-scrollbar {
+  display: none;
+}
+
+.flex {
+  @extend %flex_center;
+  flex-direction: column;
+}
+
+.smallText {
+  font-size: 14px;
+  font-weight: 500;
+  color: $actionize_gray_light;
+}
+
+.okBtn {
+  margin-top: 1rem;
+}

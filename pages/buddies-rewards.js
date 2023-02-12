@@ -1,23 +1,26 @@
 // *** REACT ***
+
+import { BackButton, ImageUI } from "../components/reusableUI";
 import { useContext, useEffect, useState } from "react";
+
 import { Context } from "../context/store";
+import { GET_FRIENDS_QUERY } from "../GQL/query";
+import Modal from "../components/Modal";
+import { Rarity } from "../components/Rarity";
+import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
+import { claimUserReward } from "../actions/action";
+import cx from "classnames";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/Streak.module.scss";
+import useModal from "../hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-// *** COMPONENTS ***
-import { Rarity } from "../components/Rarity";
-import { BackButton, ImageUI } from "../components/reusableUI";
-import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
-import Modal from "../components/Modal";
-import useModal from "../hooks/useModal";
-// *** ACTIONS ***
-import { claimUserReward } from "../actions/action";
 
-import { normalize } from "../utils/calculations";
+// *** COMPONENTS ***
+
+// *** ACTIONS ***
 
 // *** STYLES ***
-import cx from "classnames";
-import styles from "../styles/Streak.module.scss";
-import { GET_FRIENDS_QUERY } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -88,16 +91,30 @@ const FriendReward = ({ friendReward, dispatch }) => {
             <div className={styles.streak_name}>{reward.name}</div>
             <Rarity rarity={reward.rarity} />
           </div> */}
-          <div className={styles.gemReward}>
-            <div className={styles.gemReward_name}> 400</div>
-            <img src={`${baseUrl}/star.png`} alt="" height="14px" />
-          </div>
+          <GemReward amount={400} />
         </div>
       </div>
     </div>
   );
 };
 
+export const XpReward = ({ amount }) => {
+  return (
+    <div className={styles.gemReward}>
+      <div className={styles.gemReward_name}> {amount}</div>
+      <img src={`${baseUrl}/xp.png`} alt="" height="14px" />
+    </div>
+  );
+};
+
+export const GemReward = ({ amount }) => {
+  return (
+    <div className={styles.gemReward}>
+      <div className={styles.gemReward_name}> {amount}</div>
+      <img src={`${baseUrl}/star.png`} alt="" height="14px" />
+    </div>
+  );
+};
 const FriendsTower = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_FRIENDS_QUERY);

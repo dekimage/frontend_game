@@ -24,7 +24,12 @@ import { RewardLink } from "../components/todayComp";
 // *** FUNCTIONS ***
 import { normalize } from "../utils/calculations";
 import { joinObjectives, calculateNotifications } from "../functions/todayFunc";
-import { resetUser, acceptReferral, fetchUser } from "../actions/action";
+import {
+  resetUser,
+  acceptReferral,
+  fetchUser,
+  getRandomCard,
+} from "../actions/action";
 
 // *** GQL ***
 import { GET_OBJECTIVES_QUERY } from "../GQL/query";
@@ -44,8 +49,12 @@ const Home = (props) => {
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
 
   useEffect(() => {
+    getRandomCard(dispatch);
+  }, []);
+
+  useEffect(() => {
     if (user.tutorial_step > 0) {
-      openModal();
+      openModal(dispatch);
     }
   }, [user]);
 

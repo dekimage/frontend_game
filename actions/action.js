@@ -80,6 +80,20 @@ export const saveAvatar = (dispatch, avatarId) => {
     });
 };
 
+// GET RANDOM CARD
+export const getRandomCard = (dispatch) => {
+  dispatch({ type: "LOADING" });
+  api
+    .getRandomCardApi()
+    .then(({ data }) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      dispatch({ type: "SET_ERROR", data: err });
+      console.log(err);
+    });
+};
+
 // 0. PROFILE PAGE
 
 export const claimArtifact = (dispatch, artifactId) => {

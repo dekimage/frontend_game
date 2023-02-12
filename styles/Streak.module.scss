@@ -57,7 +57,8 @@
   border-radius: $border_radius;
   border: 2px solid $actionize_gray;
   height: 100%;
-  padding: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  width: fit-content;
   &_name {
     margin: 0 0.33rem;
   }
