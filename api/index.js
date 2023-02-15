@@ -1,5 +1,5 @@
-import axios from "axios";
 import Cookie from "js-cookie";
+import axios from "axios";
 
 const backendAPi = process.env.NEXT_PUBLIC_API_URL;
 // const backendAPi = "https://backend-actionise.herokuapp.com";
@@ -102,9 +102,10 @@ export const openPackApi = (boxId) =>
 // ------
 
 // 3. CARD PAGE
-export const updateCardApi = (cardId, action) =>
+export const updateCardApi = (cardId, action, contentIndex) =>
   axios.put(`${userUrl}/update-card/${cardId}`, {
     action,
+    contentIndex,
   });
 
 export const buyCardTicketApi = (id, type) =>

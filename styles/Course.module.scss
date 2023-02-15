@@ -286,3 +286,88 @@
   z-index: 100;
   width: 100%;
 }
+
+.content {
+  @extend %flex_center;
+}
+
+.contentBox {
+  @extend %box_duo;
+  margin: 1rem 0;
+  padding: 1rem 1rem;
+  border-radius: 20px;
+  flex-grow: 1;
+}
+.contentCounter {
+  @extend %flex_center;
+  width: 20px;
+  height: 20px;
+  background-color: $primary;
+  border-radius: 50%;
+  margin-right: 1rem;
+  position: relative;
+  font-weight: 500;
+  font-size: 12px;
+  &.completed {
+    background-color: black;
+  }
+}
+.contentLeftBox {
+  flex-grow: 1;
+}
+
+.contentDottedBorder {
+  position: absolute;
+  height: 130px;
+  border-left: 4px dotted gray;
+  top: 28px;
+}
+
+.contentTitle {
+  font-size: 18px;
+  font-weight: 500;
+  max-width: 224px;
+  margin-right: 1rem;
+}
+
+.contentTag {
+  background-color: $primary;
+  font-weight: 500;
+  font-size: 12px;
+  border-radius: $border_radius;
+  padding: 0.2rem 0.5rem;
+  width: fit-content;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  &.action {
+    background-color: $ux_red;
+  }
+  &.completed {
+    background-color: $ux_green;
+  }
+}
+
+.contentFooter {
+  @extend %flex_start;
+  margin-top: 1rem;
+}
+
+.contentStat {
+  @extend %flex_center;
+  margin-right: 1rem;
+}
+
+.btnPlay {
+  @extend %flex_center;
+  background-color: $primary;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.contentStatAmount {
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 0.5rem;
+}

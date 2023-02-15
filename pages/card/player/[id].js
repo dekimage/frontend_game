@@ -1,23 +1,21 @@
-import { gql, useQuery } from "@apollo/react-hooks";
-import { useState, useEffect, useContext, useRef } from "react";
-import { Context } from "../../../context/store";
-import { useRouter } from "next/router";
-import _ from "lodash";
-import Modal from "../../../components/Modal";
-import useModal from "../../../hooks/useModal";
-import { normalize } from "../../../utils/calculations";
-import { GET_CARD_ID } from "../../../GQL/query";
-const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 import {
-  SliderProgress,
   SliderHeader,
+  SliderProgress,
   WarningModal,
 } from "../../../components/playerComps";
-
-import { SuccessModal } from "../../../components/playerCourseComps";
+import { gql, useQuery } from "@apollo/react-hooks";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { ContentTheory } from "../../../components/ContentTheory";
+import { Context } from "../../../context/store";
+import { GET_CARD_ID } from "../../../GQL/query";
+import Modal from "../../../components/Modal";
+import { SuccessModal } from "../../../components/playerCourseComps";
+import _ from "lodash";
+import { normalize } from "../../../utils/calculations";
+import { updateCard } from "../../../actions/action";
+import useModal from "../../../hooks/useModal";
+import { useRouter } from "next/router";
 
 const Player = () => {
   const router = useRouter();
@@ -31,11 +29,10 @@ const Player = () => {
   const [slide, setSlide] = useState(false);
   const [chatSlides, setChatSlides] = useState(false);
   const { isShowing, openModal, closeModal } = useModal();
-  const [successModal, setSuccessModal] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [ghosts, setGhosts] = useState([]);
+
   const [rewards, setRewards] = useState({
     xp: 0,
     stars: 0,
@@ -50,11 +47,11 @@ const Player = () => {
       }
     }
     dispatch({ type: "STOP_LOADING" });
-    const usercard =
-      store?.user?.usercards &&
-      store.user.usercards.filter(
-        (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
-      )[0];
+    // const usercard =
+    //   store?.user?.usercards &&
+    //   store.user.usercards.filter(
+    //     (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
+    //   )[0];
 
     // const last_completed_content = 1;
     // const last_completed_day = (usercard && usercard.completed) || 0;
@@ -64,13 +61,13 @@ const Player = () => {
       const sessionIndex = card.last_day || 0;
       const slidesArray = card.days[sessionIndex].contents;
 
-      setSlide(slidesArray[0]);
-      setSlides(slidesArray.filter((slide) => !slide.is_ghost));
-      setChatSlides([slidesArray[0]]);
+      const contentIndex = router.query.contentIndex
+        ? parseInt(router.query.contentIndex) - 1
+        : 0;
 
-      // FIX GHOSTS??
-      const ghosts = slidesArray.filter((slide) => slide.is_ghost);
-      setGhosts(ghosts);
+      setSlide(slidesArray[contentIndex]);
+      setSlides(slidesArray);
+      setChatSlides([slidesArray[contentIndex]]);
     }
   }, [gql_data, store.user]);
 
@@ -108,19 +105,16 @@ const Player = () => {
     }
   };
 
-  const goNext = (_, reply = false) => {
-    //reply is the link I pass manually with replies...
+  const goNext = () => {
+    const cardId = router.query.id;
+    console.log(router.query);
     const index = slide.index;
+    updateCard(dispatch, cardId, "complete_contents", index);
     if (index === slides.length) {
       setIsSuccessModalOpen(true);
     } else {
-      if (reply.isGhost) {
-        setSlide(77, ghosts[reply.link - 1]);
-        setChatSlides([...chatSlides, ghosts[reply.link + 1]]);
-      } else {
-        setSlide(slides[reply ? reply.link - 1 : index]);
-        setChatSlides([...chatSlides, slides[reply ? reply.link - 1 : index]]);
-      }
+      setSlide(slides[index]);
+      setChatSlides([...chatSlides, slides[index]]);
     }
   };
 

@@ -161,6 +161,7 @@ export const GET_USERCARDS_QUERY = gql`
           is_new
           glory_points
           is_unlocked
+          completed_contents
           league
           card {
             data {
@@ -333,6 +334,7 @@ export const GET_ACTION_ID = gql`
           steps {
             content
             timer
+            task
           }
           image {
             data {
@@ -411,12 +413,9 @@ export const GET_CARD_ID = gql`
             contents {
               id
               index
-              is_ghost
               storyline
-              responses
               type
               title
-              timer
               duration
               action {
                 data {
@@ -432,6 +431,7 @@ export const GET_CARD_ID = gql`
                     steps {
                       content
                       timer
+                      task
                     }
                     image {
                       data {
@@ -783,6 +783,7 @@ export const GET_COLLECTION = gql`
                 glory_points
                 level
                 is_unlocked
+                completed_contents
                 card {
                   data {
                     id
@@ -1264,12 +1265,12 @@ export const GET_COURSE_ID = gql`
             contents {
               id
               index
-              is_ghost
+
               storyline
-              responses
+
               type
               title
-              timer
+
               duration
               action {
                 data {
@@ -1285,6 +1286,7 @@ export const GET_COURSE_ID = gql`
                     steps {
                       content
                       timer
+                      task
                     }
                     image {
                       data {

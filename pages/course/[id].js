@@ -1,48 +1,48 @@
-import { useQuery, useLazyQuery } from "@apollo/react-hooks";
-import { useState, useEffect, useContext } from "react";
-import { Context } from "../../context/store";
-import { useRouter } from "next/router";
-
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-
-import ReactMarkdown from "react-markdown";
-import { Rating } from "../../components/Rating";
-import Link from "next/link";
-import _, { forEach } from "lodash";
-import styles from "../../styles/Course.module.scss";
-import ProgressBar from "../../components/ProgressBar";
-import iconLock from "../../assets/lock-white.svg";
-import iconCheck from "../../assets/checkmark.svg";
-import iconPlay from "../../assets/progress-collection-dark.svg";
-import iconConcept from "../../assets/progress-play-dark.svg";
-import iconQuestion from "../../assets/question.svg";
-import iconAction from "../../assets/progress-collection-dark.svg";
-
-import cx from "classnames";
-
-import { Tabs } from "../../components/Tabs";
-
-import { normalize } from "../../utils/calculations";
-
-import { GET_COURSE_ID } from "../../GQL/query";
-
 import {
   ActionsWrapper,
   BasicActionsWrapper,
-  CreateActionModal,
-  PlayCta,
-  FavoriteButton,
-  UpgradeButton,
-  LevelButtons,
-  IdeaPlayer,
-  Title,
   CardCtaFooter,
+  CreateActionModal,
+  FavoriteButton,
+  IdeaPlayer,
+  LevelButtons,
+  PlayCta,
+  Title,
+  UpgradeButton,
 } from "../../components/cardPageComps";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import _, { forEach } from "lodash";
+import { useContext, useEffect, useState } from "react";
+import { useLazyQuery, useQuery } from "@apollo/react-hooks";
 
 import { BackButton } from "../../components/reusableUI";
+import { Context } from "../../context/store";
+import { GET_COURSE_ID } from "../../GQL/query";
+import Link from "next/link";
+import ProgressBar from "../../components/ProgressBar";
+import { Rating } from "../../components/Rating";
+import ReactMarkdown from "react-markdown";
+import { Tabs } from "../../components/Tabs";
+import cx from "classnames";
+import iconAction from "../../assets/progress-collection-dark.svg";
+import iconCheck from "../../assets/checkmark.svg";
+import iconClock from "../../assets/iconClock.svg";
+import iconConcept from "../../assets/progress-play-dark.svg";
+import iconLock from "../../assets/lock-white.svg";
+import iconMessages from "../../assets/iconMessages.svg";
+import iconPlay from "../../assets/progress-collection-dark.svg";
+import iconQuestion from "../../assets/question.svg";
+import iconTasks from "../../assets/iconTasks.svg";
+import { normalize } from "../../utils/calculations";
+import styles from "../../styles/Course.module.scss";
+import { useRouter } from "next/router";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+const countTasks = (content) =>
+  content?.action?.steps.filter((item) => item.task).length;
+const countMessages = (input) => input.split("\n\n").length;
 
 // STATIC DATA
 const links = [
@@ -150,6 +150,120 @@ const CourseSales = ({ course }) => {
       {/* <StudentFeedback /> */}
       {/* <Reviews /> */}
       {/* <FixedCta /> */}
+    </div>
+  );
+};
+
+const ContentStat = ({ icon, amount, label }) => {
+  return (
+    <div className={styles.contentStat}>
+      <div className={styles.contentStatAmount}>
+        <img src={icon} height="12px" alt="" />
+      </div>
+      <div className={styles.contentStatAmount}>
+        {amount} {label}
+      </div>
+      {/* <div className={styles.contentStatAmount}>{label}</div> */}
+    </div>
+  );
+};
+
+const ContentComponent = ({ content, cardId, isCompleted, isLast, index }) => {
+  const contentStats =
+    content.type == "action"
+      ? [
+          { icon: iconClock, amount: content.duration, label: "min" },
+          {
+            icon: iconTasks,
+            amount: countTasks(content),
+            label: "tasks",
+          },
+        ]
+      : [
+          { icon: iconClock, amount: content.duration, label: "min" },
+          {
+            icon: iconMessages,
+            amount: countMessages(content.storyline),
+            label: "messages ",
+          },
+        ];
+
+  return (
+    <div className={styles.content}>
+      <div
+        className={`${styles.contentCounter} ${
+          isCompleted && styles.completed
+        }`}
+      >
+        {!isLast && <div className={styles.contentDottedBorder}></div>}
+        {isCompleted ? (
+          <img src={iconCheck} alt="" height="20px" />
+        ) : (
+          <div>{index}</div>
+        )}
+      </div>
+      <div className={styles.contentBox}>
+        <div className={styles.contentLeftBox}>
+          <div className="flex_start">
+            <div
+              className={`${styles.contentTag} ${
+                content.type == "action" && styles.action
+              }`}
+            >
+              {content.type}
+            </div>
+            {isCompleted && (
+              <div className={`${styles.contentTag} ${styles.completed}`}>
+                Completed
+              </div>
+            )}
+          </div>
+
+          <div className={styles.contentTitle}>{content.title}</div>
+          <div className={styles.contentFooter}>
+            {contentStats.map((cs, i) => (
+              <ContentStat
+                icon={cs.icon}
+                amount={cs.amount}
+                label={cs.label}
+                key={i}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex_center">
+          <Link
+            href={`/card/player/${cardId}?contentIndex=${content.index}`}
+            as={`/card/player/${cardId}?contentIndex=${content.index}`}
+          >
+            <div className={styles.btnPlay} onClick={() => {}}>
+              <ion-icon size="medium" name="play"></ion-icon>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const Program = ({ day, completed_contents, cardId }) => {
+  return (
+    <div>
+      {day.contents.map((c, i) => {
+        const isLast = day.contents.length == i + 1;
+        const isCompleted = completed_contents.includes(c.index);
+
+        return (
+          <ContentComponent
+            content={c}
+            cardId={cardId}
+            isLast={isLast}
+            isCompleted={isCompleted}
+            index={i + 1}
+            key={i}
+          />
+        );
+      })}
     </div>
   );
 };

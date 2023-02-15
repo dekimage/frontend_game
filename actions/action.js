@@ -1,5 +1,6 @@
-import { toast } from "react-toastify";
 import * as api from "../api";
+
+import { toast } from "react-toastify";
 
 // ACTION FACTORY
 export const actionCreator = (dispatch, apiFunc, type, data) => {
@@ -237,12 +238,14 @@ export const openPack = (dispatch, boxId) => {
 
 // 3. CARD PAGE
 // updateCard: new_disable, favorite, complete, upgrade, play, unlock, complete_action (action_id)
-export const updateCard = (dispatch, cardId, action) => {
+export const updateCard = (dispatch, cardId, action, contentIndex = 0) => {
   api
-    .updateCardApi(cardId, action)
+    .updateCardApi(cardId, action, contentIndex)
     .then(({ data }) => {
-      dispatch({ type: "UPDATE_CARD", data });
-      fetchUser(dispatch);
+      if (!action === "complete_contents") {
+        fetchUser(dispatch);
+      }
+
       if (action === "favorite") {
         toast("Favorited. View all favorites here link...");
       }

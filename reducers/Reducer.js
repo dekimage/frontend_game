@@ -1,9 +1,11 @@
 import {
+  calcArtifactsReady,
   calcLevelRewards,
   calcRewardReady,
-  calcArtifactsReady,
 } from "../utils/calculations";
+
 import { staticRewards } from "../data/rewards";
+
 const Reducer = (store, action) => {
   switch (action.type) {
     case "OPEN_PLAYER":
@@ -125,18 +127,18 @@ const Reducer = (store, action) => {
         // },
       };
 
-    case "UPDATE_CARD":
-      return {
-        ...store,
-        // rewardsModal: {
-        //   isOpen: true,
-        //   rewards: action.data.rewards,
-        // },
-        user: {
-          ...store.user,
-          collection_json: action.data.updated_collection_json,
-        },
-      };
+    // case "UPDATE_CARD":
+    //   return {
+    //     ...store,
+    //     // rewardsModal: {
+    //     //   isOpen: true,
+    //     //   rewards: action.data.rewards,
+    //     // },
+    //     user: {
+    //       ...store.user,
+    //       collection_json: action.data.updated_collection_json,
+    //     },
+    //   };
     case "GEMS_PURCHASE_SUCCESS":
       return {
         ...store,

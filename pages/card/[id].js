@@ -4,13 +4,13 @@ import {
   FavoriteButton,
   Title,
 } from "../../components/cardPageComps";
+import { Day, Program } from "../course/[id]";
 import { GET_CARD_ID, GET_USERCARDS_QUERY } from "../../GQL/query";
 import { useContext, useEffect, useState } from "react";
 import { useLazyQuery, useQuery } from "@apollo/react-hooks";
 
 import { BackButton } from "../../components/reusableUI";
 import { Context } from "../../context/store";
-import { Day } from "../course/[id]";
 import { FirstTimeBonusModal } from "../../components/Modals/FirstTimeBonusModal";
 import HelperPopup from "../../components/reusable/HelperModal";
 import Modal from "../../components/Modal";
@@ -36,6 +36,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
     completed: 0,
     proxy: true,
     completed_progress_max: 3,
+    completed_contents: [],
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
 
@@ -46,27 +47,27 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   const isUnlocked =
     card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
 
-  const mergeActions = (usercard, actions, checkingArray, keyword) => {
-    const result = actions.map((action) => {
-      return {
-        ...action,
-        [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
-        is_reported: !!usercard.reported_actions.filter(
-          (a) => a.id === action.id
-        )[0],
-        is_upvoted: !!usercard.upvoted_actions.filter(
-          (a) => a.id === action.id
-        )[0],
-      };
-    });
-    return result;
-  };
+  // const mergeActions = (usercard, actions, checkingArray, keyword) => {
+  //   const result = actions.map((action) => {
+  //     return {
+  //       ...action,
+  //       [keyword]: !!checkingArray.filter((a) => a.id === action.id)[0],
+  //       is_reported: !!usercard.reported_actions.filter(
+  //         (a) => a.id === action.id
+  //       )[0],
+  //       is_upvoted: !!usercard.upvoted_actions.filter(
+  //         (a) => a.id === action.id
+  //       )[0],
+  //     };
+  //   });
+  //   return result;
+  // };
 
-  const cardToUserCourse = {
-    last_completed_day: usercard.completed + 1,
-    last_completed_content: 1,
-    course: { id: 1 },
-  };
+  // const cardToUserCourse = {
+  //   last_completed_day: usercard.completed + 1,
+  //   last_completed_content: 1,
+  //   course: { id: 1 },
+  // };
 
   const { isShowing, openModal, closeModal } = useModal();
 
@@ -148,21 +149,27 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
 
         <Title name="Program" />
 
-        <Day
+        <Program
+          day={card.days[card.last_day || 0]}
+          completed_contents={usercard.completed_contents}
+          cardId={card.id}
+        />
+
+        {/* <Day
           day={card.days[card.last_day || 0]}
           usercourse={cardToUserCourse}
           cardName={card.name}
-        />
+        /> */}
 
         {/* <IdeaPlayer cardId={card.id} /> */}
 
-        <Title name="Actions" />
+        {/* <Title name="Actions" /> */}
 
-        <BasicActionsWrapper
+        {/* <BasicActionsWrapper
           card={card}
           usercard={usercard}
           mergeActions={mergeActions}
-        />
+        /> */}
       </div>
 
       {card && (
