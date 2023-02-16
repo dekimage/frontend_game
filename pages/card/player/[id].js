@@ -59,7 +59,7 @@ const Player = () => {
     if (gql_data) {
       const { card } = gql_data;
       const sessionIndex = card.last_day || 0;
-      const slidesArray = card.days[sessionIndex].contents;
+      const slidesArray = card.days[sessionIndex]?.contents;
 
       const contentIndex = router.query.contentIndex
         ? parseInt(router.query.contentIndex) - 1

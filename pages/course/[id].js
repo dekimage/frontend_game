@@ -247,6 +247,9 @@ const ContentComponent = ({ content, cardId, isCompleted, isLast, index }) => {
 };
 
 export const Program = ({ day, completed_contents, cardId }) => {
+  if (!day) {
+    return null;
+  }
   return (
     <div>
       {day.contents.map((c, i) => {

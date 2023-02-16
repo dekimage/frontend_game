@@ -1,18 +1,15 @@
-import { useState, useEffect, useContext, useRef } from "react";
-
-import _ from "lodash";
+import {
+  CatContent,
+  CatReply,
+  ChatCta,
+  ChatResponses,
+  SuccessModal,
+} from "./playerCourseComps";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { ChatAction } from "./cardPageComps";
-
+import _ from "lodash";
 import styles from "../styles/Player.module.scss";
-
-import {
-  CatReply,
-  CatContent,
-  ChatCta,
-  SuccessModal,
-  ChatResponses,
-} from "./playerCourseComps";
 
 export const ContentTheory = ({
   slide,
@@ -50,8 +47,30 @@ export const ContentTheory = ({
     }
 
     if (action) {
+      const actionStepsNew = [];
       const actionSteps = action.steps.map((step, i) => {
         const index = i + 1 === action.steps.length ? i : i + 1;
+
+        let seckanContent = step.content.split("\n\n").map((step) => {
+          return {
+            content: step,
+            type: "idea",
+            title: slide.title,
+            step: index + 1,
+            ideasLength: index + 1,
+          };
+        });
+
+        const lastStep = seckanContent[seckanContent.length - 1];
+
+        seckanContent[seckanContent.length - 1] = {
+          ...lastStep,
+          type: "step",
+          action: action,
+          nextStepTimer: action.steps[index].timer,
+        };
+
+        return seckanContent;
 
         return {
           ...step,
@@ -62,8 +81,9 @@ export const ContentTheory = ({
           title: slide.title,
         };
       });
+      console.log({ a: actionSteps.flat() });
       chat.push({ ...action, type: "action", title: slide.title });
-      chat = chat.concat([...actionSteps]);
+      chat = chat.concat([...actionSteps.flat()]);
     }
 
     return chat;
@@ -159,6 +179,7 @@ export const ContentTheory = ({
   return (
     <div className={styles.contentTheory}>
       {activeChat.map((message, i) => {
+        console.log({ message });
         return (
           <div className={styles.chatWrapper} key={i}>
             {message.type === "idea" && (

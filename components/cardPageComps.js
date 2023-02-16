@@ -1,26 +1,23 @@
-import { useState, useEffect, useContext } from "react";
-import { Context } from "../context/store";
-import { useRouter } from "next/router";
-import cx from "classnames";
-import Link from "next/link";
-import iconCross from "../assets/close.svg";
-import arrowDown from "../assets/arrow-down-white.png";
-import checkmark1 from "../assets/checkmark-fill.svg";
-import { buyCardTicket } from "../actions/action";
-
-import { GenericDropDown } from "../pages/problems";
-
 import {
-  updateCard,
   completeAction,
-  interactCommunityAction,
-  deleteCommunityAction,
   createCommunityAction,
+  deleteCommunityAction,
+  interactCommunityAction,
+  updateCard,
 } from "../actions/action";
+import { useContext, useEffect, useState } from "react";
 
+import { Context } from "../context/store";
+import { GenericDropDown } from "../pages/problems";
+import Link from "next/link";
 import Timer from "../components/Timer";
-
+import arrowDown from "../assets/arrow-down-white.png";
+import { buyCardTicket } from "../actions/action";
+import checkmark1 from "../assets/checkmark-fill.svg";
+import cx from "classnames";
+import iconCross from "../assets/close.svg";
 import styles from "../styles/CardPage.module.scss";
+import { useRouter } from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;

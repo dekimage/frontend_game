@@ -151,7 +151,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
 
         <Program
           day={card.days[card.last_day || 0]}
-          completed_contents={usercard.completed_contents}
+          completed_contents={usercard.completed_contents || []}
           cardId={card.id}
         />
 
