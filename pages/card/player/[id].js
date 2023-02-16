@@ -42,6 +42,7 @@ const Player = () => {
   useEffect(() => {
     if (store.user && gql_data) {
       const cardTickets = store.user.card_tickets || [];
+      console.log({ cardTickets });
       if (!cardTickets.find((c) => c.id == gql_data.card.id)) {
         router.push("/learn");
       }
