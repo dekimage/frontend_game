@@ -43,7 +43,7 @@ const Player = () => {
     if (store.user && gql_data) {
       const cardTickets = store.user.card_tickets || [];
       console.log({ cardTickets });
-      if (!cardTickets.find((c) => c.id == gql_data.card.id)) {
+      if (!cardTickets?.find((c) => c?.id == gql_data?.card?.id)) {
         router.push("/learn");
       }
     }
