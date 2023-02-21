@@ -47,41 +47,42 @@ export const ContentTheory = ({
     }
 
     if (action) {
-      const actionStepsNew = [];
       const actionSteps = action.steps.map((step, i) => {
-        const index = i + 1 === action.steps.length ? i : i + 1;
+        // const index = i + 1 === action.steps.length ? i : i + 1;
+        const index = i + 1;
 
         let seckanContent = step.content.split("\n\n").map((step) => {
           return {
             content: step,
             type: "idea",
+            from: "action",
+            action: action,
             title: slide.title,
-            step: index + 1,
+            step: index,
             ideasLength: index + 1,
           };
         });
 
         const lastStep = seckanContent[seckanContent.length - 1];
 
+        console.log(1, action.steps[index]);
+        console.log(2, action.steps);
+        console.log(3, index);
+
         seckanContent[seckanContent.length - 1] = {
           ...lastStep,
           type: "step",
+          from: "action",
+          step: index,
           action: action,
-          nextStepTimer: action.steps[index].timer,
+          nextStepTimer: action.steps[index]?.timer,
+          timer: action.steps[index - 1].timer,
+          task: action.steps[index - 1].task,
         };
 
         return seckanContent;
-
-        return {
-          ...step,
-          type: "step",
-          step: i + 1,
-          action: action,
-          nextStepTimer: action.steps[index].timer,
-          title: slide.title,
-        };
       });
-      console.log({ a: actionSteps.flat() });
+
       chat.push({ ...action, type: "action", title: slide.title });
       chat = chat.concat([...actionSteps.flat()]);
     }
@@ -116,7 +117,8 @@ export const ContentTheory = ({
     setContentIndex(contentIndex + 1);
     // removed after fixing multiple elements mapping
     setCurrentIdea(currentIdea + 1);
-    increaseSteps && increaseSteps();
+    console.log({ contentIndex, currentIdea, ideaCount });
+    // increaseSteps && increaseSteps();
   };
 
   // make it scroll
@@ -179,7 +181,6 @@ export const ContentTheory = ({
   return (
     <div className={styles.contentTheory}>
       {activeChat.map((message, i) => {
-        console.log({ message });
         return (
           <div className={styles.chatWrapper} key={i}>
             {message.type === "idea" && (

@@ -1,14 +1,13 @@
-import { useState, useEffect, useContext } from "react";
-import { useTimer } from "react-timer-hook";
+import { skipAction, updateCard } from "../actions/action";
+import { useContext, useEffect, useState } from "react";
+
 import { Context } from "../context/store";
-import styles from "../styles/Player.module.scss";
+import ReactMarkdown from "react-markdown";
+import _ from "lodash";
 import { addZeroToInteger } from "../utils/calculations";
 import iconCheckmark from "../assets/checkmark.svg";
-
-import _ from "lodash";
-
-import { updateCard, skipAction } from "../actions/action";
-import ReactMarkdown from "react-markdown";
+import styles from "../styles/Player.module.scss";
+import { useTimer } from "react-timer-hook";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -242,6 +241,7 @@ export const ChatCta = ({
   lastMessage,
   currentIdea,
 }) => {
+  console.log({ lastMessage, currentIdea });
   return (
     <div className="absolute_bottom">
       <div className={styles.ctaBox}>
@@ -264,7 +264,16 @@ export const ChatCta = ({
                 <div className={styles.ctaStepInfobar}>
                   <div>Session: {lastMessage.title}</div>
                   <div className={styles.infoBarStep}>
-                    Idea {currentIdea}/{lastMessage.ideasLength}
+                    {!lastMessage.from ? (
+                      <div>
+                        Idea {currentIdea}/{lastMessage.ideasLength}
+                      </div>
+                    ) : (
+                      <div>
+                        Step {lastMessage.step}/
+                        {lastMessage.action.steps.length}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className={styles.ctaButtonWrapper}>
