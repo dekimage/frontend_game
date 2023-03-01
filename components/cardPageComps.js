@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/store";
 import { GenericDropDown } from "../pages/problems";
 import Link from "next/link";
-import Timer from "../components/Timer";
+import Timer from "./reusable/Timer";
 import arrowDown from "../assets/arrow-down-white.png";
 import { buyCardTicket } from "../actions/action";
 import checkmark1 from "../assets/checkmark-fill.svg";
@@ -592,13 +592,76 @@ export const Title = ({ name, rightText, rightSeparator }) => {
   );
 };
 
+export const CompleteCardSection = ({
+  card,
+  usercard,
+  contentsLength,
+  completedLength,
+}) => {
+  const [store, dispatch] = useContext(Context);
+
+  const [isMoreThan24HoursAgo, setIsMoreThan24HoursAgo] = useState(null);
+
+  useEffect(() => {
+    if (usercard) {
+      const newIsMoreThan24HoursAgo = calcIsMoreThan24HoursAgo(
+        usercard.completed_at
+      );
+      setIsMoreThan24HoursAgo(newIsMoreThan24HoursAgo);
+    }
+  }, [usercard]);
+
+  function calcIsMoreThan24HoursAgo(last_completed) {
+    if (!last_completed) {
+      return false;
+    }
+
+    const now = Date.now();
+    const timeDiff = now - last_completed;
+    const hoursDiff = timeDiff / (1000 * 60 * 60);
+    if (hoursDiff >= 24) {
+      return false;
+    }
+    return 86400000 - timeDiff;
+  }
+
+  return (
+    <div style={{ marginBottom: "4rem" }}>
+      {isMoreThan24HoursAgo ? (
+        <div className="btn btn-primary">
+          You can complete this card again in xx;xx
+          <Timer
+            timeLeftProp={isMoreThan24HoursAgo}
+            jsxComplete={<div className="btn btn-correct">Refresh</div>}
+            // onComplete={onComplete}
+          />
+        </div>
+      ) : contentsLength === completedLength ? (
+        <div
+          className="btn btn-primary"
+          onClick={() => updateCard(dispatch, card.id, "complete")}
+        >
+          Complete Card + mastery symbol
+        </div>
+      ) : (
+        <div
+          className="btn btn-disabled"
+          onClick={() => updateCard(dispatch, card.id, "complete")}
+        >
+          Complete {completedLength} / {contentsLength}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const CardCtaFooter = ({ isUnlocked, card }) => {
   const [store, dispatch] = useContext(Context);
   const hasStars = store?.user?.stars >= card.cost;
   const energy = store?.user?.energy;
-  const cardTickets = store?.user?.card_tickets;
-  const is_subscribed = store?.user?.is_subscribed;
+  const cardTickets = store?.user?.card_tickets || [];
   const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
+  const is_subscribed = store?.user?.is_subscribed;
 
   const router = useRouter();
 

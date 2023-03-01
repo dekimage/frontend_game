@@ -1,18 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import styles from "../../styles/TimerReusable.module.scss";
 
-const Timer = ({ resetFutureTime, onComplete, jsxComplete, timeType }) => {
-  function getTimeUntilMidnight() {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0);
-    return midnight.getTime() - now.getTime();
-  }
-
-  const [timeLeft, setTimeLeft] = useState(
-    // resetIn - (Date.now() - resetPastTime)
-    timeType == "daily" ? getTimeUntilMidnight() : resetFutureTime - Date.now()
-  );
+const Timer = ({ timeLeftProp, onComplete, jsxComplete }) => {
+  const [timeLeft, setTimeLeft] = useState(timeLeftProp);
 
   useEffect(() => {
     let intervalId;
@@ -21,7 +12,7 @@ const Timer = ({ resetFutureTime, onComplete, jsxComplete, timeType }) => {
         setTimeLeft(timeLeft - 1000);
       }, 1000);
     } else {
-      // onComplete();
+      onComplete && onComplete();
     }
     return () => clearInterval(intervalId);
   }, [timeLeft, onComplete]);

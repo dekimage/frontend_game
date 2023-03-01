@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import Timer from "./reusable/Timer";
-import styles from "../styles/Countdown.module.scss";
+
 import { Context } from "../context/store";
-import { fetchUser } from "../actions/action";
 import { ImageUI } from "./reusableUI";
+import Timer from "./reusable/Timer";
+import { fetchUser } from "../actions/action";
+import styles from "../styles/Countdown.module.scss";
 
 export default function Countdown({ tab, isObjectives = false }) {
   const [store, dispatch] = useContext(Context);
@@ -14,6 +15,20 @@ export default function Countdown({ tab, isObjectives = false }) {
   const dailyTime = Date.parse(store?.user?.reset_date || 0);
   const weeklyTime = parseInt(store?.user?.reset_week_date);
 
+  function getTimeUntilMidnight() {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    return midnight.getTime() - now.getTime();
+  }
+
+  function calculateTimeLeftProp(timeType) {
+    const resetFutureTime = timeType == "daily" ? dailyTime : weeklyTime;
+    return timeType == "daily"
+      ? getTimeUntilMidnight()
+      : resetFutureTime - Date.now();
+  }
+
   return (
     <>
       {isObjectives ? (
@@ -23,15 +38,14 @@ export default function Countdown({ tab, isObjectives = false }) {
           {tab === "daily" ? (
             <>
               <Timer
-                resetFutureTime={dailyTime || 0}
+                timeLeftProp={calculateTimeLeftProp("daily")}
                 jsxComplete={<div className="btn btn-correct">Refresh</div>}
                 onComplete={onComplete}
-                timeType="daily"
               />
             </>
           ) : (
             <Timer
-              resetFutureTime={weeklyTime || 0}
+              timeLeftProp={calculateTimeLeftProp("weekly")}
               jsxComplete={<div className="btn btn-correct">Refresh</div>}
               onComplete={onComplete}
             />
@@ -45,10 +59,9 @@ export default function Countdown({ tab, isObjectives = false }) {
             + 10 <ImageUI url={"/energy.png"} height={"16px"} isPublic />
           </div>
           <Timer
-            resetFutureTime={dailyTime || 0}
+            timeLeftProp={calculateTimeLeftProp("daily")}
             jsxComplete={<div className="btn btn-correct">Refresh</div>}
             onComplete={onComplete}
-            timeType="daily"
           />
         </div>
       )}

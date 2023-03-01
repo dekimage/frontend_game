@@ -160,6 +160,7 @@ export const GET_USERCARDS_QUERY = gql`
           quantity
           is_new
           glory_points
+          completed_at
           is_unlocked
           completed_contents
           league

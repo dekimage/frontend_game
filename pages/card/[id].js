@@ -1,6 +1,7 @@
 import {
   BasicActionsWrapper,
   CardCtaFooter,
+  CompleteCardSection,
   FavoriteButton,
   Title,
 } from "../../components/cardPageComps";
@@ -37,8 +38,10 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
     proxy: true,
     completed_progress_max: 3,
     completed_contents: [],
+    completed_at: false,
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
+  console.log(usercard);
 
   // const [activeTab, setActiveTab] = useState("community");
 
@@ -46,6 +49,11 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
 
   const isUnlocked =
     card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
+
+  const day = card.days[card.last_day || 0];
+  const completedContents = usercard.completed_contents || [];
+  const contentsLength = day.contents.length;
+  const completedLength = completedContents.length;
 
   // const mergeActions = (usercard, actions, checkingArray, keyword) => {
   //   const result = actions.map((action) => {
@@ -70,6 +78,8 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   // };
 
   const { isShowing, openModal, closeModal } = useModal();
+
+  // console.log({ contentL: day.contents, completedContents });
 
   return (
     <div className="section_container">
@@ -150,8 +160,8 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
         <Title name="Program" />
 
         <Program
-          day={card.days[card.last_day || 0]}
-          completed_contents={usercard.completed_contents || []}
+          day={day}
+          completedContents={completedContents}
           cardId={card.id}
         />
 
@@ -171,6 +181,13 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           mergeActions={mergeActions}
         /> */}
       </div>
+
+      <CompleteCardSection
+        card={card}
+        usercard={usercard}
+        contentsLength={contentsLength}
+        completedLength={completedLength}
+      />
 
       {card && (
         <CardCtaFooter
