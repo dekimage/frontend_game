@@ -203,7 +203,7 @@ export const ContentTheory = ({
         );
       })}
 
-      <div style={{ marginTop: "4rem" }} ref={bottom}></div>
+      <div style={{ marginTop: "2rem" }} ref={bottom}></div>
 
       {showCtaStep && (
         <ChatCta

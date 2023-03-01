@@ -60,7 +60,7 @@ const Shop = () => {
         <div className={styles.header}>Subscription</div>
         <div className={styles.proxySubs}>
           <div className={styles.proxySubs_title}>
-            Actionise <div className="proLabel">PRO</div>
+            Actionise <div className="proLabel ml5">PRO</div>
           </div>
           <div className={styles.proxySubs_benefits}>
             <div className={styles.proxySubs_image}>

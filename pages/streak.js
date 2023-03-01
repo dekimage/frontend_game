@@ -1,22 +1,24 @@
 // *** REACT ***
+
 import { useContext, useEffect, useState } from "react";
+
+import { BackButton } from "../components/reusableUI";
 import { Context } from "../context/store";
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import { useRouter } from "next/router";
-// *** COMPONENTS ***
+import { GET_STREAKS_QUERY } from "../GQL/query";
 import { Rarity } from "../components/Rarity";
+import { claimStreakReward } from "../actions/action";
+import cx from "classnames";
+import { gql } from "apollo-boost";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/Streak.module.scss";
+import { useQuery } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
+
+// *** COMPONENTS ***
 
 // *** ACTIONS ***
-import { claimStreakReward } from "../actions/action";
-
-import { normalize } from "../utils/calculations";
-import { BackButton } from "../components/reusableUI";
 
 // *** STYLES ***
-import cx from "classnames";
-import styles from "../styles/Streak.module.scss";
-import { GET_STREAKS_QUERY } from "../GQL/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -149,6 +151,7 @@ const StreakTower = () => {
             <div className={styles.subTitle_muted}>
               It takes only 1 second to log in and claim.
             </div>
+
             {gql_data && store.user && (
               <div className={styles.streakContainer}>
                 {mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)

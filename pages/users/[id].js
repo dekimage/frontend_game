@@ -1,35 +1,34 @@
 // *** REACT ***
+
+import {
+  Activity,
+  Buddy,
+  ProfileHeader,
+  Stat,
+  Tabs,
+} from "../../components/profileComps";
 import { useContext, useEffect, useState } from "react";
+
+import { Artifact } from "../profile";
+import CardsMapper from "../../components/CardsMapper";
+import { CommunityAction } from "../../components/cardPageComps";
 import { Context } from "../../context/store";
-import { useQuery } from "@apollo/react-hooks";
+import { GET_USER_ID } from "../../GQL/query";
+import Header from "../../components/Header";
+import NavBar from "../../components/NavBar";
+import { calcTotal } from "../../utils/calculations";
+import { followBuddy } from "../../actions/action";
 import { gql } from "apollo-boost";
+import { normalize } from "../../utils/calculations";
+import styles from "../../styles/Profile.module.scss";
+import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
 
 // *** COMPONENTS ***
-import NavBar from "../../components/NavBar";
-import Header from "../../components/Header";
-import { CommunityAction } from "../../components/cardPageComps";
-import { Artifact } from "../profile";
-import {
-  Activity,
-  Stat,
-  Buddy,
-  ProfileHeader,
-  Tabs,
-} from "../../components/profileComps";
-
-import CardsMapper from "../../components/CardsMapper";
-
-import { normalize } from "../../utils/calculations";
-
-import { GET_USER_ID } from "../../GQL/query";
 
 // *** ACTIONS ***
-import { calcTotal } from "../../utils/calculations";
 
 // *** STYLES ***
-import styles from "../../styles/Profile.module.scss";
-import { followBuddy } from "../../actions/action";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 

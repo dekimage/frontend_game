@@ -101,7 +101,7 @@ export const CatContent = ({ message }) => {
         <div
           className="avatar"
           style={{
-            backgroundImage: `url(${baseUrl}/uploads/cat_a7d3867339.png?updated_at=2022-10-07T12:38:43.522Z)`,
+            backgroundImage: `url(${baseUrl}/cat.png`,
           }}
         >
           avatar
@@ -224,8 +224,10 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
     <div className={styles.ctaStepWrapper}>
       <div className={styles.ctaStepInfobar}>
         <div className={styles.ctaStepInfobar_nameAndGreen}>
-          You are now doing {lastMessage.action.name}
-          <div className={styles.greenCircle}></div>
+          <div className="flex_center">
+            You are now doing {lastMessage.action.name}
+            <div className={styles.greenCircle}></div>
+          </div>
         </div>
 
         <div className={styles.infoBarStep}>
@@ -341,10 +343,10 @@ export const ChatCta = ({
                   {!lastMessage.from ? (
                     <div>{lastMessage.title}</div>
                   ) : (
-                    <>
+                    <div className="flex_center">
                       You are now doing {lastMessage.action.name}
                       <div className={styles.greenCircle}></div>
-                    </>
+                    </div>
                   )}
 
                   <div className={styles.infoBarStep}>
