@@ -1,20 +1,19 @@
-import { useQuery } from "@apollo/react-hooks";
+import { BackButton, Button } from "../components/reusableUI";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "../context/store";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import _ from "lodash";
-import styles from "../styles/Realm.module.scss";
 
-import NavBar from "../components/NavBar";
-import Card from "../components/Card";
-import { Tabs } from "../components/profileComps";
-import { normalize } from "../utils/calculations";
-import { BackButton } from "../components/reusableUI";
 import { Action } from "../components/cardPageComps";
-import { joinCards } from "../utils/joins";
-
+import Card from "../components/Card";
+import { Context } from "../context/store";
 import { GET_USER_OPEN_TICKETS } from "../GQL/query";
+import Link from "next/link";
+import NavBar from "../components/NavBar";
+import { NotFoundContainer } from "../components/todayComp";
+import { Tabs } from "../components/profileComps";
+import _ from "lodash";
+import { joinCards } from "../utils/joins";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/Realm.module.scss";
+import { useQuery } from "@apollo/react-hooks";
 
 const OpenToday = () => {
   const [store, dispatch] = useContext(Context);
@@ -68,7 +67,9 @@ const OpenToday = () => {
                     .sort((a, b) => b.is_open - a.is_open)
                     .map((card, i) => <Card card={card} key={i} />)}
                 {!recentCards.length && (
-                  <div>You don't have any actived cards today</div>
+                  <NotFoundContainer
+                    text={"You don't have any activated Cards for today."}
+                  />
                 )}
               </div>
             )}
@@ -81,7 +82,9 @@ const OpenToday = () => {
                     ))}
                   </div>
                 ) : (
-                  <div>You don't have any actived actions today</div>
+                  <NotFoundContainer
+                    text={"You don't have any activated Actions for today."}
+                  />
                 )}
               </div>
             )}

@@ -1,10 +1,12 @@
 import "../styles/globals.scss";
-import React from "react";
+import "react-toastify/dist/ReactToastify.css";
+
+import { ToastContainer, toast } from "react-toastify";
+
 import Head from "next/head";
+import React from "react";
 import Store from "../context/store";
 import withData from "../lib/withData";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const MyApp = ({ Component, pageProps }) => {
   MyApp.getInitialProps = async ({ Component, router, ctx }) => {
@@ -23,6 +25,7 @@ const MyApp = ({ Component, pageProps }) => {
       <Head>
         <title>Actionise</title>
         {/* <link href="../public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
         <style>
           @import
           url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500&display=swap');

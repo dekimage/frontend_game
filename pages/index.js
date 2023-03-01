@@ -1,43 +1,35 @@
-// *** REACT ***
-import { useContext, useEffect, useState } from "react";
-import { useQuery } from "@apollo/react-hooks";
-import { Context } from "../context/store";
-import cx from "classnames";
-
-// *** COMPONENTS ***
-import useModal from "../hooks/useModal";
-import Modal from "../components/Modal";
-import Timer from "../components/reusable/Timer";
-
-import Objective from "../components/Objective";
-import Header from "../components/Header";
-import NavBar from "../components/NavBar";
-import { TutorialModal } from "../components/todayComp";
-
-import { Tabs } from "../components/profileComps";
-
-import RewardsModal from "../components/RewardsModal";
-import EnergyModal from "../components/EnergyModal";
-
-import { RewardLink } from "../components/todayComp";
-
-// *** FUNCTIONS ***
-import { normalize } from "../utils/calculations";
-import { joinObjectives, calculateNotifications } from "../functions/todayFunc";
 import {
-  resetUser,
   acceptReferral,
   fetchUser,
   getRandomCard,
+  resetUser,
 } from "../actions/action";
+import { calculateNotifications, joinObjectives } from "../functions/todayFunc";
+// *** REACT ***
+import { useContext, useEffect, useState } from "react";
 
+import { Context } from "../context/store";
+import Countdown from "../components/Countdown";
 // *** GQL ***
 import { GET_OBJECTIVES_QUERY } from "../GQL/query";
-
+import Header from "../components/Header";
+import Modal from "../components/Modal";
+import NavBar from "../components/NavBar";
+import Objective from "../components/Objective";
+import { RewardLink } from "../components/todayComp";
+import RewardsModal from "../components/RewardsModal";
+import { Tabs } from "../components/profileComps";
+import Timer from "../components/reusable/Timer";
+import { TutorialModal } from "../components/todayComp";
+import cx from "classnames";
+// *** FUNCTIONS ***
+import { normalize } from "../utils/calculations";
 // *** STYLES ***
 import styles from "../styles/Today.module.scss";
-import Countdown from "../components/Countdown";
-
+// *** COMPONENTS ***
+import useModal from "../hooks/useModal";
+import { useQuery } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
 import { withUser } from "../Hoc/withUser";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -47,10 +39,6 @@ const Home = (props) => {
   const { isShowing, openModal, closeModal } = useModal();
 
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
-
-  useEffect(() => {
-    getRandomCard(dispatch);
-  }, []);
 
   useEffect(() => {
     if (user.tutorial_step > 0) {
@@ -75,6 +63,8 @@ const Home = (props) => {
     { label: "daily", count: notif?.daily || -1 },
     { label: "weekly", count: notif?.weekly || -1 },
   ];
+
+  const router = useRouter();
 
   return (
     <div className="background_dark">
@@ -103,12 +93,7 @@ const Home = (props) => {
               </div>
             </div>
           )}
-          <div
-            className="btn btn-primary"
-            onClick={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
-          >
-            Open Energy Modal test
-          </div>
+
           <div className="section">
             <div className={styles.objectivesHeadline}>
               <div className="header">Objectives</div>
@@ -165,6 +150,12 @@ const Home = (props) => {
         />
 
         <RewardLink
+          img={`${baseUrl}/random.png`}
+          text={"Random Card"}
+          link="/random-card"
+        />
+
+        <RewardLink
           img={`${baseUrl}/energy.png`}
           link={"/open-today"}
           text={"Open Today"}
@@ -177,14 +168,9 @@ const Home = (props) => {
           jsx={<TutorialModal closeModal={closeModal} />}
         />
       )}
+
       <Modal
-        isShowing={store.energyModal}
-        closeModal={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
-        jsx={<EnergyModal />}
-        isSmall
-      />
-      <Modal
-        isShowing={store.rewardsModal.isOpen}
+        isShowing={store.rewardsModal?.isOpen}
         closeModal={closeModal}
         showCloseButton={false}
         jsx={<RewardsModal />}

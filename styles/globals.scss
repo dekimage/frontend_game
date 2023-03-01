@@ -37,6 +37,12 @@ input {
   text-transform: capitalize;
 }
 
+.subHeader {
+  @extend %header;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
 .title {
   font-size: 20px;
   font-weight: 500;
@@ -264,6 +270,10 @@ input {
   // border-bottom: 2px solid #1e4397;
 
   // box-shadow: 0px 5px 0px -0.5px #1e4397;
+}
+.btn-outline {
+  border: 2px solid $actionize_gray_light;
+  background-color: transparent;
 }
 .btn-green {
   background: $actionize_green;
@@ -638,14 +648,14 @@ ion-icon {
 // Dual Ring
 .lds-dual-ring {
   display: inline-block;
-  width: 64px;
-  height: 64px;
+  width: 32px;
+  height: 32px;
 }
 .lds-dual-ring:after {
   content: " ";
   display: block;
-  width: 46px;
-  height: 46px;
+  width: 20px;
+  height: 20px;
   margin: 1px;
   border-radius: 50%;
   border: 5px solid #cef;
@@ -753,6 +763,11 @@ ion-icon {
     padding: 0.75em 1.5em;
     background: $primary;
     border-radius: 20px;
+    ol {
+      padding: 0;
+      margin: 0;
+      margin-left: 0.5rem;
+    }
   }
 
   &.message-reply {
@@ -859,4 +874,22 @@ ion-icon {
   .card {
     width: calc(50vw);
   }
+}
+
+.proLabel {
+  // background: linear-gradient(
+  //   49deg,
+  //   rgba(179, 51, 233, 1) 0%,
+  //   rgba(128, 255, 219, 1) 89%,
+  //   rgba(53, 212, 117, 1) 100%
+  // );
+  // background: linear-gradient(to right, #00f260, #0575e6);
+  background: linear-gradient(to right, #fc5c7d, #6a82fb);
+  border-radius: 10px;
+  @extend %flex_center;
+  // font-family: "Teko", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  width: 56px;
+  height: 24px;
 }

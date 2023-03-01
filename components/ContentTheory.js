@@ -16,6 +16,7 @@ export const ContentTheory = ({
   goNext,
   lastSlideIndex,
   i,
+  isLastSlide,
   increaseSteps = false, // for actions player only to move progressbar
 }) => {
   const createChat = (slide) => {
@@ -65,9 +66,9 @@ export const ContentTheory = ({
 
         const lastStep = seckanContent[seckanContent.length - 1];
 
-        console.log(1, action.steps[index]);
-        console.log(2, action.steps);
-        console.log(3, index);
+        // console.log(1, action.steps[index]);
+        // console.log(2, action.steps);
+        // console.log(3, index);
 
         seckanContent[seckanContent.length - 1] = {
           ...lastStep,
@@ -117,7 +118,7 @@ export const ContentTheory = ({
     setContentIndex(contentIndex + 1);
     // removed after fixing multiple elements mapping
     setCurrentIdea(currentIdea + 1);
-    console.log({ contentIndex, currentIdea, ideaCount });
+    // console.log({ contentIndex, currentIdea, ideaCount });
     // increaseSteps && increaseSteps();
   };
 
@@ -207,6 +208,7 @@ export const ContentTheory = ({
       {showCtaStep && (
         <ChatCta
           isLastIdea={isLastIdea}
+          isLastSlide={isLastSlide}
           goNext={goNext}
           openNextIdea={openNextIdea}
           lastMessage={lastMessage}

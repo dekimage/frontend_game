@@ -1,4 +1,17 @@
 {
+  "SnippetTemplate": {
+    "prefix": ["snippet"],
+    "body": [
+      " \"StrapiFindMany\": {",
+      "\"prefix\": [\"findMany\"],",
+      "\"body\": [",
+      "\"const ${1:entity} = await strapi.db.query(\"api::entity.entity\").findMany();\"",
+      "],",
+      "\"description\": \"FindMany\"",
+      "},"
+    ],
+    "description": "Create Snippet"
+  },
   "For Loop": {
     "prefix": ["Template", "for-const"],
     "body": ["for (const ${2:element} of ${1:array}) {", "\t$0", "}"],
@@ -27,5 +40,26 @@
       "const ${1:Component} = ({${2:props}}) => { return ( <div className={styles.${3:classname}}>$0</div>) }"
     ],
     "description": "Functional Component"
+  },
+  "Button": {
+    "prefix": ["btn"],
+    "body": [
+      "<Button type={\"primary\"} onClick={() => {}} children={\"Start\"} isLoading={store.isLoading} />"
+    ],
+    "description": "Button Component"
+  },
+  "Image": {
+    "prefix": ["img"],
+    "body": [
+      "<ImageUI url={action.image?.url} width=\"75px\" height=\"75px\" />"
+    ],
+    "description": "Image Component"
+  },
+  "Link": {
+    "prefix": ["link"],
+    "body": [
+      "<Link href={{ pathname: \"/card/[id]\", query: { id: isCollected ? card.card.id : card.id  }}}></Link>"
+    ],
+    "description": "Link Next"
   }
 }

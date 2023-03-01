@@ -1,35 +1,31 @@
 import {
-  BasicActionsWrapper,
   CardCtaFooter,
   CompleteCardSection,
   FavoriteButton,
   Title,
 } from "../../components/cardPageComps";
-import { Day, Program } from "../course/[id]";
 import { GET_CARD_ID, GET_USERCARDS_QUERY } from "../../GQL/query";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useLazyQuery, useQuery } from "@apollo/react-hooks";
 
 import { BackButton } from "../../components/reusableUI";
 import { Context } from "../../context/store";
+import EnergyModal from "../../components/EnergyModal";
 import { FirstTimeBonusModal } from "../../components/Modals/FirstTimeBonusModal";
 import HelperPopup from "../../components/reusable/HelperModal";
 import Modal from "../../components/Modal";
+import { Program } from "../course/[id]";
 import ProgressBar from "../../components/ProgressBar";
 import { RanksModal } from "../../components/Modals/RanksModal";
 import { Rarity } from "../../components/Rarity";
 import ReactMarkdown from "react-markdown";
 import { RewardsModal } from "../../components/RewardsModal";
-import { Tabs } from "../../components/profileComps";
 import _ from "lodash";
 import iconCheckmark from "../../assets/checkmark.svg";
 import { normalize } from "../../utils/calculations";
 import styles from "../../styles/CardPage.module.scss";
-import { updateCard } from "../../actions/action";
 import useModal from "../../hooks/useModal";
 import { useRouter } from "next/router";
-
-//send to player
 
 const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   const [store, dispatch] = useContext(Context);
@@ -43,8 +39,6 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
   console.log(usercard);
 
-  // const [activeTab, setActiveTab] = useState("community");
-
   const card = dataCard.card;
 
   const isUnlocked =
@@ -52,7 +46,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
 
   const day = card.days[card.last_day || 0];
   const completedContents = usercard.completed_contents || [];
-  const contentsLength = day.contents.length;
+  const contentsLength = day?.contents?.length;
   const completedLength = completedContents.length;
 
   // const mergeActions = (usercard, actions, checkingArray, keyword) => {
@@ -71,15 +65,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   //   return result;
   // };
 
-  // const cardToUserCourse = {
-  //   last_completed_day: usercard.completed + 1,
-  //   last_completed_content: 1,
-  //   course: { id: 1 },
-  // };
-
   const { isShowing, openModal, closeModal } = useModal();
-
-  // console.log({ contentL: day.contents, completedContents });
 
   return (
     <div className="section_container">
@@ -127,22 +113,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
             withNumber
             fontSize={16}
           />
-
-          {/* <div className={styles.mastery}>
-            Rarity
-            <Rarity rarity={card.rarity} />
-          </div> */}
         </div>
-
-        {/* <div
-          className="btn btn-primary mb1"
-          onClick={() => {
-            updateCard(dispatch, card.id, "complete");
-            getUserCard({ variables: { id: usercard.id } });
-          }}
-        >
-          Complete Card
-        </div> */}
 
         <div className={styles.description}>{card.description}</div>
 
@@ -164,12 +135,6 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           completedContents={completedContents}
           cardId={card.id}
         />
-
-        {/* <Day
-          day={card.days[card.last_day || 0]}
-          usercourse={cardToUserCourse}
-          cardName={card.name}
-        /> */}
 
         {/* <IdeaPlayer cardId={card.id} /> */}
 
@@ -202,6 +167,13 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
         closeModal={closeModal}
         showCloseButton={false}
         jsx={<RewardsModal defaultPage={"artifact"} />}
+        isSmall
+      />
+
+      <Modal
+        isShowing={store.energyModal}
+        closeModal={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
+        jsx={<EnergyModal />}
         isSmall
       />
     </div>

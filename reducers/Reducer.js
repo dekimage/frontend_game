@@ -10,6 +10,12 @@ const Reducer = (store, action) => {
   switch (action.type) {
     case "OPEN_PLAYER":
       return { ...store, player: action.data };
+    case "COMPLETE_TASK":
+      return { ...store, completedTasks: store.completedTasks + 1 };
+    case "SKIP_TASK":
+      return { ...store, skippedTasks: store.skippedTasks + 1 };
+    case "RESET_TASKS":
+      return { ...store, skippedTasks: 0, completedTasks: 0 };
     case "LOADING":
       return { ...store, isLoading: true };
     case "STOP_LOADING":

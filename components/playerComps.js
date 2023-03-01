@@ -1,23 +1,20 @@
-import ReactMarkdown from "react-markdown";
-
-import { Context } from "../context/store";
-
-import styles from "../styles/Player.module.scss";
-import Link from "next/link";
-import clseIcon from "../assets/close.svg";
-
-import _ from "lodash";
-import cx from "classnames";
-import StopWatch from "../components/StopWatch";
-
 import { updateCard, updateTutorial } from "../actions/action";
 
+import { Context } from "../context/store";
+import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import StopWatch from "../components/StopWatch";
+import _ from "lodash";
 import actionIcon from "../assets/player_actions.svg";
-import rewardsIcon from "../assets/player_rewards.svg";
+import clseIcon from "../assets/close.svg";
 import completedIcon from "../assets/player_complete.svg";
+import cx from "classnames";
 import levelIcon from "../assets/player_lvlup.svg";
-import progressIcon from "../assets/player_progress.svg";
 import noEnergyIcon from "../assets/player_no_energy.svg";
+import progressIcon from "../assets/player_progress.svg";
+import rewardsIcon from "../assets/player_rewards.svg";
+import styles from "../styles/Player.module.scss";
+import { useContext } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;

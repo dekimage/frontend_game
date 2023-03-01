@@ -3,6 +3,7 @@ import {
   SliderProgress,
   WarningModal,
 } from "../../../components/playerComps";
+import { getTotalStepsInSlides, normalize } from "../../../utils/calculations";
 import { gql, useQuery } from "@apollo/react-hooks";
 import { useContext, useEffect, useRef, useState } from "react";
 
@@ -12,7 +13,6 @@ import { GET_CARD_ID } from "../../../GQL/query";
 import Modal from "../../../components/Modal";
 import { SuccessModal } from "../../../components/playerCourseComps";
 import _ from "lodash";
-import { normalize } from "../../../utils/calculations";
 import { updateCard } from "../../../actions/action";
 import useModal from "../../../hooks/useModal";
 import { useRouter } from "next/router";
@@ -42,17 +42,12 @@ const Player = () => {
   useEffect(() => {
     if (store.user && gql_data) {
       const cardTickets = store.user.card_tickets || [];
-      console.log({ cardTickets });
+
       if (!cardTickets?.find((c) => c?.id == gql_data?.card?.id)) {
         router.push("/learn");
       }
     }
     dispatch({ type: "STOP_LOADING" });
-    // const usercard =
-    //   store?.user?.usercards &&
-    //   store.user.usercards.filter(
-    //     (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
-    //   )[0];
 
     // const last_completed_content = 1;
     // const last_completed_day = (usercard && usercard.completed) || 0;
@@ -108,7 +103,6 @@ const Player = () => {
 
   const goNext = () => {
     const cardId = router.query.id;
-    console.log(router.query);
     const index = slide.index;
     updateCard(dispatch, cardId, "complete_contents", index);
     if (index === slides.length) {
@@ -118,6 +112,19 @@ const Player = () => {
       setChatSlides([...chatSlides, slides[index]]);
     }
   };
+
+  const usercard =
+    store?.user?.usercards &&
+    store.user.usercards.filter(
+      (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
+    )[0];
+
+  const isLastSlide =
+    slides && slides.findIndex((s) => s.id === slide.id) === slides.length - 1;
+
+  const totalTasksCount = slides && getTotalStepsInSlides(slides);
+
+  console.log({ tasks: store.completedTasks, skipped: store.skippedTasks });
 
   return (
     <div className="background_dark">
@@ -138,13 +145,14 @@ const Player = () => {
             rewards={rewards}
             closePlayer={closePlayer}
           />
-          <div className="section" style={{ paddingTop: "4rem" }}>
+          <div className="section" style={{ paddingTop: "6rem" }}>
             {chatSlides.map((slide, i) => {
               return (
                 <ContentTheory
                   slide={slide}
                   goNext={goNext}
                   lastSlideIndex={chatSlides.length}
+                  isLastSlide={isLastSlide}
                   key={i}
                   i={i}
                 />
@@ -165,19 +173,19 @@ const Player = () => {
               />
             )}
 
-            {isSuccessModalOpen && (
-              <Modal
-                isShowing={isSuccessModalOpen}
-                closeModal={closeModal}
-                jsx={
-                  <SuccessModal
-                    closePlayer={closePlayer}
-                    card={data.card}
-                    // isLatestLevel={isLatestLevel}
-                  />
-                }
-              />
-            )}
+            <Modal
+              isShowing={isSuccessModalOpen}
+              closeModal={closeModal}
+              showCloseButton={false}
+              jsx={
+                <SuccessModal
+                  closePlayer={closePlayer}
+                  card={data.card}
+                  usercard={usercard}
+                  totalTasksCount={totalTasksCount}
+                />
+              }
+            />
           </div>
         </>
       )}

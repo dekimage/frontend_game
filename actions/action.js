@@ -84,10 +84,11 @@ export const saveAvatar = (dispatch, avatarId) => {
 // GET RANDOM CARD
 export const getRandomCard = (dispatch) => {
   dispatch({ type: "LOADING" });
-  api
+  return api
     .getRandomCardApi()
     .then(({ data }) => {
       console.log(data);
+      return data;
     })
     .catch((err) => {
       dispatch({ type: "SET_ERROR", data: err });

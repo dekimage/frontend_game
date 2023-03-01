@@ -1,13 +1,12 @@
 // IMAGES
-import iconCheckmark from "../assets/checkmark.svg";
-import iconCheckmarkFill from "../assets/checkmark-fill.svg";
-import Router from "next/router";
 
 import ProgressBar from "./ProgressBar";
 import RewardImage from "./RewardImage";
+import Router from "next/router";
 import { claimObjective } from "../actions/action";
 import cx from "classnames";
-
+import iconCheckmark from "../assets/checkmark.svg";
+import iconCheckmarkFill from "../assets/checkmark-fill.svg";
 import styles from "../styles/Today.module.scss";
 
 const Objective = ({
@@ -40,13 +39,8 @@ const Objective = ({
       key={id}
     >
       {isPremium ? (
-        <div
-          className={styles.objective_timeType}
-          style={{
-            backgroundColor: premiumColor,
-          }}
-        >
-          Premium
+        <div className={styles.objective_timeType}>
+          <div className="proLabel">PRO</div>
         </div>
       ) : (
         <div
@@ -55,7 +49,7 @@ const Objective = ({
             backgroundColor: timeColor,
           }}
         >
-          {time_type}
+          <div style={{ padding: ".15rem .5rem" }}>{time_type}</div>
         </div>
       )}
       {/* REWARD COMPONENT */}

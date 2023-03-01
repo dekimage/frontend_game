@@ -1,11 +1,9 @@
-import { useQuery } from "@apollo/react-hooks";
+import { GET_REALMS } from "../GQL/query";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-
 import { Realm } from "../components/Realm";
 import { normalize } from "../utils/calculations";
-
-import { GET_REALMS } from "../GQL/query";
+import { useQuery } from "@apollo/react-hooks";
 
 const Learn = () => {
   const { data, loading, error } = useQuery(GET_REALMS);
@@ -22,6 +20,8 @@ const Learn = () => {
       <div className="section">
         <div className="header">Explore Categories</div>
       </div>
+
+      <div className="subHeader">Optimize your life across multiple areas</div>
 
       <div className="section">
         {error && <div>Error: {error}</div>}

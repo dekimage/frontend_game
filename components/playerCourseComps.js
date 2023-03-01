@@ -1,10 +1,12 @@
+import { addZeroToInteger, getNumberSuffix } from "../utils/calculations";
 import { skipAction, updateCard } from "../actions/action";
 import { useContext, useEffect, useState } from "react";
 
 import { Context } from "../context/store";
+import { GenericScreen } from "./playerComps";
 import ReactMarkdown from "react-markdown";
 import _ from "lodash";
-import { addZeroToInteger } from "../utils/calculations";
+import completedIcon from "../assets/player_complete.svg";
 import iconCheckmark from "../assets/checkmark.svg";
 import styles from "../styles/Player.module.scss";
 import { useTimer } from "react-timer-hook";
@@ -13,11 +15,45 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 //MAYBE IN CARD PLAYER?
-export const SuccessModal = ({ closePlayer, card }) => {
+export const SuccessModal = ({
+  closePlayer,
+  card,
+  usercard,
+  totalTasksCount,
+}) => {
   const [store, dispatch] = useContext(Context);
+  const suffix = getNumberSuffix(usercard.completed);
+
   return (
     <div className={styles.cardPlayerSuccessModal}>
-      Congratualations! You have completed this card!
+      <div className="header mb1">Congratulations!</div>
+      <div className="subHeader"></div>
+
+      <GenericScreen
+        img={completedIcon}
+        title={"Session Complete"}
+        content={`You have completed your ${usercard.completed}${suffix} session on ${card.name}`}
+        stats={[
+          {
+            img: "gems",
+            label: "Tasks Completed",
+            amount: `${store.completedTasks}/${totalTasksCount}`,
+          },
+          {
+            img: "play",
+            label: "Skipped Tasks",
+            amount: store.skippedTasks,
+          },
+          {
+            img: "play",
+            label: "Mastery",
+            amount: `${usercard.completed}/${usercard.completed_progress_max}`,
+          },
+        ]}
+      />
+
+      {/* HERE GOES CARD COMPLETE CTA SECTION */}
+
       <div
         className="btn btn-success"
         onClick={() => {
@@ -112,23 +148,43 @@ const SkipAction = ({ isLastStep, goNext, goNextStep }) => {
       console.log("not enough stars");
     }
   };
+  const freeSkipAction = () => {
+    isLastStep ? goNext() : goNextStep();
+    dispatch({ type: "SKIP_TASK" });
+  };
   return (
     <div
-      className="btn btn-primary"
+      className="btn btn-primary ml1"
       onClick={() => {
-        handleSkipAction();
+        freeSkipAction();
       }}
     >
       Skip
-      <div className={`${styles.costBox} ml5`}>
+      {/* <div className={`${styles.costBox} ml5`}>
         25
         <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
+      </div> */}
+    </div>
+  );
+};
+
+const TodoItem = ({ todo, isChecked, setIsChecked }) => {
+  const handleToggle = () => {
+    setIsChecked(!isChecked);
+  };
+
+  return (
+    <div className={styles.todo} onClick={handleToggle}>
+      <div className={styles.todo_checkbox}>
+        {isChecked && <img src={iconCheckmark} height="14px" />}
       </div>
+      <div className={styles.todo_label}>{todo}</div>
     </div>
   );
 };
 
 const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
+  const [store, dispatch] = useContext(Context);
   const [isShowTimer, setIsShowTimer] = useState(!!lastMessage.timer);
   const time = new Date();
 
@@ -162,6 +218,8 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
     openNextIdea();
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+
   return (
     <div className={styles.ctaStepWrapper}>
       <div className={styles.ctaStepInfobar}>
@@ -174,6 +232,12 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
           Step {lastMessage.step}/{lastMessage.action.steps.length}
         </div>
       </div>
+
+      <TodoItem
+        todo={lastMessage.task}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+      />
 
       <div className={styles.ctaButtonWrapper}>
         {!isTimerCompleted ? (
@@ -200,10 +264,24 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
                 </div>
               </div>
             )}
+
+            {isRunning && !isTimerCompleted && isShowTimer && (
+              <SkipAction
+                isLastStep={isLastStep}
+                goNext={goNext}
+                goNextStep={goNextStep}
+              />
+            )}
           </>
         ) : isLastStep ? (
           <>
-            <div className="btn btn-correct btn-twin" onClick={goNext}>
+            <div
+              className="btn btn-correct btn-twin"
+              onClick={() => {
+                dispatch({ type: "COMPLETE_TASK" });
+                goNext();
+              }}
+            >
               Complete Action
             </div>
 
@@ -213,7 +291,13 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
           </>
         ) : (
           <>
-            <div className="btn btn-correct btn-twin" onClick={goNextStep}>
+            <div
+              className="btn btn-correct btn-twin"
+              onClick={() => {
+                dispatch({ type: "COMPLETE_TASK" });
+                goNextStep();
+              }}
+            >
               Complete Step {lastMessage.step}/{lastMessage.action.steps.length}
             </div>
 
@@ -223,13 +307,6 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
           </>
         )}
       </div>
-      {isRunning && !isTimerCompleted && isShowTimer && (
-        <SkipAction
-          isLastStep={isLastStep}
-          goNext={goNext}
-          goNextStep={goNextStep}
-        />
-      )}
     </div>
   );
 };
@@ -240,20 +317,19 @@ export const ChatCta = ({
   openNextIdea,
   lastMessage,
   currentIdea,
+  isLastSlide,
 }) => {
-  console.log({ lastMessage, currentIdea });
+  // console.log({ lastMessage, currentIdea });
   return (
     <div className="absolute_bottom">
       <div className={styles.ctaBox}>
         {isLastIdea ? (
           <>
-            <div className={styles.ctaStepInfobar}>
-              Session: {lastMessage.title}
-            </div>
+            <div className={styles.ctaStepInfobar}>{lastMessage.title}</div>
 
             <div className={styles.ctaButtonWrapper}>
               <div className="btn btn-primary" onClick={goNext}>
-                Next Slide
+                {isLastSlide ? "Complete" : "Next Slide"}
               </div>
             </div>
           </>
@@ -262,7 +338,15 @@ export const ChatCta = ({
             {lastMessage.type === "idea" && (
               <>
                 <div className={styles.ctaStepInfobar}>
-                  <div>Session: {lastMessage.title}</div>
+                  {!lastMessage.from ? (
+                    <div>{lastMessage.title}</div>
+                  ) : (
+                    <>
+                      You are now doing {lastMessage.action.name}
+                      <div className={styles.greenCircle}></div>
+                    </>
+                  )}
+
                   <div className={styles.infoBarStep}>
                     {!lastMessage.from ? (
                       <div>

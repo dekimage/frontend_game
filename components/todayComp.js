@@ -1,17 +1,19 @@
-import { useContext, useEffect, useState } from "react";
-import cx from "classnames";
-import { Context } from "../context/store";
-import RewardImage from "../components/RewardImage";
-import { tutorialSlides } from "../data/todayData";
-import { claimObjectiveCounter, updateTutorial } from "../actions/action";
-import Link from "next/link";
-import styles from "../styles/Today.module.scss";
-
-import { Course } from "../components/shopComps";
-import { getIconType, NextContent } from "../pages/course/[id]";
+import "react-circular-progressbar/dist/styles.css";
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import { NextContent, getIconType } from "../pages/course/[id]";
+import { claimObjectiveCounter, updateTutorial } from "../actions/action";
+import { useContext, useEffect, useState } from "react";
+
+import { Context } from "../context/store";
+import { Course } from "../components/shopComps";
+import Link from "next/link";
+import Lottie from "lottie-react";
+import RewardImage from "../components/RewardImage";
+import cx from "classnames";
+import notFoundLottie from "../assets/lottie-animations/not-found.json";
+import styles from "../styles/Today.module.scss";
+import { tutorialSlides } from "../data/todayData";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -92,10 +94,10 @@ export const TutorialModal = ({}) => {
   );
 };
 
-export const RewardLink = ({ img, link, text, notification = 0 }) => {
+export const RewardLink = ({ img, link, text, onClick, notification = 0 }) => {
   return (
     <Link href={link}>
-      <div className={styles.activityBox}>
+      <div className={styles.activityBox} onClick={onClick}>
         {notification !== 0 && (
           <div className={styles.activityBox_notification}>{notification}</div>
         )}
@@ -206,6 +208,28 @@ export const CourseBox = ({ usercourse }) => {
         icon={getIconType(lastContent.type).icon}
         course={usercourse.course}
       />
+    </div>
+  );
+};
+
+export const NotFoundContainer = ({ text }) => {
+  return (
+    <div className={styles.notFoundContainer}>
+      <div className={styles.notFoundContainer_inner}>
+        <Lottie
+          animationData={notFoundLottie}
+          loop={true}
+          style={{ width: "150px" }}
+        />
+        <div className={styles.notFoundContainer_text}>{text}</div>
+      </div>
+      <Link
+        href={{
+          pathname: "/learn",
+        }}
+      >
+        <div className="btn btn-outline mt1">Explore Categories</div>
+      </Link>
     </div>
   );
 };

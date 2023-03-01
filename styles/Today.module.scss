@@ -180,7 +180,7 @@
     font-size: 12px;
     text-transform: capitalize;
     border-radius: $border_radius;
-    padding: 0.15rem 0.5rem;
+
     z-index: 10;
   }
 
@@ -358,4 +358,19 @@
 .favoritesToday {
   @extend %box_duo;
   justify-content: center;
+}
+
+.notFoundContainer {
+  margin-top: 4rem;
+  @extend %flex_center;
+  flex-direction: column;
+  &_inner {
+    @extend %flex_center;
+    flex-direction: column;
+  }
+  &_text {
+    margin: 1rem 2rem;
+    margin-bottom: 10rem;
+    text-align: center;
+  }
 }

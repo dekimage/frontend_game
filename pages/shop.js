@@ -1,29 +1,28 @@
 // *** REACT ***
+
+import { BenefitsTable, PremiumSubscription } from "../components/shopComps";
+import { GemsProduct, PaymentSoonModal } from "../components/shopComps";
 import { useContext, useState } from "react";
+
 import { Context } from "../context/store";
+import { GET_BOXES } from "../GQL/query";
+import Header from "../components/Header";
+import { ImageUI } from "../components/reusableUI";
+import Modal from "../components/Modal";
+import NavBar from "../components/NavBar";
+import iconCheckmark from "../assets/checkmark.svg";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/Shop.module.scss";
+import useModal from "../hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
 
 // *** COMPONENTS ***
-import Header from "../components/Header";
-import NavBar from "../components/NavBar";
-import Modal from "../components/Modal";
-
-import { PremiumSubscription, BenefitsTable } from "../components/shopComps";
-
-import iconCheckmark from "../assets/checkmark.svg";
-
-import { GemsProduct, PaymentSoonModal } from "../components/shopComps";
 
 // *** STYLES ***
-import styles from "../styles/Shop.module.scss";
 
 // *** HOOKS ***
-import useModal from "../hooks/useModal";
-import { normalize } from "../utils/calculations";
 
 // *** GQL ***
-import { GET_BOXES } from "../GQL/query";
-import { ImageUI } from "../components/reusableUI";
 
 const Shop = () => {
   const { loading, error, data } = useQuery(GET_BOXES);
@@ -45,7 +44,7 @@ const Shop = () => {
       <Header />
       <div className="headerSpace"></div>
 
-      <div className="section">
+      {/* <div className="section">
         <div className="header">Premium Subscription</div>
         <PremiumSubscription />
         <BenefitsTable />
@@ -55,13 +54,13 @@ const Shop = () => {
             Billed Monthly. Cancel anytime.
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="section">
         <div className={styles.header}>Subscription</div>
         <div className={styles.proxySubs}>
           <div className={styles.proxySubs_title}>
-            Actionise <div className={styles.proLabel}> PRO</div>
+            Actionise <div className="proLabel">PRO</div>
           </div>
           <div className={styles.proxySubs_benefits}>
             <div className={styles.proxySubs_image}>

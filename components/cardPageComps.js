@@ -1,5 +1,4 @@
 import {
-  completeAction,
   createCommunityAction,
   deleteCommunityAction,
   interactCommunityAction,
@@ -7,6 +6,7 @@ import {
 } from "../actions/action";
 import { useContext, useEffect, useState } from "react";
 
+import { Button } from "./reusableUI";
 import { Context } from "../context/store";
 import { GenericDropDown } from "../pages/problems";
 import Link from "next/link";
@@ -691,19 +691,16 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
       ) : (
         <div className={styles.fixed}>
           {isTicketPurchased || is_subscribed ? (
-            <div
-              className="btn btn-primary"
+            <Button
               onClick={() => {
                 router.push(`${feUrl}/card/player/${card.id}`);
               }}
-            >
-              {store.isLoading ? <div>Spinner</div> : <div>Play</div>}
-            </div>
+              children={"Play"}
+              isLoading={store.isLoading}
+            />
           ) : (
-            <div
-              className={cx(
-                energy > 0 ? "btn btn-primary" : "btn btn-disabled"
-              )}
+            <Button
+              isLoading={store.isLoading}
               onClick={() => {
                 if (energy > 0) {
                   buyCardTicket(
@@ -712,19 +709,19 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
                     "card",
                     openPlayerAfterTicket
                   );
+                } else {
+                  console.log("here");
+                  dispatch({ type: "OPEN_ENERGY_MODAL" });
                 }
               }}
-            >
-              {store.isLoading ? (
-                <div>Spinner</div>
-              ) : (
+              children={
                 <div>
                   Play
                   <span className="ml5 md">1</span>
                   <img src={`${baseUrl}/energy.png`} height="20px" />
                 </div>
-              )}
-            </div>
+              }
+            />
           )}
         </div>
       )}

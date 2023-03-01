@@ -1,25 +1,6 @@
 @import "placeholders";
 @import "variables";
 
-.proLabel {
-  // background: linear-gradient(
-  //   49deg,
-  //   rgba(179, 51, 233, 1) 0%,
-  //   rgba(128, 255, 219, 1) 89%,
-  //   rgba(53, 212, 117, 1) 100%
-  // );
-  // background: linear-gradient(to right, #00f260, #0575e6);
-  background: linear-gradient(to right, #fc5c7d, #6a82fb);
-  border-radius: 10px;
-  @extend %flex_center;
-  // font-family: "Teko", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  width: 56px;
-  height: 24px;
-  margin-left: 0.5rem;
-}
-
 .subscription {
   @extend %box_duo;
   @extend %flex_center;
@@ -120,10 +101,10 @@
     font-weight: 700;
     padding: 0.5rem;
     // background-color: $primary;
-    // background-color: #3ecf8e;
-    background-color: #f69b5a;
-    background-color: $secondary;
-    background-color: $ux_green;
+    background-color: #3ecf8e;
+    // background-color: #f69b5a;
+    // background-color: $secondary;
+    // background-color: $ux_green;
     font-size: 18px;
     // color: $actionize_black;
     width: 102%;
@@ -534,7 +515,7 @@
   font-weight: 500;
   // background-color: #f69b5a;
   background-color: $secondary;
-  background-color: $ux_green;
+  background-color: #3ecf8e;
   width: 101%;
   @extend %flex_center;
   height: 42px;

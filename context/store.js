@@ -1,9 +1,11 @@
-import React, { createContext, useReducer, useEffect } from "react";
-import { useRouter } from "next/router";
-import Reducer from "../reducers/Reducer";
 import * as api from "../api";
+
+import React, { createContext, useEffect, useReducer } from "react";
+
 import Cookie from "js-cookie";
+import Reducer from "../reducers/Reducer";
 import { fetchUser } from "../actions/action";
+import { useRouter } from "next/router";
 
 const AUTH_TOKEN = Cookie.get("token");
 
@@ -34,6 +36,8 @@ const initialState = {
     achievements: 0,
   },
   coursePlayerSlides: [],
+  skippedTasks: 0,
+  completedTasks: 0,
 };
 
 const Store = ({ children }) => {

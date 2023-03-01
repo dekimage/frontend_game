@@ -1,7 +1,10 @@
-import { useRouter } from "next/router";
 import Link from "next/link";
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import cx from "classnames";
 import styles from "../styles/ReusableUI.module.scss";
+import { useRouter } from "next/router";
+
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 // src={`${baseUrl}/gift.png`}
 const dev = process.env.NODE_ENV == "development";
 
@@ -42,16 +45,26 @@ export const BackButton = ({ routeStatic, routeDynamic, isBack = false }) => {
   );
 };
 
-export const Button = ({ type, isDisabled, isLoading, onClick, children }) => {
-  const handleOnClick = (onClick) => (e) => {
+export const Button = ({
+  type = "primary",
+  children,
+  className = "",
+  autofit = false,
+  isLoading = false,
+  isDisabled = false,
+  onClick,
+}) => {
+  const handleOnClick = () => {
+    console.log({ onClick, isDisabled, isLoading });
     if (!onClick || isDisabled || isLoading) {
       return;
     }
-    onClick(e);
-  };
 
+    onClick();
+  };
+  const buttonStyle = autofit ? { width: "100%", maxWidth: "100%" } : {};
   const fullClass = cx(`btn btn-${type}`, className, {
-    isDisabled,
+    isDisabled: "btn-disabled",
     isLoading,
   });
 
@@ -59,10 +72,14 @@ export const Button = ({ type, isDisabled, isLoading, onClick, children }) => {
     <div
       tabIndex="0"
       className={fullClass}
-      onClick={() => handleOnClick(onClick)}
+      style={buttonStyle}
+      onClick={handleOnClick}
     >
-      {isLoading && <div className="lds-dual-ring"></div>}
-      <div className="btn--content">{children}</div>
+      {isLoading ? (
+        <div className="lds-dual-ring"></div>
+      ) : (
+        <div className="btn--content">{children}</div>
+      )}
     </div>
   );
 };
