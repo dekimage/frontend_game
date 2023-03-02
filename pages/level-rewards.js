@@ -99,6 +99,19 @@ const LevelRewardsTower = () => {
     return levels;
   };
 
+  console.log(
+    gql_data &&
+      joinArrays(filterPremium(gql_data.levelrewards, "free")).sort(
+        (a, b) => a.level - b.level
+      )
+  );
+  console.log(
+    gql_data &&
+      joinArrays(filterPremium(gql_data.levelrewards, "premium")).sort(
+        (a, b) => a.level - b.level
+      )
+  );
+
   return (
     <div className="background_dark">
       {error && <div>Error: {error}</div>}
