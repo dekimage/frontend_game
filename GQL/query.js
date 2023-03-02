@@ -655,7 +655,7 @@ export const GET_REALM_ID = gql`
 
 export const GET_STREAKS_QUERY = gql`
   query {
-    streakrewards {
+    streakrewards(pagination: { limit: 25 }) {
       data {
         id
         attributes {

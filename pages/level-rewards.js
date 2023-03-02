@@ -1,26 +1,27 @@
 // *** REACT ***
+
 import { useContext, useEffect, useState } from "react";
+
+import { BackButton } from "../components/reusableUI";
 import { Context } from "../context/store";
+import { GET_REWARDS_QUERY } from "../GQL/query";
+import Link from "next/link";
+import RewardImage from "../components/RewardImage";
+import { claimLevelReward } from "../actions/action";
+import cx from "classnames";
+import iconLock from "../assets/lock-white.svg";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/LevelRewards.module.scss";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 // *** COMPONENTS ***
-import RewardImage from "../components/RewardImage";
-import { BackButton } from "../components/reusableUI";
 
 // *** ACTIONS ***
-import { claimLevelReward } from "../actions/action";
 
 // *** DATA ***
 
 // *** STYLES ***
-import cx from "classnames";
-import styles from "../styles/LevelRewards.module.scss";
-import { normalize } from "../utils/calculations";
-import { GET_REWARDS_QUERY } from "../GQL/query";
-
-import iconLock from "../assets/lock-white.svg";
 
 const LevelReward = ({
   level: {
@@ -142,36 +143,40 @@ const LevelRewardsTower = () => {
             <div className={styles.levelRewardsGrid}>
               <div className={styles.levelRewardsColumn}>
                 {gql_data &&
-                  joinArrays(filterPremium(gql_data.levelrewards, "free")).map(
-                    (level, i) => {
+                  joinArrays(filterPremium(gql_data.levelrewards, "free"))
+                    .sort((a, b) => a.level - b.level)
+                    .map((level, i) => {
                       return <LevelReward level={level} key={i} />;
-                    }
-                  )}
+                    })}
               </div>
               <div className={styles.levelRewardsColumn}>
                 {gql_data &&
-                  filterPremium(gql_data.levelrewards, "free").map((l, i) => (
-                    <div className={styles.levelRewardLevel} key={i}>
-                      <div
-                        className={cx([styles.levelRewardLevel__stripe], {
-                          [styles.passed]: l.level <= store.user.level,
-                        })}
-                      ></div>
-                      <div
-                        className={cx([styles.levelRewardLevel__text], {
-                          [styles.passed]: l.level <= store.user.level,
-                        })}
-                      >
-                        {l.level}
+                  filterPremium(gql_data.levelrewards, "free")
+                    .sort((a, b) => a.level - b.level)
+                    .map((l, i) => (
+                      <div className={styles.levelRewardLevel} key={i}>
+                        <div
+                          className={cx([styles.levelRewardLevel__stripe], {
+                            [styles.passed]: l.level <= store.user.level,
+                          })}
+                        ></div>
+                        <div
+                          className={cx([styles.levelRewardLevel__text], {
+                            [styles.passed]: l.level <= store.user.level,
+                          })}
+                        >
+                          {l.level}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
               </div>
 
               <div className={styles.levelRewardsColumn}>
                 {gql_data &&
                   joinArrays(
-                    filterPremium(gql_data.levelrewards, "premium")
+                    filterPremium(gql_data.levelrewards, "premium").sort(
+                      (a, b) => a.level - b.level
+                    )
                   ).map((level, i) => {
                     return <LevelReward level={level} key={i} />;
                   })}
