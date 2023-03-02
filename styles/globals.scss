@@ -295,7 +295,9 @@ input {
 }
 .btn-action {
   background: $secondary;
+  animation: jump 1s infinite;
 }
+
 .btn-disabled {
   color: rgb(218, 218, 218);
   background: darkgray;
@@ -328,6 +330,17 @@ ion-icon {
 }
 
 //ANIMATIONS
+
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 // LOOT BOX ROTATE
 .slideInAnimation {
   -webkit-animation: slideInAnimation 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)

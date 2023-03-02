@@ -122,12 +122,6 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           <ReactMarkdown children={card.benefits} />
         </div>
 
-        <div className={styles.alertWarning}>
-          <img src={iconCheckmark} height="20px" />
-          First Time Bonus Available!
-          <HelperPopup HelperModal={FirstTimeBonusModal} className="ml1" />
-        </div>
-
         <Title name="Program" />
 
         <Program
@@ -145,6 +139,12 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           usercard={usercard}
           mergeActions={mergeActions}
         /> */}
+      </div>
+
+      <div className={styles.alertWarning}>
+        <img src={iconCheckmark} height="20px" />
+        First Time Bonus Available!
+        <HelperPopup HelperModal={FirstTimeBonusModal} className="ml1" />
       </div>
 
       <CompleteCardSection

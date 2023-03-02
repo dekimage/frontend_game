@@ -1603,7 +1603,7 @@ export const GET_REALMS = gql`
 
 export const GET_REWARDS_QUERY = gql`
   query {
-    levelrewards {
+    levelrewards(pagination: { limit: 100 }) {
       data {
         id
         attributes {
