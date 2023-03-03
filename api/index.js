@@ -44,6 +44,10 @@ export const loginApi = (identifier, password) =>
 // ------
 
 export const resetUserApi = () => axios.put(`${userUrl}/reset-user`);
+export const notifyMeApi = (isNotifyMe) =>
+  axios.put(`${userUrl}/notify-me`, {
+    isNotifyMe,
+  });
 
 //0. PROFILE PAGE
 

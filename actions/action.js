@@ -12,6 +12,21 @@ export const actionCreator = (dispatch, apiFunc, type, data) => {
       console.log(err);
     });
 };
+export const notifyMe = (dispatch, isNotifyMe) => {
+  api
+    .notifyMeApi(isNotifyMe)
+    .then((res) => {
+      fetchUser(dispatch);
+      if (isNotifyMe) {
+        toast(
+          "Thank you for your interest. We'll notify you when the app is available."
+        );
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 export const resetUser = (dispatch) => {
   dispatch({ type: "LOADING" });

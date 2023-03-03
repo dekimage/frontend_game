@@ -26,6 +26,11 @@
   font-size: 14px;
   color: gray;
 }
+%absolute_center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 %box {
   // border: 1px solid rgba(0, 0, 0, 0.08);

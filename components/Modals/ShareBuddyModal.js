@@ -1,7 +1,10 @@
-import { useState } from "react";
-import cx from "classnames";
-import styles from "../../styles/Modals.module.scss";
 import { ImageUI } from "../reusableUI";
+import Lottie from "lottie-react";
+import cx from "classnames";
+import heartLottie from "../../assets/lottie-animations/gift-heart.json";
+import styles from "../../styles/Modals.module.scss";
+import { useState } from "react";
+
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const ShareBuddyModal = ({ id }) => {
   const [copyButton, setCopyButton] = useState("Copy");
@@ -22,13 +25,17 @@ const ShareBuddyModal = ({ id }) => {
   return (
     <div className={styles.shareBuddyModal}>
       <div className={styles.shareBuddyModal_title}>Refer & Earn</div>
-      <div className={styles.shareBuddyModal_title}>box present img</div>
+      <Lottie
+        animationData={heartLottie}
+        loop={true}
+        style={{ width: "150px" }}
+      />
       <div className={styles.shareBuddyModal_reward}>
         + 400 <img src={`${baseUrl}/star.png`} alt="" height="14px" />
       </div>
       <div className={styles.perkBox}>
         {perks.map((p, i) => {
-          return <Perk key={i} i={i} content={p.content} />;
+          return <Perk key={i} i={i + 1} content={p.content} />;
         })}
       </div>
 

@@ -78,6 +78,11 @@ input {
 
 //  LAYOUT
 
+.flex_column {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex_grow {
   flex-grow: 1;
 }
@@ -554,8 +559,10 @@ ion-icon {
 .modal-close-button {
   @extend %modal-close-button-base;
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: -0.65rem;
+  top: -0.65rem;
+  width: 2.4rem;
+  height: 2.4rem;
 }
 
 .flex-row {

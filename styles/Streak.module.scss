@@ -17,7 +17,6 @@
   @extend %flex_between;
   padding: 0.5rem;
   margin: 0.5rem 0;
-  cursor: pointer;
 
   &.active {
     border: 2px solid white;
@@ -25,6 +24,7 @@
   &.isReady {
     box-shadow: 0px 0px 8px 1.5px rgba($color: #ffc74e, $alpha: 1);
     border: 3px solid #ffae00;
+    cursor: pointer;
   }
   &.isCollected {
     opacity: 50%;
@@ -100,7 +100,6 @@
   }
   img {
     width: 35px;
-    height: 35px;
   }
 }
 .streakTitle {
@@ -111,8 +110,7 @@
     color: white;
     font-size: 26px;
     font-weight: 500;
-    left: 49%;
-    top: 33%;
+    @extend %absolute_center;
   }
 }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { useEffect } from "react";
 
 const Modal = ({
   isShowing,
@@ -8,8 +9,24 @@ const Modal = ({
   jsx,
   showCloseButton = true,
   isSmall = false,
-}) =>
-  isShowing
+}) => {
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (event.target.classList.contains("modal-wrapper")) {
+        closeModal();
+      }
+    };
+
+    if (isShowing) {
+      document.addEventListener("click", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [isShowing, closeModal]);
+
+  return isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
@@ -43,5 +60,6 @@ const Modal = ({
         document.body
       )
     : null;
+};
 
 export default Modal;

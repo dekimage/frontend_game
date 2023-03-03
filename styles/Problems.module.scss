@@ -5,6 +5,7 @@
   // border-radius: $border_radius;
   @extend %flex_between;
   margin: 0.5rem 0;
+  cursor: pointer;
   // background-color: $actionize_gray;
   // @extend %box_duo;
   border-bottom: 2px solid $actionize_gray;

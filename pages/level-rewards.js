@@ -37,13 +37,15 @@ const LevelReward = ({
   },
 }) => {
   const [store, dispatch] = useContext(Context);
+  const router = useRouter();
   return (
     <div
       className={styles.levelReward}
       key={level}
-      onClick={() =>
-        isReadyToCollect && !isPremiumLock && claimLevelReward(dispatch, id)
-      }
+      onClick={() => {
+        isReadyToCollect && !isPremiumLock && claimLevelReward(dispatch, id);
+        isPremiumLock && router.push("/shop");
+      }}
     >
       <RewardImage
         reward={reward_type}
@@ -145,7 +147,7 @@ const LevelRewardsTower = () => {
                   <Link href="/shop">
                     <div
                       className={`${styles.freeLabel} ${styles.premium}`}
-                      style={{ marginLeft: "1rem" }}
+                      style={{ marginLeft: "1rem", cursor: "pointer" }}
                     >
                       Unlock Premium
                     </div>

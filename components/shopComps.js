@@ -1,31 +1,33 @@
-import { CardType } from "../components/Card";
-import cx from "classnames";
-import { useContext, useState } from "react";
-import { Context } from "../context/store";
-import Link from "next/link";
-import { ImageUI } from "./reusableUI";
-
-// *** ACTIONS ***
+import { Button, ImageUI } from "./reusableUI";
 import {
   openPack,
-  purchaseLootBox,
   purchaseExpansion,
+  purchaseLootBox,
   purchaseProduct,
 } from "../actions/action";
+import { useContext, useState } from "react";
 
+import { CardType } from "../components/Card";
+import { Context } from "../context/store";
+import Link from "next/link";
+import Lottie from "lottie-react";
 import { Rating } from "../components/Rating";
-
-// *** STYLES ***
+import boxLottie from "../assets/lottie-animations/box-run.json";
+import cx from "classnames";
+import iconCalendar from "../assets/calendar.svg";
+import iconCheck from "../assets/checkmark.svg";
+import iconCheckmark from "../assets/red-checkmark.svg";
+import iconClock from "../assets/clock.svg";
+import iconLock from "../assets/lock-white-border.svg";
+import iconSessions from "../assets/sessions.svg";
+import { notifyMe } from "../actions/action";
 import styles from "../styles/Shop.module.scss";
 
+// *** ACTIONS ***
+
+// *** STYLES ***
+
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-import iconCheckmark from "../assets/red-checkmark.svg";
-import iconLock from "../assets/lock-white-border.svg";
-
-import iconCalendar from "../assets/calendar.svg";
-import iconClock from "../assets/clock.svg";
-import iconSessions from "../assets/sessions.svg";
 
 export const Course = ({ course }) => {
   const {
@@ -104,12 +106,52 @@ const getHeight = (amount) => {
 };
 
 export const PaymentSoonModal = ({ closeModal }) => {
+  const [store, dispatch] = useContext(Context);
+  function handleNotifyMe(isNotifyMe) {
+    notifyMe(dispatch, isNotifyMe);
+    closeModal();
+  }
+
   return (
-    <div>
-      Thanks for being here! Currently the app is in Testing Beta. Payments will
-      be avialable once it launches on Playstore (Android) & App Store (IOS). If
-      you wish to be notified when it fully launhes as mobile app, you can join
-      the wait list here.
+    <div className="flex_center flex_column">
+      <Lottie
+        animationData={boxLottie}
+        loop={true}
+        style={{ width: "150px" }}
+      />
+      <div className="title mb1">Purchases Not Available</div>
+      <div style={{ fontSize: "14px", textAlign: "center" }}>
+        Hey! Thanks for being here! <br />
+        Currently the app is in Testing Beta. <br />
+        Payments will be avialable once it launches on Playstore (Android) & App
+        Store (IOS). <br />
+        If you are interested in purchasing stars or becoming a pro member, we
+        can send you an email once it's available.
+      </div>
+
+      {store.user?.is_notify_me ? (
+        <div className={styles.notifiedLabel}>
+          We'll notify you{" "}
+          <img
+            src={iconCheck}
+            style={{ height: "18px", marginLeft: ".5rem" }}
+          />
+        </div>
+      ) : (
+        <div className="flex_center flex_column">
+          <Button
+            type={"primary"}
+            onClick={() => handleNotifyMe(true)}
+            children={"Notify Me"}
+            className="mb1 mt1"
+          />
+          <Button
+            type={"blank"}
+            onClick={() => handleNotifyMe(false)}
+            children={"Not Interested"}
+          />
+        </div>
+      )}
     </div>
   );
 };
