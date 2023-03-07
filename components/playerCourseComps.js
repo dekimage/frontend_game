@@ -2,6 +2,7 @@ import { addZeroToInteger, getNumberSuffix } from "../utils/calculations";
 import { skipAction, updateCard } from "../actions/action";
 import { useContext, useEffect, useState } from "react";
 
+import { CompleteCardSection } from "./cardPageComps";
 import { Context } from "../context/store";
 import { GenericScreen } from "./playerComps";
 import ReactMarkdown from "react-markdown";
@@ -24,6 +25,11 @@ export const SuccessModal = ({
   const [store, dispatch] = useContext(Context);
   const suffix = getNumberSuffix(usercard.completed);
 
+  const day = card.days[card.last_day || 0];
+  const completedContents = usercard.completed_contents || [];
+  const contentsLength = day?.contents?.length;
+  const completedLength = completedContents.length;
+
   return (
     <div className={styles.cardPlayerSuccessModal}>
       <div className="header mb1">Congratulations!</div>
@@ -32,7 +38,11 @@ export const SuccessModal = ({
       <GenericScreen
         img={completedIcon}
         title={"Session Complete"}
-        content={`You have completed your ${usercard.completed}${suffix} session on ${card.name}`}
+        content={
+          contentsLength == completedLength
+            ? `You have completed your ${usercard.completed}${suffix} session on ${card.name}`
+            : "It seems you skipped some actions."
+        }
         stats={[
           {
             img: "gems",
@@ -52,17 +62,13 @@ export const SuccessModal = ({
         ]}
       />
 
-      {/* HERE GOES CARD COMPLETE CTA SECTION */}
-
-      <div
-        className="btn btn-success"
-        onClick={() => {
-          closePlayer();
-          updateCard(dispatch, card.id, "complete");
-        }}
-      >
-        Mark as Complete!
-      </div>
+      <CompleteCardSection
+        card={card}
+        usercard={usercard}
+        contentsLength={contentsLength}
+        completedLength={completedLength}
+        closePlayer={closePlayer}
+      />
     </div>
   );
 };

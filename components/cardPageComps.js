@@ -597,6 +597,7 @@ export const CompleteCardSection = ({
   usercard,
   contentsLength,
   completedLength,
+  closePlayer = false,
 }) => {
   const [store, dispatch] = useContext(Context);
 
@@ -626,15 +627,29 @@ export const CompleteCardSection = ({
   }
 
   return (
-    <div style={{ marginBottom: "4rem" }}>
+    <div style={{ marginBottom: "4rem" }} className="flex_center">
       {isMoreThan24HoursAgo ? (
-        <div className="btn btn-primary">
-          You can complete this card again in xx;xx
-          <Timer
-            timeLeftProp={isMoreThan24HoursAgo}
-            jsxComplete={<div className="btn btn-correct">Refresh</div>}
-            // onComplete={onComplete}
-          />
+        <div
+          className={`${styles.completeCardSection} flex_center flex_column`}
+        >
+          You can complete this card again in:
+          <div className="mt1 mb1">
+            <Timer
+              timeLeftProp={isMoreThan24HoursAgo}
+              jsxComplete={<div className="btn btn-correct">Refresh</div>}
+              // onComplete={onComplete}
+            />
+          </div>
+          {closePlayer && (
+            <div
+              className="btn btn-primary"
+              onClick={() => {
+                closePlayer();
+              }}
+            >
+              Back to Card
+            </div>
+          )}
         </div>
       ) : contentsLength === completedLength ? (
         <div
@@ -644,11 +659,21 @@ export const CompleteCardSection = ({
           Complete Card + mastery symbol
         </div>
       ) : (
-        <div
-          className="btn btn-disabled"
-          onClick={() => updateCard(dispatch, card.id, "complete")}
-        >
-          Complete {completedLength} / {contentsLength}
+        <div className="flex_center flex_column">
+          Go back and complete all sections to mark this card as completed.
+          <div className="btn btn-disabled mt1 mb1">
+            Complete {completedLength} / {contentsLength}
+          </div>
+          {closePlayer && (
+            <div
+              className="btn btn-success"
+              onClick={() => {
+                closePlayer();
+              }}
+            >
+              Back to Card
+            </div>
+          )}
         </div>
       )}
     </div>

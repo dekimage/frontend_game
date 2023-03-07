@@ -141,18 +141,23 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
         /> */}
       </div>
 
-      <div className={styles.alertWarning}>
-        <img src={iconCheckmark} height="20px" />
-        First Time Bonus Available!
-        <HelperPopup HelperModal={FirstTimeBonusModal} className="ml1" />
-      </div>
-
       <CompleteCardSection
         card={card}
         usercard={usercard}
         contentsLength={contentsLength}
         completedLength={completedLength}
       />
+
+      <div
+        className="section"
+        style={{ marginBottom: "3rem", paddingTop: "0" }}
+      >
+        <div className={styles.alertWarning}>
+          <img src={iconCheckmark} height="20px" />
+          First Time Bonus Available!
+          <HelperPopup HelperModal={FirstTimeBonusModal} className="ml1" />
+        </div>
+      </div>
 
       {card && (
         <CardCtaFooter
