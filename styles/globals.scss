@@ -501,6 +501,10 @@ ion-icon {
   padding: 1rem;
   overflow-y: scroll;
   overflow-x: scroll;
+  @include media_bg {
+    max-width: 45rem;
+    padding: 1.5rem;
+  }
 }
 
 .modal-small {

@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { BackButton } from "../components/reusableUI";
 import { Context } from "../context/store";
 import { GET_STREAKS_QUERY } from "../GQL/query";
+import { GemReward } from "./buddies-rewards";
 import { Rarity } from "../components/Rarity";
 import { claimStreakReward } from "../actions/action";
 import cx from "classnames";
@@ -34,14 +35,16 @@ const Streak = ({ streak, dispatch }) => {
 
   const calculateReward = (reward_type) => {
     if (reward_type === "artifact") {
-      return artifact;
+      return { name: `Streak ${streak_count}`, artifact };
     }
     if (reward_type === "stars") {
-      return { name: "stars", image: { url: "/star.png" } };
+      return { name: `Streak ${streak_count}`, image: { url: "/star.png" } };
     }
   };
 
   const reward = calculateReward(reward_type);
+
+  console.log(1, reward);
 
   return (
     <div
@@ -57,32 +60,36 @@ const Streak = ({ streak, dispatch }) => {
       //   setSelectedStreak({ streak_count, is_ready, is_collected })
       // }
     >
+      {is_collected && (
+        <div className={styles.completedMark}>
+          <img src={`${baseUrl}/checked.png`} height="20px" />
+        </div>
+      )}
       {reward && (
         <>
           <div className="flex_center">
-            <div className={styles.image}>
-              {/* <img src={reward.image.url} alt="" /> */}
-              {is_collected ? (
-                <img src={`${baseUrl}/checked.png`} height="20px" />
-              ) : (
-                reward.image && <img src={`${baseUrl}${reward.image.url}`} />
-              )}
-              {!is_collected && (
-                <div className={styles.streak_amount}>
-                  x{reward_amount || 1}
-                </div>
-              )}
+            <div className={styles.streakIcon}>
+              <img src={`${baseUrl}/streak.png`} alt="" />
+              <div className={styles.streakIcon_amount}>{streak_count}</div>
             </div>
+
             <div className="ml1">
               <div className={styles.streak_name}>{reward.name}</div>
-              {reward.rarity && <Rarity rarity={reward.rarity} />}
+              {/* {reward.rarity && <Rarity rarity={reward.rarity} />} */}
             </div>
           </div>
 
-          <div className={styles.streakIcon}>
-            <img src={`${baseUrl}/streak.png`} alt="" />
-            <div className={styles.streakIcon_amount}>{streak_count}</div>
-          </div>
+          {reward_type !== "stars" ? (
+            <div className={styles.image}>
+              <img src={`${baseUrl}${reward.artifact?.image?.url}`} />
+
+              <div className={styles.streak_amount}>x{reward_amount || 1}</div>
+            </div>
+          ) : (
+            <div className={styles.streak_name}>
+              <GemReward amount={reward_amount} />
+            </div>
+          )}
         </>
       )}
     </div>
@@ -119,7 +126,7 @@ const StreakTower = () => {
         is_ready: store.user.highest_streak_count >= s.streak_count,
       };
     });
-    console.log(transformedData);
+
     return transformedData;
   };
 

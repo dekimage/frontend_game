@@ -170,17 +170,17 @@
 
 "@next/env@10.2.1":
   version "10.2.1"
-  resolved "https://registry.npmjs.org/@next/env/-/env-10.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/@next/env/-/env-10.2.1.tgz#f8b088db5b071d7b817bce200c2a0b51195e8bba"
   integrity sha512-mvUCIrwxFfyQa24iTbYAW1fbToC7cW4cGW5oiR3AyE6clfGK6fzwbkdODtjfaHGmCCS4K0epsy/XgV6DJS/EIw==
 
 "@next/polyfill-module@10.2.1":
   version "10.2.1"
-  resolved "https://registry.npmjs.org/@next/polyfill-module/-/polyfill-module-10.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/@next/polyfill-module/-/polyfill-module-10.2.1.tgz#21d6dc4e32c3117bda16991840afbb0d00119c09"
   integrity sha512-MNVwR3lzZuH/UsLxclLeNXhd9GGvqjavMtAx8zSbOHzZHPmEYw3EQRqUI0qCNUdX52N+aSPeAhvDjUUzHdCpsA==
 
 "@next/react-dev-overlay@10.2.1":
   version "10.2.1"
-  resolved "https://registry.npmjs.org/@next/react-dev-overlay/-/react-dev-overlay-10.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/@next/react-dev-overlay/-/react-dev-overlay-10.2.1.tgz#274860ff4d03c48a6ae910a0ed2bb50f67f17c84"
   integrity sha512-ZCSPO/gyJio9jBnF4Z+f+WMfMiIAgVjxyZ9h81W1Fjd/5BwoAADxakyCdXiLCMlVXkgtO1dXkY+yXTegxkpASQ==
   dependencies:
     "@babel/code-frame" "7.12.11"
@@ -197,7 +197,7 @@
 
 "@next/react-refresh-utils@10.2.1":
   version "10.2.1"
-  resolved "https://registry.npmjs.org/@next/react-refresh-utils/-/react-refresh-utils-10.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-10.2.1.tgz#f7c882aad353cad7fe042cb4d692e21439d003f5"
   integrity sha512-G7l/1kQqTzZ1k6cw6WQol8F0eA7S+YQhUep4eTwlTI6k7Zei1f6/NuSbed9XxEH6xBB/bjVTaxxf0dYpBeB7zA==
 
 "@npmcli/arborist@^2.3.0", "@npmcli/arborist@^2.5.0", "@npmcli/arborist@^2.9.0":
@@ -354,14 +354,14 @@
 
 "@opentelemetry/api@0.14.0":
   version "0.14.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/api/-/api-0.14.0.tgz"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-0.14.0.tgz#4e17d8d2f1da72b19374efa7b6526aa001267cae"
   integrity sha512-L7RMuZr5LzMmZiQSQDy9O1jo0q+DaLy6XpYJfIGfYSfoJA5qzYwUP3sP1uMIQ549DvxAgM3ng85EaPTM/hUHwQ==
   dependencies:
     "@opentelemetry/context-base" "^0.14.0"
 
 "@opentelemetry/context-base@^0.14.0":
   version "0.14.0"
-  resolved "https://registry.npmjs.org/@opentelemetry/context-base/-/context-base-0.14.0.tgz"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
   integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
 
 "@tootallnate/once@1":
@@ -2812,7 +2812,7 @@ next-with-apollo@^5.1.1:
 
 next@10.2.1:
   version "10.2.1"
-  resolved "https://registry.npmjs.org/next/-/next-10.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/next/-/next-10.2.1.tgz#6a50b331c0a5e265c5756cfde9b9cec231ada76c"
   integrity sha512-2xJx8vFVBxfEoMz1nrUnH/IN5Q1YKw/8MIOPlwmjUWQTYrDyNc4ldmm/4kWatDMgus6Sd2LVGo3RA5eKGOD1aQ==
   dependencies:
     "@babel/runtime" "7.12.5"
@@ -3574,7 +3574,7 @@ react-is@16.13.1, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
 
 react-is@^17.0.0:
   version "17.0.2"
-  resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
 react-markdown@^6.0.0:
