@@ -61,7 +61,7 @@ const MyApp = ({ Component, pageProps }) => {
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
         {/* GOOGLE ANALYTICS SETUP */}
-        {/* <script
+        <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
         />
@@ -76,7 +76,7 @@ const MyApp = ({ Component, pageProps }) => {
             });
             `,
           }}
-        /> */}
+        />
       </Head>
       <Component {...pageProps} />
       <ToastContainer

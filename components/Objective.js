@@ -5,6 +5,7 @@ import RewardImage from "./RewardImage";
 import Router from "next/router";
 import { claimObjective } from "../actions/action";
 import cx from "classnames";
+import { event } from "../utils/ga";
 import iconCheckmark from "../assets/checkmark.svg";
 import iconCheckmarkFill from "../assets/checkmark-fill.svg";
 import styles from "../styles/Today.module.scss";
@@ -90,12 +91,19 @@ const Objective = ({
 
       <div
         className={styles.objective_checkmark}
-        onClick={() =>
+        onClick={() => {
           !isCollected &&
-          progress >= requirement_amount &&
-          !isPremium &&
-          claimObjective(dispatch, id)
-        }
+            progress >= requirement_amount &&
+            !isPremium &&
+            claimObjective(dispatch, id);
+
+          event({
+            action: "search",
+            params: {
+              search_term: "test",
+            },
+          });
+        }}
       >
         <div className={styles.progressCounter}></div>
         {/* {isCollected ? "COLLECTED" : "NOT COLLECTED"} */}
@@ -120,7 +128,15 @@ const Objective = ({
             ) : (
               <div
                 className={styles.btn_objective__disabled}
-                onClick={() => Router.push(`/${link ? link : "learn"}`)}
+                onClick={() => {
+                  Router.push(`/${link ? link : "learn"}`);
+                  event({
+                    action: "search",
+                    params: {
+                      search_term: "test",
+                    },
+                  });
+                }}
               >
                 Go
               </div>

@@ -7,7 +7,9 @@ export const pageview = (url) => {
 };
 
 export const event = ({ action, params }) => {
+  console.log(action, params);
   if (window !== undefined) {
     window.gtag("event", action, params);
+    console.log(window.gtag);
   }
 };
