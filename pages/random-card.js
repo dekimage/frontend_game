@@ -1,7 +1,7 @@
+import { BackButton, ImageUI } from "../components/reusableUI";
 import { useContext, useEffect, useState } from "react";
 
 import { Action } from "../components/cardPageComps";
-import { BackButton } from "../components/reusableUI";
 import CardsMapper from "../components/CardsMapper";
 import { Context } from "../context/store";
 import { GET_USER_FAVORITES } from "../GQL/query";
@@ -42,7 +42,10 @@ const Random = () => {
             <div className={styles.header}>
               <BackButton routeDynamic={""} routeStatic={"/"} />
 
-              <div className={styles.realmLogo}>Random Card</div>
+              <div className={`${styles.realmLogo} ml1 mr1`}>Random Card</div>
+              <div className="flex_center">
+                <ImageUI url={"/random.png"} height="22px" />
+              </div>
             </div>
           </div>
 

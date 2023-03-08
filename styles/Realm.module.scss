@@ -11,6 +11,10 @@
   @extend %flex_center;
 }
 
+.headerBox {
+  @extend %flex_center;
+}
+
 .header {
   @extend %header;
   position: relative;

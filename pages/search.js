@@ -1,16 +1,17 @@
 import { React, useState } from "react";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import NavBar from "../components/NavBar";
-import styles from "../styles/SearchBar.module.scss";
-import debounce from "debounce";
-import { normalize } from "../utils/calculations";
-import { Tabs } from "../components/profileComps";
+
 import { Action } from "../components/cardPageComps";
-import { Problem } from "./problems";
 import { BackButton } from "../components/reusableUI";
 import CardsMapper from "../components/CardsMapper";
+import Link from "next/link";
+import NavBar from "../components/NavBar";
+import { Problem } from "./problems";
+import { Tabs } from "../components/profileComps";
+import axios from "axios";
+import debounce from "debounce";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/SearchBar.module.scss";
+import { useRouter } from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -23,28 +24,6 @@ const SearchBar = () => {
   const [showNothing, setShowNothing] = useState(true);
 
   const [isSearching, setIsSearching] = useState(false);
-  const [isInputOpen, setIsInputOpen] = useState(false);
-  const router = useRouter();
-
-  const [tab, setTab] = useState("Cards");
-
-  const tabsData = [
-    { label: "Cards", count: -1 },
-    { label: "Problems", count: -1 },
-    { label: "Actions", count: -1 },
-  ];
-
-  const filterTab = (tab) => {
-    if (tab === "Cards") {
-      return "cards";
-    }
-    if (tab === "Problems") {
-      return "problems";
-    }
-    if (tab === "Actions") {
-      return "actions";
-    }
-  };
 
   const callback = () => {
     setSearch("");
@@ -56,17 +35,10 @@ const SearchBar = () => {
     if (search.length > 0) {
       setIsSearching(true);
       axios
-        .get(`/${filterTab(tab)}/${query}`)
+        .get(`/cards/${query}`)
         .then((res) => {
-          if (tab === "Problems") {
-            setResultProblems(normalize(res).data);
-          }
-          if (tab === "Cards") {
-            setResultCards(normalize(res).data);
-          }
-          if (tab === "Actions") {
-            setResultActions(normalize(res).data);
-          }
+          setResultCards(normalize(res).data);
+
           setResult(normalize(res).data);
           setIsSearching(false);
         })
@@ -112,20 +84,13 @@ const SearchBar = () => {
         <div className="header">Search</div>
       </div>
 
-      <Tabs
-        tabState={tab}
-        setTab={setTab}
-        tabs={tabsData}
-        callback={callback}
-        value={search}
-      />
       <div className="section">
-        <div className={styles.searchBox} onFocus={() => setIsInputOpen(true)}>
+        <div className={styles.searchBox} onFocus={() => {}}>
           <input
             type="text"
             value={search}
             onChange={onChange}
-            placeholder={`Search ${tab}...`}
+            placeholder={`Search Cards...`}
           />
 
           <div className={styles.searchBtn} onClick={() => onSearch(search)}>
@@ -147,7 +112,7 @@ const SearchBar = () => {
                 />
                 Explore Actionise
                 <span className={styles.searchDescription}>
-                  Search for Meditations, Actions, Lessons, Friends and More!
+                  Search the Actionise Cards Database!
                 </span>
               </div>
             </div>
@@ -181,36 +146,12 @@ const SearchBar = () => {
                     </>
                   )}
               </div>
-              {tab === "Cards" && (
-                <div className={styles.isSearching}>
-                  {resultCards && resultCards.length > 0 && !isSearching && (
-                    <CardsMapper cards={resultCards} />
-                  )}
-                  {/* resultCards.map((card, i) => (
-                      <SearchCard key={i} card={card} />
-                    )) */}
-                </div>
-              )}
-              {tab === "Problems" && (
-                <div className={styles.isSearching}>
-                  {resultProblems &&
-                    resultProblems.length > 0 &&
-                    !isSearching &&
-                    resultProblems.map((problem, i) => (
-                      <Problem key={i} problem={problem} />
-                    ))}
-                </div>
-              )}
-              {tab === "Actions" && (
-                <div className={styles.isSearching}>
-                  {resultActions &&
-                    resultActions.length > 0 &&
-                    !isSearching &&
-                    resultActions.map((action, i) => (
-                      <Action key={i} action={action} />
-                    ))}
-                </div>
-              )}
+
+              <div className={styles.isSearching}>
+                {resultCards && resultCards.length > 0 && !isSearching && (
+                  <CardsMapper cards={resultCards} />
+                )}
+              </div>
             </div>
           )}
         </div>

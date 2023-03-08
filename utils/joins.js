@@ -1,4 +1,5 @@
 export const joinCards = (cards, usercards) => {
+  console.log(cards);
   // remove as user will always have at least 1 usercard
   if (!usercards) {
     return cards;
@@ -7,7 +8,7 @@ export const joinCards = (cards, usercards) => {
     let collectionCard = usercards.filter(
       (c) => c.card.id === parseInt(card.id)
     );
-    if (collectionCard) {
+    if (collectionCard.length) {
       const mergedCard = {
         ...collectionCard[0],
         id: card.id,

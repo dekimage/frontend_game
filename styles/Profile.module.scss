@@ -241,7 +241,8 @@
   width: 75px;
   border-radius: 50%;
   border: 2px solid $actionize_black;
-  background-color: $actionize_gray_light;
+  // background-color: $actionize_gray_light;
+  background-color: cornsilk;
   &.active {
     border: 3px solid $secondary;
     box-shadow: $readyToCollect;

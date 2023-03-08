@@ -1,20 +1,18 @@
-import Link from "next/link";
-import ProgressBar from "./ProgressBar";
-import styles from "../styles/Card.module.scss";
-import cx from "classnames";
-
 import { Context } from "../context/store";
 import { ImageUI } from "../components/reusableUI";
+import Link from "next/link";
+import ProgressBar from "./ProgressBar";
 import { Rarity } from "../components/Rarity";
-
+import cx from "classnames";
 import iconCheck from "../assets/checkmark.svg";
-import iconPlay from "../assets/progress-collection-dark.svg";
 import iconCollection from "../assets/progress-play-dark.svg";
-import iconLock from "../assets/lock-white-border.svg";
 import iconCommon from "../assets/common-rarity.svg";
-import iconRare from "../assets/rare-rarity.svg";
 import iconEpic from "../assets/epic-rarity.svg";
 import iconLegendary from "../assets/legendary-rarity.svg";
+import iconLock from "../assets/lock-white-border.svg";
+import iconPlay from "../assets/progress-collection-dark.svg";
+import iconRare from "../assets/rare-rarity.svg";
+import styles from "../styles/Card.module.scss";
 import { useContext } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -70,7 +68,6 @@ const OpenCard = ({ card }) => {
 };
 
 const ClosedCard = ({ card }) => {
-  console.log(card);
   return (
     <div className={styles.lockBox}>
       <img
@@ -93,6 +90,8 @@ const Card = ({ card }) => {
     card.expansion &&
     card.expansion.name === "Pro" &&
     store.user.expansions.filter((e) => e.name === "Pro").length === 0;
+
+  const coming_soon = card.card?.coming_soon || card.coming_soon;
 
   const isColored = !isPremiumLocked && (card.is_open || card.is_unlocked);
 
@@ -138,6 +137,7 @@ const Card = ({ card }) => {
         <div className={styles.card_body}>
           {isColored ? <OpenCard card={card} /> : <ClosedCard card={card} />}
         </div>
+        {coming_soon && <div className={styles.comingSoon}>Coming Soon</div>}
       </div>
     </Link>
   );

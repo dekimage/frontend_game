@@ -8,9 +8,15 @@
   cursor: pointer;
   // background-color: $actionize_gray;
   // @extend %box_duo;
-  border-bottom: 2px solid $actionize_gray;
+
   margin: 0;
   padding: 1rem;
+  &.isInside {
+    text-align: center;
+    font-size: 20px;
+    padding: 0 3rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .id {

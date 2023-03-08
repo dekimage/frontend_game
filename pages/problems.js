@@ -1,14 +1,13 @@
-import { useQuery } from "@apollo/react-hooks";
-import Header from "../components/Header";
-import NavBar from "../components/NavBar";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GET_REALMS } from "../GQL/query";
-
-import { normalize } from "../utils/calculations";
-import styles from "../styles/Problems.module.scss";
 
 import { GET_PROBLEMS } from "../GQL/query";
+import { GET_REALMS } from "../GQL/query";
+import Header from "../components/Header";
+import Link from "next/link";
+import NavBar from "../components/NavBar";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/Problems.module.scss";
+import { useQuery } from "@apollo/react-hooks";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -99,15 +98,15 @@ export const Problem = ({ problem, isInside = false }) => {
 
   return (
     <Link href={`/problem/${id}`}>
-      <div className={styles.problem}>
+      <div className={`${styles.problem} ${isInside && styles.isInside}`}>
         {/* <div className={styles.id} style={{ backgroundColor: realm.color }}>
           <span className="text__s">#</span>
           {id}
         </div> */}
 
-        {realm?.image && (
+        {/* {realm?.image && (
           <img src={realm?.image?.url} height="15px" className="mr5" />
-        )}
+        )} */}
         <div className={styles.name}>{name}</div>
 
         {/* <div className={styles.tag}>

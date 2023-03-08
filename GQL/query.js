@@ -106,6 +106,7 @@ export const GET_CARD_PLAYER = gql`
           type
           rarity
           cost
+          coming_soon
           image {
             data {
               id
@@ -173,6 +174,7 @@ export const GET_USERCARDS_QUERY = gql`
                 type
                 rarity
                 cost
+                coming_soon
                 is_open
                 realm {
                   data {
@@ -352,6 +354,7 @@ export const GET_ACTION_ID = gql`
                 name
                 cost
                 is_open
+                coming_soon
                 image {
                   data {
                     id
@@ -399,6 +402,7 @@ export const GET_CARD_ID = gql`
           cost
           rarity
           is_open
+          coming_soon
           image {
             data {
               id
@@ -608,7 +612,7 @@ export const GET_REALM_ID = gql`
             }
           }
 
-          cards(pagination: { limit: 15 }) {
+          cards(pagination: { limit: 50 }) {
             data {
               id
               attributes {
@@ -618,6 +622,7 @@ export const GET_REALM_ID = gql`
                 rarity
                 cost
                 is_open
+                coming_soon
                 image {
                   data {
                     id
@@ -794,6 +799,7 @@ export const GET_COLLECTION = gql`
                       cost
                       type
                       is_open
+                      coming_soon
                       image {
                         data {
                           id
@@ -847,6 +853,7 @@ export const GET_USER_OPEN_TICKETS = gql`
                 rarity
                 cost
                 is_open
+                coming_soon
                 image {
                   data {
                     id
@@ -917,6 +924,7 @@ export const GET_USER_RECENTS = gql`
                 rarity
                 cost
                 is_open
+                coming_soon
                 image {
                   data {
                     id
@@ -987,6 +995,7 @@ export const GET_USER_FAVORITES = gql`
                 rarity
                 cost
                 is_open
+                coming_soon
                 image {
                   data {
                     id
@@ -1093,6 +1102,7 @@ export const GET_PROBLEM_ID = gql`
                 rarity
                 cost
                 is_open
+                coming_soon
                 image {
                   data {
                     id
@@ -1732,6 +1742,7 @@ export const GET_USER_ID = gql`
                 rarity
                 cost
                 is_open
+                coming_soon
                 image {
                   data {
                     id

@@ -694,6 +694,14 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
     router.push(`${feUrl}/card/player/${card.id}`);
   };
 
+  if (card.coming_soon) {
+    return (
+      <div className={styles.fixed}>
+        <div className={styles.comingSoon}>Coming Soon</div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.fixed}>
       {!isUnlocked ? (

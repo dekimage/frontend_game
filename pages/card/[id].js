@@ -84,36 +84,40 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           style={{ "--background": card.realm.color }}
         ></div>
 
-        <div className={styles.section_name}>
-          <div className={styles.name}>
-            <div className={styles.realmLogo}>
-              <img src={card.realm.image.url} height="28px" />
+        {!card.coming_soon && (
+          <div className={styles.section_name}>
+            <div className={styles.name}>
+              <div className={styles.realmLogo}>
+                <img src={card.realm.image.url} height="28px" />
+              </div>
+              <div className={styles.name}>{card.name}</div>
+              <FavoriteButton
+                isFavorite={usercard.is_favorite}
+                id={card.id}
+                type="card"
+              />
             </div>
-            <div className={styles.name}>{card.name}</div>
-            <FavoriteButton
-              isFavorite={usercard.is_favorite}
-              id={card.id}
-              type="card"
+          </div>
+        )}
+
+        {!card.coming_soon && (
+          <div className={styles.masteryWrapper}>
+            <div className={styles.mastery}>
+              <Title name="Sessions Completed" />
+
+              <Rarity rarity={usercard.league} />
+              <div style={{ marginLeft: ".5rem" }}></div>
+              <HelperPopup HelperModal={RanksModal} />
+            </div>
+
+            <ProgressBar
+              progress={usercard.completed}
+              max={usercard.completed_progress_max}
+              withNumber
+              fontSize={16}
             />
           </div>
-        </div>
-
-        <div className={styles.masteryWrapper}>
-          <div className={styles.mastery}>
-            <Title name="Sessions Completed" />
-
-            <Rarity rarity={usercard.league} />
-            <div style={{ marginLeft: ".5rem" }}></div>
-            <HelperPopup HelperModal={RanksModal} />
-          </div>
-
-          <ProgressBar
-            progress={usercard.completed}
-            max={usercard.completed_progress_max}
-            withNumber
-            fontSize={16}
-          />
-        </div>
+        )}
 
         <div className={styles.description}>{card.description}</div>
 
@@ -141,23 +145,27 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
         /> */}
       </div>
 
-      <CompleteCardSection
-        card={card}
-        usercard={usercard}
-        contentsLength={contentsLength}
-        completedLength={completedLength}
-      />
+      {!card.coming_soon && (
+        <CompleteCardSection
+          card={card}
+          usercard={usercard}
+          contentsLength={contentsLength}
+          completedLength={completedLength}
+        />
+      )}
 
-      <div
-        className="section"
-        style={{ marginBottom: "3rem", paddingTop: "0" }}
-      >
-        <div className={styles.alertWarning}>
-          <img src={iconCheckmark} height="20px" />
-          First Time Bonus Available!
-          <HelperPopup HelperModal={FirstTimeBonusModal} className="ml1" />
+      {!card.coming_soon && (
+        <div
+          className="section"
+          style={{ marginBottom: "3rem", paddingTop: "0" }}
+        >
+          <div className={styles.alertWarning}>
+            <img src={iconCheckmark} height="20px" />
+            First Time Bonus Available!
+            <HelperPopup HelperModal={FirstTimeBonusModal} className="ml1" />
+          </div>
         </div>
-      </div>
+      )}
 
       {card && (
         <CardCtaFooter

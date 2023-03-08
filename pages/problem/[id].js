@@ -1,29 +1,25 @@
-import { useQuery } from "@apollo/react-hooks";
-
-import { useRouter } from "next/router";
-
-import Card from "../../components/Card";
-
-import Link from "next/link";
-import _ from "lodash";
-// import styles from "../../styles/Problem.module.scss";
-import ReactMarkdown from "react-markdown";
 import { Action } from "../../components/cardPageComps";
+import { BackButton } from "../../components/reusableUI";
+import Card from "../../components/Card";
 import CardsMapper from "../../components/CardsMapper";
-
-import NavBar from "../../components/NavBar";
-import ExpandableComponent from "../../components/ExpandableComponent";
-import { normalize } from "../../utils/calculations";
-import { joinCards } from "../../utils/joins";
 import { Course } from "../../components/shopComps";
-
+import ExpandableComponent from "../../components/ExpandableComponent";
 import { GET_PROBLEM_ID } from "../../GQL/query";
+import Link from "next/link";
+import NavBar from "../../components/NavBar";
 import { Problem } from "../problems";
-
-import iconSource from "../../assets/source.svg";
+import ReactMarkdown from "react-markdown";
+import _ from "lodash";
+import iconLongTerm from "../../assets/long-term.svg";
 import iconProgram from "../../assets/programs.svg";
 import iconShortTerm from "../../assets/short-term.svg";
-import iconLongTerm from "../../assets/long-term.svg";
+import iconSource from "../../assets/source.svg";
+import { joinCards } from "../../utils/joins";
+import { normalize } from "../../utils/calculations";
+import { useQuery } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
+
+// import styles from "../../styles/Problem.module.scss";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -68,9 +64,7 @@ const ProblemPageView = ({ problem }) => {
   const router = useRouter();
   return (
     <div>
-      <div onClick={() => router.back()}>
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </div>
+      <BackButton routeDynamic={""} routeStatic={""} isBack />
       <Problem problem={problem} isInside />
 
       {/* <ExpandableComponent
@@ -83,6 +77,13 @@ const ProblemPageView = ({ problem }) => {
         }
       /> */}
       <ExpandableComponent
+        name={"Potential Solutions"}
+        tag={"free"}
+        icon={iconShortTerm}
+        children={<CardsMapper cards={cards} />}
+      />
+
+      {/* <ExpandableComponent
         name={"Instant Solutions"}
         tag={"free"}
         icon={iconShortTerm}
@@ -93,7 +94,7 @@ const ProblemPageView = ({ problem }) => {
         tag={"free"}
         icon={iconLongTerm}
         children={<CardsMapper cards={cards} />}
-      />
+      /> */}
       {/* <ExpandableComponent
         name={"Similar Problems:"}
         url={`${baseUrl}/similar.png`}

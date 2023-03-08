@@ -144,7 +144,7 @@ const Home = (props) => {
         />
 
         <RewardLink
-          img={`${baseUrl}/streak.png`}
+          img={`${baseUrl}/recent.png`}
           link={"/recent"}
           text={"Recent"}
         />
