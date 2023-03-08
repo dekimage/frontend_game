@@ -1,19 +1,18 @@
-import { useQuery } from "@apollo/react-hooks";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "../context/store";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import _ from "lodash";
-import styles from "../styles/Realm.module.scss";
-import CardsMapper from "../components/CardsMapper";
 
-import NavBar from "../components/NavBar";
-
-import { Tabs } from "../components/profileComps";
-import { normalize } from "../utils/calculations";
-import { BackButton } from "../components/reusableUI";
 import { Action } from "../components/cardPageComps";
+import { BackButton } from "../components/reusableUI";
+import CardsMapper from "../components/CardsMapper";
+import { Context } from "../context/store";
 import { GET_USER_FAVORITES } from "../GQL/query";
+import Link from "next/link";
+import NavBar from "../components/NavBar";
+import { Tabs } from "../components/profileComps";
+import _ from "lodash";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/Realm.module.scss";
+import { useQuery } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
 
 const Favorites = () => {
   const router = useRouter();

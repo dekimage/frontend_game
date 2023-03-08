@@ -46,7 +46,6 @@ const MyApp = ({ Component, pageProps }) => {
       <Head>
         <title>Actionise</title>
         {/* <link href="../public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
-
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
         <style>
           @import
@@ -60,23 +59,6 @@ const MyApp = ({ Component, pageProps }) => {
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
-        {/* GOOGLE ANALYTICS SETUP */}
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
-                page_path: window.location.pathname,
-            });
-            `,
-          }}
-        />
       </Head>
       <Component {...pageProps} />
       <ToastContainer
