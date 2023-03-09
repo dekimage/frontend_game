@@ -42,7 +42,9 @@ const Modal = ({
                 {showCloseButton && (
                   <button
                     type="button"
-                    className="modal-close-button"
+                    className={
+                      isSmall ? "modal-close-button" : "modal-close-button-big"
+                    }
                     data-dismiss="modal"
                     aria-label="Close"
                     onClick={closeModal}

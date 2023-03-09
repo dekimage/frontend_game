@@ -1514,7 +1514,7 @@ export const GET_BOOKS = gql`
 
 export const GET_PROBLEMS = gql`
   query {
-    problems {
+    problems(pagination: { limit: 100 }) {
       data {
         id
         attributes {

@@ -39,7 +39,7 @@ const Favorites = () => {
 
               <div className={`${styles.realmLogo} ml1 mr1`}>Favorites</div>
               <div className="flex_center">
-                <ImageUI url={"/favorite.png"} height="22px" />
+                <ImageUI url={"/favorite.png"} height="22px" isPublic />
               </div>
             </div>
           </div>

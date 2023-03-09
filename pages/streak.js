@@ -27,24 +27,28 @@ const Streak = ({ streak, dispatch }) => {
   const {
     reward_type,
     artifact,
+    reward_card,
     reward_amount,
     streak_count,
     is_collected,
     is_ready,
   } = streak;
 
+  console.log(streak);
+
   const calculateReward = (reward_type) => {
     if (reward_type === "artifact") {
-      return { name: `Streak ${streak_count}`, artifact };
+      return { name: `Streak ${streak_count}`, reward: artifact };
     }
     if (reward_type === "stars") {
       return { name: `Streak ${streak_count}`, image: { url: "/star.png" } };
     }
+    if (reward_type === "card") {
+      return { name: `Streak ${streak_count}`, reward: reward_card };
+    }
   };
 
   const reward = calculateReward(reward_type);
-
-  console.log(1, reward);
 
   return (
     <div
@@ -81,7 +85,7 @@ const Streak = ({ streak, dispatch }) => {
 
           {reward_type !== "stars" ? (
             <div className={styles.image}>
-              <img src={`${baseUrl}${reward.artifact?.image?.url}`} />
+              <img src={`${baseUrl}${reward.reward?.image?.url}`} />
 
               <div className={styles.streak_amount}>x{reward_amount || 1}</div>
             </div>

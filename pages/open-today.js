@@ -41,7 +41,7 @@ const OpenToday = () => {
 
               <div className={`${styles.realmLogo} ml1 mr1`}>Open Today</div>
               <div className="flex_center">
-                <ImageUI url={"/energy.png"} height="22px" />
+                <ImageUI url={"/energy.png"} height="22px" isPublic />
               </div>
             </div>
           </div>

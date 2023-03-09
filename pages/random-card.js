@@ -44,7 +44,7 @@ const Random = () => {
 
               <div className={`${styles.realmLogo} ml1 mr1`}>Random Card</div>
               <div className="flex_center">
-                <ImageUI url={"/random.png"} height="22px" />
+                <ImageUI url={"/random.png"} height="22px" isPublic />
               </div>
             </div>
           </div>

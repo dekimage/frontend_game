@@ -45,7 +45,7 @@ const Recents = () => {
                 Recently Completed
               </div>
               <div className="flex_center">
-                <ImageUI url={"/recent.png"} height="22px" />
+                <ImageUI url={"/recent.png"} height="22px" isPublic />
               </div>
             </div>
           </div>

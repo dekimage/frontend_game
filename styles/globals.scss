@@ -569,6 +569,10 @@ ion-icon {
   height: 2.4rem;
 }
 
+.modal-close-button-big {
+  @extend %modal-close-button-base;
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;
