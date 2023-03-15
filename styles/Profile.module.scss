@@ -121,7 +121,6 @@
     }
   }
   &_number {
-    margin-right: 0.35rem;
     font-size: 16px;
   }
 }
@@ -208,7 +207,7 @@
     font-weight: 500;
   }
   &_rarity {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
     color: $primary;
     text-transform: capitalize;
@@ -217,6 +216,8 @@
     text-align: center;
     font-size: 16px;
     padding: 1rem 0;
+    color: gray;
+    text-transform: capitalize;
   }
   img {
     height: 100px;

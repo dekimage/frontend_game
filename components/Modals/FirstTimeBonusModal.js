@@ -16,7 +16,6 @@ export const FirstTimeBonusModal = ({ closeModal }) => {
       </div>
       <div className={`${styles.ranksMap} flex_center`}>
         <GemReward amount={100} />
-        <XpReward amount={200} />
       </div>
       <div className={styles.okBtn} onClick={closeModal}>
         OK

@@ -12,6 +12,18 @@ export const actionCreator = (dispatch, apiFunc, type, data) => {
       console.log(err);
     });
 };
+
+export const rateCard = (dispatch, rating, cardId) => {
+  api
+    .rateCardApi(rating, cardId)
+    .then((res) => {
+      toast("Thank you for your feedback.");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const notifyMe = (dispatch, isNotifyMe) => {
   api
     .notifyMeApi(isNotifyMe)
@@ -39,6 +51,7 @@ export const resetUser = (dispatch) => {
       console.log(err);
     });
 };
+
 export const acceptReferral = (dispatch) => {
   dispatch({ type: "LOADING" });
   api
@@ -139,16 +152,6 @@ export const claimObjective = (dispatch, objectiveId) => {
     })
     .catch((err) => {
       dispatch({ type: "SET_ERROR", data: err });
-      console.log(err);
-    });
-};
-export const claimObjectiveCounter = (dispatch, objectiveId, temporal_type) => {
-  api
-    .claimObjectiveCounterApi(objectiveId, temporal_type)
-    .then(({ data }) => {
-      dispatch({ type: "CLAIM_OBJECTIVE_COUNTER", data });
-    })
-    .catch((err) => {
       console.log(err);
     });
 };

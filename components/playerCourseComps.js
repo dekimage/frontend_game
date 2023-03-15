@@ -9,6 +9,7 @@ import ReactMarkdown from "react-markdown";
 import _ from "lodash";
 import completedIcon from "../assets/player_complete.svg";
 import iconCheckmark from "../assets/checkmark.svg";
+import { rateCard } from "../actions/action";
 import styles from "../styles/Player.module.scss";
 import { useTimer } from "react-timer-hook";
 
@@ -16,11 +17,39 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 //MAYBE IN CARD PLAYER?
+export const RatingModal = ({ closePlayer, cardId }) => {
+  const [store, dispatch] = useContext(Context);
+  return (
+    <div className={styles.ratingModal}>
+      <div className="header mb1">Was this card helpful?</div>
+      <div className="subHeader">Rate me!</div>
+
+      <div>
+        {[6, 7, 8].map((emotion, i) => (
+          <div
+            key={i}
+            style={{ border: "2px solid white", height: "50px", width: "50px" }}
+            onClick={() => {
+              rateCard(dispatch, emotion, cardId);
+              closePlayer();
+            }}
+          ></div>
+        ))}
+      </div>
+
+      <div className="btn btn-outline" onClick={() => closePlayer()}>
+        Skip For Now
+      </div>
+    </div>
+  );
+};
+
 export const SuccessModal = ({
   closePlayer,
   card,
   usercard,
   totalTasksCount,
+  setIsRatingModalOpen,
 }) => {
   const [store, dispatch] = useContext(Context);
   const suffix = getNumberSuffix(usercard.completed);
@@ -45,17 +74,17 @@ export const SuccessModal = ({
         }
         stats={[
           {
-            img: "gems",
+            img: "checked",
             label: "Tasks Completed",
             amount: `${store.completedTasks}/${totalTasksCount}`,
           },
+          // {
+          //   img: "play",
+          //   label: "Skipped Tasks",
+          //   amount: store.skippedTasks,
+          // },
           {
-            img: "play",
-            label: "Skipped Tasks",
-            amount: store.skippedTasks,
-          },
-          {
-            img: "play",
+            img: "mastery",
             label: "Mastery",
             amount: `${usercard.completed}/${usercard.completed_progress_max}`,
           },
@@ -68,6 +97,7 @@ export const SuccessModal = ({
         contentsLength={contentsLength}
         completedLength={completedLength}
         closePlayer={closePlayer}
+        setIsRatingModalOpen={setIsRatingModalOpen}
       />
     </div>
   );

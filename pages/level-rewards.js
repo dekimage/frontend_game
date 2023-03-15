@@ -146,10 +146,10 @@ const LevelRewardsTower = () => {
                 ) : (
                   <Link href="/shop">
                     <div
-                      className={`${styles.freeLabel} ${styles.premium}`}
+                      className={`${styles.freeLabel} `}
                       style={{ marginLeft: "1rem", cursor: "pointer" }}
                     >
-                      Unlock Premium
+                      <div className="proLabel mr5">PRO</div> Tier
                     </div>
                   </Link>
                 )}

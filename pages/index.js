@@ -66,6 +66,8 @@ const Home = (props) => {
 
   const router = useRouter();
 
+  console.log(store.user.isAuthenticated);
+
   return (
     <div className="background_dark">
       <Header />

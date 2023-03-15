@@ -2,7 +2,6 @@ import "react-circular-progressbar/dist/styles.css";
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { NextContent, getIconType } from "../pages/course/[id]";
-import { claimObjectiveCounter, updateTutorial } from "../actions/action";
 import { useContext, useEffect, useState } from "react";
 
 import { Context } from "../context/store";
@@ -14,6 +13,7 @@ import cx from "classnames";
 import notFoundLottie from "../assets/lottie-animations/not-found.json";
 import styles from "../styles/Today.module.scss";
 import { tutorialSlides } from "../data/todayData";
+import { updateTutorial } from "../actions/action";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -45,10 +45,11 @@ export const TinyReward = ({
             className={cx([styles.tinyReward_loot__button], {
               [styles.ready]: isReadyToCollect,
             })}
-            onClick={() =>
-              !isCollected &&
-              isReadyToCollect &&
-              claimObjectiveCounter(dispatch, objectiveId, temporal_type)
+            onClick={
+              () => {}
+              // !isCollected &&
+              // isReadyToCollect &&
+              // claimObjectiveCounter(dispatch, objectiveId, temporal_type)
             }
           >
             Claim

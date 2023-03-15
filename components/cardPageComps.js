@@ -1,3 +1,4 @@
+import { Button, ImageUI } from "./reusableUI";
 import {
   createCommunityAction,
   deleteCommunityAction,
@@ -6,7 +7,6 @@ import {
 } from "../actions/action";
 import { useContext, useEffect, useState } from "react";
 
-import { Button } from "./reusableUI";
 import { Context } from "../context/store";
 import { GenericDropDown } from "../pages/problems";
 import Link from "next/link";
@@ -597,6 +597,7 @@ export const CompleteCardSection = ({
   usercard,
   contentsLength,
   completedLength,
+  setIsRatingModalOpen,
   closePlayer = false,
 }) => {
   const [store, dispatch] = useContext(Context);
@@ -625,9 +626,10 @@ export const CompleteCardSection = ({
     }
     return 86400000 - timeDiff;
   }
-
+  console.log({ contentsLength, completedLength });
+  console.log({ comple: store.completedTasks });
   return (
-    <div style={{ marginBottom: "4rem" }} className="flex_center">
+    <div style={{ marginBottom: "2rem" }} className="flex_center">
       {isMoreThan24HoursAgo ? (
         <div
           className={`${styles.completeCardSection} flex_center flex_column`}
@@ -654,13 +656,22 @@ export const CompleteCardSection = ({
       ) : contentsLength === completedLength ? (
         <div
           className="btn btn-primary"
-          onClick={() => updateCard(dispatch, card.id, "complete")}
+          onClick={() => {
+            updateCard(dispatch, card.id, "complete");
+            setIsRatingModalOpen(true);
+          }}
         >
-          Complete Card + mastery symbol
+          Complete Card{" "}
+          <ImageUI
+            url={`/mastery.png`}
+            isPublic
+            height="16px"
+            className="ml5"
+          />
         </div>
       ) : (
         <div className="flex_center flex_column">
-          Go back and complete all sections to mark this card as completed.
+          You must complete all sections to mark this card as completed.
           <div className="btn btn-disabled mt1 mb1">
             Complete {completedLength} / {contentsLength}
           </div>

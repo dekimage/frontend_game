@@ -1,4 +1,8 @@
 import {
+  RatingModal,
+  SuccessModal,
+} from "../../../components/playerCourseComps";
+import {
   SliderHeader,
   SliderProgress,
   WarningModal,
@@ -11,7 +15,6 @@ import { ContentTheory } from "../../../components/ContentTheory";
 import { Context } from "../../../context/store";
 import { GET_CARD_ID } from "../../../GQL/query";
 import Modal from "../../../components/Modal";
-import { SuccessModal } from "../../../components/playerCourseComps";
 import _ from "lodash";
 import { updateCard } from "../../../actions/action";
 import useModal from "../../../hooks/useModal";
@@ -124,13 +127,15 @@ const Player = () => {
 
   const totalTasksCount = slides && getTotalStepsInSlides(slides);
 
-  console.log({ tasks: store.completedTasks, skipped: store.skippedTasks });
+  console.log(usercard);
+
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(true);
 
   return (
     <div className="background_dark">
       {error && <div>Error: {error}</div>}
       {loading && <div>Loading...</div>}
-      {gql_data && store.user && slide && (
+      {gql_data && store.user && usercard && slide && (
         <>
           <SliderProgress
             maxSlides={slides.length}
@@ -186,6 +191,21 @@ const Player = () => {
                 />
               }
             />
+            {!usercard.rating && (
+              <Modal
+                isShowing={isRatingModalOpen}
+                closeModal={() => {
+                  setIsRatingModalOpen(false);
+                }}
+                showCloseButton={false}
+                jsx={
+                  <RatingModal
+                    closePlayer={closePlayer}
+                    cardId={router.query.id}
+                  />
+                }
+              />
+            )}
           </div>
         </>
       )}

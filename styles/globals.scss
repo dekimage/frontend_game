@@ -77,10 +77,17 @@ input {
 // }
 
 //  LAYOUT
-
+.flex_grow {
+  display: flex;
+  flex-grow: 1;
+}
 .flex_column {
   display: flex;
   flex-direction: column;
+}
+.flex_row {
+  display: flex;
+  flex-direction: row;
 }
 
 .flex_grow {
@@ -133,6 +140,19 @@ input {
   @include media_bg {
     max-width: 45rem;
     padding: 1.5rem;
+  }
+}
+
+.landing-section {
+  @extend %flex_center;
+  flex-direction: column;
+  margin: 0px auto;
+  max-width: 100%;
+  padding: 2rem 1rem;
+  width: 100%;
+  @include media_bg {
+    max-width: 45rem;
+    padding: 4rem 1.5rem;
   }
 }
 

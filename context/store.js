@@ -47,7 +47,9 @@ const Store = ({ children }) => {
     if (AUTH_TOKEN && !router.route.includes("/auth/google/callback")) {
       fetchUser(dispatch);
     } else {
-      router.push(`/login`);
+      if (!router.pathname == "/") {
+        router.push(`/login`);
+      }
     }
   }, []);
 

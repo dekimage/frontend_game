@@ -8,6 +8,13 @@
 //   font-weight: 700;
 // }
 
+.ratingModal {
+  color: white;
+  @extend %flex_between;
+  flex-direction: column;
+  height: 90vh;
+}
+
 //imported from card styles copy paste
 .costBox {
   background-color: $actionize_black;

@@ -160,6 +160,7 @@ export const GET_USERCARDS_QUERY = gql`
           completed_progress_max
           quantity
           is_new
+          rating
           glory_points
           completed_at
           is_unlocked

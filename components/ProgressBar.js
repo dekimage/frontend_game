@@ -1,3 +1,4 @@
+import { ImageUI } from "./reusableUI";
 import React from "react";
 import cx from "classnames";
 import styles from "../styles/ProgressBar.module.scss";
@@ -7,6 +8,7 @@ const ProgressBar = ({
   max,
   isReadyToClaim,
   withNumber,
+  withIcon = false,
   fontSize = 12,
 }) => {
   // delete if numbers are correct
@@ -22,7 +24,15 @@ const ProgressBar = ({
       ></div>
       {withNumber && (
         <div className={styles.progressNumber} style={{ fontSize: fontSize }}>
-          {progress || 0}/{max}
+          {progress || 0}/{max}{" "}
+          {withIcon && (
+            <ImageUI
+              url={`/${withIcon}.png`}
+              isPublic
+              height="14px"
+              className="ml5"
+            />
+          )}
         </div>
       )}
     </div>

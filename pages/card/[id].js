@@ -114,6 +114,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
               progress={usercard.completed}
               max={usercard.completed_progress_max}
               withNumber
+              withIcon={"mastery"}
               fontSize={16}
             />
           </div>
@@ -146,15 +147,17 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
       </div>
 
       {!card.coming_soon && (
-        <CompleteCardSection
-          card={card}
-          usercard={usercard}
-          contentsLength={contentsLength}
-          completedLength={completedLength}
-        />
+        <div className="section">
+          <CompleteCardSection
+            card={card}
+            usercard={usercard}
+            contentsLength={contentsLength}
+            completedLength={completedLength}
+          />
+        </div>
       )}
 
-      {!card.coming_soon && (
+      {!card.coming_soon && usercard.completed < 1 && (
         <div
           className="section"
           style={{ marginBottom: "3rem", paddingTop: "0" }}

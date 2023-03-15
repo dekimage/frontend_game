@@ -1,0 +1,166 @@
+@import "variables";
+@import "placeholders";
+
+.landingPage {
+  color: white;
+  background-color: $actionize_black;
+}
+.header {
+  @extend %flex_between;
+  background-color: $actionize_black;
+  height: 4rem;
+  padding: 0 1rem;
+  background-color: black;
+}
+
+.logoText {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.primaryBtn {
+  @extend %flex_center;
+  padding: 0.75rem 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: $primary;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.secondaryBtn {
+  @extend %flex_center;
+  padding: 0.75rem 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+.heroHeader {
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.heroDescription {
+  font-size: 16px;
+  font-weight: 500;
+  color: $actionize_gray_light;
+}
+
+.funnelImg {
+  width: 50%;
+  @extend %flex_center;
+  background-color: $actionize_gray_light;
+  height: 600px;
+}
+.funnelDescriptionList {
+  width: 50%;
+  height: 600px;
+}
+
+.dContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  padding-right: 0;
+  flex-grow: 1;
+  height: 25%;
+  justify-content: center;
+}
+
+.dTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.dDescription {
+  font-size: 14px;
+  font-weight: 500;
+  color: $actionize_gray_light;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  max-width: 50%;
+}
+
+.valueTitle {
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 1rem;
+  margin-top: 3rem;
+}
+
+.valueDescription {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 1rem;
+  color: $actionize_gray_light;
+}
+
+.valueImagesContainer {
+  @extend %flex_between;
+}
+
+.reviewsList {
+  @extend %flex_between;
+  margin-top: 2rem;
+}
+
+.valueImg {
+  width: 45%;
+  height: 150px;
+  border: 1px solid white;
+}
+
+.review {
+  @extend %box_duo;
+  flex-direction: column;
+  margin-right: 0.25rem;
+  max-width: 200px;
+}
+
+.reviewImg {
+  height: 35px;
+  width: 35px;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+.reviewName {
+  font-weight: 700;
+  font-size: 14px;
+}
+.reviewLvl {
+  color: $actionize_gray_light;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+.reviewBody {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.swipeableContainer {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 200px;
+  width: 95vw;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.swipeableContent {
+  display: flex;
+  flex-direction: row;
+}
+
+.swipeableContent > * {
+  flex: 0 0 200px;
+  margin-right: 10px;
+}

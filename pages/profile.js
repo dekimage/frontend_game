@@ -1,50 +1,79 @@
 // *** REACT ***
+
+import { Buddy, ProfileHeader, Stat, Tabs } from "../components/profileComps";
 import { useContext, useEffect, useState } from "react";
+
 import { Context } from "../context/store";
-import { useQuery } from "@apollo/react-hooks";
+import { GET_ARTIFACTS_QUERY } from "../GQL/query";
+import Header from "../components/Header";
+import { ImageUI } from "../components/reusableUI";
+import Modal from "../components/Modal";
+import NavBar from "../components/NavBar";
+import ProgressBar from "../components/ProgressBar";
+import { RewardLink } from "../components/todayComp";
+import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
+import { claimArtifact } from "../actions/action";
 import cx from "classnames";
+import { normalize } from "../utils/calculations";
+import styles from "../styles/Profile.module.scss";
+import useModal from "../hooks/useModal";
+import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
 
-import Modal from "../components/Modal";
-import useModal from "../hooks/useModal";
-
-import { claimArtifact } from "../actions/action";
-
 // *** COMPONENTS ***
-import NavBar from "../components/NavBar";
-import { Stat, Buddy, ProfileHeader, Tabs } from "../components/profileComps";
-import Header from "../components/Header";
-import { RewardLink } from "../components/todayComp";
-import { ImageUI } from "../components/reusableUI";
-import ProgressBar from "../components/ProgressBar";
 
 // *** GQL ***
-import { GET_ARTIFACTS_QUERY } from "../GQL/query";
-import { normalize } from "../utils/calculations";
-import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
 
 // *** ACTIONS ***
 
 // *** STYLES ***
-import styles from "../styles/Profile.module.scss";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 //POTENTIALLY ADD SIMPLE DATA TABLE TO DISPLAY PROGRESS ON ALL ARTIFACTS?
 
+const getColorByRarity = (rarity) => {
+  if (rarity === "common") {
+    return "#e7e7e7";
+  }
+  if (rarity === "rare") {
+    return "#246ee9";
+  }
+  if (rarity === "epic") {
+    return "#5c16c5";
+  }
+  if (rarity === "legendary") {
+    return "#eec402";
+  }
+  return "#fff";
+};
+
 export const ArtifactModal = ({ artifact, className }) => {
   return (
     <div>
       <div className={`${styles.artifactDetails} ${className}`}>
-        {artifact.image && artifact.isClaimed && (
+        {/* {artifact.image && artifact.isClaimed && (
           <ImageUI url={artifact.image.url} className={styles.artifactImage} />
-        )}
+        )} */}
         <div className={styles.artifactDetails_name}>
-          {artifact.isCollected ? artifact.name : "???"}
+          {artifact.isCollected ? (
+            <ImageUI
+              url={artifact?.image?.url}
+              className={styles.artifactImage}
+            />
+          ) : (
+            <ImageUI url={"/badge.png"} isPublic />
+          )}
         </div>
-        <div className={styles.artifactDetails_rarity}>{artifact.rarity}</div>
+        <div className={styles.artifactDetails_name}>{artifact.name}</div>
+        <div
+          className={styles.artifactDetails_rarity}
+          style={{ color: getColorByRarity(artifact.rarity) }}
+        >
+          {artifact.rarity}
+        </div>
         <div className={styles.artifactDetails_obtainedBy}>
-          <div>Obtained By: </div>
+          <div>Obtained by: </div>
           {artifact.obtained_by_description}
         </div>
         {!artifact.isClaimed && (
@@ -138,11 +167,7 @@ export const Artifact = ({ artifact }) => {
           </>
         ) : (
           <>
-            <ImageUI
-              url={
-                "/uploads/badge_53e61dc737.png?updated_at=2022-11-14T15:37:26.713Z"
-              }
-            />
+            <ImageUI url={"/badge.png"} isPublic />
 
             <div className={styles.artifact_name}>{artifact.name}</div>
 
@@ -256,8 +281,8 @@ const Profile = () => {
               />
               <Stat
                 number={store.user.stats.action_complete}
-                img={`${baseUrl}/energy.png`}
-                text={"Actions Done"}
+                img={`${baseUrl}/mastery.png`}
+                text={"Total Mastery"}
               />
               <Stat
                 number={store.user.stats.claimed_artifacts || 0}

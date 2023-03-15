@@ -1,3 +1,4 @@
+import { ImageUI } from "../reusableUI";
 import { Rarity } from "../Rarity";
 import React from "react";
 import styles from "../../styles/RanksModal.module.scss";
@@ -24,8 +25,11 @@ export const RanksModal = ({ closeModal }) => {
           return (
             <div className={styles.rank} key={i}>
               <Rarity rarity={r.league} />
-              <div>
-                {r.min} ~ {r.max}
+              <div className="flex_center">
+                {r.min} ~ {r.max}{" "}
+                <div className="ml5">
+                  <ImageUI url={"/mastery.png"} isPublic height="12px" />
+                </div>
               </div>
               <div className={styles.smallText}>(Times Completed)</div>
             </div>

@@ -49,6 +49,12 @@ export const notifyMeApi = (isNotifyMe) =>
     isNotifyMe,
   });
 
+export const rateCardApi = (rating, cardId) =>
+  axios.put(`${userUrl}/rate-card`, {
+    rating,
+    cardId,
+  });
+
 //0. PROFILE PAGE
 
 export const acceptReferralApi = () => axios.put(`${userUrl}/accept-referral/`);
@@ -69,11 +75,6 @@ export const submitQuizApi = (data) =>
 
 export const claimObjectiveApi = (objectiveId) =>
   axios.put(`${userUrl}/collect-objective-reward/${objectiveId}`);
-
-export const claimObjectiveCounterApi = (objectiveId, temporal_type) =>
-  axios.put(`${userUrl}/collect-objective-counter-reward/${objectiveId}`, {
-    temporal_type,
-  });
 
 export const collectLevelRewardApi = (id) =>
   axios.put(`${userUrl}/collect-level-reward/${id}`);
