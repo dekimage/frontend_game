@@ -29,8 +29,18 @@ input {
   -webkit-appearance: none;
   resize: none;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: white !important;
+}
 
 /* Medium.com TYPOGRAPHY*/
+.bold {
+  font-weight: bold;
+}
 .header {
   @extend %header;
   font-size: 24px;
@@ -76,6 +86,46 @@ input {
 //   white-space: pre-line;
 // }
 
+// INPUTS
+.alert {
+  padding: 1rem;
+  border-radius: $border_radius;
+  font-weight: 500;
+}
+.info {
+  background-color: rgba($color: #ffffff, $alpha: 0.1);
+  padding: 1rem;
+  border-radius: $border_radius;
+  font-size: 14px;
+}
+.input {
+  color: white;
+  outline: none;
+  width: 100%;
+  background-color: transparent;
+  padding: 1rem;
+  border-radius: $border_radius;
+  border: 3px solid $actionize-gray;
+  &:focus {
+    border: 3px solid $actionize_orange;
+  }
+  &::placeholder {
+    color: gray;
+  }
+}
+
+.input-label {
+  color: $actionize_gray_light;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.input-error {
+  color: $ux_red;
+  margin: 0.5rem 0;
+}
+
 //  LAYOUT
 .flex_grow {
   display: flex;
@@ -95,6 +145,7 @@ input {
 }
 .flex_start {
   @extend %flex_start;
+  align-items: flex-start;
 }
 .flex_end {
   @extend %flex_end;

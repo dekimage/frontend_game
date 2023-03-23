@@ -52,10 +52,10 @@ export const Button = ({
   autofit = false,
   isLoading = false,
   isDisabled = false,
+
   onClick,
 }) => {
   const handleOnClick = () => {
-    console.log({ onClick, isDisabled, isLoading });
     if (!onClick || isDisabled || isLoading) {
       return;
     }
@@ -64,7 +64,7 @@ export const Button = ({
   };
   const buttonStyle = autofit ? { width: "100%", maxWidth: "100%" } : {};
   const fullClass = cx(`btn btn-${type}`, className, {
-    isDisabled: "btn-disabled",
+    "btn-disabled": isDisabled,
     isLoading,
   });
 

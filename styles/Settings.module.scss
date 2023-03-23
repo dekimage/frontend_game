@@ -28,3 +28,24 @@
   flex-grow: 1;
   @extend %flex_center;
 }
+
+.accountLabel {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.accountValue {
+  font-weight: 500;
+  color: $actionize_gray_light;
+}
+.actionLabel {
+  color: $eggHeadOrange;
+}
+
+.flagItem {
+  @extend %flex_between;
+  padding: 1rem 0;
+
+  font-weight: 500;
+}

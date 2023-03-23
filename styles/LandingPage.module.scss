@@ -26,6 +26,7 @@
   background-color: $primary;
   border-radius: 10px;
   width: fit-content;
+  cursor: pointer;
 }
 
 .secondaryBtn {
@@ -34,6 +35,7 @@
   font-size: 14px;
   font-weight: 500;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .heroHeader {
@@ -84,7 +86,14 @@
   font-size: 28px;
   font-weight: 500;
   text-align: center;
-  max-width: 50%;
+  // max-width: 50%;
+}
+
+.subTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: $actionize_gray_light;
+  text-align: center;
 }
 
 .valueTitle {
@@ -148,7 +157,8 @@
 .swipeableContainer {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 200px;
+  // height: 200px;
+  height: auto;
   width: 95vw;
   margin: 0 auto;
   display: flex;
@@ -163,4 +173,31 @@
 .swipeableContent > * {
   flex: 0 0 200px;
   margin-right: 10px;
+}
+
+.screenshot {
+  // height: 500px;
+  // max-width: 300px;
+}
+
+.footerLink {
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  color: $actionize_gray_light;
+  margin: 0 0.25rem;
+}
+
+.fixedCta {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  @extend %flex_center;
+  margin: 0 auto;
+  padding-right: 1rem;
+  height: auto;
+  color: white;
+  background-color: black;
+  z-index: 1500;
+  padding: 1rem;
 }

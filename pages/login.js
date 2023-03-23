@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
-// import { login } from "../lib/auth";
-import { Context } from "../context/store";
-import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
 import { login, signup } from "../actions/auth";
-import styles from "../styles/Login.module.scss";
-import iconLogo from "../assets/menu-logo-dark.svg";
+
+import { Context } from "../context/store";
 import Link from "next/link";
+import iconLogo from "../assets/menu-logo-dark.svg";
+import styles from "../styles/Login.module.scss";
+import { useRouter } from "next/router";
+
+// import { login } from "../lib/auth";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const Login = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [data, updateData] = useState({
     identifier: "",
     password: "",
@@ -43,7 +45,7 @@ const Login = () => {
         {isLogin ? (
           <div>
             <div className={styles.label}>Login</div>
-            <div className="flex_center">
+            <div className="flex_center mb1">
               New to Actionise?
               <div className="yellow-link" onClick={() => setIsLogin(!isLogin)}>
                 Sign up for free
@@ -55,7 +57,7 @@ const Login = () => {
                 type="email"
                 name="identifier"
                 placeholder="Email address"
-                className={styles.input}
+                className="input mb1"
               />
 
               <input
@@ -63,9 +65,11 @@ const Login = () => {
                 type="password"
                 name="password"
                 placeholder="Password"
-                className={styles.input}
+                className="input mb1"
               />
-              <div className="yellow-link">Forgot your password?</div>
+              <Link href="/auth/forgot-password">
+                <div className="yellow-link">Forgot your password?</div>
+              </Link>
             </form>
             <div className={styles.buttons}>
               <div
@@ -86,7 +90,7 @@ const Login = () => {
               Welcome to Actionise! <br />
               Create an account to access bite-sized Ideas, Actions & Rewards!
             </div>
-            <div className="flex_center">
+            <div className="flex_center mb1">
               Already have an account?{" "}
               <div className="yellow-link" onClick={() => setIsLogin(!isLogin)}>
                 Login
@@ -98,7 +102,7 @@ const Login = () => {
                 type="text"
                 name="username"
                 placeholder="Username"
-                className={styles.input}
+                className="input mb1"
               />
 
               <input
@@ -106,7 +110,7 @@ const Login = () => {
                 type="text"
                 name="email"
                 placeholder="Email Address"
-                className={styles.input}
+                className="input mb1"
               />
 
               <input
@@ -114,7 +118,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 placeholder="Password (8+ characters)"
-                className={styles.input}
+                className="input mb1"
               />
               <div className={styles.description}>
                 By continuing, you agree to Actionise's

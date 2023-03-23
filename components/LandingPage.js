@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 
+import { ImageUI } from "../components/reusableUI";
 import iconLogo from "../assets/menu-logo-dark.svg";
 import styles from "../styles/LandingPage.module.scss";
 
@@ -227,6 +228,47 @@ const ValuesSection = () => {
   );
 };
 
+const images = [
+  {
+    url: "https://backendactionise.s3.eu-west-1.amazonaws.com/today_screenshot_459189a002.png?updated_at=2023-03-22T12:56:10.375Z",
+    title: "Title random 1",
+    description: "description longer text what you can do on the app here",
+  },
+  {
+    url: "https://backendactionise.s3.eu-west-1.amazonaws.com/learn_screenshot_531b26c31d.png?updated_at=2023-03-22T15:17:32.754Z",
+    title: "Title random 1",
+    description: "description longer text what you can do on the app here",
+  },
+  {
+    url: "https://backendactionise.s3.eu-west-1.amazonaws.com/realms_screenshot_84eb532dbe.png?updated_at=2023-03-22T15:18:19.705Z",
+    title: "Title random 1",
+    description: "description longer text what you can do on the app here",
+  },
+  {
+    url: "https://backendactionise.s3.eu-west-1.amazonaws.com/cardscreenshot_e229e1641b.png?updated_at=2023-03-22T15:18:07.319Z",
+    title: "Title random 1",
+    description: "description longer text what you can do on the app here",
+  },
+  {
+    url: "https://backendactionise.s3.eu-west-1.amazonaws.com/profile_screenshot_9a10fefb95.png?updated_at=2023-03-22T15:17:47.165Z",
+    title: "Title random 1",
+    description: "description longer text what you can do on the app here",
+  },
+];
+
+const imagesJsx = images.map((img, i) => {
+  return (
+    <div className={styles.screenshot} key={i}>
+      <div className="p1">
+        <div className={styles.title}>{img.title}</div>
+        <div className={styles.subTitle}>{img.description}</div>
+      </div>
+
+      <img src={img.url} height="500px" />
+    </div>
+  );
+});
+
 const reviewsJsx = reviews.map((r, i) => {
   return (
     <div className={styles.review} key={i}>
@@ -259,6 +301,53 @@ const ReviewSection = () => {
   );
 };
 
+const ScreensSection = () => {
+  return (
+    <div className="landing-section">
+      <div className={styles.title}>See What Others Say About Us</div>
+      <div className={styles.reviewsList}>
+        <SwipeableContainer children={imagesJsx} />
+      </div>
+    </div>
+  );
+};
+
+const icons = [1, 2, 3];
+
+const Footer = () => {
+  return (
+    <div className={styles.header} style={{ flexDirection: "column" }}>
+      <div className="flex_between mt1">
+        <div className={styles.footerLink}>@ 2023 Actionise Inc.</div>
+        <div className={styles.footerLink}>Terms & Conditions</div>
+        <div className={styles.footerLink}>Privacy Policy</div>
+      </div>
+      <div className="flex_between">
+        {icons.map((icon, i) => {
+          return (
+            <div className={styles.icon} key={i}>
+              {icon}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const FixedCta = () => {
+  return (
+    <div className={styles.fixedCta}>
+      <div
+        className={styles.primaryBtn}
+        style={{ width: "100%", maxWidth: "40rem" }}
+      >
+        Start Your Journey
+      </div>
+    </div>
+  );
+};
+
 const LandingPage = () => {
   return (
     <div className={styles.landingPage}>
@@ -267,6 +356,9 @@ const LandingPage = () => {
       <FunnelSection />
       <ValuesSection />
       <ReviewSection />
+      <ScreensSection />
+      <Footer />
+      <FixedCta />
     </div>
   );
 };

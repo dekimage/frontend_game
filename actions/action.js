@@ -13,6 +13,18 @@ export const actionCreator = (dispatch, apiFunc, type, data) => {
     });
 };
 
+export const sendFeatureMail = (dispatch, details, subject) => {
+  api
+    .sendFeatureMailApi(details, subject)
+    .then((res) => {
+      console.log(res);
+      toast("Thank you for your feedback.");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const rateCard = (dispatch, rating, cardId) => {
   api
     .rateCardApi(rating, cardId)

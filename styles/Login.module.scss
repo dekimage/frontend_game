@@ -24,22 +24,22 @@
   font-size: 14px;
 }
 
-.input {
-  color: white;
-  outline: none;
-  width: 100%;
-  margin: 1rem 0;
-  background-color: transparent;
-  padding: 1rem;
-  border-radius: $border_radius;
-  border: 3px solid $actionize-gray;
-  &:focus {
-    border: 3px solid white;
-  }
-  &::placeholder {
-    color: $gray_light;
-  }
-}
+// .input {
+//   color: white;
+//   outline: none;
+//   width: 100%;
+//   margin: 1rem 0;
+//   background-color: transparent;
+//   padding: 1rem;
+//   border-radius: $border_radius;
+//   border: 3px solid $actionize-gray;
+//   &:focus {
+//     border: 3px solid white;
+//   }
+//   &::placeholder {
+//     color: $gray_light;
+//   }
+// }
 
 .buttons {
   @extend %flex_center;

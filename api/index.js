@@ -55,6 +55,12 @@ export const rateCardApi = (rating, cardId) =>
     cardId,
   });
 
+export const sendFeatureMailApi = (details, subject) =>
+  axios.put(`${userUrl}/send-feature-mail`, {
+    details,
+    subject,
+  });
+
 //0. PROFILE PAGE
 
 export const acceptReferralApi = () => axios.put(`${userUrl}/accept-referral/`);
