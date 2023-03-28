@@ -40,17 +40,14 @@ const ShareBuddyModal = ({ id }) => {
       </div>
 
       <div className={styles.ctaLink}>
-        <input
-          value={`https://frontend-game.vercel.app/login?ref=${id}`}
-          readOnly
-        ></input>
+        <input value={`https://actionise.com/login?ref=${id}`} readOnly></input>
         <div
           className={cx([styles.ctaLink_copy], {
             [styles.green]: copyButton == "Copied!",
           })}
           onClick={() => {
             navigator.clipboard.writeText(
-              `https://frontend-game.vercel.app/login?ref=${id}`
+              `https://actionise.com/login?ref=${id}`
             );
             setCopyButton("Copied!");
           }}

@@ -10,6 +10,7 @@ import Switch from "../components/reusable/SwitchThumb";
 import { logout } from "../actions/auth";
 import router from "next/router";
 import styles from "../styles/Settings.module.scss";
+import { updateUserBasicInfo } from "../actions/action";
 import { useRouter } from "next/router";
 import { withUser } from "../Hoc/withUser";
 
@@ -153,30 +154,77 @@ const EditAccount = ({
   inputName = "",
   inputValue = "",
   primaryBtn = "Save",
+  setActiveSettings,
+  activeSettings,
 }) => {
   const [store, dispatch] = useContext(Context);
   const [input, setInput] = useState(inputValue);
+  const isGender = inputName === "Gender";
+  const [genderSelected, setGenderSelected] = useState(isGender && inputValue);
+  const getInputName = (inputName) => {
+    console.log(inputName);
+    if (inputName === "Name") {
+      return "username";
+    }
+    return inputName.toLocaleLowerCase();
+  };
   return (
     <div>
-      <div className={styles.accountValue}>{inputName}</div>
-      <input
-        onChange={(event) => setInput(event.target.value)}
-        type={inputType}
-        name={inputName}
-        placeholder={inputValue}
-        className="input"
-      />
+      {isGender && (
+        <div className="flex_between">
+          <Button
+            type={genderSelected === "male" ? "primary" : "outline"}
+            onClick={() => {
+              setGenderSelected("male");
+              setInput("male");
+            }}
+            children={"Male"}
+          />
+          <Button
+            type={genderSelected === "female" ? "primary" : "outline"}
+            onClick={() => {
+              setGenderSelected("female");
+              setInput("female");
+            }}
+            children={"Female"}
+          />
+          <Button
+            type={genderSelected === "other" ? "primary" : "outline"}
+            onClick={() => {
+              setGenderSelected("other");
+            }}
+            children={"Other"}
+          />
+        </div>
+      )}
+      {(!genderSelected || (isGender && genderSelected === "other")) && (
+        <div className="mt1 mb1">
+          <div className={styles.accountValue}>
+            {isGender ? "Other" : inputName}
+          </div>
+          <input
+            onChange={(event) => setInput(event.target.value)}
+            type={inputType}
+            name={inputName}
+            placeholder={inputValue}
+            className="input mt5"
+          />
+        </div>
+      )}
+
       <Button
         type={"primary"}
         className="mb1 mt1"
-        onClick={() => {}}
+        onClick={() =>
+          updateUserBasicInfo(dispatch, input, getInputName(inputName))
+        }
         children={primaryBtn}
         isLoading={store.isLoading}
         autofit
       />
       <Button
         type={"outline"}
-        onClick={() => {}}
+        onClick={() => handleBack(activeSettings, setActiveSettings)}
         children={"Cancel"}
         isLoading={store.isLoading}
         autofit
@@ -334,6 +382,8 @@ const Settings = ({ user, dispatch, store }) => {
               inputName="Name"
               inputValue={user.username}
               primaryBtn="Save"
+              setActiveSettings={setActiveSettings}
+              activeSettings={activeSettings}
             />
           )}
           {activeSettings === "editAge" && (
@@ -342,6 +392,8 @@ const Settings = ({ user, dispatch, store }) => {
               inputName="Age"
               inputValue={user.age}
               primaryBtn="Save"
+              setActiveSettings={setActiveSettings}
+              activeSettings={activeSettings}
             />
           )}
           {activeSettings === "editGender" && (
@@ -350,6 +402,8 @@ const Settings = ({ user, dispatch, store }) => {
               inputName="Gender"
               inputValue={user.gender}
               primaryBtn="Save"
+              setActiveSettings={setActiveSettings}
+              activeSettings={activeSettings}
             />
           )}
 

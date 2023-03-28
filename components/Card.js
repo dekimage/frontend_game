@@ -68,6 +68,7 @@ const OpenCard = ({ card }) => {
 };
 
 const ClosedCard = ({ card }) => {
+  console.log(card);
   return (
     <div className={styles.lockBox}>
       <img
@@ -76,8 +77,24 @@ const ClosedCard = ({ card }) => {
       />
       <div className={styles.name}>{card.name}</div>
       <div className={styles.costBox}>
-        {card.cost}
-        <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
+        {card.streakreward && (
+          <>
+            {card.streakreward.streak_count}
+            <img height="12px" className="ml25" src={`${baseUrl}/streak.png`} />
+          </>
+        )}
+        {card.friendreward && (
+          <>
+            {card.friendreward.friends_count}
+            <img height="12px" className="ml25" src={`${baseUrl}/user.png`} />
+          </>
+        )}
+        {card.cost > 0 && (
+          <>
+            {card.cost}
+            <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
+          </>
+        )}
       </div>
     </div>
   );

@@ -48,7 +48,22 @@ const getColorByRarity = (rarity) => {
   return "#fff";
 };
 
-export const ArtifactModal = ({ artifact, className }) => {
+export const ArtifactModal = ({ artifact }) => {
+  // console.log(111, artifact);
+  let className;
+  switch (artifact.rarity) {
+    case "rare":
+      className = styles.rare;
+      break;
+    case "epic":
+      className = styles.epic;
+      break;
+    case "legendary":
+      className = styles.legendary;
+      break;
+    default:
+      className = styles.rare;
+  }
   return (
     <div>
       <div className={`${styles.artifactDetails} ${className}`}>
@@ -115,20 +130,6 @@ const ArtifactProgress = ({ artifact }) => {
 export const Artifact = ({ artifact }) => {
   const { isShowing, openModal, closeModal } = useModal();
   const [store, dispatch] = useContext(Context);
-  let className;
-  switch (artifact.rarity) {
-    case "rare":
-      className = styles.rare;
-      break;
-    case "epic":
-      className = styles.epic;
-      break;
-    case "legendary":
-      className = styles.legendary;
-      break;
-    default:
-      className = styles.rare;
-  }
 
   return (
     <>
@@ -179,13 +180,7 @@ export const Artifact = ({ artifact }) => {
         isShowing={isShowing}
         closeModal={closeModal}
         isSmall
-        jsx={
-          <ArtifactModal
-            artifact={artifact}
-            className={className}
-            openModal={openModal}
-          />
-        }
+        jsx={<ArtifactModal artifact={artifact} openModal={openModal} />}
       />
     </>
   );

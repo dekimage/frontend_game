@@ -13,6 +13,19 @@ export const actionCreator = (dispatch, apiFunc, type, data) => {
     });
 };
 
+export const updateUserBasicInfo = (dispatch, value, inputName) => {
+  api
+    .updateUserBasicInfoApi(value, inputName)
+    .then((res) => {
+      console.log(res);
+      dispatch({ type: "UPDATE_USER", data: res.data });
+      toast(`${inputName} updated successfully.`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const sendFeatureMail = (dispatch, details, subject) => {
   api
     .sendFeatureMailApi(details, subject)

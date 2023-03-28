@@ -56,6 +56,7 @@ const LevelReward = ({
         isUserPremium={store.user.is_subscribed}
         isPremium={is_premium}
         artifact={artifact}
+        userLevel={store.user?.level}
       />
       {isPremiumLock && (
         <div className={styles.lock}>

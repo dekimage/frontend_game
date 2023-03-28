@@ -1,14 +1,7 @@
-import {
-  acceptReferral,
-  fetchUser,
-  getRandomCard,
-  resetUser,
-} from "../actions/action";
 import { calculateNotifications, joinObjectives } from "../functions/todayFunc";
 // *** REACT ***
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Context } from "../context/store";
 import Countdown from "../components/Countdown";
 // *** GQL ***
 import { GET_OBJECTIVES_QUERY } from "../GQL/query";
@@ -21,6 +14,7 @@ import RewardsModal from "../components/RewardsModal";
 import { Tabs } from "../components/profileComps";
 import Timer from "../components/reusable/Timer";
 import { TutorialModal } from "../components/todayComp";
+import { acceptReferral } from "../actions/action";
 import cx from "classnames";
 // *** FUNCTIONS ***
 import { normalize } from "../utils/calculations";
@@ -63,10 +57,6 @@ const Home = (props) => {
     { label: "daily", count: notif?.daily || -1 },
     { label: "weekly", count: notif?.weekly || -1 },
   ];
-
-  const router = useRouter();
-
-  console.log(store.user.isAuthenticated);
 
   return (
     <div className="background_dark">
@@ -189,22 +179,9 @@ export default withUser(Home, GET_OBJECTIVES_QUERY);
 {
   /* WELCOME */
 }
-{
-  /* <div className="section"> */
-}
+
 {
   /* <div className={styles.header}>
               Welcome back, {user.username}
             </div> */
-}
-{
-  /* <div
-              className="btn btn-primary"
-              onClick={() => resetUser(dispatch)}
-            >
-              Reset User
-            </div> */
-}
-{
-  /* </div> */
 }

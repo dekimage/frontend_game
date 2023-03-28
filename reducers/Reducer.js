@@ -8,6 +8,8 @@ import { staticRewards } from "../data/rewards";
 
 const Reducer = (store, action) => {
   switch (action.type) {
+    case "UPDATE_USER":
+      return { ...store, user: action.data };
     case "OPEN_PLAYER":
       return { ...store, player: action.data };
     case "COMPLETE_TASK":

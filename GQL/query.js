@@ -404,6 +404,22 @@ export const GET_CARD_ID = gql`
           rarity
           is_open
           coming_soon
+          friendreward {
+            data {
+              id
+              attributes {
+                friends_count
+              }
+            }
+          }
+          streakreward {
+            data {
+              id
+              attributes {
+                streak_count
+              }
+            }
+          }
           image {
             data {
               id
@@ -539,80 +555,6 @@ export const GET_REALM_ID = gql`
             }
           }
 
-          problems {
-            data {
-              id
-              attributes {
-                name
-                realm {
-                  data {
-                    id
-                    attributes {
-                      name
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          books {
-            data {
-              id
-              attributes {
-                name
-                author
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          courses {
-            data {
-              id
-              attributes {
-                name
-                students
-                price
-                discount
-                course_details {
-                  id
-                  duration
-                  actions
-                  concepts
-
-                  sessions
-                  days
-                }
-                last_updated
-                rating
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-
           cards(pagination: { limit: 50 }) {
             data {
               id
@@ -624,6 +566,22 @@ export const GET_REALM_ID = gql`
                 cost
                 is_open
                 coming_soon
+                friendreward {
+                  data {
+                    id
+                    attributes {
+                      friends_count
+                    }
+                  }
+                }
+                streakreward {
+                  data {
+                    id
+                    attributes {
+                      streak_count
+                    }
+                  }
+                }
                 image {
                   data {
                     id
@@ -674,6 +632,8 @@ export const GET_STREAKS_QUERY = gql`
               attributes {
                 name
                 short_name
+                rarity
+                require
                 image {
                   data {
                     id
@@ -691,6 +651,26 @@ export const GET_STREAKS_QUERY = gql`
               attributes {
                 name
                 rarity
+                cost
+                is_open
+                coming_soon
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
                 image {
                   data {
                     id
@@ -731,6 +711,8 @@ export const GET_FRIENDS_QUERY = gql`
               attributes {
                 name
                 short_name
+                rarity
+                require
                 image {
                   data {
                     id
@@ -748,6 +730,26 @@ export const GET_FRIENDS_QUERY = gql`
               attributes {
                 name
                 rarity
+                cost
+                is_open
+                coming_soon
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
                 image {
                   data {
                     id
@@ -1628,6 +1630,8 @@ export const GET_REWARDS_QUERY = gql`
               attributes {
                 name
                 short_name
+                rarity
+                require
                 image {
                   data {
                     id

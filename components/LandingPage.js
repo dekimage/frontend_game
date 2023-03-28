@@ -3,8 +3,10 @@
 import React, { useRef, useState } from "react";
 
 import { ImageUI } from "../components/reusableUI";
+import Link from "next/link";
 import iconLogo from "../assets/menu-logo-dark.svg";
 import styles from "../styles/LandingPage.module.scss";
+import { useRouter } from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -158,7 +160,7 @@ const reviews = [
   },
 ];
 
-const Header = () => {
+const Header = ({ navigateSignup }) => {
   return (
     <div className={styles.header}>
       <div className="flex_center">
@@ -166,14 +168,19 @@ const Header = () => {
         <div className={styles.logoText}>Actionise</div>
       </div>
       <div className="flex_center">
-        <div className={styles.secondaryBtn}>Sign In</div>
-        <div className={`${styles.primaryBtn} ml5`}>Create Free Account</div>
+        <Link href="/login">
+          <div className={styles.secondaryBtn}>Sign In</div>
+        </Link>
+
+        <div onClick={navigateSignup} className={`${styles.primaryBtn} ml5`}>
+          Create Free Account
+        </div>
       </div>
     </div>
   );
 };
 
-const HeroSection = () => {
+const HeroSection = ({ navigateSignup }) => {
   return (
     <div className="landing-section " style={{ textAlign: "center" }}>
       <div className={`${styles.heroHeader} mt1`}>
@@ -183,7 +190,10 @@ const HeroSection = () => {
         Learn from the best books and resourses all in one place. Gamified and
         Action-based.
       </div>
-      <div className={styles.primaryBtn}>Create Free Account</div>
+
+      <div onClick={navigateSignup} className={styles.primaryBtn}>
+        Create Free Account
+      </div>
     </div>
   );
 };
@@ -335,30 +345,40 @@ const Footer = () => {
   );
 };
 
-const FixedCta = () => {
+const FixedCta = ({ navigateSignup }) => {
   return (
     <div className={styles.fixedCta}>
+      {/* <Link href="/login"> */}
       <div
         className={styles.primaryBtn}
         style={{ width: "100%", maxWidth: "40rem" }}
+        onClick={navigateSignup}
       >
         Start Your Journey
       </div>
+      {/* </Link> */}
     </div>
   );
 };
 
 const LandingPage = () => {
+  const router = useRouter();
+  function navigateSignup() {
+    router.push({
+      pathname: "/login",
+      query: { isLoginPage: false },
+    });
+  }
   return (
     <div className={styles.landingPage}>
-      <Header />
-      <HeroSection />
+      <Header navigateSignup={navigateSignup} />
+      <HeroSection navigateSignup={navigateSignup} />
       <FunnelSection />
       <ValuesSection />
       <ReviewSection />
       <ScreensSection />
       <Footer />
-      <FixedCta />
+      <FixedCta navigateSignup={navigateSignup} />
     </div>
   );
 };

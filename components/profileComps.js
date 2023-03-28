@@ -1,27 +1,28 @@
 // *** REACT ***
+
 import { useContext, useEffect, useState } from "react";
+
 import { Context } from "../context/store";
-import Link from "next/link";
-import router from "next/router";
-import { useQuery } from "@apollo/react-hooks";
 import { GET_AVATARS } from "../GQL/query";
+import { ImageUI } from "./reusableUI";
+import Link from "next/link";
+import Modal from "./Modal";
+import ProgressBar from "../components/ProgressBar";
+import cx from "classnames";
+import { getXpLimit } from "../utils/calculations";
 import { normalize } from "../utils/calculations";
+import router from "next/router";
+import { saveAvatar } from "../actions/action";
+import settingsIcon from "../assets/menu-settings-dark.svg";
+import styles from "../styles/Profile.module.scss";
+import useModal from "../hooks/useModal";
+import { useQuery } from "@apollo/react-hooks";
 
 // *** COMPONENTS ***
-import ProgressBar from "../components/ProgressBar";
 
 // *** ACTIONS ***
-import { saveAvatar } from "../actions/action";
-
-import settingsIcon from "../assets/menu-settings-dark.svg";
-import { getXpLimit } from "../utils/calculations";
 
 // *** STYLES ***
-import styles from "../styles/Profile.module.scss";
-import cx from "classnames";
-import useModal from "../hooks/useModal";
-import Modal from "./Modal";
-import { ImageUI } from "./reusableUI";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -32,7 +33,7 @@ export const Stat = ({ img, number, text, max, isPercent = false }) => {
         <img src={img} />
       </div>
       <div className={styles.statsBox_number}>
-        {number}
+        {number || <div className="mt1"> </div>}
         {max && `/${max}`}
         {isPercent && "%"}
       </div>

@@ -3,10 +3,11 @@
 import { BackButton, ImageUI } from "../components/reusableUI";
 import { useContext, useEffect, useState } from "react";
 
+import { ArtifactModal } from "./profile";
+import Card from "../components/Card";
 import { Context } from "../context/store";
 import { GET_FRIENDS_QUERY } from "../GQL/query";
 import Modal from "../components/Modal";
-import { Rarity } from "../components/Rarity";
 import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
 import { claimUserReward } from "../actions/action";
 import cx from "classnames";
@@ -24,7 +25,8 @@ import { useRouter } from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const FriendReward = ({ friendReward, dispatch }) => {
+const FriendReward = ({ friendReward }) => {
+  const [store, dispatch] = useContext(Context);
   const {
     reward_type,
     reward_card,
@@ -37,10 +39,15 @@ const FriendReward = ({ friendReward, dispatch }) => {
 
   const calculateReward = (reward_type) => {
     if (reward_type === "artifact") {
+      console.log(artifact);
       return {
-        name: artifact.short_name,
+        name: artifact.name,
         image: artifact.image,
         rarity: artifact.rarity,
+        type: reward_type,
+        isCollected: true,
+        require: artifact.require,
+        progress: store.user.highest_buddy_shares,
       };
     }
     if (reward_type === "card") {
@@ -49,6 +56,7 @@ const FriendReward = ({ friendReward, dispatch }) => {
     return false;
   };
   const reward = calculateReward(reward_type);
+  const [isRewardModalShowing, setIsRewardModalShowing] = useState(false);
 
   return (
     <div
@@ -79,8 +87,11 @@ const FriendReward = ({ friendReward, dispatch }) => {
       )}
 
       <div className="flex_center">
-        <div className={styles.image}>
-          <ImageUI url={reward.image?.url} />
+        <div
+          className={styles.image}
+          onClick={() => setIsRewardModalShowing(true)}
+        >
+          <ImageUI url={reward?.image?.url} />
 
           {!is_collected && (
             <div className={styles.streak_amount}>x{reward_amount || 1}</div>
@@ -94,6 +105,29 @@ const FriendReward = ({ friendReward, dispatch }) => {
           <GemReward amount={400} />
         </div>
       </div>
+      <Modal
+        isShowing={isRewardModalShowing}
+        closeModal={() => setIsRewardModalShowing(false)}
+        isSmall
+        jsx={
+          <>
+            {reward_type === "artifact" && (
+              <ArtifactModal
+                artifact={reward}
+                openModal={() => setIsRewardModalShowing(true)}
+              />
+            )}
+            {reward_type === "card" && (
+              <div className="flex_center">
+                <Card
+                  card={reward}
+                  openModal={() => setIsRewardModalShowing(true)}
+                />
+              </div>
+            )}
+          </>
+        }
+      />
     </div>
   );
 };
@@ -119,6 +153,7 @@ const FriendsTower = () => {
   const [store, dispatch] = useContext(Context);
   const { loading, error, data } = useQuery(GET_FRIENDS_QUERY);
   const router = useRouter();
+
   const { isShowing, openModal, closeModal } = useModal();
 
   const gql_data = data && normalize(data);
@@ -183,13 +218,7 @@ const FriendsTower = () => {
                 )
                   .sort((a, b) => a.id - b.id)
                   .map((friendReward, i) => {
-                    return (
-                      <FriendReward
-                        friendReward={friendReward}
-                        key={i}
-                        dispatch={dispatch}
-                      />
-                    );
+                    return <FriendReward friendReward={friendReward} key={i} />;
                   })}
               </div>
             )}

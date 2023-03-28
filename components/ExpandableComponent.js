@@ -1,5 +1,6 @@
-import { useState } from "react";
 import styles from "../styles/Expandable.module.scss";
+import { useState } from "react";
+
 const ExpandableComponent = ({ name, icon, children, isCompOpen = true }) => {
   const [isOpen, setIsOpen] = useState(isCompOpen);
   return (
@@ -8,11 +9,11 @@ const ExpandableComponent = ({ name, icon, children, isCompOpen = true }) => {
         <div className={styles.image}>{icon && <img src={icon} />}</div>
         <div className={styles.name}>{name}</div>
 
-        {isOpen ? (
+        {/* {isOpen ? (
           <ion-icon name="chevron-up-outline"></ion-icon>
         ) : (
           <ion-icon name="chevron-down-outline"></ion-icon>
-        )}
+        )} */}
       </div>
       {isOpen && <div className={styles.body}>{children}</div>}
     </div>

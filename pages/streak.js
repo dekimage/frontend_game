@@ -2,10 +2,13 @@
 
 import { useContext, useEffect, useState } from "react";
 
+import { ArtifactModal } from "./profile";
 import { BackButton } from "../components/reusableUI";
+import Card from "../components/Card";
 import { Context } from "../context/store";
 import { GET_STREAKS_QUERY } from "../GQL/query";
 import { GemReward } from "./buddies-rewards";
+import Modal from "../components/Modal";
 import { Rarity } from "../components/Rarity";
 import { claimStreakReward } from "../actions/action";
 import cx from "classnames";
@@ -23,7 +26,8 @@ import { useRouter } from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const Streak = ({ streak, dispatch }) => {
+const Streak = ({ streak }) => {
+  const [store, dispatch] = useContext(Context);
   const {
     reward_type,
     artifact,
@@ -34,21 +38,32 @@ const Streak = ({ streak, dispatch }) => {
     is_ready,
   } = streak;
 
-  console.log(streak);
-
   const calculateReward = (reward_type) => {
     if (reward_type === "artifact") {
-      return { name: `Streak ${streak_count}`, reward: artifact };
+      return {
+        name: `Streak ${streak_count}`,
+        reward: {
+          name: artifact.name,
+          image: artifact.image,
+          rarity: artifact.rarity,
+          type: reward_type,
+          isCollected: true,
+          require: artifact.require,
+          progress: store.user.highest_buddy_shares,
+        },
+      };
     }
     if (reward_type === "stars") {
       return { name: `Streak ${streak_count}`, image: { url: "/star.png" } };
     }
     if (reward_type === "card") {
+      console.log(reward_card);
       return { name: `Streak ${streak_count}`, reward: reward_card };
     }
   };
 
   const reward = calculateReward(reward_type);
+  const [isRewardModalShowing, setIsRewardModalShowing] = useState(false);
 
   return (
     <div
@@ -84,7 +99,10 @@ const Streak = ({ streak, dispatch }) => {
           </div>
 
           {reward_type !== "stars" ? (
-            <div className={styles.image}>
+            <div
+              className={styles.image}
+              onClick={() => setIsRewardModalShowing(true)}
+            >
               <img src={`${baseUrl}${reward.reward?.image?.url}`} />
 
               <div className={styles.streak_amount}>x{reward_amount || 1}</div>
@@ -96,6 +114,29 @@ const Streak = ({ streak, dispatch }) => {
           )}
         </>
       )}
+      <Modal
+        isShowing={isRewardModalShowing}
+        closeModal={() => setIsRewardModalShowing(false)}
+        isSmall
+        jsx={
+          <>
+            {reward_type === "artifact" && (
+              <ArtifactModal
+                artifact={reward.reward}
+                openModal={() => setIsRewardModalShowing(true)}
+              />
+            )}
+            {reward_type === "card" && (
+              <div className="flex_center">
+                <Card
+                  card={reward.reward}
+                  openModal={() => setIsRewardModalShowing(true)}
+                />
+              </div>
+            )}
+          </>
+        }
+      />
     </div>
   );
 };
@@ -168,9 +209,7 @@ const StreakTower = () => {
                 {mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)
                   .sort((a, b) => a.id - b.id)
                   .map((streak, i) => {
-                    return (
-                      <Streak streak={streak} key={i} dispatch={dispatch} />
-                    );
+                    return <Streak streak={streak} key={i} />;
                   })}
               </div>
             )}

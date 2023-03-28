@@ -37,7 +37,6 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
     completed_at: false,
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
-  console.log(usercard);
 
   const card = dataCard.card;
 

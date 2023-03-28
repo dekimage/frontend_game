@@ -273,6 +273,14 @@ input:-webkit-autofill:active {
   margin-right: 1rem;
 }
 
+.mb5 {
+  margin-bottom: 0.5rem;
+}
+
+.mt5 {
+  margin-top: 0.5rem;
+}
+
 .ml5 {
   margin-left: 0.5rem;
 }
@@ -681,6 +689,8 @@ ion-icon {
 .toastBig {
   .Toastify__toast {
     border: 3px solid $actionize_gray;
+    border-radius: $border_radius;
+    margin: 1rem;
   }
 }
 .toast {

@@ -25,6 +25,11 @@ const Login = () => {
   const [store, dispatch] = useContext(Context);
 
   useEffect(() => {
+    const isLoginPage = router.query.isLoginPage || true;
+    setIsLogin(isLoginPage === true);
+  }, [router.query]);
+
+  useEffect(() => {
     if (store.isAuthenticated) {
       router.push("/"); //redirect if you're already logged in
     }

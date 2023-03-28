@@ -626,8 +626,7 @@ export const CompleteCardSection = ({
     }
     return 86400000 - timeDiff;
   }
-  console.log({ contentsLength, completedLength });
-  console.log({ comple: store.completedTasks });
+
   return (
     <div style={{ marginBottom: "2rem" }} className="flex_center">
       {isMoreThan24HoursAgo ? (
@@ -698,6 +697,11 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
   const cardTickets = store?.user?.card_tickets || [];
   const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
   const is_subscribed = store?.user?.is_subscribed;
+  const canStreakUnlock =
+    store?.user?.highest_streak_count >= card.streakreward?.streak_count;
+  const canBuddyUnlock =
+    store?.user?.highest_buddy_shares >= card.friendreward?.friends_count;
+  console.log(card);
 
   const router = useRouter();
 
@@ -709,6 +713,40 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
     return (
       <div className={styles.fixed}>
         <div className={styles.comingSoon}>Coming Soon</div>
+      </div>
+    );
+  }
+
+  if (card.streakreward && !isUnlocked) {
+    return (
+      <div className={styles.fixed}>
+        {canStreakUnlock ? (
+          <Link href="/streak">
+            <div className="btn btn-action">Claim Card</div>
+          </Link>
+        ) : (
+          <div className="btn btn-disabled">
+            {card.streakreward.streak_count}
+            <img height="12px" className="ml25" src={`${baseUrl}/streak.png`} />
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (card.friendreward && !isUnlocked) {
+    return (
+      <div className={styles.fixed}>
+        {canBuddyUnlock ? (
+          <Link href="/buddies-rewards">
+            <div className="btn btn-action">Claim Card</div>
+          </Link>
+        ) : (
+          <div className="btn btn-disabled">
+            {card.friendreward.friends_count}
+            <img height="12px" className="ml25" src={`${baseUrl}/user.png`} />
+          </div>
+        )}
       </div>
     );
   }

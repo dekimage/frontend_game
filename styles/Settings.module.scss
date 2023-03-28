@@ -1,5 +1,6 @@
 @import "variables.scss";
 @import "placeholders.scss";
+
 .settingsItem {
   padding: 1rem;
   border-bottom: 2px solid $actionize_gray;
@@ -38,6 +39,7 @@
 .accountValue {
   font-weight: 500;
   color: $actionize_gray_light;
+  text-transform: capitalize;
 }
 .actionLabel {
   color: $eggHeadOrange;

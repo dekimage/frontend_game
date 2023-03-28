@@ -3,7 +3,6 @@
 
 .reward {
   color: white;
-  // border: 2px solid $primary;
   background-color: $actionize_black;
   position: relative;
   cursor: pointer;
@@ -13,6 +12,7 @@
   border-radius: $border_radius;
   @extend %flex_center;
   flex-direction: column;
+  position: relative;
   &_image {
     position: relative;
     width: 30px;
@@ -60,4 +60,12 @@
     width: 30px;
     opacity: 100% !important;
   }
+}
+
+.artifactImage {
+  position: absolute;
+  top: -15px;
+  left: -10px;
+  height: 50px;
+  width: 50px;
 }

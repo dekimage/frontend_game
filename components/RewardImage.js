@@ -1,8 +1,12 @@
-import styles from "../styles/Reward.module.scss";
-import starIcon from "../assets/xp.svg";
-import gemIcon from "../assets/diamond-currency.svg";
+import { ArtifactModal } from "../pages/profile";
+import { ImageUI } from "./reusableUI";
+import Modal from "./Modal";
 import checkmark from "../assets/checkmark.svg";
 import cx from "classnames";
+import gemIcon from "../assets/diamond-currency.svg";
+import starIcon from "../assets/xp.svg";
+import styles from "../styles/Reward.module.scss";
+import { useState } from "react";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,7 +20,9 @@ const RewardImage = ({
   isUserPremium = false,
   isTask = false,
   artifact,
+  userLevel,
 }) => {
+  const [isRewardModalShowing, setIsRewardModalShowing] = useState(false);
   return (
     <div
       className={cx([styles.reward], {
@@ -31,7 +37,6 @@ const RewardImage = ({
           <img src={checkmark} />
         </div>
       )}
-
       <div className={styles.reward_image}>
         {reward == "loot" && (
           <img height="8px" src={`${baseUrl}/loot-box.png`} />
@@ -44,11 +49,30 @@ const RewardImage = ({
           <img src={`${baseUrl}/gems.png`} height="12px" className="mb5" />
         )}
         {reward == "artifact" && artifact?.image && (
-          <img src={`${baseUrl}${artifact.image.url}`} />
+          <div
+            className={styles.artifactImage}
+            onClick={() => {
+              !isReadyToCollect &&
+                !isCollected &&
+                setIsRewardModalShowing(true);
+            }}
+          >
+            <ImageUI url={artifact?.image?.url} height="100px" width="100px" />
+          </div>
         )}
       </div>
-
       {amount > 1 && <div className={styles.reward_amount}>{amount || 1}</div>}
+      <Modal
+        isShowing={isRewardModalShowing}
+        closeModal={() => setIsRewardModalShowing(false)}
+        isSmall
+        jsx={
+          <ArtifactModal
+            artifact={{ ...artifact, progress: userLevel, isCollected: true }}
+            openModal={() => setIsRewardModalShowing(true)}
+          />
+        }
+      />
     </div>
   );
 };

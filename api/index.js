@@ -49,6 +49,12 @@ export const notifyMeApi = (isNotifyMe) =>
     isNotifyMe,
   });
 
+export const updateUserBasicInfoApi = (value, inputName) =>
+  axios.put(`${userUrl}/update-user-basic-info`, {
+    value,
+    inputName,
+  });
+
 export const rateCardApi = (rating, cardId) =>
   axios.put(`${userUrl}/rate-card`, {
     rating,

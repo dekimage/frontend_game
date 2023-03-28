@@ -15,6 +15,10 @@ import { useRouter } from "next/router";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 const SearchBar = () => {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState([]);
@@ -31,7 +35,10 @@ const SearchBar = () => {
 
   const onSearch = (value) => {
     setShowNothing(false);
-    const query = `?filters[name][$contains]=${value}&populate=%2A`;
+    const query = `?filters[name][$contains]=${capitalizeFirstLetter(
+      value
+    )}&populate=%2A`;
+
     if (search.length > 0) {
       setIsSearching(true);
       axios
