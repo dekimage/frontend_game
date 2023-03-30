@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 
 import { ArtifactModal } from "./profile";
 import Card from "../components/Card";
-import { Context } from "../context/store";
 import { GET_FRIENDS_QUERY } from "../GQL/query";
 import Modal from "../components/Modal";
 import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
@@ -16,6 +15,9 @@ import styles from "../styles/Streak.module.scss";
 import useModal from "../hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
+import { withUser } from "../Hoc/withUser";
+
+import baseUrl from "../utils/settings";
 
 // *** COMPONENTS ***
 
@@ -23,10 +25,7 @@ import { useRouter } from "next/router";
 
 // *** STYLES ***
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const FriendReward = ({ friendReward }) => {
-  const [store, dispatch] = useContext(Context);
+const FriendReward = ({ friendReward, user, dispatch }) => {
   const {
     reward_type,
     reward_card,
@@ -47,7 +46,7 @@ const FriendReward = ({ friendReward }) => {
         type: reward_type,
         isCollected: true,
         require: artifact.require,
-        progress: store.user.highest_buddy_shares,
+        progress: user.highest_buddy_shares,
       };
     }
     if (reward_type === "card") {
@@ -149,14 +148,10 @@ export const GemReward = ({ amount }) => {
     </div>
   );
 };
-const FriendsTower = () => {
-  const [store, dispatch] = useContext(Context);
-  const { loading, error, data } = useQuery(GET_FRIENDS_QUERY);
-  const router = useRouter();
+const FriendsTower = (props) => {
+  const { user, data, dispatch } = props;
 
   const { isShowing, openModal, closeModal } = useModal();
-
-  const gql_data = data && normalize(data);
 
   const mergeStreaks = (rewards, userRewards) => {
     if (!userRewards) {
@@ -173,7 +168,7 @@ const FriendsTower = () => {
 
       return {
         ...s,
-        is_ready: store.user.highest_buddy_shares >= s.friends_count,
+        is_ready: user.highest_buddy_shares >= s.friends_count,
       };
     });
   };
@@ -181,70 +176,71 @@ const FriendsTower = () => {
   return (
     <div className="background_dark">
       <div className="section">
-        {error && <div>Error: {error}</div>}
-        {loading && <div>Loading...</div>}
-        {data && (
-          <>
-            <div className={styles.header}>
-              <BackButton routeDynamic={""} routeStatic={""} isBack />
+        <>
+          <div className={styles.header}>
+            <BackButton routeDynamic={""} routeStatic={""} isBack />
 
-              <div className={styles.label}>Buddy Rewards</div>
+            <div className={styles.label}>Buddy Rewards</div>
+          </div>
+
+          <div className={styles.streakTitle}>
+            <div style={{ position: "relative" }}>
+              <img src={`${baseUrl}/user.png`} height="60px" />
             </div>
 
-            <div className={styles.streakTitle}>
-              <div style={{ position: "relative" }}>
-                <img src={`${baseUrl}/user.png`} height="60px" />
-              </div>
+            <div className={styles.streakTitle_amount}>
+              {user.highest_buddy_shares}
+            </div>
+          </div>
+          <div className={styles.subTitle}>
+            Help your buddies improve with you.
+          </div>
+          <div className={styles.subTitle_muted}>
+            For each buddy you bring, both of you get an exclusive reward!
+          </div>
+          <div className="flex_between">
+            <div className="title">Shared Buddies </div>
+            <div className="title">{user.highest_buddy_shares}/10</div>
+          </div>
+          {data && user && (
+            <div>
+              {mergeStreaks(data.friendrewards, user.friends_rewards)
+                .sort((a, b) => a.id - b.id)
+                .map((friendReward, i) => {
+                  return (
+                    <FriendReward
+                      friendReward={friendReward}
+                      user={user}
+                      dispatch={dispatch}
+                      key={i}
+                    />
+                  );
+                })}
+            </div>
+          )}
 
-              <div className={styles.streakTitle_amount}>
-                {store.user.highest_buddy_shares}
-              </div>
-            </div>
-            <div className={styles.subTitle}>
-              Help your buddies improve with you.
-            </div>
-            <div className={styles.subTitle_muted}>
-              For each buddy you bring, both of you get an exclusive reward!
-            </div>
-            <div className="flex_between">
-              <div className="title">Shared Buddies </div>
-              <div className="title">{store.user.highest_buddy_shares}/10</div>
-            </div>
-            {gql_data && store.user && (
-              <div>
-                {mergeStreaks(
-                  gql_data.friendrewards,
-                  store.user.friends_rewards
-                )
-                  .sort((a, b) => a.id - b.id)
-                  .map((friendReward, i) => {
-                    return <FriendReward friendReward={friendReward} key={i} />;
-                  })}
-              </div>
-            )}
+          <div
+            className="btn btn-stretch btn-primary mt1 mb1"
+            onClick={openModal}
+          >
+            <img
+              src={`${baseUrl}/add-user.png`}
+              height="20px"
+              className="mr1"
+            />
+            Share Buddy Link
+          </div>
+        </>
 
-            <div
-              className="btn btn-stretch btn-primary mt1 mb1"
-              onClick={openModal}
-            >
-              <img
-                src={`${baseUrl}/add-user.png`}
-                height="20px"
-                className="mr1"
-              />
-              Share Buddy Link
-            </div>
-          </>
-        )}
         <Modal
           isShowing={isShowing}
           closeModal={closeModal}
           isSmall
-          jsx={<ShareBuddyModal id={store.user.id} />}
+          jsx={<ShareBuddyModal id={user.id} />}
         />
       </div>
     </div>
   );
 };
 
-export default FriendsTower;
+export default withUser(FriendsTower, GET_FRIENDS_QUERY);

@@ -4,41 +4,64 @@ import { useContext, useEffect, useState } from "react";
 
 import { Button } from "../components/reusableUI";
 import { Context } from "../context/store";
-import FaqList from "../components/reusable/Faq";
 import FeatureSuggestion from "../components/FeatureSuggestion";
 import Switch from "../components/reusable/SwitchThumb";
 import { logout } from "../actions/auth";
 import router from "next/router";
 import styles from "../styles/Settings.module.scss";
-import { updateUserBasicInfo } from "../actions/action";
+import { updateSettings, updateUserBasicInfo } from "../actions/action";
 import { useRouter } from "next/router";
 import { withUser } from "../Hoc/withUser";
 
-const emailSettings = [
-  { value: "newsletter", label: "Newsletter", isChecked: true },
-  { value: "promotions", label: "Promotions", isChecked: true },
-  { value: "content", label: "New Cards", isChecked: true },
-  { value: "updates", label: "New Features", isChecked: true },
-  { value: "reminders", label: "Reminders", isChecked: true },
-  { value: "unsubscribe", label: "Unsubscribe All", isChecked: false },
-];
+const EmailSettings = ({ emailPreferences }) => {
+  const [store, dispatch] = useContext(Context);
+  const [settings, setSettings] = useState(emailPreferences);
 
-const EmailSettings = () => {
+  const handleSubmit = () => {
+    updateSettings(dispatch, settings);
+  };
+  const handleToggle = (label) => {
+    const newPreferences = {
+      ...settings,
+      [label]: !settings[label],
+    };
+    setSettings(newPreferences);
+  };
+
+  const emailSettingsArray = Object.entries(settings).map(
+    ([value, isChecked]) => ({
+      value,
+      label: value.charAt(0).toUpperCase() + value.slice(1),
+      isChecked,
+    })
+  );
   return (
     <div>
-      {emailSettings.map((setting, i) => {
-        return <FlagSetting key={i} setting={setting} />;
+      {emailSettingsArray.map((setting, i) => {
+        return (
+          <FlagSetting key={i} setting={setting} handleToggle={handleToggle} />
+        );
       })}
+      <Button
+        type={"primary"}
+        onClick={handleSubmit}
+        children={"Save"}
+        isLoading={store.isLoading}
+        autofit
+      />
     </div>
   );
 };
 
-const FlagSetting = ({ setting, activeSettings, setActiveSettings }) => {
+const FlagSetting = ({ setting, handleToggle }) => {
   return (
     <div className={styles.flagItem}>
       <div className={styles.flagLabel}>{setting.label}</div>
 
-      <Switch checked={setting.isChecked} onChange={() => {}} />
+      <Switch
+        checked={setting.isChecked}
+        onChange={() => handleToggle(setting.value)}
+      />
     </div>
   );
 };
@@ -55,6 +78,7 @@ const settings = [
   {
     label: "FAQ",
     link: "faq",
+    external: true,
   },
   // {
   //   label: "Notifications",
@@ -80,17 +104,15 @@ const settings = [
     label: "Contact Us",
     link: "contact",
   },
-  // {
-  //   label: "My Data",
-  //   link: "data",
-  // },
   {
     label: "Terms & Conditions",
-    link: "terms",
+    link: "terms-of-service",
+    external: true,
   },
   {
     label: "Privacy Policy",
-    link: "privacy",
+    link: "privacy-policy",
+    external: true,
   },
 ];
 
@@ -142,7 +164,13 @@ const Setting = ({ settings, setActiveSettings }) => {
   return (
     <div
       className={styles.settingsItem}
-      onClick={() => setActiveSettings(settings.link)}
+      onClick={() => {
+        if (settings.external) {
+          router.push(`/${settings.link}`);
+        } else {
+          setActiveSettings(settings.link);
+        }
+      }}
     >
       {settings.label}
     </div>
@@ -162,7 +190,6 @@ const EditAccount = ({
   const isGender = inputName === "Gender";
   const [genderSelected, setGenderSelected] = useState(isGender && inputValue);
   const getInputName = (inputName) => {
-    console.log(inputName);
     if (inputName === "Name") {
       return "username";
     }
@@ -302,7 +329,7 @@ const handleBack = (activeSettings, setActiveSettings) => {
   }
 };
 
-const Settings = ({ user, dispatch, store }) => {
+const Settings = ({ user, dispatch }) => {
   const router = useRouter();
   const [activeSettings, setActiveSettings] = useState("default");
 
@@ -408,9 +435,12 @@ const Settings = ({ user, dispatch, store }) => {
           )}
 
           {activeSettings === "email" && (
-            <EmailSettings setActiveSettings={setActiveSettings} />
+            <EmailSettings
+              setActiveSettings={setActiveSettings}
+              emailPreferences={user.email_preferences}
+            />
           )}
-          {activeSettings === "faq" && <FaqList />}
+
           {activeSettings === "feature" && (
             <FeatureSuggestion type={"feature request"} />
           )}

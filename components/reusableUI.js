@@ -2,8 +2,7 @@ import Link from "next/link";
 import cx from "classnames";
 import styles from "../styles/ReusableUI.module.scss";
 import { useRouter } from "next/router";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 // src={`${baseUrl}/gift.png`}
 const dev = process.env.NODE_ENV == "development";

@@ -1,19 +1,16 @@
 import { React, useState } from "react";
 
-import { Action } from "../components/cardPageComps";
 import { BackButton } from "../components/reusableUI";
 import CardsMapper from "../components/CardsMapper";
 import Link from "next/link";
 import NavBar from "../components/NavBar";
-import { Problem } from "./problems";
-import { Tabs } from "../components/profileComps";
+
 import axios from "axios";
 import debounce from "debounce";
 import { normalize } from "../utils/calculations";
 import styles from "../styles/SearchBar.module.scss";
-import { useRouter } from "next/router";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);

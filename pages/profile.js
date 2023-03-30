@@ -18,7 +18,7 @@ import { normalize } from "../utils/calculations";
 import styles from "../styles/Profile.module.scss";
 import useModal from "../hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
-import { useRouter } from "next/router";
+import baseUrl from "../utils/settings";
 
 // *** COMPONENTS ***
 
@@ -27,8 +27,6 @@ import { useRouter } from "next/router";
 // *** ACTIONS ***
 
 // *** STYLES ***
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 //POTENTIALLY ADD SIMPLE DATA TABLE TO DISPLAY PROGRESS ON ALL ARTIFACTS?
 
@@ -275,7 +273,7 @@ const Profile = () => {
                 text={"Highest Streak"}
               />
               <Stat
-                number={store.user.stats.action_complete}
+                number={store.user.stats.mastery}
                 img={`${baseUrl}/mastery.png`}
                 text={"Total Mastery"}
               />

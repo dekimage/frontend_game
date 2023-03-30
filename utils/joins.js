@@ -1,5 +1,4 @@
 export const joinCards = (cards, usercards) => {
-  console.log(cards);
   // remove as user will always have at least 1 usercard
   if (!usercards) {
     return cards;

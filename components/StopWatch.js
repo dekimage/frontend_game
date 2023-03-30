@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { msToTime } from "../utils/calculations";
 import styles from "../styles/Timer.module.scss";
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 const StopWatch = ({}) => {
   const reward = {

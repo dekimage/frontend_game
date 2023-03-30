@@ -22,12 +22,11 @@ import iconLock from "../assets/lock-white-border.svg";
 import iconSessions from "../assets/sessions.svg";
 import { notifyMe } from "../actions/action";
 import styles from "../styles/Shop.module.scss";
+import baseUrl from "../utils/settings";
 
 // *** ACTIONS ***
 
 // *** STYLES ***
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const Course = ({ course }) => {
   const {

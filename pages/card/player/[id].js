@@ -7,27 +7,22 @@ import {
   SliderProgress,
   WarningModal,
 } from "../../../components/playerComps";
-import { getTotalStepsInSlides, normalize } from "../../../utils/calculations";
-import { gql, useQuery } from "@apollo/react-hooks";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ContentTheory } from "../../../components/ContentTheory";
-import { Context } from "../../../context/store";
 import { GET_CARD_ID } from "../../../GQL/query";
 import Modal from "../../../components/Modal";
 import _ from "lodash";
+import { getTotalStepsInSlides } from "../../../utils/calculations";
 import { updateCard } from "../../../actions/action";
 import useModal from "../../../hooks/useModal";
 import { useRouter } from "next/router";
+import { withUser } from "../../../Hoc/withUser";
 
-const Player = () => {
+const Player = (props) => {
   const router = useRouter();
-  const [store, dispatch] = useContext(Context);
-  const { data, loading, error } = useQuery(GET_CARD_ID, {
-    variables: { id: router.query.id },
-  });
+  const { user, data, dispatch } = props;
 
-  const gql_data = data && normalize(data);
   const [slides, setSlides] = useState(false);
   const [slide, setSlide] = useState(false);
   const [chatSlides, setChatSlides] = useState(false);
@@ -35,6 +30,7 @@ const Player = () => {
 
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
 
   const [rewards, setRewards] = useState({
     xp: 0,
@@ -43,10 +39,10 @@ const Player = () => {
   });
 
   useEffect(() => {
-    if (store.user && gql_data) {
-      const cardTickets = store.user.card_tickets || [];
+    if (user && data) {
+      const cardTickets = user.card_tickets || [];
 
-      if (!cardTickets?.find((c) => c?.id == gql_data?.card?.id)) {
+      if (!cardTickets?.find((c) => c?.id == data?.card?.id)) {
         router.push("/learn");
       }
     }
@@ -55,8 +51,8 @@ const Player = () => {
     // const last_completed_content = 1;
     // const last_completed_day = (usercard && usercard.completed) || 0;
 
-    if (gql_data) {
-      const { card } = gql_data;
+    if (data) {
+      const { card } = data;
       const sessionIndex = card.last_day || 0;
       const slidesArray = card.days[sessionIndex]?.contents;
 
@@ -68,7 +64,7 @@ const Player = () => {
       setSlides(slidesArray);
       setChatSlides([slidesArray[contentIndex]]);
     }
-  }, [gql_data, store.user]);
+  }, [data, user]);
 
   // const isLatestLevel = false;
 
@@ -109,6 +105,7 @@ const Player = () => {
     const index = slide.index;
     updateCard(dispatch, cardId, "complete_contents", index);
     if (index === slides.length) {
+      setIsRatingModalOpen(true);
       setIsSuccessModalOpen(true);
     } else {
       setSlide(slides[index]);
@@ -116,26 +113,20 @@ const Player = () => {
     }
   };
 
-  const usercard =
-    store?.user?.usercards &&
-    store.user.usercards.filter(
-      (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
-    )[0];
+  const usercard = user.usercards?.filter(
+    (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
+  )[0];
 
   const isLastSlide =
     slides && slides.findIndex((s) => s.id === slide.id) === slides.length - 1;
 
   const totalTasksCount = slides && getTotalStepsInSlides(slides);
 
-  console.log(usercard);
-
-  const [isRatingModalOpen, setIsRatingModalOpen] = useState(true);
+  console.log("usercard", usercard);
 
   return (
     <div className="background_dark">
-      {error && <div>Error: {error}</div>}
-      {loading && <div>Loading...</div>}
-      {gql_data && store.user && usercard && slide && (
+      {usercard && slide && (
         <>
           <SliderProgress
             maxSlides={slides.length}
@@ -191,17 +182,16 @@ const Player = () => {
                 />
               }
             />
-            {!usercard.rating && (
+            {!usercard.isRated && isRatingModalOpen && (
               <Modal
                 isShowing={isRatingModalOpen}
-                closeModal={() => {
-                  setIsRatingModalOpen(false);
-                }}
+                closeModal={() => {}}
                 showCloseButton={false}
                 jsx={
                   <RatingModal
-                    closePlayer={closePlayer}
+                    closePlayer={() => setIsRatingModalOpen(false)}
                     cardId={router.query.id}
+                    usercard={usercard}
                   />
                 }
               />
@@ -213,4 +203,4 @@ const Player = () => {
   );
 };
 
-export default Player;
+export default withUser(Player, GET_CARD_ID, true);

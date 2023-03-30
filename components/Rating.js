@@ -1,4 +1,4 @@
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 export const Rating = ({ course }) => {
   return (
     <div>

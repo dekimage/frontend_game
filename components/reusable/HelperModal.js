@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Modal from "../Modal";
 import useModal from "../../hooks/useModal";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../../utils/settings";
 
 const HelperPopup = ({ HelperModal, className }) => {
   const { isShowing, openModal, closeModal } = useModal();

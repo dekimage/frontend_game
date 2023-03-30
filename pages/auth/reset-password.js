@@ -50,7 +50,7 @@ const ResetPassword = () => {
 
         setTimeout(() => {
           push("/login");
-        }, 5000);
+        }, 3000);
       })
       .catch((error) => {
         if (!query.code) {

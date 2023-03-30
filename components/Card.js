@@ -2,20 +2,22 @@ import { Context } from "../context/store";
 import { ImageUI } from "../components/reusableUI";
 import Link from "next/link";
 import ProgressBar from "./ProgressBar";
-import { Rarity } from "../components/Rarity";
 import cx from "classnames";
 import iconCheck from "../assets/checkmark.svg";
 import iconCollection from "../assets/progress-play-dark.svg";
-import iconCommon from "../assets/common-rarity.svg";
-import iconEpic from "../assets/epic-rarity.svg";
-import iconLegendary from "../assets/legendary-rarity.svg";
 import iconLock from "../assets/lock-white-border.svg";
 import iconPlay from "../assets/progress-collection-dark.svg";
-import iconRare from "../assets/rare-rarity.svg";
 import styles from "../styles/Card.module.scss";
 import { useContext } from "react";
+import baseUrl from "../utils/settings";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+// import { Rarity } from "../components/Rarity";
+
+// import iconCommon from "../assets/common-rarity.svg";
+// import iconEpic from "../assets/epic-rarity.svg";
+// import iconLegendary from "../assets/legendary-rarity.svg";
+
+// import iconRare from "../assets/rare-rarity.svg";
 
 export const CardType = ({ type }) => {
   return <div className={cx(styles.type, styles[type])}>{type}</div>;
@@ -68,7 +70,6 @@ const OpenCard = ({ card }) => {
 };
 
 const ClosedCard = ({ card }) => {
-  console.log(card);
   return (
     <div className={styles.lockBox}>
       <img
@@ -133,12 +134,12 @@ const Card = ({ card }) => {
           style={{ "--background": card.realm.color }}
         ></div>
 
-        <div className={styles.rarity}>
+        {/* <div className={styles.rarity}>
           {card.rarity === "common" && <img src={iconCommon} />}
           {card.rarity === "rare" && <img src={iconRare} />}
           {card.rarity === "epic" && <img src={iconEpic} />}
           {card.rarity === "legendary" && <img src={iconLegendary} />}
-        </div>
+        </div> */}
 
         <div className={styles.realmLogo}>
           {card.realm?.image && <img src={card.realm.image.url} />}

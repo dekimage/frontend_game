@@ -37,8 +37,7 @@ import { normalize } from "../../utils/calculations";
 import styles from "../../styles/Course.module.scss";
 import { useRouter } from "next/router";
 
-const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../../utils/settings";
 
 const countTasks = (content) =>
   content?.action?.steps.filter((item) => item.task).length;
@@ -125,7 +124,7 @@ const CourseSales = ({ course }) => {
 
       <div className={styles.details}>
         <div className={styles.detailsItem}>
-          <img src={`${baseUrl}/trophy.png`} height="14px" className="mr25" />{" "}
+          <img src={`${baseUrl}/trophy.png`} height="14px" className="mr25" />
           Total Length: {course.course_details.duration} hours
         </div>
         <div className={styles.detailsItem}>
@@ -168,7 +167,15 @@ const ContentStat = ({ icon, amount, label }) => {
   );
 };
 
-const ContentComponent = ({ content, cardId, isCompleted, isLast, index }) => {
+const ContentComponent = ({
+  content,
+  cardId,
+  isCompleted,
+  isLast,
+  index,
+  isTicketPurchased,
+  isSubscribed,
+}) => {
   const contentStats =
     content.type == "action"
       ? [
@@ -232,21 +239,33 @@ const ContentComponent = ({ content, cardId, isCompleted, isLast, index }) => {
           </div>
         </div>
         <div className="flex_center">
-          <Link
-            href={`/card/player/${cardId}?contentIndex=${content.index}`}
-            as={`/card/player/${cardId}?contentIndex=${content.index}`}
-          >
-            <div className={styles.btnPlay} onClick={() => {}}>
+          {isTicketPurchased || isSubscribed ? (
+            <Link
+              href={`/card/player/${cardId}?contentIndex=${content.index}`}
+              as={`/card/player/${cardId}?contentIndex=${content.index}`}
+            >
+              <div className={styles.btnPlay}>
+                <ion-icon size="medium" name="play"></ion-icon>
+              </div>
+            </Link>
+          ) : (
+            <div className={styles.btnPlayDisabled}>
               <ion-icon size="medium" name="play"></ion-icon>
             </div>
-          </Link>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export const Program = ({ day, completedContents, cardId }) => {
+export const Program = ({
+  day,
+  completedContents,
+  cardId,
+  isTicketPurchased,
+  isSubscribed,
+}) => {
   if (!day) {
     return null;
   }
@@ -263,6 +282,8 @@ export const Program = ({ day, completedContents, cardId }) => {
             isLast={isLast}
             isCompleted={isCompleted}
             index={i + 1}
+            isTicketPurchased={isTicketPurchased}
+            isSubscribed={isSubscribed}
             key={i}
           />
         );

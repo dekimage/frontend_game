@@ -47,6 +47,9 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   const completedContents = usercard.completed_contents || [];
   const contentsLength = day?.contents?.length;
   const completedLength = completedContents.length;
+  const cardTickets = store?.user?.card_tickets || [];
+  const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
+  const isSubscribed = store?.user?.is_subscribed;
 
   // const mergeActions = (usercard, actions, checkingArray, keyword) => {
   //   const result = actions.map((action) => {
@@ -65,6 +68,8 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
   // };
 
   const { isShowing, openModal, closeModal } = useModal();
+
+  console.log(55, store.isLoading);
 
   return (
     <div className="section_container">
@@ -132,6 +137,7 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           day={day}
           completedContents={completedContents}
           cardId={card.id}
+          isTicketPurchased={isTicketPurchased}
         />
 
         {/* <IdeaPlayer cardId={card.id} /> */}
@@ -173,7 +179,9 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
         <CardCtaFooter
           isUnlocked={isUnlocked}
           card={card}
+          isTicketPurchased={isTicketPurchased}
           usercard={usercard}
+          is_subscribed={isSubscribed}
         />
       )}
 

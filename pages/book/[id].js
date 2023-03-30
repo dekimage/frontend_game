@@ -1,20 +1,15 @@
+import { Action } from "../../components/cardPageComps";
+import { Course } from "../../components/shopComps";
+import ExpandableComponent from "../../components/ExpandableComponent";
+import { GET_BOOK_ID } from "../../GQL/query";
+import NavBar from "../../components/NavBar";
+import ReactMarkdown from "react-markdown";
+import { normalize } from "../../utils/calculations";
+import styles from "../../styles/Book.module.scss";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-
+import baseUrl from "../../utils/settings";
 // import styles from "../../styles/Problem.module.scss";
-import ReactMarkdown from "react-markdown";
-import { Action } from "../../components/cardPageComps";
-
-import ExpandableComponent from "../../components/ExpandableComponent";
-import NavBar from "../../components/NavBar";
-import { Course } from "../../components/shopComps";
-import { normalize } from "../../utils/calculations";
-
-import { GET_BOOK_ID } from "../../GQL/query";
-
-import styles from "../../styles/Book.module.scss";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const BookView = ({ book }) => {
   const {
@@ -87,7 +82,7 @@ const BookPage = () => {
     <div className="background_dark">
       <div className="section">
         {error && <div>Error: {error}</div>}
-        {loading && <div>Loading...</div>}
+        {loading && <div>Load</div>}
         {gql_data && (
           <div>
             <BookView book={gql_data.book} />

@@ -1,34 +1,28 @@
-import { useQuery } from "@apollo/react-hooks";
-import { useState, useEffect, useContext } from "react";
-
-import { Context } from "../../../context/store";
-import { useRouter } from "next/router";
-
-import _ from "lodash";
-
-import Modal from "../../../components/Modal";
-
-import useModal from "../../../hooks/useModal";
-
-import { normalize } from "../../../utils/calculations";
-
-import { GET_CARD_PLAYER } from "../../../GQL/query";
-
-const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 import {
-  ContentQuestion,
-  SliderProgress,
-  SliderHeader,
-  WarningModal,
-  RepeatScreen,
-  LevelUpScreen,
   ActionsScreen,
-  RewardsScreen,
   CompleteScreen,
   CompleteScreenNoEnergy,
+  ContentQuestion,
   FeedbackScreen,
+  LevelUpScreen,
+  RepeatScreen,
+  RewardsScreen,
+  SliderHeader,
+  SliderProgress,
+  WarningModal,
 } from "../../../components/playerComps";
+import { useContext, useEffect, useState } from "react";
+
+import { Context } from "../../../context/store";
+import { GET_CARD_PLAYER } from "../../../GQL/query";
+import Modal from "../../../components/Modal";
+import _ from "lodash";
+import { normalize } from "../../../utils/calculations";
+import useModal from "../../../hooks/useModal";
+import { useQuery } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
+
+const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Player = () => {
   const router = useRouter();
@@ -138,7 +132,7 @@ const Player = () => {
   return (
     <div className="background_dark">
       {error && <div>Error: {error}</div>}
-      {loading && <div>Loading...</div>}
+      {loading && <div>Load</div>}
       {gql_data && store.user && slide && (
         <div className="section">
           <SliderProgress

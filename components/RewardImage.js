@@ -7,8 +7,7 @@ import gemIcon from "../assets/diamond-currency.svg";
 import starIcon from "../assets/xp.svg";
 import styles from "../styles/Reward.module.scss";
 import { useState } from "react";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 const RewardImage = ({
   reward,

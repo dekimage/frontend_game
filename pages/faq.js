@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
 import classNames from "classnames";
-import styles from "../../styles/Faq.module.scss";
+import styles from "../styles/Faq.module.scss";
+import withSEO from "../Hoc/withSEO";
+import { useRouter } from "next/router";
 
 const faqsData = [
   {
@@ -78,13 +80,23 @@ function Faq({ question, answer }) {
 }
 
 function FaqList() {
+  const router = useRouter();
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      {faqsData.map((faq, index) => (
-        <Faq key={index} question={faq.question} answer={faq.answer} />
-      ))}
+    <div className="section background_dark">
+      <div className={styles.header}>
+        <div className={styles.back} onClick={() => router.back()}>
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </div>
+
+        <div className={styles.title}>FAQ</div>
+      </div>
+      <div className="flex_column">
+        {faqsData.map((faq, index) => (
+          <Faq key={index} question={faq.question} answer={faq.answer} />
+        ))}
+      </div>
     </div>
   );
 }
 
-export default FaqList;
+export default withSEO(FaqList);

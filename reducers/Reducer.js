@@ -24,6 +24,16 @@ const Reducer = (store, action) => {
       return { ...store, isLoading: false };
     case "SET_ERROR":
       return { ...store, isLoading: false, error: action.data };
+
+    case "UPDATE_SETTINGS":
+      return {
+        ...store,
+        isLoading: false,
+        user: {
+          ...store.user,
+          settings: action.data,
+        },
+      };
     case "UPDATE_TUTORIAL":
       return {
         ...store,
@@ -74,6 +84,7 @@ const Reducer = (store, action) => {
         user: {
           ...store.user,
           card_tickets: action.data.card_tickets,
+          usercards: action.data.usercards,
         },
       };
     case "BUY_ACTION_TICKET":
@@ -85,7 +96,7 @@ const Reducer = (store, action) => {
         },
       };
     case "REMOVE_USER":
-      return { user: {}, isAuthenticated: false };
+      return { ...store, user: {}, isAuthenticated: false };
     case "DEV_TEST":
       return { ...store, response: action.data };
     case "UPDATE_LEVEL_REWARDS":

@@ -1,9 +1,7 @@
 import "react-circular-progressbar/dist/styles.css";
-
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import { NextContent, getIconType } from "../pages/course/[id]";
 import { useContext, useEffect, useState } from "react";
-
 import { Context } from "../context/store";
 import { Course } from "../components/shopComps";
 import Link from "next/link";
@@ -15,7 +13,7 @@ import styles from "../styles/Today.module.scss";
 import { tutorialSlides } from "../data/todayData";
 import { updateTutorial } from "../actions/action";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 export const TinyReward = ({
   objCounter: {

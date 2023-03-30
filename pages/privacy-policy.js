@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 
+import Loader from "../components/reusable/Loader";
 import ReactMarkdown from "react-markdown";
 import { normalize } from "../utils/calculations";
 import styles from "../styles/Settings.module.scss";
@@ -24,7 +25,7 @@ const PrivacyPolicy = () => {
   const gql_data = data && normalize(data);
   const router = useRouter();
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
   if (error) return <p>Error: {error.message}</p>;
 
   const { title, content } = gql_data.webpage;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "../styles/Escape.module.scss";
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 const database = {
   goin: {

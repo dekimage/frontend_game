@@ -3,7 +3,8 @@ import { useState, useEffect, useContext } from "react";
 import Cookie from "js-cookie";
 import { Context } from "../../../context/store";
 import router from "next/router";
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import Loader from "../../../components/reusable/Loader";
+import baseUrl from "../../../utils/settings";
 
 const GoogleCallback = ({ access_token, query }) => {
   const [store, dispatch] = useContext(Context);
@@ -39,9 +40,7 @@ const GoogleCallback = ({ access_token, query }) => {
   }, []);
 
   return (
-    <div>
-      <p>Loading user data...</p>
-    </div>
+    <Loader />;
   );
 };
 

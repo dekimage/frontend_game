@@ -1,28 +1,33 @@
 import React, { useContext, useEffect, useState } from "react";
 import { login, signup } from "../actions/auth";
-
+import * as Yup from "yup";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Context } from "../context/store";
 import Link from "next/link";
 import iconLogo from "../assets/menu-logo-dark.svg";
 import styles from "../styles/Login.module.scss";
 import { useRouter } from "next/router";
 
+import baseUrl from "../utils/settings";
+import { Button } from "../components/reusableUI";
 // import { login } from "../lib/auth";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [data, updateData] = useState({
-    identifier: "",
-    password: "",
-    username: "",
-    email: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
+
+  const initialValues = { email: "", password: "" };
+
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Please enter a valid email address.")
+      .required("Email is Required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+  });
 
   useEffect(() => {
     const isLoginPage = router.query.isLoginPage || true;
@@ -33,11 +38,27 @@ const Login = () => {
     if (store.isAuthenticated) {
       router.push("/"); //redirect if you're already logged in
     }
-  }, [store, data]);
+  }, [store]);
 
   function onChange(event) {
     updateData({ ...data, [event.target.name]: event.target.value });
   }
+
+  const onSubmit = (dispatch, values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+    if (isLogin) {
+      login(dispatch, values.email, values.password, setSubmitting, resetForm);
+    } else {
+      signup(
+        dispatch,
+        values.email,
+        values.password,
+        router.query.ref && router.query.ref,
+        setSubmitting,
+        resetForm
+      );
+    }
+  };
 
   return (
     <div className="background_dark">
@@ -56,37 +77,62 @@ const Login = () => {
                 Sign up for free
               </div>
             </div>
-            <form>
-              <input
-                onChange={(event) => onChange(event)}
-                type="email"
-                name="identifier"
-                placeholder="Email address"
-                className="input mb1"
-              />
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={(values, { setSubmitting, resetForm }) =>
+                onSubmit(dispatch, values, { setSubmitting, resetForm })
+              }
+            >
+              {({ isSubmitting, isValid, submitForm }) => (
+                <Form>
+                  <div>
+                    <div className="input-label">Email Address</div>
+                    <Field
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Email Address"
+                      className="input"
+                    />
 
-              <input
-                onChange={(event) => onChange(event)}
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="input mb1"
-              />
-              <Link href="/auth/forgot-password">
-                <div className="yellow-link">Forgot your password?</div>
-              </Link>
-            </form>
-            <div className={styles.buttons}>
-              <div
-                onClick={() => {
-                  setLoading(true);
-                  login(dispatch, data.identifier, data.password);
-                }}
-                className="btn btn-stretch btn-primary"
-              >
-                Login
-              </div>
-            </div>
+                    <div className="input-error">
+                      <ErrorMessage name="email" />
+                    </div>
+                  </div>
+
+                  <br />
+
+                  <div>
+                    <div className="input-label">Password</div>
+                    <Field
+                      type="password"
+                      id="password"
+                      name="password"
+                      placeholder="Password"
+                      className="input"
+                    />
+                    <div className="input-error">
+                      <ErrorMessage name="password" />
+                    </div>
+                  </div>
+
+                  <Button
+                    type={"primary"}
+                    className="mb1 mt1"
+                    onClick={submitForm}
+                    children={!isSubmitting && "Login"}
+                    isLoading={isSubmitting}
+                    isDisabled={!isValid}
+                    autofit
+                  />
+                </Form>
+              )}
+            </Formik>
+
+            <Link href="/auth/forgot-password">
+              <div className="yellow-link">Forgot your password?</div>
+            </Link>
           </div>
         ) : (
           <div>
@@ -101,60 +147,73 @@ const Login = () => {
                 Login
               </div>
             </div>
-            <form>
-              <input
-                onChange={(event) => onChange(event)}
-                type="text"
-                name="username"
-                placeholder="Username"
-                className="input mb1"
-              />
 
-              <input
-                onChange={(event) => onChange(event)}
-                type="text"
-                name="email"
-                placeholder="Email Address"
-                className="input mb1"
-              />
+            <div className={styles.description}>
+              By continuing, you agree to Actionise's
+              <Link href="/terms-and-conditions">
+                <span className="yellow-link">Terms And Conditions</span>
+              </Link>
+              and
+              <Link href="/privacy-policy">
+                <span className="yellow-link">Privacy Policy.</span>
+              </Link>
+            </div>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={(values, { setSubmitting, resetForm }) =>
+                onSubmit(dispatch, values, { setSubmitting, resetForm })
+              }
+            >
+              {({ isSubmitting, isValid, submitForm }) => (
+                <Form>
+                  <div>
+                    <div className="input-label">Email Address</div>
+                    <Field
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Email Address"
+                      className="input"
+                    />
 
-              <input
-                onChange={(event) => onChange(event)}
-                type="password"
-                name="password"
-                placeholder="Password (8+ characters)"
-                className="input mb1"
-              />
-              <div className={styles.description}>
-                By continuing, you agree to Actionise's
-                <Link href="/terms-and-conditions">
-                  <span className="yellow-link">Terms And Conditions</span>
-                </Link>
-                and
-                <Link href="/privacy-policy">
-                  <span className="yellow-link">Privacy Policy.</span>
-                </Link>
-              </div>
-              <div
-                onClick={() => {
-                  setLoading(true);
-                  signup(
-                    dispatch,
-                    data.username,
-                    data.email,
-                    data.password,
-                    router.query.ref && router.query.ref
-                  );
-                }}
-                className="btn btn-stretch btn-primary"
-              >
-                Create an Account
-              </div>
+                    <div className="input-error">
+                      <ErrorMessage name="email" />
+                    </div>
+                  </div>
 
-              <div className={styles.description}>
-                Link an account to log in faster in the future
-              </div>
-            </form>
+                  <br />
+
+                  <div>
+                    <div className="input-label">Password</div>
+                    <Field
+                      type="password"
+                      id="password"
+                      name="password"
+                      placeholder="Password"
+                      className="input"
+                    />
+                    <div className="input-error">
+                      <ErrorMessage name="password" />
+                    </div>
+                  </div>
+
+                  <Button
+                    type={"primary"}
+                    className="mb1 mt1"
+                    onClick={submitForm}
+                    children={!isSubmitting && "Create an account"}
+                    isLoading={isSubmitting}
+                    isDisabled={!isValid}
+                    autofit
+                  />
+                </Form>
+              )}
+            </Formik>
+
+            <div className={styles.description}>
+              Link an account to log in faster in the future
+            </div>
           </div>
         )}
         <div className={styles.oauthSection}>

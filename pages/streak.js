@@ -1,6 +1,6 @@
 // *** REACT ***
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { ArtifactModal } from "./profile";
 import { BackButton } from "../components/reusableUI";
@@ -9,25 +9,43 @@ import { Context } from "../context/store";
 import { GET_STREAKS_QUERY } from "../GQL/query";
 import { GemReward } from "./buddies-rewards";
 import Modal from "../components/Modal";
-import { Rarity } from "../components/Rarity";
 import { claimStreakReward } from "../actions/action";
 import cx from "classnames";
-import { gql } from "apollo-boost";
-import { normalize } from "../utils/calculations";
 import styles from "../styles/Streak.module.scss";
-import { useQuery } from "@apollo/react-hooks";
-import { useRouter } from "next/router";
+import { withUser } from "../Hoc/withUser";
 
-// *** COMPONENTS ***
+import baseUrl from "../utils/settings";
 
-// *** ACTIONS ***
+const calculateReward = (
+  reward_type,
+  streak_count,
+  artifact,
+  reward_card,
+  user
+) => {
+  if (reward_type === "artifact") {
+    return {
+      name: `Streak ${streak_count}`,
+      reward: {
+        name: artifact.name,
+        image: artifact.image,
+        rarity: artifact.rarity,
+        type: reward_type,
+        isCollected: true,
+        require: artifact.require,
+        progress: user.highest_buddy_shares,
+      },
+    };
+  }
+  if (reward_type === "stars") {
+    return { name: `Streak ${streak_count}`, image: { url: "/star.png" } };
+  }
+  if (reward_type === "card") {
+    return { name: `Streak ${streak_count}`, reward: reward_card };
+  }
+};
 
-// *** STYLES ***
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const Streak = ({ streak }) => {
-  const [store, dispatch] = useContext(Context);
+const Streak = ({ streak, user, dispatch }) => {
   const {
     reward_type,
     artifact,
@@ -38,31 +56,13 @@ const Streak = ({ streak }) => {
     is_ready,
   } = streak;
 
-  const calculateReward = (reward_type) => {
-    if (reward_type === "artifact") {
-      return {
-        name: `Streak ${streak_count}`,
-        reward: {
-          name: artifact.name,
-          image: artifact.image,
-          rarity: artifact.rarity,
-          type: reward_type,
-          isCollected: true,
-          require: artifact.require,
-          progress: store.user.highest_buddy_shares,
-        },
-      };
-    }
-    if (reward_type === "stars") {
-      return { name: `Streak ${streak_count}`, image: { url: "/star.png" } };
-    }
-    if (reward_type === "card") {
-      console.log(reward_card);
-      return { name: `Streak ${streak_count}`, reward: reward_card };
-    }
-  };
-
-  const reward = calculateReward(reward_type);
+  const reward = calculateReward(
+    reward_type,
+    streak_count,
+    artifact,
+    reward_card,
+    user
+  );
   const [isRewardModalShowing, setIsRewardModalShowing] = useState(false);
 
   return (
@@ -141,19 +141,15 @@ const Streak = ({ streak }) => {
   );
 };
 
-const StreakTower = () => {
-  const [store, dispatch] = useContext(Context);
-  const { loading, error, data } = useQuery(GET_STREAKS_QUERY);
-
-  const gql_data = data && normalize(data);
-
+const StreakTower = (props) => {
+  const { user, data, dispatch } = props;
   const mergeStreaks = (streaks, userStreaks) => {
     if (!userStreaks) {
       return streaks.map((s) => {
         return {
           ...s,
           is_collected: false,
-          is_ready: store.user.highest_streak_count >= s.streak_count,
+          is_ready: user.highest_streak_count >= s.streak_count,
         };
       });
     }
@@ -168,7 +164,7 @@ const StreakTower = () => {
 
       return {
         ...s,
-        is_ready: store.user.highest_streak_count >= s.streak_count,
+        is_ready: user.highest_streak_count >= s.streak_count,
       };
     });
 
@@ -178,46 +174,47 @@ const StreakTower = () => {
   return (
     <div className="background_dark">
       <div className="section">
-        {error && <div>Error: {error}</div>}
-        {loading && <div>Loading...</div>}
-        {data && store.user && (
-          <>
-            <div className={styles.header}>
-              <BackButton routeDynamic={""} routeStatic={""} isBack />
+        <>
+          <div className={styles.header}>
+            <BackButton routeDynamic={""} routeStatic={""} isBack />
 
-              <div className={styles.label}>Highest Streak</div>
+            <div className={styles.label}>Highest Streak</div>
+          </div>
+
+          <div className={styles.streakTitle}>
+            <div style={{ position: "relative" }}>
+              <img src={`${baseUrl}/streak.png`} height="60px" />
             </div>
 
-            <div className={styles.streakTitle}>
-              <div style={{ position: "relative" }}>
-                <img src={`${baseUrl}/streak.png`} height="60px" />
-              </div>
+            <div className={styles.streakTitle_amount}>
+              {user.highest_streak_count}
+            </div>
+          </div>
+          <div className={styles.subTitle}>Log in daily to unlock rewards.</div>
+          <div className={styles.subTitle_muted}>
+            It takes only 1 second to log in and claim.
+          </div>
 
-              <div className={styles.streakTitle_amount}>
-                {store.user.highest_streak_count}
-              </div>
+          {data && user && (
+            <div className={styles.streakContainer}>
+              {mergeStreaks(data.streakrewards, user.streak_rewards)
+                .sort((a, b) => a.id - b.id)
+                .map((streak, i) => {
+                  return (
+                    <Streak
+                      streak={streak}
+                      user={user}
+                      dispatch={dispatch}
+                      key={i}
+                    />
+                  );
+                })}
             </div>
-            <div className={styles.subTitle}>
-              Log in daily to unlock rewards.
-            </div>
-            <div className={styles.subTitle_muted}>
-              It takes only 1 second to log in and claim.
-            </div>
-
-            {gql_data && store.user && (
-              <div className={styles.streakContainer}>
-                {mergeStreaks(gql_data.streakrewards, store.user.streak_rewards)
-                  .sort((a, b) => a.id - b.id)
-                  .map((streak, i) => {
-                    return <Streak streak={streak} key={i} />;
-                  })}
-              </div>
-            )}
-          </>
-        )}
+          )}
+        </>
       </div>
     </div>
   );
 };
 
-export default StreakTower;
+export default withUser(StreakTower, GET_STREAKS_QUERY);

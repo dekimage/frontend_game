@@ -8,8 +8,7 @@ import { closeRewardsModal } from "../actions/action";
 import { Rarity } from "./Rarity";
 import { ArtifactModal } from "../pages/profile";
 import ProgressBar from "./ProgressBar";
-import { getXpLimit } from "../utils/calculations";
-const baseUrl = "https://backend-actionise.herokuapp.com";
+import baseUrl from "../utils/settings";
 
 export const RewardsModal = ({ defaultPage = "xp" }) => {
   const [store, dispatch] = useContext(Context);
@@ -17,7 +16,8 @@ export const RewardsModal = ({ defaultPage = "xp" }) => {
 
   const rewardsModal = store.rewardsModal;
 
-  const { isLevelnew, level, xp, stars, artifact } = rewardsModal.rewards;
+  const { isLevelnew, level, xp, xpLimit, xpGained, stars, artifact } =
+    rewardsModal.rewards;
 
   const [page, setPage] = useState(defaultPage);
   const [counter, setCounter] = useState(artifact ? 3 : stars ? 2 : 1);
@@ -56,34 +56,21 @@ export const RewardsModal = ({ defaultPage = "xp" }) => {
 
   return (
     <div className={styles.rewardsModal}>
-      {page === "xp" &&
-        (isLevelnew ? (
-          <div className={styles.rewardsBox}>
-            <img height="60px" src={`${baseUrl}/xp.png`} />
-            <div className={styles.xp}>+ {xp} XP</div>
+      {page === "xp" && (
+        <div className={styles.rewardsBox}>
+          <img height="60px" src={`${baseUrl}/xp.png`} />
+          <div className={styles.xp}>+ {xpGained} XP</div>
 
-            <div className={styles.levelUp}>LEVEL UP!</div>
-            <div className={styles.level_progress}>Level {level}</div>
-            {/* calc progress current */}
-            <ProgressBar progress={user.xp} max={getXpLimit(level)} />
+          {isLevelnew && <div className={styles.levelUp}>LEVEL UP!</div>}
+          <div className={styles.level_progress}>Level {level}</div>
+          {/* calc progress current */}
+          <ProgressBar progress={xp} max={xpLimit} />
 
-            <div className={styles.xp_progress}>
-              XP {user.xp}/{getXpLimit(level)}
-            </div>
+          <div className={styles.xp_progress}>
+            XP {xp}/{xpLimit}
           </div>
-        ) : (
-          <div className={styles.rewardsBox}>
-            <img height="60px" src={`${baseUrl}/xp.png`} />
-            <div className={styles.xp}>+ {xp} XP</div>
-
-            <div className={styles.level_progress}>Level {user.level}</div>
-            <ProgressBar progress={user.xp} max={getXpLimit(user.level)} />
-
-            <div className={styles.xp_progress}>
-              XP {user.xp}/{getXpLimit(user.level)}
-            </div>
-          </div>
-        ))}
+        </div>
+      )}
 
       {page === "stars" && (
         <div className={styles.rewardsBox}>

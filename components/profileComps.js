@@ -1,6 +1,6 @@
 // *** REACT ***
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { Context } from "../context/store";
 import { GET_AVATARS } from "../GQL/query";
@@ -9,22 +9,21 @@ import Link from "next/link";
 import Modal from "./Modal";
 import ProgressBar from "../components/ProgressBar";
 import cx from "classnames";
-import { getXpLimit } from "../utils/calculations";
+
 import { normalize } from "../utils/calculations";
-import router from "next/router";
 import { saveAvatar } from "../actions/action";
 import settingsIcon from "../assets/menu-settings-dark.svg";
 import styles from "../styles/Profile.module.scss";
 import useModal from "../hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
+import baseUrl from "../utils/settings";
+import Loader from "../components/reusable/Loader";
 
 // *** COMPONENTS ***
 
 // *** ACTIONS ***
 
 // *** STYLES ***
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const Stat = ({ img, number, text, max, isPercent = false }) => {
   return (
@@ -33,7 +32,7 @@ export const Stat = ({ img, number, text, max, isPercent = false }) => {
         <img src={img} />
       </div>
       <div className={styles.statsBox_number}>
-        {number || <div className="mt1"> </div>}
+        {number == null ? <div className="mt1"> </div> : number}
         {max && `/${max}`}
         {isPercent && "%"}
       </div>
@@ -93,7 +92,7 @@ const ChangeAvatarModal = ({ closeModal }) => {
 
   return (
     <div className={styles.avatarModal}>
-      {loading || (error && <div>Loading...</div>)}
+      {(loading || error) && <Loader />}
       <div className="header">Change Avatar</div>
       {avatars && (
         <div className={styles.avatarWrapper}>
@@ -128,7 +127,7 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
   const [store, dispatch] = useContext(Context);
   const { isShowing, openModal, closeModal } = useModal();
   const user = isBuddy ? buddy : store.user;
-  const maxLevel = getXpLimit(user.level);
+  const maxLevel = user.xpLimit || 300;
   return (
     <div className={styles.profileHeader}>
       <div className="ml1"></div>

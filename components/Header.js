@@ -21,8 +21,7 @@ import iconSearch from "../assets/menu-search-dark.svg";
 import iconSearchActive from "../assets/menu-search-active.svg";
 
 import iconLogo from "../assets/menu-logo-dark.svg";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 const mobileNavLinks = [
   {

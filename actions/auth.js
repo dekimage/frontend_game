@@ -8,24 +8,27 @@ const backendAPi = process.env.NEXT_PUBLIC_API_URL;
 
 export const signup = (
   dispatch,
-  username,
   email,
   password,
-  sharedByUserId = false
+  sharedByUserId = false,
+  setSubmitting,
+  resetForm
 ) => {
   api
-    .signupApi(username, email, password, sharedByUserId)
+    .signupApi(email, password, sharedByUserId)
     .then(({ data }) => {
-      dispatch({ type: "FETCH_USER", data: data.user });
       Cookie.set("token", data.jwt);
       Cookie.set("userId", data.user.id);
-
-      Router.push("/");
       axios
         .get(`${backendAPi}/api/usercard/me`, {
           headers: { Authorization: `Bearer ${data.jwt}` },
         })
-        .then(({ res }) => console.log(res));
+        .then(({ data }) => {
+          dispatch({ type: "FETCH_USER", data });
+        });
+      setSubmitting(false);
+      resetForm(true);
+      Router.push("/");
     })
 
     .catch((err) => {
@@ -33,10 +36,18 @@ export const signup = (
     });
 };
 
-export const login = (dispatch, identifier, password) => {
+export const login = (
+  dispatch,
+  identifier,
+  password,
+  setSubmitting,
+  resetForm
+) => {
   api
     .loginApi(identifier, password)
     .then(({ data }) => {
+      setSubmitting(false);
+      resetForm(true);
       dispatch({ type: "FETCH_USER", data: data.user });
       Cookie.set("token", data.jwt);
       Cookie.set("userId", data.user.id);

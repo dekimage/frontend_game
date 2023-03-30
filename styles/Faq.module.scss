@@ -45,3 +45,13 @@
     }
   }
 }
+
+.header {
+  @extend %header;
+  padding: 1rem;
+  position: relative;
+}
+
+.back {
+  @extend %flex_center;
+}

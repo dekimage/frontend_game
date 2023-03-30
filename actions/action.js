@@ -38,11 +38,14 @@ export const sendFeatureMail = (dispatch, details, subject) => {
     });
 };
 
-export const rateCard = (dispatch, rating, cardId) => {
+export const rateCard = (dispatch, rating, cardId, feedbackType) => {
   api
-    .rateCardApi(rating, cardId)
+    .rateCardApi(rating, cardId, feedbackType)
     .then((res) => {
-      toast("Thank you for your feedback.");
+      feedbackType === "message" && toast("Thank you for your feedback.");
+      feedbackType === "message" &&
+        res.data.hasRated &&
+        toast("You gained 25 Stars");
     })
     .catch((err) => {
       console.log(err);
@@ -309,7 +312,7 @@ export const buyCardTicket = (dispatch, id, type, callback) => {
         type: type == "card" ? "BUY_CARD_TICKET" : "BUY_ACTION_TICKET",
         data,
       });
-      setTimeout(() => callback(), 2000);
+      setTimeout(() => callback(), 500);
 
       // fetchUser(dispatch);
     })
@@ -346,6 +349,7 @@ export const generateBuddyLink = (dispatch) => {
 };
 
 export const updateSettings = (dispatch, data) => {
+  dispatch({ type: "LOADING" });
   api
     .updateSettingsApi(data)
     .then(({ data }) => {

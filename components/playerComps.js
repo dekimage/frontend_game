@@ -15,8 +15,8 @@ import progressIcon from "../assets/player_progress.svg";
 import rewardsIcon from "../assets/player_rewards.svg";
 import styles from "../styles/Player.module.scss";
 import { useContext } from "react";
+import baseUrl from "../utils/settings";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const SliderProgress = ({

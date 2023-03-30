@@ -18,8 +18,8 @@ import cx from "classnames";
 import iconCross from "../assets/close.svg";
 import styles from "../styles/CardPage.module.scss";
 import { useRouter } from "next/router";
+import baseUrl from "../utils/settings";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const ActionsWrapper = ({
@@ -597,7 +597,7 @@ export const CompleteCardSection = ({
   usercard,
   contentsLength,
   completedLength,
-  setIsRatingModalOpen,
+
   closePlayer = false,
 }) => {
   const [store, dispatch] = useContext(Context);
@@ -633,7 +633,11 @@ export const CompleteCardSection = ({
         <div
           className={`${styles.completeCardSection} flex_center flex_column`}
         >
-          You can complete this card again in:
+          {/* You can play this card as many times as you want, throughout the day.
+          <br />
+          However, you can complete each card once every 24 hours.
+          <br /> */}
+          You can mark this card as complete again in:
           <div className="mt1 mb1">
             <Timer
               timeLeftProp={isMoreThan24HoursAgo}
@@ -657,7 +661,6 @@ export const CompleteCardSection = ({
           className="btn btn-primary"
           onClick={() => {
             updateCard(dispatch, card.id, "complete");
-            setIsRatingModalOpen(true);
           }}
         >
           Complete Card{" "}
@@ -690,13 +693,16 @@ export const CompleteCardSection = ({
   );
 };
 
-export const CardCtaFooter = ({ isUnlocked, card }) => {
+export const CardCtaFooter = ({
+  isUnlocked,
+  card,
+  isTicketPurchased,
+  isSubscribed,
+}) => {
   const [store, dispatch] = useContext(Context);
   const hasStars = store?.user?.stars >= card.cost;
   const energy = store?.user?.energy;
-  const cardTickets = store?.user?.card_tickets || [];
-  const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
-  const is_subscribed = store?.user?.is_subscribed;
+
   const canStreakUnlock =
     store?.user?.highest_streak_count >= card.streakreward?.streak_count;
   const canBuddyUnlock =
@@ -772,7 +778,7 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
         )
       ) : (
         <div className={styles.fixed}>
-          {isTicketPurchased || is_subscribed ? (
+          {isTicketPurchased || isSubscribed ? (
             <Button
               onClick={() => {
                 router.push(`${feUrl}/card/player/${card.id}`);

@@ -5,7 +5,7 @@ import heartLottie from "../../assets/lottie-animations/gift-heart.json";
 import styles from "../../styles/Modals.module.scss";
 import { useState } from "react";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../../utils/settings";
 const ShareBuddyModal = ({ id }) => {
   const [copyButton, setCopyButton] = useState("Copy");
   const perks = [

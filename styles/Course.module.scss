@@ -366,6 +366,14 @@
   border-radius: 50%;
 }
 
+.btnPlayDisabled {
+  @extend %flex_center;
+  background-color: gray;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
 .contentStatAmount {
   font-size: 14px;
   font-weight: 500;

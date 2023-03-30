@@ -8,7 +8,9 @@ import iconLogo from "../assets/menu-logo-dark.svg";
 import styles from "../styles/LandingPage.module.scss";
 import { useRouter } from "next/router";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
+import SEO from "./SEO";
+import { SEO_CONFIG } from "../data/configSEO";
 
 const SwipeableContainer = ({ children }) => {
   const [startX, setStartX] = useState(0);
@@ -371,6 +373,11 @@ const LandingPage = () => {
   }
   return (
     <div className={styles.landingPage}>
+      <SEO
+        title={SEO_CONFIG.landingPage.title}
+        description={SEO_CONFIG.landingPage.description}
+        keywords={SEO_CONFIG.landingPage.keywords}
+      />
       <Header navigateSignup={navigateSignup} />
       <HeroSection navigateSignup={navigateSignup} />
       <FunnelSection />

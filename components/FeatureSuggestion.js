@@ -2,18 +2,22 @@ import React, { useContext, useState } from "react";
 
 import { Button } from "./reusableUI";
 import { Context } from "../context/store";
-import { sendFeatureMail } from "../actions/action";
+import { rateCard, sendFeatureMail } from "../actions/action";
 import styles from "../styles/FeatureSuggestion.module.scss";
 
-function FeatureSuggestion({ type }) {
-  const [details, setDetails] = useState("");
+export function FeatureSuggestion({
+  type,
+  cardId = false,
+  defaultPlaceholder = false,
+  handleRateCard,
+}) {
+  const [details, setDetails] = useState(defaultPlaceholder || "");
   const [store, dispatch] = useContext(Context);
 
-  const isDisabled =
-    details.length <= 0 || !type || store.user.mail_send_count >= 25;
+  const isDisabled = details.length <= 0 || !type;
+  // || store.user.mail_send_count >= 25;
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     // generate custom subject based on email type
     const subject =
       type === "feature request"
@@ -27,20 +31,25 @@ function FeatureSuggestion({ type }) {
     if (isDisabled) {
       return;
     }
-    sendFeatureMail(dispatch, details, subject);
+    if (type === "rateCard") {
+      rateCard(dispatch, details, cardId, "message");
+      handleRateCard();
+    } else {
+      sendFeatureMail(dispatch, details, subject);
+    }
   };
 
-  const maxFeedbackMessage =
-    "You have reached the maximum number of times you can send us feedback. If you wish to reset this limit, please contact us at contact@actionise.com";
+  // const maxFeedbackMessage =
+  //   "You have reached the maximum number of times you can send us feedback. If you wish to reset this limit, please contact us at contact@actionise.com";
+  const rateCardMessage =
+    "How would you implement this card in your life? Share your opinion about the card and you'll get a one time reward of 25 gems for each card you rate!";
   const defaultFeedbackMessage =
     "Feel free to write your wildest ideas here. This will go directly to our email, and we'll handle it from there. Remember, there is no good or bad feedback :)";
 
   return (
     <div className={styles.feedbackForm}>
       <div className={styles.feedbackForm__label}>
-        {store.user.mail_send_count >= 25
-          ? maxFeedbackMessage
-          : defaultFeedbackMessage}
+        {type === "rateCard" ? rateCardMessage : defaultFeedbackMessage}
       </div>
       <textarea
         id="feedback-input"

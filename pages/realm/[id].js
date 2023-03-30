@@ -1,102 +1,44 @@
-import { useQuery } from "@apollo/react-hooks";
-import { useContext, useState } from "react";
-import { Context } from "../../context/store";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import _ from "lodash";
-import styles from "../../styles/Realm.module.scss";
-
-import NavBar from "../../components/NavBar";
-import Card from "../../components/Card";
-import { Tabs } from "../../components/profileComps";
-import { Problem } from "../problems";
-import { Course } from "../../components/shopComps";
-import { normalize } from "../../utils/calculations";
 import { BackButton } from "../../components/reusableUI";
-import { joinCards } from "../../utils/joins";
-
-import { Book } from "../books";
-
+import Card from "../../components/Card";
 import { GET_REALM_ID } from "../../GQL/query";
+import NavBar from "../../components/NavBar";
+import _ from "lodash";
+import { joinCards } from "../../utils/joins";
+import styles from "../../styles/Realm.module.scss";
+import { withUser } from "../../Hoc/withUser";
 
-const Cards = () => {
-  const router = useRouter();
-  const [store, dispatch] = useContext(Context);
-  const { data, loading, error } = useQuery(GET_REALM_ID, {
-    variables: { id: router.query.id },
-  });
-  // const [tab, setTab] = useState("Cards");
+const Cards = (props) => {
+  const { user, data } = props;
 
-  // const tabsData = [
-  //   { label: "Cards", count: -1, link: "Cards" },
-  //   { label: "Problems", count: -1, link: "Problems" },
-  //   { label: "Books", count: -1, link: "Books" },
-  // ];
-
-  const gql_data = data && normalize(data);
-  const usercards = store.user && store.user.usercards;
+  const usercards = user && user.usercards;
 
   return (
     <div className="background_dark">
-      {error && <div>Error: {error}</div>}
-      {loading && <div>Loading...</div>}
-      {gql_data && (
-        <div>
-          <div className="section">
-            <div className={styles.header}>
-              <BackButton routeDynamic={""} routeStatic={"/learn"} />
+      <div>
+        <div className="section">
+          <div className={styles.header}>
+            <BackButton routeDynamic={""} routeStatic={"/learn"} />
 
-              <div className={styles.realmLogo}>
-                <img
-                  src={gql_data.realm.image.url}
-                  height="24px"
-                  className="mr1"
-                />
-                {gql_data.realm.name}
-              </div>
+            <div className={styles.realmLogo}>
+              <img src={data.realm.image.url} height="24px" className="mr1" />
+              {data.realm.name}
             </div>
-          </div>
-
-          {/* <Tabs tabState={tab} setTab={setTab} tabs={tabsData} /> */}
-          <div className="section">
-            <div className={styles.grid}>
-              {store.user &&
-                joinCards(gql_data.realm.cards, usercards)
-                  .sort((a, b) => b.is_open - a.is_open)
-                  .map((card, i) => <Card card={card} key={i} />)}
-            </div>
-            {/* <div className={styles.problemsWrap}>
-              {gql_data.realm.courses.map((course, i) => (
-                <Course course={course} key={i} />
-              ))}
-            </div> */}
-
-            {/* {tab === "Problems" && (
-              <>
-                <div className={styles.sectionHeader}>
-                  Common {gql_data.realm.name} Problems
-                </div>
-                <div className={styles.problemsWrap}>
-                  {gql_data.realm.problems.map((problem, i) => (
-                    <Problem problem={problem} key={i} />
-                  ))}
-                </div>
-              </>
-            )}
-
-            {tab === "Books" && (
-              <div className={styles.grid}>
-                {gql_data.realm.books.map((book, i) => (
-                  <Book book={book} key={i} />
-                ))}
-              </div>
-            )} */}
           </div>
         </div>
-      )}
+
+        <div className="section">
+          <div className={styles.grid}>
+            {user &&
+              joinCards(data.realm.cards, usercards)
+                .sort((a, b) => b.is_open - a.is_open)
+                .map((card, i) => <Card card={card} key={i} />)}
+          </div>
+        </div>
+      </div>
+
       <NavBar />
     </div>
   );
 };
 
-export default Cards;
+export default withUser(Cards, GET_REALM_ID, true);

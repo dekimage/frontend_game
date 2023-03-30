@@ -1,36 +1,24 @@
-// *** REACT ***
-
 import {
-  Activity,
   Buddy,
   ProfileHeader,
   Stat,
   Tabs,
 } from "../../components/profileComps";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { Artifact } from "../profile";
 import CardsMapper from "../../components/CardsMapper";
-import { CommunityAction } from "../../components/cardPageComps";
+
 import { Context } from "../../context/store";
 import { GET_USER_ID } from "../../GQL/query";
 import Header from "../../components/Header";
 import NavBar from "../../components/NavBar";
-import { calcTotal } from "../../utils/calculations";
-import { followBuddy } from "../../actions/action";
-import { gql } from "apollo-boost";
+
 import { normalize } from "../../utils/calculations";
 import styles from "../../styles/Profile.module.scss";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-
-// *** COMPONENTS ***
-
-// *** ACTIONS ***
-
-// *** STYLES ***
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../../utils/settings";
 
 const tabsData = [
   { label: "activity", count: -1 },

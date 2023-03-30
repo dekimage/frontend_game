@@ -4,7 +4,7 @@ import styles from "../styles/Timer.module.scss";
 import { completeAction } from "../actions/action";
 import { useContext } from "react";
 import { Context } from "../context/store";
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 const Timer = ({
   seconds,

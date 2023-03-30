@@ -12,30 +12,54 @@ import iconCheckmark from "../assets/checkmark.svg";
 import { rateCard } from "../actions/action";
 import styles from "../styles/Player.module.scss";
 import { useTimer } from "react-timer-hook";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
+import baseUrl from "../utils/settings";
+import happyEmoji from "../assets/3-emoji.svg";
+import mehEmoji from "../assets/2-emoji.svg";
+import sadEmoji from "../assets/1-emoji.svg";
+import { ImageUI } from "./reusableUI";
+import FeatureSuggestion from "./FeatureSuggestion";
 
 //MAYBE IN CARD PLAYER?
-export const RatingModal = ({ closePlayer, cardId }) => {
+export const RatingModal = ({ closePlayer, cardId, usercard }) => {
   const [store, dispatch] = useContext(Context);
+
+  const { message, rating } = usercard;
+  const [emoji, setEmoji] = useState(rating || 0);
+
+  const handleRateCard = () => {
+    rateCard(dispatch, emoji, cardId, "rating");
+    closePlayer();
+  };
   return (
     <div className={styles.ratingModal}>
-      <div className="header mb1">Was this card helpful?</div>
+      <div className="header mb1">How did you like this card?</div>
       <div className="subHeader">Rate me!</div>
 
-      <div>
-        {[6, 7, 8].map((emotion, i) => (
+      <div className="flex_center">
+        {[sadEmoji, mehEmoji, happyEmoji].map((emotion, i) => (
           <div
             key={i}
-            style={{ border: "2px solid white", height: "50px", width: "50px" }}
             onClick={() => {
-              rateCard(dispatch, emotion, cardId);
-              closePlayer();
+              setEmoji(i + 1);
             }}
-          ></div>
+          >
+            <img
+              src={emotion}
+              width="75px"
+              height="75px"
+              className="ml5 mr5"
+              style={{ opacity: emoji === i + 1 ? 1 : 0.5 }}
+            />
+          </div>
         ))}
       </div>
+
+      <FeatureSuggestion
+        type="rateCard"
+        cardId={cardId}
+        defaultPlaceholder={message}
+        handleRateCard={handleRateCard}
+      />
 
       <div className="btn btn-outline" onClick={() => closePlayer()}>
         Skip For Now
@@ -49,7 +73,6 @@ export const SuccessModal = ({
   card,
   usercard,
   totalTasksCount,
-  setIsRatingModalOpen,
 }) => {
   const [store, dispatch] = useContext(Context);
   const suffix = getNumberSuffix(usercard.completed);
@@ -97,7 +120,6 @@ export const SuccessModal = ({
         contentsLength={contentsLength}
         completedLength={completedLength}
         closePlayer={closePlayer}
-        setIsRatingModalOpen={setIsRatingModalOpen}
       />
     </div>
   );

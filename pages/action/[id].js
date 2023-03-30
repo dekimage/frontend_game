@@ -17,7 +17,7 @@ import { normalize } from "../../utils/calculations";
 import { GET_ACTION_ID } from "../../GQL/query";
 import { buyCardTicket } from "../../actions/action";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../../utils/settings";
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const ActionCta = ({ isUnlocked, energy, actionId, cardId }) => {

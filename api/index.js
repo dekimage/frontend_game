@@ -2,7 +2,7 @@ import Cookie from "js-cookie";
 import axios from "axios";
 
 const backendAPi = process.env.NEXT_PUBLIC_API_URL;
-// const backendAPi = "https://backend-actionise.herokuapp.com";
+import { generateRandomCode } from "../utils/calculations";
 
 const baseUrl = `${backendAPi}/api`;
 const userUrl = "/usercard";
@@ -18,11 +18,11 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
 export const fetchUserApi = () => axios.get("/usercard/me");
 
 // AUTH API
-export const signupApi = (username, email, password, sharedByUserId) =>
+export const signupApi = (email, password, sharedByUserId) =>
   axios.post(
     "/auth/local/register",
     {
-      username,
+      username: `User-${generateRandomCode()}`,
       email,
       password,
       shared_by: sharedByUserId ? sharedByUserId : null,
@@ -55,10 +55,11 @@ export const updateUserBasicInfoApi = (value, inputName) =>
     inputName,
   });
 
-export const rateCardApi = (rating, cardId) =>
+export const rateCardApi = (rating, cardId, feedbackType) =>
   axios.put(`${userUrl}/rate-card`, {
     rating,
     cardId,
+    feedbackType,
   });
 
 export const sendFeatureMailApi = (details, subject) =>
@@ -138,7 +139,7 @@ export const generateBuddyLinkApi = () =>
   axios.put(`${userUrl}/generate-buddy-link`);
 
 export const updateSettingsApi = (data) =>
-  axios.put(`${userUrl}/update-settings}`, { data });
+  axios.put(`${userUrl}/update-settings`, { settings: data });
 
 export const followBuddyApi = (userId) =>
   axios.put(`${userUrl}/follow-buddy/${userId}`);

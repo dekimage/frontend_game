@@ -9,8 +9,6 @@ import { normalize } from "../utils/calculations";
 import styles from "../styles/Problems.module.scss";
 import { useQuery } from "@apollo/react-hooks";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
 export const GenericDropDown = ({ items, label, callback }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(false);
@@ -163,7 +161,7 @@ const Problems = () => {
 
       <div>
         {error && <div>Error: {error}</div>}
-        {(loading || realmsLoading) && <div>Loading...</div>}
+        {(loading || realmsLoading) && <div>Load</div>}
         <div className="section" style={{ padding: "0 1rem" }}>
           <div className={styles.filters}>
             <input

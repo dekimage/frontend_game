@@ -1,7 +1,7 @@
 import { useState } from "react";
+import baseUrl from "../utils/settings";
 import styles from "../styles/Dropdown.module.scss";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 export const DropDown = ({ realms, filter, setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
   const filters = [{ name: "All" }, ...realms];

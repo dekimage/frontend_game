@@ -6,6 +6,17 @@ export const getTotalStepsInSlides = (slides) =>
     return total;
   }, 0);
 
+export function generateRandomCode() {
+  const length = 10;
+  const characters = "0123456789";
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    code += characters[randomIndex];
+  }
+  return code;
+}
+
 export function getNumberSuffix(number) {
   if (number >= 11 && number <= 13) {
     return "th";
@@ -149,8 +160,4 @@ export const normalize = (data) => {
   }
 
   return data;
-};
-
-export const getXpLimit = (level) => {
-  return 100 + level * 10 * 1.6;
 };

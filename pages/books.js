@@ -1,17 +1,15 @@
-import { useQuery } from "@apollo/react-hooks";
-import Header from "../components/Header";
-import NavBar from "../components/NavBar";
-import Link from "next/link";
+import { GET_BOOKS, GET_REALMS } from "../GQL/query";
 import { useEffect, useState } from "react";
 
+import { DropDown } from "../components/Dropdown";
+import Header from "../components/Header";
+import Link from "next/link";
+import NavBar from "../components/NavBar";
 import { normalize } from "../utils/calculations";
 import styles from "../styles/Books.module.scss";
+import { useQuery } from "@apollo/react-hooks";
 
-import { DropDown } from "../components/Dropdown";
-
-import { GET_BOOKS, GET_REALMS } from "../GQL/query";
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+import baseUrl from "../utils/settings";
 
 export const GenericDropDown = ({ items, label, callback }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -99,7 +97,7 @@ const Books = () => {
 
       <div className="section">
         {error && <div>Error: {error}</div>}
-        {(loading || realmsLoading) && <div>Loading...</div>}
+        {(loading || realmsLoading) && <div>load</div>}
 
         <div className={styles.filters}>
           <input

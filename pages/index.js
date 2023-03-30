@@ -1,10 +1,8 @@
-import { calculateNotifications, joinObjectives } from "../functions/todayFunc";
 // *** REACT ***
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
+// *** COMPONENTS ***
 import Countdown from "../components/Countdown";
-// *** GQL ***
-import { GET_OBJECTIVES_QUERY } from "../GQL/query";
 import Header from "../components/Header";
 import Modal from "../components/Modal";
 import NavBar from "../components/NavBar";
@@ -12,24 +10,26 @@ import Objective from "../components/Objective";
 import { RewardLink } from "../components/todayComp";
 import RewardsModal from "../components/RewardsModal";
 import { Tabs } from "../components/profileComps";
-import Timer from "../components/reusable/Timer";
 import { TutorialModal } from "../components/todayComp";
+import RewardLinkSection from "../components/Today/RewardLinkSection";
+
+// *** GQL ***
+import { GET_OBJECTIVES_QUERY } from "../GQL/query";
+
+// *** ACTIONS ***
 import { acceptReferral } from "../actions/action";
-import cx from "classnames";
+
 // *** FUNCTIONS ***
-import { normalize } from "../utils/calculations";
+import { calculateNotifications, joinObjectives } from "../functions/todayFunc";
+
 // *** STYLES ***
 import styles from "../styles/Today.module.scss";
-// *** COMPONENTS ***
+
+// *** HOOKS ***
 import useModal from "../hooks/useModal";
-import { useQuery } from "@apollo/react-hooks";
-import { useRouter } from "next/router";
 import { withUser } from "../Hoc/withUser";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const Home = (props) => {
-  const { user, data, dispatch, store } = props;
+const Home = ({ user, data, dispatch, store }) => {
   const { isShowing, openModal, closeModal } = useModal();
 
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
@@ -40,9 +40,9 @@ const Home = (props) => {
     }
   }, [user]);
 
-  const objectivesData = joinObjectives(
-    data.objectives,
-    user.objectives_json || []
+  const objectivesData = useMemo(
+    () => joinObjectives(data.objectives, user.objectives_json || []),
+    [data.objectives, user.objectives_json]
   );
 
   const getCompletedObjectivesCount = (objectivesData, openTab) => {
@@ -115,12 +115,12 @@ const Home = (props) => {
             <div>
               {objectivesData
                 .filter((o) => o.time_type === objectivesTabOpen)
-                .map((obj, i) => (
+                .map((obj) => (
                   <Objective
                     objective={obj}
                     dispatch={dispatch}
                     isUserPremium={user.is_subscribed}
-                    key={i}
+                    key={obj.id}
                   />
                 ))}
             </div>
@@ -128,31 +128,8 @@ const Home = (props) => {
         </div>
       </div>
 
-      <div className="section">
-        <RewardLink
-          img={`${baseUrl}/favorite.png`}
-          link={"/favorites"}
-          text={"Favorites"}
-        />
+      <RewardLinkSection />
 
-        <RewardLink
-          img={`${baseUrl}/recent.png`}
-          link={"/recent"}
-          text={"Recent"}
-        />
-
-        <RewardLink
-          img={`${baseUrl}/random.png`}
-          text={"Random Card"}
-          link="/random-card"
-        />
-
-        <RewardLink
-          img={`${baseUrl}/energy.png`}
-          link={"/open-today"}
-          text={"Open Today"}
-        />
-      </div>
       {user.tutorial_step > 0 && (
         <Modal
           isShowing={isShowing}
@@ -173,15 +150,4 @@ const Home = (props) => {
   );
 };
 
-// export default Home;
 export default withUser(Home, GET_OBJECTIVES_QUERY);
-
-{
-  /* WELCOME */
-}
-
-{
-  /* <div className={styles.header}>
-              Welcome back, {user.username}
-            </div> */
-}

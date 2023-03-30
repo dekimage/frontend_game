@@ -4,7 +4,6 @@ import styles from "../../styles/Switch.module.scss";
 import { useState } from "react";
 
 function Switch({ className, checked, onChange, disabled = false }) {
-  console.log(checked);
   const [isChecked, setIsChecked] = useState(checked);
 
   const handleSwitchChange = () => {
