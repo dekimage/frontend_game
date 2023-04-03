@@ -39,9 +39,7 @@ const GoogleCallback = ({ access_token, query }) => {
     fetchData();
   }, []);
 
-  return (
-    <Loader />;
-  );
+  return <Loader />;
 };
 
 GoogleCallback.getInitialProps = async ({ query }) => {
