@@ -1,7 +1,7 @@
 import { Buddy, ProfileHeader, Stat } from "@/components/profileComps";
 import { useContext, useState } from "react";
 import { Tabs } from "@/components/reusable/Tabs";
-import { Artifact } from "@/profile";
+import { Artifact } from "@/pages/profile";
 import CardsMapper from "@/components/CardsMapper";
 
 import { Context } from "@/context/store";
