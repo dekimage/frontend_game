@@ -1,5 +1,4 @@
 import { addZeroToInteger, getNumberSuffix } from "@/utils/calculations";
-import { skipAction, updateCard } from "@/actions/action";
 import { useContext, useEffect, useState } from "react";
 
 import { CompleteCardSection } from "./cardPageComps";
@@ -16,7 +15,6 @@ import baseUrl from "@/utils/settings";
 import happyEmoji from "@/assets/3-emoji.svg";
 import mehEmoji from "@/assets/2-emoji.svg";
 import sadEmoji from "@/assets/1-emoji.svg";
-import { ImageUI } from "./reusableUI";
 import FeatureSuggestion from "./FeatureSuggestion";
 
 //MAYBE IN CARD PLAYER?
@@ -101,11 +99,6 @@ export const SuccessModal = ({
             label: "Tasks Completed",
             amount: `${store.completedTasks}/${totalTasksCount}`,
           },
-          // {
-          //   img: "play",
-          //   label: "Skipped Tasks",
-          //   amount: store.skippedTasks,
-          // },
           {
             img: "mastery",
             label: "Mastery",
@@ -197,15 +190,6 @@ export const ChatResponses = ({ message, selectReply }) => {
 const SkipAction = ({ isLastStep, goNext, goNextStep }) => {
   const [store, dispatch] = useContext(Context);
 
-  const handleSkipAction = async () => {
-    const response = await skipAction(dispatch);
-    if (response.success) {
-      isLastStep ? goNext() : goNextStep();
-    } else {
-      //show some error about no sufficent funds
-      console.log("not enough stars");
-    }
-  };
   const freeSkipAction = () => {
     isLastStep ? goNext() : goNextStep();
     dispatch({ type: "SKIP_TASK" });
@@ -218,10 +202,6 @@ const SkipAction = ({ isLastStep, goNext, goNextStep }) => {
       }}
     >
       Skip
-      {/* <div className={`${styles.costBox} ml5`}>
-        25
-        <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
-      </div> */}
     </div>
   );
 };
