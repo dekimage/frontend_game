@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import styles from "../../styles/TimerReusable.module.scss";
+import styles from "@/styles/TimerReusable.module.scss";
 
 const Timer = ({ timeLeftProp, onComplete, jsxComplete }) => {
   const [timeLeft, setTimeLeft] = useState(timeLeftProp);

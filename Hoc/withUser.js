@@ -1,9 +1,9 @@
-import { Context } from "../context/store";
-import LandingPage from "../components/LandingPage";
-import Loader from "../components/reusable/Loader";
-import { normalize } from "../utils/calculations";
+import { Context } from "@/context/store";
+import LandingPage from "@/components/LandingPage";
+import Loader from "@/components/reusable/Loader";
+import { normalize } from "@/utils/calculations";
 import { useContext, useEffect } from "react";
-import { useConditionalQuery } from "../hooks/useConditionalQuery"; // Import the custom hook
+import { useConditionalQuery } from "@/hooks/useConditionalQuery"; // Import the custom hook
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 

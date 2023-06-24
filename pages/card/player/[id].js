@@ -1,23 +1,20 @@
-import {
-  RatingModal,
-  SuccessModal,
-} from "../../../components/playerCourseComps";
+import { RatingModal, SuccessModal } from "@/components/playerCourseComps";
 import {
   SliderHeader,
   SliderProgress,
   WarningModal,
-} from "../../../components/playerComps";
+} from "@/components/playerComps";
 import { useEffect, useState } from "react";
 
-import { ContentTheory } from "../../../components/ContentTheory";
-import { GET_CARD_ID } from "../../../GQL/query";
-import Modal from "../../../components/Modal";
+import { ContentTheory } from "@/components/ContentTheory";
+import { GET_CARD_ID } from "@/GQL/query";
+import Modal from "@/components/reusable/Modal";
 import _ from "lodash";
-import { getTotalStepsInSlides } from "../../../utils/calculations";
-import { updateCard } from "../../../actions/action";
-import useModal from "../../../hooks/useModal";
+import { getTotalStepsInSlides } from "@/utils/calculations";
+import { updateCard } from "@/actions/action";
+import useModal from "@/hooks/useModal";
 import { useRouter } from "next/router";
-import { withUser } from "../../../Hoc/withUser";
+import { withUser } from "@/Hoc/withUser";
 
 const Player = (props) => {
   const router = useRouter();

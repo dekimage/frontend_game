@@ -2,7 +2,8 @@ import Cookie from "js-cookie";
 import axios from "axios";
 
 const backendAPi = process.env.NEXT_PUBLIC_API_URL;
-import { generateRandomCode } from "../utils/calculations";
+import { generateRandomCode } from "@/utils/calculations";
+import { createApiEndpoint } from "@/actions/config";
 
 const baseUrl = `${backendAPi}/api`;
 const userUrl = "/usercard";
@@ -41,126 +42,14 @@ export const loginApi = (identifier, password) =>
     }
   );
 
-// ------
-
-export const resetUserApi = () => axios.put(`${userUrl}/reset-user`);
-export const notifyMeApi = (isNotifyMe) =>
-  axios.put(`${userUrl}/notify-me`, {
-    isNotifyMe,
-  });
-
-export const updateUserBasicInfoApi = (value, inputName) =>
-  axios.put(`${userUrl}/update-user-basic-info`, {
-    value,
-    inputName,
-  });
-
-export const rateCardApi = (rating, cardId, feedbackType) =>
-  axios.put(`${userUrl}/rate-card`, {
-    rating,
-    cardId,
-    feedbackType,
-  });
-
-export const sendFeatureMailApi = (details, subject) =>
-  axios.put(`${userUrl}/send-feature-mail`, {
-    details,
-    subject,
-  });
-
-//0. PROFILE PAGE
-
-export const acceptReferralApi = () => axios.put(`${userUrl}/accept-referral/`);
-
-export const saveAvatarApi = (avatarId) =>
-  axios.put(`${userUrl}/save-avatar/${avatarId}`);
-
-export const getRandomCardApi = () => axios.put(`${userUrl}/getRandomCard`);
-
-export const claimArtifactApi = (artifactId) =>
-  axios.put(`${userUrl}/claim-artifact/${artifactId}`);
-
-// 1. HOME PAGE
-export const startQuizApi = () => axios.put(`${userUrl}/start-quiz`);
-
-export const submitQuizApi = (data) =>
-  axios.put(`${userUrl}/submit-quiz`, { data });
-
-export const claimObjectiveApi = (objectiveId) =>
-  axios.put(`${userUrl}/collect-objective-reward/${objectiveId}`);
-
-export const collectLevelRewardApi = (id) =>
-  axios.put(`${userUrl}/collect-level-reward/${id}`);
-
-export const claimUserRewardApi = (userCount) =>
-  axios.put(`${userUrl}/collect-friends-reward/${userCount}`);
-
-export const claimStreakRewardApi = (rewardCount) =>
-  axios.put(`${userUrl}/collect-streak-reward/${rewardCount}`);
-
-export const updateTutorialApi = (tutorialStep) =>
-  axios.put(`${userUrl}/update-tutorial/${tutorialStep}`);
-// ------
-
-// 2. SHOP PAGE
-export const purchaseLootBoxApi = (boxId) =>
-  axios.put(`${userUrl}/purchase-box/${boxId}`);
-
-export const purchaseProductApi = (productId, payment_env) =>
-  axios.put(`${userUrl}/purchase-product/${productId}`, {
-    payment_env,
-  });
-
-export const purchaseExpansionApi = (expansionId) =>
-  axios.put(`${userUrl}/purchase-expansion/${expansionId}`);
-
-export const openPackApi = (boxId) =>
-  axios.put(`${userUrl}/open-pack/${boxId}`);
-
-// ------
-
-// 3. CARD PAGE
-export const updateCardApi = (cardId, action, contentIndex) =>
+export const updateCardApi = (cardId, action, contentIndex = 0) =>
   axios.put(`${userUrl}/update-card/${cardId}`, {
     action,
     contentIndex,
   });
 
-export const buyCardTicketApi = (id, type) =>
-  axios.put(`${userUrl}/buyCardTicket/${id}`, { type });
-
-export const skipActionApi = () => axios.put(`${userUrl}/skip-action`);
-
-// ------
-
-// 4. PROFILE PAGE
-
-export const generateBuddyLinkApi = () =>
-  axios.put(`${userUrl}/generate-buddy-link`);
-
 export const updateSettingsApi = (data) =>
   axios.put(`${userUrl}/update-settings`, { settings: data });
 
-export const followBuddyApi = (userId) =>
-  axios.put(`${userUrl}/follow-buddy/${userId}`);
-
-export const cancelSubscriptionApi = () =>
-  axios.put(`${userUrl}/cancel-subscription`);
-
-export const restorePurchaseApi = () =>
-  axios.put(`${userUrl}/restore-purchase`);
-
-// ------
-
-// 5. COMMUNITY ACTIONS
-//TODO: ADD DIFFERENT ROUTES - FOR DEFAULT SHADOW CRUD STRAPI
-export const createCommunityActionApi = (dataForm) =>
-  axios.post(`/communityactions`, dataForm);
-export const deleteCommunityActionApi = (actionId) =>
-  axios.delete(`/communityactions/${actionId}`);
-export const interactCommunityActionApi = (actionId, intent) =>
-  axios.put(`/communityactions/interact/${actionId}`, { intent });
-
-// 6. ACTIONS ORIGINAL
-export const completeActionApi = (actionId, intent) =>
-  axios.put(`/actions/complete/${actionId}`, { intent });
+export const getRandomCardApi = createApiEndpoint("getRandomCard");
+export const rateCardApi = createApiEndpoint("rateCard");

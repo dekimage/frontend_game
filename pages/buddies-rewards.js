@@ -1,23 +1,24 @@
 // *** REACT ***
 
-import { BackButton, ImageUI } from "../components/reusableUI";
+import { ImageUI } from "@/components/reusableUI";
 import { useContext, useEffect, useState } from "react";
+import { BackButton } from "@/components/reusable/BackButton";
 
 import { ArtifactModal } from "./profile";
-import Card from "../components/Card";
-import { GET_FRIENDS_QUERY } from "../GQL/query";
-import Modal from "../components/Modal";
-import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
-import { claimUserReward } from "../actions/action";
+import Card from "@/components/Card";
+import { GET_FRIENDS_QUERY } from "@/GQL/query";
+import Modal from "@/components/reusable/Modal";
+import ShareBuddyModal from "@/components/Modals/ShareBuddyModal";
+import { collectFriendsReward } from "@/actions/action";
 import cx from "classnames";
-import { normalize } from "../utils/calculations";
-import styles from "../styles/Streak.module.scss";
-import useModal from "../hooks/useModal";
+import { normalize } from "@/utils/calculations";
+import styles from "@/styles/Streak.module.scss";
+import useModal from "@/hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-import { withUser } from "../Hoc/withUser";
+import { withUser } from "@/Hoc/withUser";
 
-import baseUrl from "../utils/settings";
+import baseUrl from "@/utils/settings";
 
 // *** COMPONENTS ***
 
@@ -65,7 +66,9 @@ const FriendReward = ({ friendReward, user, dispatch }) => {
         is_collected && [styles.isCollected]
       )}
       onClick={() => {
-        is_ready && !is_collected && claimUserReward(dispatch, friends_count);
+        is_ready &&
+          !is_collected &&
+          collectFriendsReward(dispatch, friends_count);
       }}
     >
       {is_collected && (

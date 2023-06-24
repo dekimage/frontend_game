@@ -1,21 +1,21 @@
-import { addZeroToInteger, getNumberSuffix } from "../utils/calculations";
-import { skipAction, updateCard } from "../actions/action";
+import { addZeroToInteger, getNumberSuffix } from "@/utils/calculations";
+import { skipAction, updateCard } from "@/actions/action";
 import { useContext, useEffect, useState } from "react";
 
 import { CompleteCardSection } from "./cardPageComps";
-import { Context } from "../context/store";
+import { Context } from "@/context/store";
 import { GenericScreen } from "./playerComps";
 import ReactMarkdown from "react-markdown";
 import _ from "lodash";
-import completedIcon from "../assets/player_complete.svg";
-import iconCheckmark from "../assets/checkmark.svg";
-import { rateCard } from "../actions/action";
-import styles from "../styles/Player.module.scss";
+import completedIcon from "@/assets/player_complete.svg";
+import iconCheckmark from "@/assets/checkmark.svg";
+import { rateCard } from "@/actions/action";
+import styles from "@/styles/Player.module.scss";
 import { useTimer } from "react-timer-hook";
-import baseUrl from "../utils/settings";
-import happyEmoji from "../assets/3-emoji.svg";
-import mehEmoji from "../assets/2-emoji.svg";
-import sadEmoji from "../assets/1-emoji.svg";
+import baseUrl from "@/utils/settings";
+import happyEmoji from "@/assets/3-emoji.svg";
+import mehEmoji from "@/assets/2-emoji.svg";
+import sadEmoji from "@/assets/1-emoji.svg";
 import { ImageUI } from "./reusableUI";
 import FeatureSuggestion from "./FeatureSuggestion";
 

@@ -1,5 +1,6 @@
 @import "placeholders";
 @import "variables";
+@import "mixins";
 
 .backButton {
   @extend %flex_center;
@@ -16,7 +17,6 @@
   z-index: 1000000;
   cursor: pointer;
   border-radius: 50%;
-  &:hover {
-    background-color: $optimzeColor;
-  }
+
+  @include hover-brightness(150%);
 }

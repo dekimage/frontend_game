@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { login, signup } from "../actions/auth";
+import { login, signup } from "@/actions/auth";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { Context } from "../context/store";
+import { Context } from "@/context/store";
 import Link from "next/link";
-import iconLogo from "../assets/menu-logo-dark.svg";
-import styles from "../styles/Login.module.scss";
+import iconLogo from "@/assets/menu-logo-dark.svg";
+import styles from "@/styles/Login.module.scss";
 import { useRouter } from "next/router";
 
-import baseUrl from "../utils/settings";
-import { Button } from "../components/reusableUI";
-// import { login } from "../lib/auth";
+import baseUrl from "@/utils/settings";
+import { Button } from "@/components/reusableUI";
+// import { login } from "@/lib/auth";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);

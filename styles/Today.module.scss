@@ -61,7 +61,7 @@
   }
   &_notification {
     position: absolute;
-    left: -3px;
+    right: -3px;
     top: -5px;
     background-color: $ux_red;
     font-weight: 700;
@@ -70,6 +70,10 @@
     width: 25px;
     border-radius: $border_radius;
     @extend %flex_center;
+  }
+  // @include hover-brightness(200%);
+  &:hover {
+    background-color: $actionize_gray;
   }
 }
 

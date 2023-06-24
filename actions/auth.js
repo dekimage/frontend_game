@@ -17,7 +17,7 @@ export const signup = (
   api
     .signupApi(email, password, sharedByUserId)
     .then(({ data }) => {
-      Cookie.set("token", data.jwt);
+      Cookie.set("token", data.jwt); //{ secure: true } in production
       Cookie.set("userId", data.user.id);
       axios
         .get(`${backendAPi}/api/usercard/me`, {
@@ -48,16 +48,18 @@ export const login = (
     .then(({ data }) => {
       setSubmitting(false);
       resetForm(true);
-      dispatch({ type: "FETCH_USER", data: data.user });
+
       Cookie.set("token", data.jwt);
       Cookie.set("userId", data.user.id);
-      Router.push("/");
 
       axios
         .get(`${backendAPi}/api/usercard/me`, {
           headers: { Authorization: `Bearer ${data.jwt}` },
         })
-        .then(({ res }) => console.log(res));
+        .then(({ data }) => {
+          dispatch({ type: "FETCH_USER", data });
+          Router.push("/");
+        });
     })
 
     .catch((err) => {

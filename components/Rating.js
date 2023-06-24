@@ -1,4 +1,4 @@
-import baseUrl from "../utils/settings";
+import baseUrl from "@/utils/settings";
 export const Rating = ({ course }) => {
   return (
     <div>

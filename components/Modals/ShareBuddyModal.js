@@ -1,11 +1,10 @@
-import { ImageUI } from "../reusableUI";
 import Lottie from "lottie-react";
 import cx from "classnames";
-import heartLottie from "../../assets/lottie-animations/gift-heart.json";
-import styles from "../../styles/Modals.module.scss";
+import heartLottie from "@/assets/lottie-animations/gift-heart.json";
+import styles from "@/styles/Modals.module.scss";
 import { useState } from "react";
 
-import baseUrl from "../../utils/settings";
+import baseUrl from "@/utils/settings";
 const ShareBuddyModal = ({ id }) => {
   const [copyButton, setCopyButton] = useState("Copy");
   const perks = [

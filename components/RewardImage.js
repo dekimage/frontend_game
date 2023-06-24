@@ -1,13 +1,13 @@
-import { ArtifactModal } from "../pages/profile";
+import { ArtifactModal } from "@/pages/profile";
 import { ImageUI } from "./reusableUI";
-import Modal from "./Modal";
-import checkmark from "../assets/checkmark.svg";
+import Modal from "./reusable/Modal";
+import checkmark from "@/assets/checkmark.svg";
 import cx from "classnames";
-import gemIcon from "../assets/diamond-currency.svg";
-import starIcon from "../assets/xp.svg";
-import styles from "../styles/Reward.module.scss";
+import gemIcon from "@/assets/diamond-currency.svg";
+import starIcon from "@/assets/xp.svg";
+import styles from "@/styles/Reward.module.scss";
 import { useState } from "react";
-import baseUrl from "../utils/settings";
+import baseUrl from "@/utils/settings";
 
 const RewardImage = ({
   reward,

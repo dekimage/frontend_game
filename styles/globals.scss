@@ -5,8 +5,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, Ubuntu, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Quicksand", -apple-system, Ubuntu, BlinkMacSystemFont, Segoe UI,
+    Roboto, Oxygen, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
   // font-family: "Teko", sans-serif;
 
@@ -74,8 +74,10 @@ input:-webkit-autofill:active {
   font-size: 18px;
 }
 
-.headerSpace {
-  padding-top: 3rem;
+@media (max-width: 680px) {
+  .headerSpace {
+    padding-top: 3rem;
+  }
 }
 
 // p {
@@ -314,11 +316,12 @@ input:-webkit-autofill:active {
   color: white;
   width: fit-content;
   cursor: pointer;
-  @include media_bg {
-    min-width: 8rem;
-    font-size: 22px;
-    height: 3rem;
-  }
+  // @include media_bg {
+  //   min-width: 8rem;
+  //   font-size: 22px;
+  //   height: 3rem;
+  // }
+  @include hover-brightness(125%);
 }
 
 .btn-small {
@@ -379,13 +382,14 @@ input:-webkit-autofill:active {
 }
 .btn-action {
   background: $secondary;
-  animation: jump 1s infinite;
+  // animation: jump 1s infinite;
 }
 
 .btn-disabled {
   color: rgb(218, 218, 218);
   background: darkgray;
   cursor: not-allowed;
+  @include hover-brightness(100%);
 }
 .btn-premium {
   background-color: $premium_color;

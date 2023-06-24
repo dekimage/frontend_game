@@ -1,16 +1,16 @@
 import { React, useState } from "react";
 
-import { BackButton } from "../components/reusableUI";
-import CardsMapper from "../components/CardsMapper";
+import { BackButton } from "@/components/reusable/BackButton";
+import CardsMapper from "@/components/CardsMapper";
 import Link from "next/link";
-import NavBar from "../components/NavBar";
+import NavBar from "@/components/NavBar";
 
 import axios from "axios";
 import debounce from "debounce";
-import { normalize } from "../utils/calculations";
-import styles from "../styles/SearchBar.module.scss";
+import { normalize } from "@/utils/calculations";
+import styles from "@/styles/SearchBar.module.scss";
 
-import baseUrl from "../utils/settings";
+import baseUrl from "@/utils/settings";
 
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);

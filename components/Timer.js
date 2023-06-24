@@ -1,10 +1,10 @@
-import { addZeroToInteger } from "../utils/calculations";
-import styles from "../styles/Timer.module.scss";
+import { addZeroToInteger } from "@/utils/calculations";
+import styles from "@/styles/Timer.module.scss";
 
-import { completeAction } from "../actions/action";
+import { completeAction } from "@/actions/action";
 import { useContext } from "react";
-import { Context } from "../context/store";
-import baseUrl from "../utils/settings";
+import { Context } from "@/context/store";
+import baseUrl from "@/utils/settings";
 
 const Timer = ({
   seconds,

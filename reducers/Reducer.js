@@ -2,14 +2,54 @@ import {
   calcArtifactsReady,
   calcLevelRewards,
   calcRewardReady,
-} from "../utils/calculations";
+} from "@/utils/calculations";
 
-import { staticRewards } from "../data/rewards";
+import { staticRewards } from "@/data/rewards";
 
 const Reducer = (store, action) => {
+  // add function here and add action and store so they are defaulted, and i easily reuse them
+  // works both object/array - single or multiple changes
+  //const updatesObject = { 'user.details.name': 'Jane' };
+  // const updatesArray = [
+  //   { 'user.details.name': 'Jane' },
+  //   { usercards: ['card3', 'card4'] },
+  // ];
+  const updateStore = (updates) => {
+    const updateNestedProperty = (obj, path, value) => {
+      const pathArray = Array.isArray(path) ? path : path.split(".");
+      const [current, ...rest] = pathArray;
+
+      if (rest.length === 0) {
+        return {
+          ...obj,
+          [current]: value,
+        };
+      }
+
+      return {
+        ...obj,
+        [current]: updateNestedProperty(obj[current], rest, value),
+      };
+    };
+
+    if (!Array.isArray(updates)) {
+      updates = [updates];
+    }
+
+    let updatedStore = { ...store };
+    for (let update of updates) {
+      const [key, value] = Object.entries(update)[0];
+      updatedStore = updateNestedProperty(updatedStore, key, value);
+    }
+
+    return updatedStore;
+  };
   switch (action.type) {
     case "UPDATE_USER":
       return { ...store, user: action.data };
+    case "API_ERROR":
+      return { ...store, error: action.data };
+    // return updateStore({ user: action.data });
     case "OPEN_PLAYER":
       return { ...store, player: action.data };
     case "COMPLETE_TASK":
@@ -26,6 +66,10 @@ const Reducer = (store, action) => {
       return { ...store, isLoading: false, error: action.data };
 
     case "UPDATE_SETTINGS":
+      // return updateStore([
+      //   { isLoading: false },
+      //   { "user.settings": action.data },
+      // ]);
       return {
         ...store,
         isLoading: false,

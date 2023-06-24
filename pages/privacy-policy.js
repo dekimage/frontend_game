@@ -1,11 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
 
-import Loader from "../components/reusable/Loader";
+import Loader from "@/components/reusable/Loader";
 import ReactMarkdown from "react-markdown";
-import { normalize } from "../utils/calculations";
-import styles from "../styles/Settings.module.scss";
+import { normalize } from "@/utils/calculations";
+import styles from "@/styles/Settings.module.scss";
 import { useRouter } from "next/router";
-import withSEO from "../Hoc/withSEO";
+import withSEO from "@/Hoc/withSEO";
 
 const GET_TERMS = gql`
   query {

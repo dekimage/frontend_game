@@ -1,12 +1,12 @@
-import { BackButton } from "../../components/reusableUI";
-import CardsMapper from "../../components/CardsMapper";
-import ExpandableComponent from "../../components/ExpandableComponent";
-import { GET_PROBLEM_ID } from "../../GQL/query";
-import NavBar from "../../components/NavBar";
+import { BackButton } from "@/components/reusable/BackButton";
+import CardsMapper from "@/components/CardsMapper";
+import ExpandableComponent from "@/components/ExpandableComponent";
+import { GET_PROBLEM_ID } from "@/GQL/query";
+import NavBar from "@/components/NavBar";
 import { Problem } from "../problems";
 import _ from "lodash";
-import iconShortTerm from "../../assets/short-term.svg";
-import { withUser } from "../../Hoc/withUser";
+import iconShortTerm from "@/assets/short-term.svg";
+import { withUser } from "@/Hoc/withUser";
 
 const ProblemPageView = ({ problem }) => {
   const { cards } = problem;

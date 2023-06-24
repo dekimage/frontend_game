@@ -4,76 +4,25 @@ import {
   purchaseExpansion,
   purchaseLootBox,
   purchaseProduct,
-} from "../actions/action";
+} from "@/actions/action";
 import { useContext, useState } from "react";
 
-import { CardType } from "../components/Card";
-import { Context } from "../context/store";
+import { CardType } from "@/components/Card";
+import { Context } from "@/context/store";
 import Link from "next/link";
 import Lottie from "lottie-react";
-import { Rating } from "../components/Rating";
-import boxLottie from "../assets/lottie-animations/box-run.json";
+import { Rating } from "@/components/Rating";
+import boxLottie from "@/assets/lottie-animations/box-run.json";
 import cx from "classnames";
-import iconCalendar from "../assets/calendar.svg";
-import iconCheck from "../assets/checkmark.svg";
-import iconCheckmark from "../assets/red-checkmark.svg";
-import iconClock from "../assets/clock.svg";
-import iconLock from "../assets/lock-white-border.svg";
-import iconSessions from "../assets/sessions.svg";
-import { notifyMe } from "../actions/action";
-import styles from "../styles/Shop.module.scss";
-import baseUrl from "../utils/settings";
-
-// *** ACTIONS ***
-
-// *** STYLES ***
-
-export const Course = ({ course }) => {
-  const {
-    id,
-    name,
-    students,
-    price,
-    discount,
-    duration,
-    course_details,
-    last_updated,
-    image,
-    rating,
-  } = course;
-
-  return (
-    <Link href={`/course/${id}`}>
-      <div
-        className={styles.course}
-        style={{ backgroundImage: `url(${baseUrl}${image.url})` }}
-      >
-        <div className={styles.course_blackScreen}>
-          <div className={styles.course_name}>{name}</div>
-          <div className={styles.course_detail}>
-            <img src={iconClock} height="15px" className="mr5" />
-            {course_details.duration} days
-          </div>
-          <div className={styles.course_detail}>
-            <img src={iconSessions} height="15px" className="mr5" />
-            {course_details.sessions} sessions
-          </div>
-
-          <div className={styles.course_detail}>
-            <img src={iconCalendar} height="15px" className="mr5" />
-            {last_updated.slice(0, 7)} updated
-          </div>
-          <div className={styles.course_priceAndRating}>
-            <div className={styles.course_price}>${price}</div>
-            <div className={styles.course_rating}>
-              <span className="mr5">{rating}</span> <Rating course={course} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-};
+import iconCalendar from "@/assets/calendar.svg";
+import iconCheck from "@/assets/checkmark.svg";
+import iconCheckmark from "@/assets/red-checkmark.svg";
+import iconClock from "@/assets/clock.svg";
+import iconLock from "@/assets/lock-white-border.svg";
+import iconSessions from "@/assets/sessions.svg";
+import { notifyMe } from "@/actions/action";
+import styles from "@/styles/Shop.module.scss";
+import baseUrl from "@/utils/settings";
 
 export const DropLabel = ({}) => {
   const cards = [

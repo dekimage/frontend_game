@@ -1,7 +1,7 @@
 import { ImageUI } from "./reusableUI";
 import React from "react";
 import cx from "classnames";
-import styles from "../styles/ProgressBar.module.scss";
+import styles from "@/styles/ProgressBar.module.scss";
 
 const ProgressBar = ({
   progress,

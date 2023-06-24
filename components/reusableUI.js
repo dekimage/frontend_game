@@ -1,10 +1,5 @@
-import Link from "next/link";
 import cx from "classnames";
-import styles from "../styles/ReusableUI.module.scss";
-import { useRouter } from "next/router";
-import baseUrl from "../utils/settings";
-
-// src={`${baseUrl}/gift.png`}
+import baseUrl from "@/utils/settings";
 const dev = process.env.NODE_ENV == "development";
 
 export const ImageUI = ({
@@ -13,34 +8,16 @@ export const ImageUI = ({
   isPublic = false,
   height = "auto",
   width = "auto",
+  style = {},
 }) => {
   return (
-    <div className={className}>
+    <div className={className} style={style}>
       <img
         height={height}
         width={width}
         src={dev || isPublic ? `${baseUrl}${url}` : `${url}`}
       />
     </div>
-  );
-};
-
-export const BackButton = ({ routeStatic, routeDynamic, isBack = false }) => {
-  const router = useRouter();
-  return (
-    <>
-      {isBack ? (
-        <div className={styles.backButton} onClick={() => router.back()}>
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </div>
-      ) : (
-        <Link href={`${routeStatic}${routeDynamic}`}>
-          <div className={styles.backButton}>
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
-        </Link>
-      )}
-    </>
   );
 };
 

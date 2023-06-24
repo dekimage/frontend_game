@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import cx from "classnames";
-import { Context } from "../context/store";
+import { Context } from "@/context/store";
 
-import { ImageUI } from "../components/reusableUI";
-import styles from "../styles/RewardsModal.module.scss";
-import { closeRewardsModal } from "../actions/action";
+import { ImageUI } from "@/components/reusableUI";
+import styles from "@/styles/RewardsModal.module.scss";
+import { closeRewardsModal } from "@/actions/action";
 import { Rarity } from "./Rarity";
-import { ArtifactModal } from "../pages/profile";
+import { ArtifactModal } from "@/pages/profile";
 import ProgressBar from "./ProgressBar";
-import baseUrl from "../utils/settings";
+import baseUrl from "@/utils/settings";
 
 export const RewardsModal = ({ defaultPage = "xp" }) => {
   const [store, dispatch] = useContext(Context);

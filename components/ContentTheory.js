@@ -9,7 +9,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import { ChatAction } from "./cardPageComps";
 import _ from "lodash";
-import styles from "../styles/Player.module.scss";
+import styles from "@/styles/Player.module.scss";
 
 export const ContentTheory = ({
   slide,

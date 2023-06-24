@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { Context } from "../context/store";
-import { joinCards } from "../utils/joins";
+import { Context } from "@/context/store";
+import { joinCards } from "@/utils/joins";
 import Card from "./Card";
-import styles from "../styles/Realm.module.scss";
+import styles from "@/styles/Realm.module.scss";
 
 const CardsMapper = ({ cards }) => {
   const [store, dispatch] = useContext(Context);

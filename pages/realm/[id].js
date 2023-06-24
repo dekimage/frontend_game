@@ -1,11 +1,12 @@
-import { BackButton } from "../../components/reusableUI";
-import Card from "../../components/Card";
-import { GET_REALM_ID } from "../../GQL/query";
-import NavBar from "../../components/NavBar";
+import { BackButton } from "@/components/reusable/BackButton";
+import Card from "@/components/Card";
+import { GET_REALM_ID } from "@/GQL/query";
+import NavBar from "@/components/NavBar";
 import _ from "lodash";
-import { joinCards } from "../../utils/joins";
-import styles from "../../styles/Realm.module.scss";
-import { withUser } from "../../Hoc/withUser";
+import { joinCards } from "@/utils/joins";
+import styles from "@/styles/Realm.module.scss";
+import { withUser } from "@/Hoc/withUser";
+import { ImageUI } from "@/components/reusableUI";
 
 const Cards = (props) => {
   const { user, data } = props;
@@ -20,8 +21,8 @@ const Cards = (props) => {
             <BackButton routeDynamic={""} routeStatic={"/learn"} />
 
             <div className={styles.realmLogo}>
-              <img src={data.realm.image.url} height="24px" className="mr1" />
-              {data.realm.name}
+              <ImageUI url={data.realm.image.url} height="24px" />
+              <div className="ml1">{data.realm.name}</div>
             </div>
           </div>
         </div>

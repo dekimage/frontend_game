@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/EnergyModal.module.scss";
+import styles from "@/styles/EnergyModal.module.scss";
 import Countdown from "./Countdown";
 import Link from "next/link";
 

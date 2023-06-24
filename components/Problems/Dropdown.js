@@ -1,6 +1,6 @@
 import { useState } from "react";
-import baseUrl from "../utils/settings";
-import styles from "../styles/Dropdown.module.scss";
+import baseUrl from "@/utils/settings";
+import styles from "@/styles/Dropdown.module.scss";
 
 export const DropDown = ({ realms, filter, setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);

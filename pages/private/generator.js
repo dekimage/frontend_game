@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../styles/generator.module.scss";
+import styles from "@/styles/private/generator.module.scss";
 
 const data = {
   arms: [

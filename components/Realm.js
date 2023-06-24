@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ImageUI } from "../components/reusableUI";
-import styles from "../styles/Learn.module.scss";
+import { ImageUI } from "@/components/reusableUI";
+import styles from "@/styles/Learn.module.scss";
 
 export const Realm = ({ realm }) => {
   return (

@@ -10,15 +10,15 @@ import {
   SliderHeader,
   SliderProgress,
   WarningModal,
-} from "../../../components/playerComps";
+} from "@/components/playerComps";
 import { useContext, useEffect, useState } from "react";
 
-import { Context } from "../../../context/store";
-import { GET_CARD_PLAYER } from "../../../GQL/query";
-import Modal from "../../../components/Modal";
+import { Context } from "@/context/store";
+import { GET_CARD_PLAYER } from "@/GQL/query";
+import Modal from "@/components/reusable/Modal";
 import _ from "lodash";
-import { normalize } from "../../../utils/calculations";
-import useModal from "../../../hooks/useModal";
+import { normalize } from "@/utils/calculations";
+import useModal from "@/hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
 

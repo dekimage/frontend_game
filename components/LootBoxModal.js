@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import cx from "classnames";
-import { Context } from "../context/store";
-import Card from "../components/Card";
-import { ImageUI } from "../components/reusableUI";
-import styles from "../styles/Shop.module.scss";
-import { closeRewardsModal } from "../actions/action";
+import { Context } from "@/context/store";
+import Card from "@/components/Card";
+import { ImageUI } from "@/components/reusableUI";
+import styles from "@/styles/Shop.module.scss";
+import { closeRewardsModal } from "@/actions/action";
 import { Rarity } from "./Rarity";
 
 const LootBoxModal = () => {

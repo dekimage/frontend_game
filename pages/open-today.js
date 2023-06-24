@@ -1,14 +1,15 @@
-import { BackButton, ImageUI } from "../components/reusableUI";
+import { ImageUI } from "@/components/reusableUI";
 import { useEffect, useState } from "react";
+import { BackButton } from "@/components/reusable/BackButton";
 
-import Card from "../components/Card";
-import { GET_USER_OPEN_TICKETS } from "../GQL/query";
-import NavBar from "../components/NavBar";
-import { NotFoundContainer } from "../components/todayComp";
+import Card from "@/components/Card";
+import { GET_USER_OPEN_TICKETS } from "@/GQL/query";
+import NavBar from "@/components/NavBar";
+import { NotFoundContainer } from "@/components/Today/NotFoundContainer";
 import _ from "lodash";
-import { joinCards } from "../utils/joins";
-import styles from "../styles/Realm.module.scss";
-import { withUser } from "../Hoc/withUser";
+import { joinCards } from "@/utils/joins";
+import styles from "@/styles/Realm.module.scss";
+import { withUser } from "@/Hoc/withUser";
 
 const OpenToday = (props) => {
   const { user, data } = props;

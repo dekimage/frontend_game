@@ -2,15 +2,15 @@
 
 import React, { useRef, useState } from "react";
 
-import { ImageUI } from "../components/reusableUI";
+import { ImageUI } from "@/components/reusableUI";
 import Link from "next/link";
-import iconLogo from "../assets/menu-logo-dark.svg";
-import styles from "../styles/LandingPage.module.scss";
+import iconLogo from "@/assets/menu-logo-dark.svg";
+import styles from "@/styles/LandingPage.module.scss";
 import { useRouter } from "next/router";
 
-import baseUrl from "../utils/settings";
+import baseUrl from "@/utils/settings";
 import SEO from "./SEO";
-import { SEO_CONFIG } from "../data/configSEO";
+import { SEO_CONFIG } from "@/data/configSEO";
 
 const SwipeableContainer = ({ children }) => {
   const [startX, setStartX] = useState(0);

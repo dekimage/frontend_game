@@ -35,25 +35,3 @@ export const calculateNotifications = (gql_data, user) => {
   };
   return notifications;
 };
-
-const static_levels = {
-  1: { start: 0, end: 100 },
-  2: { start: 101, end: 200 },
-  3: { start: 201, end: 300 },
-  4: { start: 301, end: 400 },
-  5: { start: 401, end: 500 },
-};
-
-function convertXp(xp) {
-  const level = Object.keys(static_levels).filter(
-    (level) => level.start <= xp && level.end > xp
-  );
-  //NE VAKA - LOOP ZA OBVJEKTI MI TREBA
-  // const maxXp =
-  // return {
-  //   xp,
-  //   maxXp,
-  //   level,
-  //   rewards: { nextLevel, reward_type, amount },
-  // }
-}

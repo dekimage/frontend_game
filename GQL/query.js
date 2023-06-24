@@ -148,7 +148,7 @@ export const GET_CARD_PLAYER = gql`
   }
 `;
 
-export const GET_USERCARDS_QUERY = gql`
+export const GET_USERCARD_QUERY = gql`
   query ($id: ID!) {
     usercard(id: $id) {
       data {
@@ -166,6 +166,8 @@ export const GET_USERCARDS_QUERY = gql`
           is_unlocked
           completed_contents
           league
+          progressMap
+          progressQuest
           card {
             data {
               id
@@ -191,125 +193,6 @@ export const GET_USERCARDS_QUERY = gql`
                           }
                         }
                       }
-                    }
-                  }
-                }
-
-                actions {
-                  data {
-                    id
-                    attributes {
-                      name
-                      type
-                      level
-                      duration
-                      tips
-                      examples
-
-                      steps {
-                        content
-                      }
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                communityactions {
-                  data {
-                    id
-                    attributes {
-                      name
-                      type
-                      duration
-                      votes
-                      reports
-                      steps {
-                        content
-                      }
-                      user {
-                        data {
-                          id
-                          attributes {
-                            username
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          completed_actions {
-            data {
-              id
-            }
-          }
-          upvoted_actions {
-            data {
-              id
-            }
-          }
-          community_actions_completed {
-            data {
-              id
-            }
-          }
-          reported_actions {
-            data {
-              id
-            }
-          }
-
-          community_actions_claimed {
-            data {
-              id
-              attributes {
-                name
-                type
-                duration
-                votes
-                reports
-                steps {
-                  content
-                }
-                user {
-                  data {
-                    id
-                    attributes {
-                      username
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          my_community_actions {
-            data {
-              id
-              attributes {
-                name
-                type
-                duration
-                votes
-                reports
-                is_private
-                steps {
-                  content
-                }
-                user {
-                  data {
-                    id
-                    attributes {
-                      username
                     }
                   }
                 }
@@ -485,6 +368,174 @@ export const GET_CARD_ID = gql`
               }
             }
           }
+
+          ideas {
+            data {
+              id
+              attributes {
+                title
+                content
+                sortOrder
+                isOpen
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          stories {
+            data {
+              id
+              attributes {
+                title
+                content
+                sortOrder
+                isOpen
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          tips {
+            data {
+              id
+              attributes {
+                content
+                sortOrder
+                isOpen
+              }
+            }
+          }
+
+          quotes {
+            data {
+              id
+              attributes {
+                author
+                content
+                sortOrder
+                isOpen
+              }
+            }
+          }
+
+          questions {
+            data {
+              id
+              attributes {
+                question
+                description
+                sortOrder
+                isOpen
+              }
+            }
+          }
+
+          metaphores {
+            data {
+              id
+              attributes {
+                title
+                content
+                sortOrder
+                isOpen
+              }
+            }
+          }
+
+          expertopinions {
+            data {
+              id
+              attributes {
+                author
+                content
+                sortOrder
+                isOpen
+              }
+            }
+          }
+
+          experiments {
+            data {
+              id
+              attributes {
+                title
+                content
+                sortOrder
+                isOpen
+                source
+              }
+            }
+          }
+
+          exercises {
+            data {
+              id
+              attributes {
+                title
+                content
+                sortOrder
+                isOpen
+                duration
+                bestTime
+                type
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          casestudies {
+            data {
+              id
+              attributes {
+                title
+                content
+                sortOrder
+                isOpen
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          faqs {
+            data {
+              id
+              attributes {
+                question
+                answer
+                sortOrder
+                isOpen
+              }
+            }
+          }
+
           actions {
             data {
               id
@@ -503,29 +554,6 @@ export const GET_CARD_ID = gql`
                     id
                     attributes {
                       url
-                    }
-                  }
-                }
-              }
-            }
-          }
-          communityactions {
-            data {
-              id
-              attributes {
-                name
-                type
-                duration
-                votes
-                reports
-                steps {
-                  content
-                }
-                user {
-                  data {
-                    id
-                    attributes {
-                      username
                     }
                   }
                 }
@@ -1820,7 +1848,7 @@ export const GET_USER_ID = gql`
   }
 `;
 
-export const GET_BOXES = gql`
+export const GET_PRODUCTS = gql`
   query {
     products {
       data {

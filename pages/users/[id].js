@@ -1,24 +1,19 @@
-import {
-  Buddy,
-  ProfileHeader,
-  Stat,
-  Tabs,
-} from "../../components/profileComps";
+import { Buddy, ProfileHeader, Stat } from "@/components/profileComps";
 import { useContext, useState } from "react";
+import { Tabs } from "@/components/reusable/Tabs";
+import { Artifact } from "@/profile";
+import CardsMapper from "@/components/CardsMapper";
 
-import { Artifact } from "../profile";
-import CardsMapper from "../../components/CardsMapper";
+import { Context } from "@/context/store";
+import { GET_USER_ID } from "@/GQL/query";
+import Header from "@/components/Header";
+import NavBar from "@/components/NavBar";
 
-import { Context } from "../../context/store";
-import { GET_USER_ID } from "../../GQL/query";
-import Header from "../../components/Header";
-import NavBar from "../../components/NavBar";
-
-import { normalize } from "../../utils/calculations";
-import styles from "../../styles/Profile.module.scss";
+import { normalize } from "@/utils/calculations";
+import styles from "@/styles/Profile.module.scss";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-import baseUrl from "../../utils/settings";
+import baseUrl from "@/utils/settings";
 
 const tabsData = [
   { label: "activity", count: -1 },

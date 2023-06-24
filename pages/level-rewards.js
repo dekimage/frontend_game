@@ -1,13 +1,13 @@
-import { BackButton } from "../components/reusableUI";
-import { GET_REWARDS_QUERY } from "../GQL/query";
+import { BackButton } from "@/components/reusable/BackButton";
+import { GET_REWARDS_QUERY } from "@/GQL/query";
 import Link from "next/link";
-import RewardImage from "../components/RewardImage";
-import { claimLevelReward } from "../actions/action";
+import RewardImage from "@/components/RewardImage";
+import { claimLevelReward } from "@/actions/action";
 import cx from "classnames";
-import iconLock from "../assets/lock-white.svg";
-import styles from "../styles/LevelRewards.module.scss";
+import iconLock from "@/assets/lock-white.svg";
+import styles from "@/styles/LevelRewards.module.scss";
 import { useRouter } from "next/router";
-import { withUser } from "../Hoc/withUser";
+import { withUser } from "@/Hoc/withUser";
 
 const LevelReward = ({
   level: {

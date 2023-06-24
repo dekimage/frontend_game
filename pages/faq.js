@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import classNames from "classnames";
-import styles from "../styles/Faq.module.scss";
-import withSEO from "../Hoc/withSEO";
+import styles from "@/styles/Faq.module.scss";
+import withSEO from "@/Hoc/withSEO";
 import { useRouter } from "next/router";
 
 const faqsData = [

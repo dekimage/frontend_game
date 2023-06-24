@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/actions/*": ["actions/*"],
+      "@/utils/*": ["utils/*"],
+      "@/api/*": ["api/*"],
+      "@/assets/*": ["assets/*"],
+      "@/data/*": ["data/*"],
+      "@/GQL/*": ["GQL/*"],
+      "@/Hoc/*": ["Hoc/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/lib/*": ["lib/*"],
+      "@/reducers/*": ["reducers/*"],
+      "@/public/*": ["public/*"],
+      "@/styles/*": ["styles/*"],
+      "@/pages/*": ["pages/*"],
+      "@/context/*": ["context/*"],
+      "@/functions/*": ["functions/*"]
+      // Add more aliases for your project folders here
+    },
+    "forceConsistentCasingInFileNames": true
+  }
+}

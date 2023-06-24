@@ -1,32 +1,25 @@
 // *** REACT ***
 
-import { Buddy, ProfileHeader, Stat, Tabs } from "../components/profileComps";
-import { useContext, useEffect, useState } from "react";
+import { Buddy, ProfileHeader, Stat } from "@/components/profileComps";
+import { useContext, useState } from "react";
+import { Tabs } from "@/components/reusable/Tabs";
+import { Context } from "@/context/store";
+import { GET_ARTIFACTS_QUERY } from "@/GQL/query";
+import Header from "@/components/Header";
+import { ImageUI } from "@/components/reusableUI";
+import Modal from "@/components/reusable/Modal";
+import NavBar from "@/components/NavBar";
+import ProgressBar from "@/components/ProgressBar";
 
-import { Context } from "../context/store";
-import { GET_ARTIFACTS_QUERY } from "../GQL/query";
-import Header from "../components/Header";
-import { ImageUI } from "../components/reusableUI";
-import Modal from "../components/Modal";
-import NavBar from "../components/NavBar";
-import ProgressBar from "../components/ProgressBar";
-import { RewardLink } from "../components/todayComp";
-import ShareBuddyModal from "../components/Modals/ShareBuddyModal";
-import { claimArtifact } from "../actions/action";
+import ShareBuddyModal from "@/components/Modals/ShareBuddyModal";
+import { claimArtifact } from "@/actions/action";
 import cx from "classnames";
-import { normalize } from "../utils/calculations";
-import styles from "../styles/Profile.module.scss";
-import useModal from "../hooks/useModal";
+import { normalize } from "@/utils/calculations";
+import styles from "@/styles/Profile.module.scss";
+import useModal from "@/hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
-import baseUrl from "../utils/settings";
-
-// *** COMPONENTS ***
-
-// *** GQL ***
-
-// *** ACTIONS ***
-
-// *** STYLES ***
+import baseUrl from "@/utils/settings";
+import { RewardLink } from "@/components/Today/RewardLink";
 
 //POTENTIALLY ADD SIMPLE DATA TABLE TO DISPLAY PROGRESS ON ALL ARTIFACTS?
 
@@ -253,46 +246,47 @@ const Profile = () => {
           <Header />
           <div className="headerSpace"></div>
           <ProfileHeader />
+          <div className="section_container">
+            {store.user.stats && (
+              <div className={styles.stats}>
+                <Stat
+                  number={store.user.stats.card_unlock}
+                  img={`${baseUrl}/legendary-cards.png`}
+                  text={"Cards Unlocked"}
+                  max={store.user.cards_count}
+                />
+                <Stat
+                  number={store.user.stats.cards_complete}
+                  img={`${baseUrl}/rise.png`}
+                  text={"Sessions Completed"}
+                />
+                <Stat
+                  number={store.user.highest_streak_count}
+                  img={`${baseUrl}/streak.png`}
+                  text={"Highest Streak"}
+                />
+                <Stat
+                  number={store.user.stats.mastery}
+                  img={`${baseUrl}/mastery.png`}
+                  text={"Total Mastery"}
+                />
+                <Stat
+                  number={store.user.stats.claimed_artifacts || 0}
+                  img={`${baseUrl}/energy.png`}
+                  text={"Achievements"}
+                  max={store.user.artifacts_count}
+                />
+                <Stat
+                  img={`${baseUrl}/user.png`}
+                  text={store.user.is_subscribed ? "Pro User" : "Free User"}
+                />
+              </div>
+            )}
+          </div>
+          <div className="section_container">
+            <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
+          </div>
 
-          {store.user.stats && (
-            <div className={styles.stats}>
-              <Stat
-                number={store.user.stats.card_unlock}
-                img={`${baseUrl}/legendary-cards.png`}
-                text={"Cards Unlocked"}
-                max={store.user.cards_count}
-              />
-              <Stat
-                number={store.user.stats.cards_complete}
-                img={`${baseUrl}/rise.png`}
-                text={"Sessions Completed"}
-              />
-              <Stat
-                number={store.user.highest_streak_count}
-                img={`${baseUrl}/streak.png`}
-                text={"Highest Streak"}
-              />
-              <Stat
-                number={store.user.stats.mastery}
-                img={`${baseUrl}/mastery.png`}
-                text={"Total Mastery"}
-              />
-              <Stat
-                number={store.user.stats.claimed_artifacts || 0}
-                img={`${baseUrl}/energy.png`}
-                text={"Achievements"}
-                max={store.user.artifacts_count}
-              />
-              <Stat
-                img={`${baseUrl}/user.png`}
-                text={store.user.is_subscribed ? "Pro User" : "Free User"}
-              />
-            </div>
-          )}
-
-          <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
-
-          {/* "https://backendactionise.s3.eu-west-1.amazonaws.com/2022_07_08_10_58_31_Actionise_28d16b97b5.png?updated_at=2022-07-08T08:58:51.431Z" */}
           {tab === "Rewards" && (
             <div className="section">
               {/* REWARDS SECTION */}
@@ -385,17 +379,6 @@ const Profile = () => {
               </div>
             </div>
           )}
-          {/* {tab === "content" && (
-            <div className="section">
-              <div className={styles.header}>
-                <div>Created Actions</div>{" "}
-                {store.user.community_actions?.length || 0}
-              </div>
-              {store.user.community_actions?.map((a) => (
-                <CommunityAction action={a} type={"my"} key={a.id} />
-              ))}
-            </div>
-          )} */}
         </div>
       )}
 

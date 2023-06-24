@@ -29,8 +29,8 @@
     "prefix": ["igql"],
     "body": [
       "import { useQuery } from \"@apollo/react-hooks\";",
-      "import { ${1:GQL_QUERY} } from \"../GQL/query\";",
-      "import { normalize } from \"../utils/calculations\";"
+      "import { ${1:GQL_QUERY} } from \"@/GQL/query\";",
+      "import { normalize } from \"@/utils/calculations\";"
     ],
     "description": "Import Gql boilerplate"
   },

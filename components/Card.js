@@ -1,23 +1,15 @@
-import { Context } from "../context/store";
-import { ImageUI } from "../components/reusableUI";
+import { Context } from "@/context/store";
+import { ImageUI } from "@/components/reusableUI";
 import Link from "next/link";
 import ProgressBar from "./ProgressBar";
 import cx from "classnames";
-import iconCheck from "../assets/checkmark.svg";
-import iconCollection from "../assets/progress-play-dark.svg";
-import iconLock from "../assets/lock-white-border.svg";
-import iconPlay from "../assets/progress-collection-dark.svg";
-import styles from "../styles/Card.module.scss";
+import iconCheck from "@/assets/checkmark.svg";
+import iconCollection from "@/assets/progress-play-dark.svg";
+import iconLock from "@/assets/lock-white-border.svg";
+import iconPlay from "@/assets/progress-collection-dark.svg";
+import styles from "@/styles/Card.module.scss";
 import { useContext } from "react";
-import baseUrl from "../utils/settings";
-
-// import { Rarity } from "../components/Rarity";
-
-// import iconCommon from "../assets/common-rarity.svg";
-// import iconEpic from "../assets/epic-rarity.svg";
-// import iconLegendary from "../assets/legendary-rarity.svg";
-
-// import iconRare from "../assets/rare-rarity.svg";
+import baseUrl from "@/utils/settings";
 
 export const CardType = ({ type }) => {
   return <div className={cx(styles.type, styles[type])}>{type}</div>;
@@ -59,12 +51,6 @@ const OpenCard = ({ card }) => {
         // maxProgress={card.completed_progress_max}
         maxProgress={card.completed_progress_max || 3}
       />
-      {/* {!(card.league == "unranked") && (
-        <div className={styles.leagueBox}>
-          <Rarity rarity={card.league} />
-        </div>
-      )} */}
-      {/* <Rarity rarity="grandmaster" /> */}
     </div>
   );
 };
@@ -134,21 +120,13 @@ const Card = ({ card }) => {
           style={{ "--background": card.realm.color }}
         ></div>
 
-        {/* <div className={styles.rarity}>
-          {card.rarity === "common" && <img src={iconCommon} />}
-          {card.rarity === "rare" && <img src={iconRare} />}
-          {card.rarity === "epic" && <img src={iconEpic} />}
-          {card.rarity === "legendary" && <img src={iconLegendary} />}
-        </div> */}
-
         <div className={styles.realmLogo}>
-          {card.realm?.image && <img src={card.realm.image.url} />}
+          {card.realm?.image && <ImageUI url={card.realm.image.url} />}
         </div>
 
         <div className={styles.image}>
-          <img
-            src={card.image.url}
-            // src={`${baseUrl}${card.image.url}`}
+          <ImageUI
+            url={card.image.url}
             style={{ filter: !isColored && "grayscale(100%)" }}
           />
         </div>

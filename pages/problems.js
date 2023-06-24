@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { GET_PROBLEMS } from "../GQL/query";
-import { GET_REALMS } from "../GQL/query";
-import Header from "../components/Header";
+import { GET_PROBLEMS } from "@/GQL/query";
+import { GET_REALMS } from "@/GQL/query";
+import Header from "@/components/Header";
 import Link from "next/link";
-import NavBar from "../components/NavBar";
-import { normalize } from "../utils/calculations";
-import styles from "../styles/Problems.module.scss";
+import NavBar from "@/components/NavBar";
+import { normalize } from "@/utils/calculations";
+import styles from "@/styles/Problems.module.scss";
 import { useQuery } from "@apollo/react-hooks";
 
 export const GenericDropDown = ({ items, label, callback }) => {
@@ -97,26 +97,8 @@ export const Problem = ({ problem, isInside = false }) => {
   return (
     <Link href={`/problem/${id}`}>
       <div className={`${styles.problem} ${isInside && styles.isInside}`}>
-        {/* <div className={styles.id} style={{ backgroundColor: realm.color }}>
-          <span className="text__s">#</span>
-          {id}
-        </div> */}
-
-        {/* {realm?.image && (
-          <img src={realm?.image?.url} height="15px" className="mr5" />
-        )} */}
         <div className={styles.name}>{name}</div>
 
-        {/* <div className={styles.tag}>
-          <img src={realm.image.url} />
-          <img
-            src={`${baseUrl}/uploads/Asset_18_513564218e.png`}
-            height="15px"
-            className="mr25"
-          />
-
-          {realm.name}
-        </div> */}
         {!isInside && (
           <div className={styles.iconRight}>
             <ion-icon name="chevron-forward-outline"></ion-icon>

@@ -1,5 +1,6 @@
 @import "placeholders";
 @import "variables";
+@import "mixins";
 
 .profileHeader {
   display: flex;
@@ -17,6 +18,7 @@
   flex-grow: 1;
 }
 .avatar {
+  cursor: pointer;
   border-radius: 50%;
   background-color: cornsilk;
   @extend %flex_center;
@@ -24,6 +26,7 @@
   width: 3.9rem;
   overflow: hidden;
   position: relative;
+  @include hover-brightness(175%);
 }
 
 .xp {
@@ -61,47 +64,10 @@
   cursor: pointer;
 }
 
-.settings {
-  cursor: pointer;
-}
-
-.tabs {
-  @extend %flex_between;
-  width: 100%;
-  // margin: 1rem 0;
-  border-bottom: 2px solid $actionize_gray;
-  top: 3rem;
-  z-index: 200;
-  background-color: $actionize_black;
-}
-.tabsButton {
-  text-transform: capitalize;
-  width: 33.3%;
-  cursor: pointer;
-  @extend %flex_center;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 0.5rem 0;
-  color: $actionize_gray_light;
-  &.active {
-    border-bottom: 3px solid white;
-    color: white;
-  }
-}
-.tabCounter {
-  margin-left: 0.5rem;
-  @extend %flex_center;
-  color: white;
-  // background-color: $actionize_gray;
-  background-color: $ux_red;
-  border-radius: $border_radius;
-  height: 1.5rem;
-  width: 1.5rem;
-}
-
 .stats {
   @extend %flex_center;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 .statsBox {
   width: 45%;
@@ -195,6 +161,8 @@
   &.readyToClaim {
     box-shadow: 0px 0px 8px 1.5px rgba($color: #ffc74e, $alpha: 1);
   }
+  cursor: pointer;
+  @include hover-brightness(150%);
 }
 
 .artifactDetails {

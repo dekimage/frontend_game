@@ -1,15 +1,45 @@
-@import "variables";
 @import "placeholders";
+@import "variables";
 
 .tabs {
   @extend %flex_between;
-}
+  width: 100%;
+  // margin: 1rem 0;
 
-.link {
+  top: 3rem;
+  z-index: 200;
+  background-color: $actionize_black;
+}
+.tabsButton {
+  text-transform: capitalize;
+  width: 33.3%;
+  cursor: pointer;
+  @extend %flex_center;
   font-size: 14px;
   font-weight: 500;
-  padding: 1rem;
+  padding: 0.5rem;
+
+  color: $actionize_gray_light;
+  border-bottom: 3px solid $actionize_gray;
   &.active {
-    border-bottom: 2px solid white;
+    border-bottom: 3px solid white;
+    color: white;
   }
+  @include hover-brightness(250%);
+  &:hover {
+    background-color: $tw_dark;
+    border-radius: $border_radius;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+.tabCounter {
+  margin-left: 0.5rem;
+  @extend %flex_center;
+  color: white;
+  // background-color: $actionize_gray;
+  background-color: $ux_red;
+  border-radius: $border_radius;
+  height: 1.5rem;
+  width: 1.5rem;
 }

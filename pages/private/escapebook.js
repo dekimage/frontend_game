@@ -1,6 +1,6 @@
 import { useState } from "react";
-import styles from "../styles/Escape.module.scss";
-import baseUrl from "../utils/settings";
+import styles from "@/styles/private/Escape.module.scss";
+import baseUrl from "@/utils/settings";
 
 const database = {
   goin: {

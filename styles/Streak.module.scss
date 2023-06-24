@@ -1,5 +1,6 @@
 @import "variables";
 @import "placeholders";
+@import "mixins";
 
 .rarity {
   @extend %flex_center;
@@ -76,6 +77,8 @@
     width: 45px;
     height: 45px;
   }
+  cursor: pointer;
+  @include hover-brightness(150%);
 }
 
 .streakIcon {

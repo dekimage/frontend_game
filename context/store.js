@@ -3,11 +3,14 @@ import * as api from "../api";
 import React, { createContext, useEffect, useReducer } from "react";
 
 import Cookie from "js-cookie";
-import Reducer from "../reducers/Reducer";
-import { fetchUser } from "../actions/action";
+import Reducer from "@/reducers/Reducer";
+import { fetchUser } from "@/actions/config";
 import { useRouter } from "next/router";
 
 const AUTH_TOKEN = Cookie.get("token");
+
+const GOOGLE_CALLBACK_ROUTE = "/auth/google/callback";
+const LOGIN_ROUTE = "/login";
 
 const initialState = {
   tutorialModal: true,
@@ -41,12 +44,13 @@ const initialState = {
 const Store = ({ children }) => {
   const [store, dispatch] = useReducer(Reducer, initialState);
   const router = useRouter();
+
   useEffect(() => {
-    if (AUTH_TOKEN && !router.route.includes("/auth/google/callback")) {
+    if (AUTH_TOKEN && !router.route.includes(GOOGLE_CALLBACK_ROUTE)) {
       fetchUser(dispatch);
     } else {
       if (!router.pathname == "/") {
-        router.push(`/login`);
+        router.push(LOGIN_ROUTE);
       }
     }
   }, []);

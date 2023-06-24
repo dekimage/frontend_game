@@ -12,6 +12,9 @@
     height: 1.75rem;
     margin-right: 0.5rem;
   }
+  @media (max-width: 1000px) {
+    display: none;
+  }
 }
 
 .header {
@@ -52,7 +55,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  max-width: 40rem;
+  max-width: 48rem;
   margin: 0 auto;
   padding-right: 1rem;
   height: auto;

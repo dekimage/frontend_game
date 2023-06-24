@@ -3,10 +3,10 @@ import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 
-import { Button } from "../../components/reusableUI";
+import { Button } from "@/components/reusableUI";
 import Link from "next/link";
 import axios from "axios";
-import styles from "../../styles/Settings.module.scss";
+import styles from "@/styles/Settings.module.scss";
 import { useRouter } from "next/router";
 
 const ResetPassword = () => {

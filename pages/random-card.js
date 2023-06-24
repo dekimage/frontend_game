@@ -1,24 +1,27 @@
-import { BackButton, ImageUI } from "../components/reusableUI";
+import { ImageUI } from "@/components/reusableUI";
 import { useContext, useEffect, useState } from "react";
+import { BackButton } from "@/components/reusable/BackButton";
 
-import CardsMapper from "../components/CardsMapper";
-import { Context } from "../context/store";
-import Loader from "../components/reusable/Loader";
-import NavBar from "../components/NavBar";
+import CardsMapper from "@/components/CardsMapper";
+import { Context } from "@/context/store";
+import Loader from "@/components/reusable/Loader";
+import NavBar from "@/components/NavBar";
 import _ from "lodash";
-import { getRandomCard } from "../actions/action";
-import styles from "../styles/Realm.module.scss";
+import { getRandomCard } from "@/actions/action";
+import styles from "@/styles/Realm.module.scss";
 
 const Random = () => {
   const [store, dispatch] = useContext(Context);
   const [randomCard, setRandomCard] = useState();
 
-  useEffect(() => {
-    getRandomCard(dispatch).then((randomCard) => {
+  const handleGetRandomCard = () => {
+    getRandomCard().then((randomCard) => {
       setRandomCard(randomCard);
-
-      return randomCard.id;
     });
+  };
+
+  useEffect(() => {
+    handleGetRandomCard();
   }, []);
 
   return (
@@ -39,6 +42,14 @@ const Random = () => {
 
           <div className="section">
             <div>
+              <div
+                className="btn btn-primary"
+                onClick={() => {
+                  handleGetRandomCard();
+                }}
+              >
+                REROLL
+              </div>
               <CardsMapper cards={[randomCard]} />
             </div>
           </div>

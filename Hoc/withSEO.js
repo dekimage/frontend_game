@@ -1,5 +1,5 @@
-import SEO from "../components/SEO";
-import { SEO_CONFIG } from "../data/configSEO";
+import SEO from "@/components/SEO";
+import { SEO_CONFIG } from "@/data/configSEO";
 import { useRouter } from "next/router";
 
 function hyphenToCamel(str) {

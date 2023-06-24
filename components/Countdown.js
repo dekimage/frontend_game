@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 
-import { Context } from "../context/store";
+import { Context } from "@/context/store";
 import { ImageUI } from "./reusableUI";
 import Timer from "./reusable/Timer";
-import { fetchUser } from "../actions/action";
-import styles from "../styles/Countdown.module.scss";
+import { fetchUser } from "@/actions/config";
+import styles from "@/styles/Countdown.module.scss";
 
 export default function Countdown({ tab, isObjectives = false }) {
   const [store, dispatch] = useContext(Context);
@@ -33,7 +33,7 @@ export default function Countdown({ tab, isObjectives = false }) {
     <>
       {isObjectives ? (
         <div className={styles.countdown}>
-          <div className={styles.countdown}>Objectives reset in:</div>
+          <div>Objectives reset in:</div>
 
           {tab === "daily" ? (
             <>

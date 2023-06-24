@@ -9,3 +9,10 @@
     @content;
   }
 }
+
+@mixin hover-brightness($brightness: 50%) {
+  &:hover {
+    filter: brightness($brightness);
+    transition: filter 0.3s ease;
+  }
+}

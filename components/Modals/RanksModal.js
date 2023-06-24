@@ -1,7 +1,7 @@
 import { ImageUI } from "../reusableUI";
 import { Rarity } from "../Rarity";
 import React from "react";
-import styles from "../../styles/RanksModal.module.scss";
+import styles from "../styles/RanksModal.module.scss";
 
 const leagues = [
   { min: 0, max: 2, league: "unranked" },

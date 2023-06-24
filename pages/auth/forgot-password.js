@@ -2,9 +2,9 @@ import * as Yup from "yup";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-import { Button } from "../../components/reusableUI";
+import { Button } from "@/components/reusableUI";
 import axios from "axios";
-import styles from "../../styles/Settings.module.scss";
+import styles from "@/styles/Settings.module.scss";
 import { useRouter } from "next/router";
 import { useState } from "react";
 

@@ -1,5 +1,6 @@
 @import "variables";
 @import "placeholders";
+@import "mixins";
 .realm {
   position: relative;
   display: flex;
@@ -13,6 +14,10 @@
   // border: 1px solid $optimzeColor;
   border-radius: $border_radius;
   cursor: pointer;
+
+  &:hover {
+    background-color: $actionize_gray;
+  }
 }
 
 .realm_body {

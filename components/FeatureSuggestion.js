@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 
 import { Button } from "./reusableUI";
-import { Context } from "../context/store";
-import { rateCard, sendFeatureMail } from "../actions/action";
-import styles from "../styles/FeatureSuggestion.module.scss";
+import { Context } from "@/context/store";
+import { rateCard, sendFeatureMail } from "@/actions/action";
+import styles from "@/styles/FeatureSuggestion.module.scss";
 
 export function FeatureSuggestion({
   type,

@@ -1,21 +1,22 @@
-import { BackButton, ImageUI } from "../components/reusableUI";
+import { ImageUI } from "@/components/reusableUI";
 import { useEffect, useState } from "react";
+import { BackButton } from "@/components/reusable/BackButton";
 
-import CardsMapper from "../components/CardsMapper";
-import { GET_USER_FAVORITES } from "../GQL/query";
-import NavBar from "../components/NavBar";
-import { NotFoundContainer } from "../components/todayComp";
+import CardsMapper from "@/components/CardsMapper";
+import { GET_USER_FAVORITES } from "@/GQL/query";
+import NavBar from "@/components/NavBar";
+import { NotFoundContainer } from "@/components/Today/NotFoundContainer";
 import _ from "lodash";
-import styles from "../styles/Realm.module.scss";
-import { withUser } from "../Hoc/withUser";
+import styles from "@/styles/Realm.module.scss";
+import { withUser } from "@/Hoc/withUser";
 
 const Favorites = (props) => {
   const { data } = props;
   const [favoriteCards, setFavoriteCards] = useState([]);
 
   useEffect(() => {
-    if (data?.favorite_cards) {
-      setFavoriteCards(data.favorite_cards);
+    if (data?.usersPermissionsUser.favorite_cards) {
+      setFavoriteCards(data.usersPermissionsUser.favorite_cards);
     }
   }, [data]);
 
@@ -39,7 +40,7 @@ const Favorites = (props) => {
               <CardsMapper cards={favoriteCards} />
             ) : (
               <NotFoundContainer
-                text={"You don't have any activated Cards for today."}
+                text={"You don't have any favorite cards yet"}
               />
             )}
           </div>

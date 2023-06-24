@@ -2,16 +2,16 @@
 
 import { useContext, useEffect, useState } from "react";
 
-import { Button } from "../components/reusableUI";
-import { Context } from "../context/store";
-import FeatureSuggestion from "../components/FeatureSuggestion";
-import Switch from "../components/reusable/SwitchThumb";
-import { logout } from "../actions/auth";
+import { Button } from "@/components/reusableUI";
+import { Context } from "@/context/store";
+import FeatureSuggestion from "@/components/FeatureSuggestion";
+import Switch from "@/components/reusable/SwitchThumb";
+import { logout } from "@/actions/auth";
 import router from "next/router";
-import styles from "../styles/Settings.module.scss";
-import { updateSettings, updateUserBasicInfo } from "../actions/action";
+import styles from "@/styles/Settings.module.scss";
+import { updateSettings, updateUserBasicInfo } from "@/actions/action";
 import { useRouter } from "next/router";
-import { withUser } from "../Hoc/withUser";
+import { withUser } from "@/Hoc/withUser";
 
 const EmailSettings = ({ emailPreferences }) => {
   const [store, dispatch] = useContext(Context);

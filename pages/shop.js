@@ -1,32 +1,23 @@
-// *** REACT ***
-
-import { BenefitsTable, PremiumSubscription } from "../components/shopComps";
-import { GemsProduct, PaymentSoonModal } from "../components/shopComps";
-import { useContext, useState } from "react";
-
-import { Context } from "../context/store";
-import { GET_BOXES } from "../GQL/query";
-import Header from "../components/Header";
-import { ImageUI } from "../components/reusableUI";
-import Modal from "../components/Modal";
-import NavBar from "../components/NavBar";
-import iconCheckmark from "../assets/checkmark.svg";
-import { normalize } from "../utils/calculations";
-import styles from "../styles/Shop.module.scss";
-import useModal from "../hooks/useModal";
+import {
+  BenefitsTable,
+  GemsProduct,
+  PaymentSoonModal,
+  PremiumSubscription,
+} from "@/components/shopComps";
+import { useState } from "react";
+import { GET_PRODUCTS } from "@/GQL/query";
+import Header from "@/components/Header";
+import { ImageUI } from "@/components/reusableUI";
+import Modal from "@/components/reusable/Modal";
+import NavBar from "@/components/NavBar";
+import iconCheckmark from "@/assets/checkmark.svg";
+import { normalize } from "@/utils/calculations";
+import styles from "@/styles/Shop.module.scss";
+import useModal from "@/hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
 
-// *** COMPONENTS ***
-
-// *** STYLES ***
-
-// *** HOOKS ***
-
-// *** GQL ***
-
 const Shop = () => {
-  const { loading, error, data } = useQuery(GET_BOXES);
-  // const { data: gql_courses_data } = useQuery(GET_COURSES);
+  const { loading, error, data } = useQuery(GET_PRODUCTS);
   const { isShowing, openModal, closeModal } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
 

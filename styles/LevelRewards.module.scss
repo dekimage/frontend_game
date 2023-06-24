@@ -138,4 +138,5 @@
   &.premium {
     background-color: $secondary;
   }
+  @include hover-brightness(150%);
 }

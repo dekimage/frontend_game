@@ -1,7 +1,7 @@
 import React from "react";
-import { RewardLink } from "../todayComp";
 
-import baseUrl from "../../utils/settings";
+import baseUrl from "@/utils/settings";
+import { RewardLink } from "./RewardLink";
 
 const RewardLinkSection = () => {
   const rewardLinksData = [
@@ -11,9 +11,9 @@ const RewardLinkSection = () => {
       text: "Favorites",
     },
     {
-      img: `${baseUrl}/recent.png`,
-      link: "/recent",
-      text: "Recent",
+      img: `${baseUrl}/bookmark.png`,
+      link: "/bookmarks",
+      text: "Bookmarks",
     },
     {
       img: `${baseUrl}/random.png`,
@@ -21,9 +21,9 @@ const RewardLinkSection = () => {
       text: "Random Card",
     },
     {
-      img: `${baseUrl}/energy.png`,
-      link: "/open-today",
-      text: "Open Today",
+      img: `${baseUrl}/recent.png`,
+      link: "/recent",
+      text: "Recent",
     },
   ];
 

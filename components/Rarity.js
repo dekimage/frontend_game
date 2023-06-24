@@ -1,10 +1,10 @@
 import cx from "classnames";
-import styles from "../styles/Rarity.module.scss";
+import styles from "@/styles/Rarity.module.scss";
 
-import iconCommon from "../assets/common-rarity.svg";
-import iconRare from "../assets/rare-rarity.svg";
-import iconEpic from "../assets/epic-rarity.svg";
-import iconLegendary from "../assets/legendary-rarity.svg";
+import iconCommon from "@/assets/common-rarity.svg";
+import iconRare from "@/assets/rare-rarity.svg";
+import iconEpic from "@/assets/epic-rarity.svg";
+import iconLegendary from "@/assets/legendary-rarity.svg";
 
 export const Rarity = ({ rarity }) => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import styles from "../../styles/Switch.module.scss";
+import styles from "@/styles/Switch.module.scss";
 import { useState } from "react";
 
 function Switch({ className, checked, onChange, disabled = false }) {

@@ -1,5 +1,6 @@
 @import "variables";
 @import "placeholders";
+@import "mixins";
 
 .comingSoon {
   border-radius: $border_radius;
@@ -37,6 +38,7 @@
   &.notCollected {
     opacity: 80%;
   }
+  @include hover-brightness(125%);
 }
 
 .image {

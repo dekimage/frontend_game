@@ -2,22 +2,23 @@
 
 import { useContext, useState } from "react";
 
-import { Context } from "../context/store";
-import { GET_AVATARS } from "../GQL/query";
+import { Context } from "@/context/store";
+import { GET_AVATARS } from "@/GQL/query";
 import { ImageUI } from "./reusableUI";
 import Link from "next/link";
-import Modal from "./Modal";
-import ProgressBar from "../components/ProgressBar";
+import Modal from "./reusable/Modal";
+import ProgressBar from "@/components/ProgressBar";
 import cx from "classnames";
 
-import { normalize } from "../utils/calculations";
-import { saveAvatar } from "../actions/action";
-import settingsIcon from "../assets/menu-settings-dark.svg";
-import styles from "../styles/Profile.module.scss";
-import useModal from "../hooks/useModal";
+import { normalize } from "@/utils/calculations";
+import { saveAvatar } from "@/actions/action";
+import settingsIcon from "@/assets/menu-settings-dark.svg";
+import styles from "@/styles/Profile.module.scss";
+import useModal from "@/hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
-import baseUrl from "../utils/settings";
-import Loader from "../components/reusable/Loader";
+import baseUrl from "@/utils/settings";
+import Loader from "@/components/reusable/Loader";
+import Icon from "./reusable/Icon";
 
 // *** COMPONENTS ***
 
@@ -156,104 +157,14 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
         </div>
       </div>
       <div style={{ width: "24px" }}>
-        {!isBuddy && (
-          <Link href="/settings">
-            <div className={styles.settings}>
-              <img src={settingsIcon} height="25px" />
-            </div>
-          </Link>
-        )}
+        {!isBuddy && <Icon href={"/settings"} src={settingsIcon} size="25px" />}
       </div>
       <Modal
         isShowing={isShowing}
         closeModal={closeModal}
+        isSmall
         jsx={<ChangeAvatarModal closeModal={closeModal} />}
       />
-    </div>
-  );
-};
-
-export const Tabs = ({
-  tabState,
-  setTab,
-  tabs,
-  callback = false,
-  value = false,
-}) => {
-  const tabWidth = tabs.length === 2 ? "50%" : "33.3%";
-
-  const TabHoc = ({ children, tab, setTab, tabState, link, tabWidth }) => {
-    return (
-      <>
-        {link ? (
-          <a href={link ? `#${link}` : ""}>
-            <div
-              className={cx(
-                styles.tabsButton,
-                tabState === tab.label && styles.active
-              )}
-              onClick={() => {
-                setTab(tab.label);
-                callback && callback(value);
-              }}
-              style={{ width: tabWidth }}
-            >
-              <div>{children}</div>
-            </div>
-          </a>
-        ) : (
-          <div
-            className={cx(
-              styles.tabsButton,
-              tabState === tab.label && styles.active
-            )}
-            onClick={() => {
-              setTab(tab.label);
-              callback && callback(value);
-            }}
-            style={{ width: tabWidth }}
-          >
-            <div>{children}</div>
-          </div>
-        )}
-      </>
-    );
-  };
-  const Tab = ({ tabState, setTab, tab, link }) => {
-    return (
-      <TabHoc
-        tab={tab}
-        tabState={tabState}
-        link={link}
-        tabWidth={tabWidth}
-        setTab={setTab}
-        children={
-          <div className="flex_center">
-            {tab.label}
-            {tab.count !== -1 && (
-              <div className={styles.tabCounter}>
-                {tab.count ? tab.count : 0}
-              </div>
-            )}
-          </div>
-        }
-      />
-    );
-  };
-  return (
-    <div className={styles.tabs}>
-      {tabs.map((t, i) => {
-        return (
-          <Tab
-            key={i}
-            tabState={tabState}
-            setTab={setTab}
-            tab={t}
-            link={t.link}
-            tabWidth={tabWidth}
-          />
-        );
-      })}
     </div>
   );
 };

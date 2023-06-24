@@ -3,18 +3,18 @@
 import { useContext, useState } from "react";
 
 import { ArtifactModal } from "./profile";
-import { BackButton } from "../components/reusableUI";
-import Card from "../components/Card";
-import { Context } from "../context/store";
-import { GET_STREAKS_QUERY } from "../GQL/query";
+import { BackButton } from "@/components/reusable/BackButton";
+import Card from "@/components/Card";
+import { Context } from "@/context/store";
+import { GET_STREAKS_QUERY } from "@/GQL/query";
 import { GemReward } from "./buddies-rewards";
-import Modal from "../components/Modal";
-import { claimStreakReward } from "../actions/action";
+import Modal from "@/components/reusable/Modal";
+import { collectStreakReward } from "@/actions/action";
 import cx from "classnames";
-import styles from "../styles/Streak.module.scss";
-import { withUser } from "../Hoc/withUser";
+import styles from "@/styles/Streak.module.scss";
+import { withUser } from "@/Hoc/withUser";
 
-import baseUrl from "../utils/settings";
+import baseUrl from "@/utils/settings";
 
 const calculateReward = (
   reward_type,
@@ -73,7 +73,9 @@ const Streak = ({ streak, user, dispatch }) => {
         is_collected && [styles.isCollected]
       )}
       onClick={() => {
-        is_ready && !is_collected && claimStreakReward(dispatch, streak_count);
+        is_ready &&
+          !is_collected &&
+          collectStreakReward(dispatch, streak_count);
       }}
       // onClick={() =>
       //   setSelectedStreak({ streak_count, is_ready, is_collected })

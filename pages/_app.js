@@ -1,15 +1,15 @@
-import "../styles/globals.scss";
+import "@/styles/globals.scss";
 import "react-toastify/dist/ReactToastify.css";
 
 import { ToastContainer, toast } from "react-toastify";
 
 import Head from "next/head";
 import React from "react";
-import Store from "../context/store";
-import { pageview } from "../utils/ga";
+import Store from "@/context/store";
+import { pageview } from "@/utils/ga";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import withData from "../lib/withData";
+import withData from "@/lib/withData";
 
 const MyApp = ({ Component, pageProps }) => {
   MyApp.getInitialProps = async ({ Component, router, ctx }) => {
@@ -45,15 +45,12 @@ const MyApp = ({ Component, pageProps }) => {
     <Store>
       <Head>
         <title>Actionise</title>
-        {/* <link href="../public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
+        {/* <link href="@/public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
         <style>
           @import
-          url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500&display=swap');
-        </style>
-        <style>
-          @import
-          url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500&display=swap');
+          url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=Teko:wght@400;500&display=swap');
         </style>
         <script
           type="module"

@@ -3,12 +3,12 @@
 import ProgressBar from "./ProgressBar";
 import RewardImage from "./RewardImage";
 import Router from "next/router";
-import { claimObjective } from "../actions/action";
+import { claimObjective } from "@/actions/action";
 import cx from "classnames";
-import { event } from "../utils/ga";
-import iconCheckmark from "../assets/checkmark.svg";
-import iconCheckmarkFill from "../assets/checkmark-fill.svg";
-import styles from "../styles/Today.module.scss";
+import { event } from "@/utils/ga";
+import iconCheckmark from "@/assets/checkmark.svg";
+import iconCheckmarkFill from "@/assets/checkmark-fill.svg";
+import styles from "@/styles/Today.module.scss";
 
 const Objective = ({
   objective: {
