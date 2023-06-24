@@ -1,5 +1,5 @@
-@import "@/placeholders";
-@import "@/variables";
+@import "../variables";
+@import "../placeholders";
 
 .inventory {
   @extend %box_duo;
