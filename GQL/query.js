@@ -1,5 +1,84 @@
 import { gql } from "apollo-boost";
 
+export const GET_CONTENT = gql`
+  query {
+    cards {
+      data {
+        id
+        attributes {
+          name
+          expansion {
+            data {
+              id
+            }
+          }
+          casestudies {
+            data {
+              id
+            }
+          }
+          exercises {
+            data {
+              id
+            }
+          }
+          experiments {
+            data {
+              id
+            }
+          }
+          expertopinions {
+            data {
+              id
+            }
+          }
+          faqs {
+            data {
+              id
+            }
+          }
+          ideas {
+            data {
+              id
+            }
+          }
+          metaphores {
+            data {
+              id
+            }
+          }
+
+          quotes {
+            data {
+              id
+            }
+          }
+          questions {
+            data {
+              id
+            }
+          }
+          stories {
+            data {
+              id
+            }
+          }
+          tips {
+            data {
+              id
+            }
+          }
+          actions {
+            data {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_AVATARS = gql`
   query {
     avatars {
