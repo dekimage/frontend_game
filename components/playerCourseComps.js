@@ -28,6 +28,7 @@ export const RatingModal = ({ closePlayer, cardId, usercard }) => {
     rateCard(dispatch, emoji, cardId, "rating");
     closePlayer();
   };
+
   return (
     <div className={styles.ratingModal}>
       <div className="header mb1">How did you like this card?</div>

@@ -99,11 +99,13 @@
 .navBarItem {
   color: white;
   cursor: pointer;
+  @include hover-brightness(155%);
   @extend %flex_center;
   flex-direction: column;
   padding: 0.5rem 0.5rem;
   margin: 0 0.5rem;
   font-size: 12px;
+
   &.small {
     padding: 0;
     margin: 0;

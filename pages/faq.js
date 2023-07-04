@@ -4,6 +4,7 @@ import classNames from "classnames";
 import styles from "@/styles/Faq.module.scss";
 import withSEO from "@/Hoc/withSEO";
 import { useRouter } from "next/router";
+import { BackButton } from "@/components/reusable/BackButton";
 
 const faqsData = [
   {
@@ -79,24 +80,24 @@ function Faq({ question, answer }) {
   );
 }
 
-function FaqList() {
+const FaqPage = () => {
   const router = useRouter();
   return (
-    <div className="section background_dark">
-      <div className={styles.header}>
-        <div className={styles.back} onClick={() => router.back()}>
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </div>
+    <div className="background_dark">
+      <div className="section">
+        <div className={styles.header}>
+          <BackButton isBack />
 
-        <div className={styles.title}>FAQ</div>
-      </div>
-      <div className="flex_column">
-        {faqsData.map((faq, index) => (
-          <Faq key={index} question={faq.question} answer={faq.answer} />
-        ))}
+          <div className={styles.title}>FAQ</div>
+        </div>
+        <div className="flex_column">
+          {faqsData.map((faq, index) => (
+            <Faq key={index} question={faq.question} answer={faq.answer} />
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default withSEO(FaqList);
+export default withSEO(FaqPage);

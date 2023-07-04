@@ -8,6 +8,7 @@ import NavBar from "@/components/NavBar";
 import { normalize } from "@/utils/calculations";
 import styles from "@/styles/Problems.module.scss";
 import { useQuery } from "@apollo/react-hooks";
+import { withUser } from "@/Hoc/withUser";
 
 export const GenericDropDown = ({ items, label, callback }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -109,12 +110,9 @@ export const Problem = ({ problem, isInside = false }) => {
   );
 };
 
-const Problems = () => {
-  const { data, loading, error } = useQuery(GET_PROBLEMS);
-  const gql_data = data && normalize(data);
-
-  const { data: realmData, realmsLoading } = useQuery(GET_REALMS);
-  const realms = realmData && normalize(realmData).realms;
+const Problems = ({ data }) => {
+  const realms = data.realms;
+  const problems = data.problems;
 
   const [filter, setFilter] = useState(false);
   const [query, setQuery] = useState(false);
@@ -141,9 +139,7 @@ const Problems = () => {
         <div className="header">Solve Your Problems</div>
       </div>
 
-      <div>
-        {error && <div>Error: {error}</div>}
-        {(loading || realmsLoading) && <div>Load</div>}
+      <div className="section">
         <div className="section" style={{ padding: "0 1rem" }}>
           <div className={styles.filters}>
             <input
@@ -152,21 +148,15 @@ const Problems = () => {
               placeholder="Search..."
             />
 
-            {realms && (
-              <DropDown realms={realms} filter={filter} setFilter={setFilter} />
-            )}
+            <DropDown realms={realms} filter={filter} setFilter={setFilter} />
           </div>
         </div>
 
-        {gql_data && (
-          <div>
-            {filterProblems(gql_data.problems, filter, query).map(
-              (problem, i) => (
-                <Problem problem={problem} key={i} />
-              )
-            )}
-          </div>
-        )}
+        <div>
+          {filterProblems(problems, filter, query).map((problem, i) => (
+            <Problem problem={problem} key={i} />
+          ))}
+        </div>
       </div>
 
       <NavBar />
@@ -174,4 +164,4 @@ const Problems = () => {
   );
 };
 
-export default Problems;
+export default withUser(Problems, GET_PROBLEMS);

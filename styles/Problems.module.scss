@@ -6,7 +6,9 @@
   @extend %flex_between;
   margin: 0.5rem 0;
   cursor: pointer;
-  // background-color: $actionize_gray;
+  &:hover {
+    background-color: $actionize_gray;
+  }
   // @extend %box_duo;
 
   margin: 0;
@@ -77,6 +79,7 @@
 }
 
 .dropDown {
+  cursor: pointer;
   position: relative;
   border-radius: $border_radius;
   @extend %box_duo;
@@ -84,12 +87,18 @@
   font-weight: 500;
   width: 9rem;
   @extend %flex_center;
-
+  &:hover {
+    background-color: $actionize_gray;
+  }
   &_item {
+    cursor: pointer;
     @extend %flex_start;
     padding: 0.7rem 0.5rem;
     padding-left: 0.75rem;
     border-bottom: 2px solid $actionize_gray;
+    &:hover {
+      background-color: $actionize_gray;
+    }
   }
 
   &_items {

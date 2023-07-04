@@ -4,16 +4,13 @@ import {
   Title,
 } from "@/components/cardPageComps";
 import { GET_CARD_ID, GET_USERCARD_QUERY } from "@/GQL/query";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useLazyQuery, useQuery } from "@apollo/react-hooks";
-
 import { BackButton } from "@/components/reusable/BackButton";
 import { Context } from "@/context/store";
 import EnergyModal from "@/components/EnergyModal";
 import Modal from "@/components/reusable/Modal";
-
 import ProgressBar from "@/components/ProgressBar";
-
 import ReactMarkdown from "react-markdown";
 import { RewardsModal } from "@/components/RewardsModal";
 import _ from "lodash";
@@ -24,8 +21,9 @@ import { useRouter } from "next/router";
 import TabsData from "@/components/TabsData";
 import { ImageUI } from "@/components/reusableUI";
 
-const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
+const CardPage = ({ dataUserCard, dataCard }) => {
   const [store, dispatch] = useContext(Context);
+
   const proxyUserCard = {
     completed: 0,
     proxy: true,
@@ -37,21 +35,19 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
 
   const card = dataCard.card;
 
-  const isUnlocked =
-    card.is_open || (usercard.proxy ? card.is_open : usercard.is_unlocked);
+  const isUnlocked = card.is_open || usercard.is_unlocked;
 
   const day = card.days[card.last_day || 0];
   const completedContents = usercard.completed_contents || [];
   const cardTickets = store?.user?.card_tickets || [];
   const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
-  const isSubscribed = store?.user?.is_subscribed;
 
   const { isShowing, openModal, closeModal } = useModal();
 
   return (
     <div className={styles.cardContainer}>
       <div className={styles.card}>
-        <BackButton routeDynamic={card.realm.id} routeStatic={"/realm/"} />
+        <BackButton isBack />
 
         <ImageUI url={card.image.url} height={225} className={styles.image} />
 
@@ -65,34 +61,44 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           style={{ "--background": card.realm.color }}
         ></div>
 
-        {!card.coming_soon && (
-          <div className={styles.section_name}>
-            <div className={styles.name}>
-              <ImageUI
-                url={card.realm.image.url}
-                height={28}
-                className={styles.realmLogo}
-              />
+        <div className={styles.section_name}>
+          <div className={styles.name}>
+            <ImageUI
+              url={card.realm.image.url}
+              height={28}
+              className={styles.realmLogo}
+            />
 
-              <div className={styles.name}>{card.name}</div>
+            <div className={styles.name}>{card.name}</div>
+            {!card.coming_soon && (
               <FavoriteButton
                 isFavorite={usercard.is_favorite}
                 id={card.id}
                 type="card"
               />
-            </div>
+            )}
+          </div>
+        </div>
+
+        {card.coming_soon && (
+          <div className={styles.comingSoon}>
+            <div className={styles.comingSoonText}>Coming Soon</div>
           </div>
         )}
 
-        <ProgressBar
-          progress={usercard.completed}
-          max={usercard.completed_progress_max}
-          withNumber
-          withIcon={"mastery"}
-          fontSize={16}
-        />
+        {!card.coming_soon && (
+          <>
+            <ProgressBar
+              progress={usercard.completed}
+              max={usercard.completed_progress_max}
+              withNumber
+              withIcon={"mastery"}
+              fontSize={16}
+            />
 
-        <div className={styles.description}>{card.description}</div>
+            <div className={styles.description}>{card.description}</div>
+          </>
+        )}
 
         {!isUnlocked && (
           <>
@@ -103,8 +109,9 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           </>
         )}
       </div>
+
       <div className="section_container">
-        {!card.coming_soon && usercard && card && (
+        {!card.coming_soon && usercard && card && isUnlocked && (
           <TabsData
             card={card}
             usercard={usercard}
@@ -112,15 +119,13 @@ const CardPage = ({ dataUserCard, dataCard, getUserCard }) => {
           />
         )}
 
-        {/* {card && (
-        <CardCtaFooter
-          isUnlocked={isUnlocked}
-          card={card}
-          isTicketPurchased={isTicketPurchased}
-          usercard={usercard}
-          is_subscribed={isSubscribed}
-        />
-      )} */}
+        {card && !card.coming_soon && (
+          <CardCtaFooter
+            isUnlocked={isUnlocked}
+            card={card}
+            usercard={usercard}
+          />
+        )}
 
         <Modal
           isShowing={store.rewardsModal.isOpen}

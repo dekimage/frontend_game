@@ -1,10 +1,15 @@
 @import "variables.scss";
 @import "placeholders.scss";
+@import "mixins.scss";
 
 .settingsItem {
+  cursor: pointer;
   padding: 1rem;
   border-bottom: 2px solid $actionize_gray;
   font-weight: 500;
+  &:hover {
+    background-color: $actionize_gray_light;
+  }
 }
 
 .footer {
@@ -19,10 +24,6 @@
   @extend %header;
   padding: 1rem;
   position: relative;
-}
-
-.back {
-  @extend %flex_center;
 }
 
 .title {
@@ -42,6 +43,8 @@
   text-transform: capitalize;
 }
 .actionLabel {
+  @include hover-brightness(150%);
+  cursor: pointer;
   color: $eggHeadOrange;
 }
 

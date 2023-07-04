@@ -54,10 +54,8 @@ const Reducer = (store, action) => {
       return { ...store, player: action.data };
     case "COMPLETE_TASK":
       return { ...store, completedTasks: store.completedTasks + 1 };
-    case "SKIP_TASK":
-      return { ...store, skippedTasks: store.skippedTasks + 1 };
     case "RESET_TASKS":
-      return { ...store, skippedTasks: 0, completedTasks: 0 };
+      return { ...store, completedTasks: 0 };
     case "LOADING":
       return { ...store, isLoading: true };
     case "STOP_LOADING":
@@ -173,7 +171,7 @@ const Reducer = (store, action) => {
       return { ...store };
     // update artifact claimed + stats
 
-    case "CLAIM_OBJECTIVE":
+    case "REWARD_MODAL":
       return {
         ...store,
         rewardsModal: {

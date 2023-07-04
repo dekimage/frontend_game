@@ -45,7 +45,9 @@
   @extend %flex_center;
   padding: 1.5rem 0;
 }
+
 .oauthSection {
-  @extend %flex_around;
+  width: 100%;
+  @extend %flex_center;
   margin-top: 2rem;
 }

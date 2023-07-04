@@ -6,6 +6,7 @@ import { normalize } from "@/utils/calculations";
 import styles from "@/styles/Settings.module.scss";
 import { useRouter } from "next/router";
 import withSEO from "@/Hoc/withSEO";
+import { BackButton } from "@/components/reusable/BackButton";
 
 const GET_TERMS = gql`
   query {
@@ -34,9 +35,7 @@ const TermsOfService = () => {
     <div className="background_dark">
       <div className="section">
         <div className={styles.header}>
-          <div className={styles.back} onClick={() => router.back()}>
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
+          <BackButton isBack />
 
           <div className={styles.title}>{title}</div>
         </div>

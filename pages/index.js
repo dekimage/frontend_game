@@ -16,7 +16,7 @@ import RewardLinkSection from "@/components/Today/RewardLinkSection";
 import { GET_OBJECTIVES_QUERY } from "@/GQL/query";
 
 // *** ACTIONS ***
-import { acceptReferral } from "@/actions/action";
+import { acceptReferral, resetUser } from "@/actions/action";
 
 // *** FUNCTIONS ***
 import { calculateNotifications, joinObjectives } from "@/functions/todayFunc";
@@ -32,6 +32,7 @@ const Home = ({ user, data, dispatch, store }) => {
   const { isShowing, openModal, closeModal } = useModal();
 
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
+  const [showCompleted, setShowCompleted] = useState(true);
 
   useEffect(() => {
     if (user.tutorial_step > 0) {
@@ -44,12 +45,6 @@ const Home = ({ user, data, dispatch, store }) => {
     [data.objectives, user.objectives_json]
   );
 
-  const getCompletedObjectivesCount = (objectivesData, openTab) => {
-    return objectivesData.filter(
-      (o) => o.time_type === openTab && o.isCollected
-    ).length;
-  };
-
   const notif = calculateNotifications(data, user);
 
   const tabsData = [
@@ -57,9 +52,14 @@ const Home = ({ user, data, dispatch, store }) => {
     { label: "weekly", count: notif?.weekly || -1 },
   ];
 
-  useEffect(() => {
-    console.log(user.usercards);
-  }, [user]);
+  const filteredObjectives = objectivesData.filter(
+    (o) => o.time_type === objectivesTabOpen
+  );
+  const completedObjectives = filteredObjectives.filter((o) => o.isCollected);
+  const notCompletedObjectives = filteredObjectives.filter(
+    (o) => !o.isCollected
+  );
+  const totalObjetivesCount = filteredObjectives.length;
 
   return (
     <div className="background_dark">
@@ -91,16 +91,16 @@ const Home = ({ user, data, dispatch, store }) => {
 
           <div className="section">
             <div className={styles.objectivesHeadline}>
+              <div
+                onClick={() => resetUser(dispatch)}
+                className="btn btn-primary"
+              >
+                TEST
+              </div>
               <div className="header">Objectives</div>
 
               <span className={styles.objectivesHeadline_number}>
-                {getCompletedObjectivesCount(objectivesData, objectivesTabOpen)}
-                /
-                {
-                  objectivesData.filter(
-                    (o) => o.time_type === objectivesTabOpen
-                  ).length
-                }
+                {completedObjectives.length}/{totalObjetivesCount}
               </span>
             </div>
           </div>
@@ -115,17 +115,46 @@ const Home = ({ user, data, dispatch, store }) => {
 
           <div className="section" style={{ paddingTop: 0 }}>
             <div>
-              {objectivesData
-                .filter((o) => o.time_type === objectivesTabOpen)
-                .map((obj) => (
-                  <Objective
-                    objective={obj}
-                    dispatch={dispatch}
-                    isUserPremium={user.is_subscribed}
-                    key={obj.id}
-                  />
-                ))}
+              {notCompletedObjectives.map((obj) => (
+                <Objective
+                  objective={obj}
+                  dispatch={dispatch}
+                  isUserPremium={user.is_subscribed}
+                  key={obj.id}
+                />
+              ))}
             </div>
+            {completedObjectives.length > 0 && (
+              <div
+                className={styles.showCompletedBtn}
+                onClick={() => setShowCompleted(!showCompleted)}
+              >
+                <div className="mr5">
+                  {showCompleted ? "Hide Completed" : "Show Completed"}
+                </div>
+                {showCompleted ? (
+                  <ion-icon name="chevron-up-outline"></ion-icon>
+                ) : (
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                )}
+              </div>
+            )}
+
+            {notCompletedObjectives.length == 0 && (
+              <div className="pt1 pb1">
+                <div className="header">You are done for today!</div>
+              </div>
+            )}
+
+            {showCompleted &&
+              completedObjectives.map((obj) => (
+                <Objective
+                  objective={obj}
+                  dispatch={dispatch}
+                  isUserPremium={user.is_subscribed}
+                  key={obj.id}
+                />
+              ))}
           </div>
         </div>
       </div>

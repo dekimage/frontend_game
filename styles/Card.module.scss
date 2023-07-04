@@ -5,11 +5,8 @@
 .comingSoon {
   border-radius: $border_radius;
   padding: 0.25rem 0.5rem;
-  background-color: rgb(40, 40, 40);
   font-weight: 500;
   font-size: 10px;
-  position: absolute;
-  top: -10px;
 }
 
 .link {
@@ -70,14 +67,8 @@
   font-size: 14px;
   font-weight: 700;
   color: white;
-
   margin: 0.25rem 0;
   text-align: center;
-}
-
-.leagueBox {
-  position: absolute;
-  bottom: -12px;
 }
 
 .openBox {

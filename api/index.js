@@ -3,7 +3,6 @@ import axios from "axios";
 
 const backendAPi = process.env.NEXT_PUBLIC_API_URL;
 import { generateRandomCode } from "@/utils/calculations";
-import { createApiEndpoint } from "@/actions/config";
 
 const baseUrl = `${backendAPi}/api`;
 const userUrl = "/usercard";
@@ -15,10 +14,17 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
   ? "Bearer " + AUTH_TOKEN
   : "";
 
-// API
+// LEGACY APIS (require customizations)
 export const fetchUserApi = () => axios.get("/usercard/me");
+export const rateCardApi = () => axios.put(`${userUrl}/rate-card`);
+export const updateEmailSettingsApi = (data) =>
+  axios.put(`${userUrl}/update-settings`, { settings: data });
+export const updateCardApi = (cardId, action, contentIndex = 0) =>
+  axios.put(`${userUrl}/update-card/${cardId}`, {
+    action,
+    contentIndex,
+  });
 
-// AUTH API
 export const signupApi = (email, password, sharedByUserId) =>
   axios.post(
     "/auth/local/register",
@@ -41,15 +47,3 @@ export const loginApi = (identifier, password) =>
       headers: { Authorization: "" },
     }
   );
-
-export const updateCardApi = (cardId, action, contentIndex = 0) =>
-  axios.put(`${userUrl}/update-card/${cardId}`, {
-    action,
-    contentIndex,
-  });
-
-export const updateSettingsApi = (data) =>
-  axios.put(`${userUrl}/update-settings`, { settings: data });
-
-export const getRandomCardApi = createApiEndpoint("getRandomCard");
-export const rateCardApi = createApiEndpoint("rateCard");

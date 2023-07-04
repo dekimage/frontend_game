@@ -20,7 +20,7 @@ export const withUser = (
     const { user } = store;
     const router = useRouter();
 
-    // Check if the user is authenticated
+    
     useEffect(() => {
       if (!AUTH_TOKEN) {
         router.push("/");

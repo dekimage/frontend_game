@@ -35,29 +35,4 @@
     border: 2px solid darken($color: $wowLegendary, $amount: 20);
     background-color: $wowLegendary;
   }
-  // leagues
-  &.bronze {
-    background-color: #cb8c47;
-    border: 2px solid darken($color: #cb8c47, $amount: 20);
-  }
-  &.silver {
-    border: 2px solid darken($color: #b9b9b9, $amount: 20);
-    background-color: #b9b9b9;
-  }
-  &.gold {
-    border: 2px solid darken($color: #f9dc5c, $amount: 20);
-    background-color: #f9dc5c;
-  }
-  &.platinum {
-    border: 2px solid darken($color: #a5ccb2, $amount: 20);
-    background-color: #a5ccb2;
-  }
-  &.diamond {
-    border: 2px solid darken($color: #f3c4fb, $amount: 20);
-    background-color: #f3c4fb;
-  }
-  &.grandmaster {
-    border: 2px solid darken($color: #fc6dab, $amount: 20);
-    background-color: #fc6dab;
-  }
 }

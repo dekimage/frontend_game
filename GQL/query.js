@@ -234,17 +234,14 @@ export const GET_USERCARD_QUERY = gql`
         id
         attributes {
           is_favorite
-          level
           completed
           completed_progress_max
           quantity
           is_new
           rating
-          glory_points
           completed_at
           is_unlocked
           completed_contents
-          league
           progressMap
           progressQuest
           card {
@@ -339,6 +336,112 @@ export const GET_ACTION_ID = gql`
                           }
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PLAYER_CARD = gql`
+  query ($id: ID!) {
+    card(id: $id) {
+      data {
+        id
+        attributes {
+          name
+          last_day
+          is_open
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+
+          days {
+            id
+            index
+            contents {
+              id
+              index
+              storyline
+              type
+              title
+              duration
+              action {
+                data {
+                  id
+                  attributes {
+                    name
+                    type
+                    level
+                    duration
+                    tips
+                    examples
+
+                    steps {
+                      content
+                      timer
+                      task
+                    }
+                    image {
+                      data {
+                        id
+                        attributes {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          realm {
+            data {
+              id
+              attributes {
+                color
+                name
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          actions {
+            data {
+              id
+              attributes {
+                name
+                type
+                level
+                duration
+                tips
+                examples
+                steps {
+                  content
+                }
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
                     }
                   }
                 }
@@ -896,8 +999,6 @@ export const GET_COLLECTION = gql`
                 is_favorite
                 completed
                 quantity
-                glory_points
-                level
                 is_unlocked
                 completed_contents
                 card {
@@ -1673,6 +1774,32 @@ export const GET_PROBLEMS = gql`
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
+      }
+    }
+    realms {
+      data {
+        id
+        attributes {
+          name
+          description
+          coming_soon
+          image {
+            data {
+              id
+              attributes {
+                url
               }
             }
           }

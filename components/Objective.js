@@ -29,7 +29,6 @@ const Objective = ({
   isUserPremium,
 }) => {
   const timeColor = time_type === "daily" ? "#009c68" : "#1e67ac";
-  const premiumColor = "orange";
   const isPremium = is_premium && !isUserPremium;
   return (
     <div
@@ -57,14 +56,6 @@ const Objective = ({
 
       <RewardImage reward={reward_type} amount={reward_amount} isTask={true} />
       <div className={styles.objective_body}>
-        {/* <div
-          className={cx([styles.objective_name], {
-            [styles.completed]: isCollected,
-          })}
-        >
-          {name}
-        </div> */}
-
         <div
           className={cx([styles.objective_name], {
             [styles.completed]: isCollected,
@@ -84,8 +75,6 @@ const Objective = ({
             isReadyToClaim={progress >= requirement_amount && !isCollected}
             max={requirement_amount}
           />
-
-          {/* {progress == requirement_amount && !isCollected && "Ready to CLAIM!"} */}
         </div>
       </div>
 
@@ -106,7 +95,6 @@ const Objective = ({
         }}
       >
         <div className={styles.progressCounter}></div>
-        {/* {isCollected ? "COLLECTED" : "NOT COLLECTED"} */}
         {isCollected ? (
           <img
             src={isCollected ? iconCheckmark : iconCheckmarkFill}
@@ -143,7 +131,6 @@ const Objective = ({
             )}
           </>
         )}
-        {/* <div>{time_type}</div> */}
       </div>
     </div>
   );

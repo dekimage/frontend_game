@@ -126,6 +126,12 @@ input:-webkit-autofill:active {
 .input-error {
   color: $ux_red;
   margin: 0.5rem 0;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+.input-error.hidden {
+  opacity: 0;
+  pointer-events: none; /* make it not block clicks, etc when hidden */
 }
 
 //  LAYOUT

@@ -12,7 +12,9 @@ export const signup = (
   password,
   sharedByUserId = false,
   setSubmitting,
-  resetForm
+  resetForm,
+  setError,
+  setIsErrorVisible
 ) => {
   api
     .signupApi(email, password, sharedByUserId)
@@ -32,7 +34,15 @@ export const signup = (
     })
 
     .catch((err) => {
-      console.log(err);
+      console.log(err.response.data.error.message);
+      setError(err.response.data.error.message);
+      setSubmitting(false);
+      setIsErrorVisible(true);
+
+      // Clear the error message after 3 seconds
+      setTimeout(() => {
+        setIsErrorVisible(false);
+      }, 3000);
     });
 };
 
@@ -41,7 +51,9 @@ export const login = (
   identifier,
   password,
   setSubmitting,
-  resetForm
+  resetForm,
+  setError,
+  setIsErrorVisible
 ) => {
   api
     .loginApi(identifier, password)
@@ -63,12 +75,21 @@ export const login = (
     })
 
     .catch((err) => {
-      console.log(err);
+      setError(err.response.data.error.message);
+      setSubmitting(false);
+
+      setIsErrorVisible(true);
+
+      // Clear the error message after 3 seconds
+      setTimeout(() => {
+        setIsErrorVisible(false);
+      }, 3000);
     });
 };
 
 export const logout = (dispatch) => {
   dispatch({ type: "REMOVE_USER" });
   Cookie.remove("token");
+  Cookie.remove("userId");
   Router.push("/login");
 };

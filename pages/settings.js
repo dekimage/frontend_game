@@ -1,7 +1,4 @@
-// *** REACT ***
-
-import { useContext, useEffect, useState } from "react";
-
+import { useContext, useState } from "react";
 import { Button } from "@/components/reusableUI";
 import { Context } from "@/context/store";
 import FeatureSuggestion from "@/components/FeatureSuggestion";
@@ -9,16 +6,15 @@ import Switch from "@/components/reusable/SwitchThumb";
 import { logout } from "@/actions/auth";
 import router from "next/router";
 import styles from "@/styles/Settings.module.scss";
-import { updateSettings, updateUserBasicInfo } from "@/actions/action";
-import { useRouter } from "next/router";
-import { withUser } from "@/Hoc/withUser";
+import { updateEmailSettings, updateUserBasicInfo } from "@/actions/action";
+import { BackButton } from "@/components/reusable/BackButton";
 
 const EmailSettings = ({ emailPreferences }) => {
   const [store, dispatch] = useContext(Context);
   const [settings, setSettings] = useState(emailPreferences);
 
   const handleSubmit = () => {
-    updateSettings(dispatch, settings);
+    updateEmailSettings(dispatch, settings);
   };
   const handleToggle = (label) => {
     const newPreferences = {
@@ -329,9 +325,14 @@ const handleBack = (activeSettings, setActiveSettings) => {
   }
 };
 
-const Settings = ({ user, dispatch }) => {
-  const router = useRouter();
+const Settings = () => {
+  const [store, dispatch] = useContext(Context);
   const [activeSettings, setActiveSettings] = useState("default");
+  const user = store.user;
+
+  if (!user) {
+    return <div>loading...</div>;
+  }
 
   const accountData = [
     {
@@ -364,12 +365,10 @@ const Settings = ({ user, dispatch }) => {
     <div className="background_dark">
       <div className="section_container">
         <div className={styles.header}>
-          <div
-            className={styles.back}
-            onClick={() => handleBack(activeSettings, setActiveSettings)}
-          >
-            <ion-icon name="chevron-back-outline"></ion-icon>
-          </div>
+          <BackButton
+            isBack
+            callback={() => handleBack(activeSettings, setActiveSettings)}
+          />
 
           <div className={styles.title}>{getTitle(activeSettings)}</div>
         </div>
@@ -450,4 +449,4 @@ const Settings = ({ user, dispatch }) => {
   );
 };
 
-export default withUser(Settings);
+export default Settings;

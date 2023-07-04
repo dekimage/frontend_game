@@ -15,6 +15,8 @@ import styles from "@/styles/Streak.module.scss";
 import { withUser } from "@/Hoc/withUser";
 
 import baseUrl from "@/utils/settings";
+import RewardsModal from "@/components/RewardsModal";
+import useModal from "@/hooks/useModal";
 
 const calculateReward = (
   reward_type,
@@ -55,6 +57,9 @@ const Streak = ({ streak, user, dispatch }) => {
     is_collected,
     is_ready,
   } = streak;
+
+  console.log("usercards{", user.usercards);
+  console.log({ reward_card });
 
   const reward = calculateReward(
     reward_type,
@@ -144,7 +149,8 @@ const Streak = ({ streak, user, dispatch }) => {
 };
 
 const StreakTower = (props) => {
-  const { user, data, dispatch } = props;
+  const { isShowing, openModal, closeModal } = useModal();
+  const { store, user, data, dispatch } = props;
   const mergeStreaks = (streaks, userStreaks) => {
     if (!userStreaks) {
       return streaks.map((s) => {
@@ -215,6 +221,13 @@ const StreakTower = (props) => {
           )}
         </>
       </div>
+      <Modal
+        isShowing={store.rewardsModal?.isOpen}
+        closeModal={closeModal}
+        showCloseButton={false}
+        jsx={<RewardsModal />}
+        isSmall
+      />
     </div>
   );
 };

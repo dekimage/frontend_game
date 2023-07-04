@@ -1,9 +1,8 @@
 // *** REACT ***
 
 import { ImageUI } from "@/components/reusableUI";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { BackButton } from "@/components/reusable/BackButton";
-
 import { ArtifactModal } from "./profile";
 import Card from "@/components/Card";
 import { GET_FRIENDS_QUERY } from "@/GQL/query";
@@ -11,20 +10,11 @@ import Modal from "@/components/reusable/Modal";
 import ShareBuddyModal from "@/components/Modals/ShareBuddyModal";
 import { collectFriendsReward } from "@/actions/action";
 import cx from "classnames";
-import { normalize } from "@/utils/calculations";
 import styles from "@/styles/Streak.module.scss";
 import useModal from "@/hooks/useModal";
-import { useQuery } from "@apollo/react-hooks";
-import { useRouter } from "next/router";
 import { withUser } from "@/Hoc/withUser";
-
 import baseUrl from "@/utils/settings";
-
-// *** COMPONENTS ***
-
-// *** ACTIONS ***
-
-// *** STYLES ***
+import RewardsModal from "@/components/RewardsModal";
 
 const FriendReward = ({ friendReward, user, dispatch }) => {
   const {
@@ -39,7 +29,6 @@ const FriendReward = ({ friendReward, user, dispatch }) => {
 
   const calculateReward = (reward_type) => {
     if (reward_type === "artifact") {
-      console.log(artifact);
       return {
         name: artifact.name,
         image: artifact.image,
@@ -100,10 +89,6 @@ const FriendReward = ({ friendReward, user, dispatch }) => {
           )}
         </div>
         <div className={styles.streak_name}>
-          {/* <div className="ml1">
-            <div className={styles.streak_name}>{reward.name}</div>
-            <Rarity rarity={reward.rarity} />
-          </div> */}
           <GemReward amount={400} />
         </div>
       </div>
@@ -152,7 +137,7 @@ export const GemReward = ({ amount }) => {
   );
 };
 const FriendsTower = (props) => {
-  const { user, data, dispatch } = props;
+  const { store, user, data, dispatch } = props;
 
   const { isShowing, openModal, closeModal } = useModal();
 
@@ -234,6 +219,14 @@ const FriendsTower = (props) => {
             Share Buddy Link
           </div>
         </>
+
+        <Modal
+          isShowing={store.rewardsModal?.isOpen}
+          closeModal={closeModal}
+          showCloseButton={false}
+          jsx={<RewardsModal />}
+          isSmall
+        />
 
         <Modal
           isShowing={isShowing}

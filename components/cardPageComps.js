@@ -1,67 +1,14 @@
 import { Button, ImageUI } from "./reusableUI";
-
 import { useContext, useEffect, useState } from "react";
-
 import { Context } from "@/context/store";
-import { GenericDropDown } from "@/pages/problems";
 import Link from "next/link";
 import Timer from "./reusable/Timer";
-import arrowDown from "@/assets/arrow-down-white.png";
-
-import checkmark1 from "@/assets/checkmark-fill.svg";
-import cx from "classnames";
-import iconCross from "@/assets/close.svg";
 import styles from "@/styles/CardPage.module.scss";
 import { useRouter } from "next/router";
 import baseUrl from "@/utils/settings";
+import { updateCard } from "@/actions/action";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-export const ActionsWrapper = ({
-  label,
-  type,
-  length,
-  actions,
-  emptyDescription,
-  openModal,
-}) => {
-  return (
-    <div className={styles.actionWrapper}>
-      <div className={styles.header}>
-        <div>{label}</div>
-        {/* <div>{length}</div> */}
-      </div>
-      {label === "My Actions" && actions?.length > 0 && (
-        <div className="btn  btn-primary mt1" onClick={() => openModal()}>
-          + Create New Action
-        </div>
-      )}
-      {actions?.length > 0 ? (
-        actions.map((action, i) => {
-          return <CommunityAction action={action} type={type} key={i} />;
-        })
-      ) : (
-        <>
-          <div className={styles.emptyActions}>
-            {emptyDescription}
-            <div className="btn  btn-primary mt1" onClick={() => openModal()}>
-              + Create New Action
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
-
-const ActionStat = ({ label, value }) => {
-  return (
-    <div className={styles.stat}>
-      <div className={styles.stat_label}>{label}</div>
-      <div className={styles.stat_value}>{value}/10</div>
-    </div>
-  );
-};
 
 export const ChatAction = ({ action }) => {
   return (
@@ -144,49 +91,6 @@ export const BasicActionsWrapper = ({ card, usercard, mergeActions }) => {
   );
 };
 
-export const PlayCta = ({
-  card,
-  maxQuantity,
-  selectedLevel,
-  dispatch,
-  usercard,
-  isLevelUnlocked,
-}) => {
-  const router = useRouter();
-  return isLevelUnlocked ? (
-    <div
-      className={cx(
-        selectedLevel == usercard.completed + 1 ? "btn btn-action" : "btn"
-      )}
-      onClick={() => {
-        dispatch({
-          type: "OPEN_PLAYER",
-          data: { level: usercard.completed, selectedLevel },
-        });
-        router.push(`${feUrl}/card/player/${card.id}`);
-      }}
-    >
-      <ion-icon name="play"></ion-icon> Play Day {selectedLevel}
-    </div>
-  ) : (
-    <div
-      className={cx(
-        usercard.quantity >= maxQuantity ? "btn btn-action" : "btn btn-disabled"
-      )}
-      onClick={() => {
-        usercard.quantity >= maxQuantity &&
-          updateCard(dispatch, card.id, "upgrade");
-      }}
-    >
-      <ion-icon name="lock-closed-outline"></ion-icon>&nbsp;
-      <div>Upgrade Card &nbsp;</div>
-      <div>
-        {usercard.quantity}/{maxQuantity}
-      </div>
-    </div>
-  );
-};
-
 export const FavoriteButton = ({ isFavorite, id, type }) => {
   //type == "action" or "card"
   const [store, dispatch] = useContext(Context);
@@ -201,30 +105,6 @@ export const FavoriteButton = ({ isFavorite, id, type }) => {
       ) : (
         <img src={`${baseUrl}/notFavorite.png`} height="25px" />
       )}
-    </div>
-  );
-};
-
-export const IdeaPlayer = ({ cardId }) => {
-  const router = useRouter();
-  return (
-    <div className={styles.ideaPlayer}>
-      <div className="">
-        <div className="title">Player</div>
-        <div className={styles.ideaPlayer_group}>
-          <div className="description mr1">6 Slides</div>
-          <div className="description">2 Questions</div>
-        </div>
-      </div>
-
-      <div
-        className={styles.btn_play_passed}
-        onClick={() => {
-          router.push(`${feUrl}/card/player/${cardId}`);
-        }}
-      >
-        <ion-icon name="play"></ion-icon>
-      </div>
     </div>
   );
 };
@@ -344,35 +224,54 @@ export const CompleteCardSection = ({
   );
 };
 
-export const CardCtaFooter = ({
-  isUnlocked,
-  card,
-  isTicketPurchased,
-  isSubscribed,
-}) => {
+export const PlayerCtaFooter = ({ card, isTicketPurchased }) => {
+  const [store, dispatch] = useContext(Context);
+  const router = useRouter();
+  const energy = store?.user?.energy;
+  const openPlayerAfterTicket = () => {
+    router.push(`${feUrl}/card/player/${card.id}`);
+  };
+  return (
+    <div className={styles.fixed}>
+      {isTicketPurchased ? (
+        <Button
+          onClick={() => {
+            router.push(`${feUrl}/card/player/${card.id}`);
+          }}
+          children={"Play"}
+          isLoading={store.isLoading}
+        />
+      ) : (
+        <Button
+          isLoading={store.isLoading}
+          onClick={() => {
+            if (energy > 0) {
+              openPlayerAfterTicket();
+            } else {
+              dispatch({ type: "OPEN_ENERGY_MODAL" });
+            }
+          }}
+          children={
+            <div>
+              Play
+              <span className="ml5 md">1</span>
+              <img src={`${baseUrl}/energy.png`} height="20px" />
+            </div>
+          }
+        />
+      )}
+    </div>
+  );
+};
+
+export const CardCtaFooter = ({ isUnlocked, card }) => {
   const [store, dispatch] = useContext(Context);
   const hasStars = store?.user?.stars >= card.cost;
-  const energy = store?.user?.energy;
 
   const canStreakUnlock =
     store?.user?.highest_streak_count >= card.streakreward?.streak_count;
   const canBuddyUnlock =
     store?.user?.highest_buddy_shares >= card.friendreward?.friends_count;
-  console.log(card);
-
-  const router = useRouter();
-
-  const openPlayerAfterTicket = () => {
-    router.push(`${feUrl}/card/player/${card.id}`);
-  };
-
-  if (card.coming_soon) {
-    return (
-      <div className={styles.fixed}>
-        <div className={styles.comingSoon}>Coming Soon</div>
-      </div>
-    );
-  }
 
   if (card.streakreward && !isUnlocked) {
     return (
@@ -408,10 +307,10 @@ export const CardCtaFooter = ({
     );
   }
 
-  return (
-    <div className={styles.fixed}>
-      {!isUnlocked ? (
-        hasStars ? (
+  if (card.cost > 0 && !isUnlocked) {
+    return (
+      <div className={styles.fixed}>
+        {hasStars ? (
           <div
             className="btn btn-correct"
             onClick={() => {
@@ -423,42 +322,13 @@ export const CardCtaFooter = ({
           </div>
         ) : (
           <div className="btn btn-disabled">
-            <span className="text-red">{card.cost}</span>{" "}
+            <span className="text-red">{card.cost}</span>
             <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
           </div>
-        )
-      ) : (
-        <div className={styles.fixed}>
-          {isTicketPurchased || isSubscribed ? (
-            <Button
-              onClick={() => {
-                router.push(`${feUrl}/card/player/${card.id}`);
-              }}
-              children={"Play"}
-              isLoading={store.isLoading}
-            />
-          ) : (
-            <Button
-              isLoading={store.isLoading}
-              onClick={() => {
-                if (energy > 0) {
-                  openPlayerAfterTicket();
-                } else {
-                  console.log("here");
-                  dispatch({ type: "OPEN_ENERGY_MODAL" });
-                }
-              }}
-              children={
-                <div>
-                  Play
-                  <span className="ml5 md">1</span>
-                  <img src={`${baseUrl}/energy.png`} height="20px" />
-                </div>
-              }
-            />
-          )}
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
+
+  return null;
 };

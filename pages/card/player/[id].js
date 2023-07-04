@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { ContentTheory } from "@/components/ContentTheory";
-import { GET_CARD_ID } from "@/GQL/query";
+import { GET_PLAYER_CARD } from "@/GQL/query";
 import Modal from "@/components/reusable/Modal";
 import _ from "lodash";
 import { getTotalStepsInSlides } from "@/utils/calculations";
@@ -200,4 +200,4 @@ const Player = (props) => {
   );
 };
 
-export default withUser(Player, GET_CARD_ID, true);
+export default withUser(Player, GET_PLAYER_CARD, true);

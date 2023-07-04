@@ -17,6 +17,8 @@ const Login = () => {
 
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
+  const [error, setError] = useState(null);
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   const initialValues = { email: "", password: "" };
 
@@ -47,7 +49,15 @@ const Login = () => {
   const onSubmit = (dispatch, values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     if (isLogin) {
-      login(dispatch, values.email, values.password, setSubmitting, resetForm);
+      login(
+        dispatch,
+        values.email,
+        values.password,
+        setSubmitting,
+        resetForm,
+        setError,
+        setIsErrorVisible
+      );
     } else {
       signup(
         dispatch,
@@ -55,7 +65,9 @@ const Login = () => {
         values.password,
         router.query.ref && router.query.ref,
         setSubmitting,
-        resetForm
+        resetForm,
+        setError,
+        setIsErrorVisible
       );
     }
   };
@@ -117,6 +129,12 @@ const Login = () => {
                     </div>
                   </div>
 
+                  <div
+                    className={`input-error ${isErrorVisible ? "" : "hidden"}`}
+                  >
+                    {error && error}
+                  </div>
+
                   <Button
                     type={"primary"}
                     className="mb1 mt1"
@@ -133,6 +151,10 @@ const Login = () => {
             <Link href="/auth/forgot-password">
               <div className="yellow-link">Forgot your password?</div>
             </Link>
+            <div className={styles.description}>OR</div>
+            <div className={styles.description}>
+              Login with your Google account
+            </div>
           </div>
         ) : (
           <div>
@@ -198,6 +220,12 @@ const Login = () => {
                     </div>
                   </div>
 
+                  <div
+                    className={`input-error ${isErrorVisible ? "" : "hidden"}`}
+                  >
+                    {error && error}
+                  </div>
+
                   <Button
                     type={"primary"}
                     className="mb1 mt1"
@@ -216,19 +244,20 @@ const Login = () => {
             </div>
           </div>
         )}
-        <div className={styles.oauthSection}>
-          <a href={`${baseUrl}/api/connect/google`}>
-            <div className="btn btn-google">
-              <img height="18px" src={`${baseUrl}/google.png`} />
-            </div>
-          </a>
 
-          <div className="btn btn-facebook">
+        <div className={styles.oauthSection}>
+          <div className="btn btn-stretch btn-google">
+            <a href={`${baseUrl}/api/connect/google`}>
+              <img height="18px" src={`${baseUrl}/google.png`} />
+            </a>
+          </div>
+
+          {/* <div className="btn btn-facebook">
             <img height="18px" src={`${baseUrl}/facebook.png`} />
           </div>
           <div className="btn btn-apple">
             <img height="18px" src={`${baseUrl}/apple.png`} />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import "@/styles/globals.scss";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 import Head from "next/head";
 import React from "react";
@@ -57,11 +57,13 @@ const MyApp = ({ Component, pageProps }) => {
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
       </Head>
+
       <Component {...pageProps} />
+
       <ToastContainer
         position="top-center"
         autoClose={3000}
-        hideProgressBar={false}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
         rtl={false}

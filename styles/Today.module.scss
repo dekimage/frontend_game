@@ -15,6 +15,22 @@
   margin-bottom: 0.75rem;
 }
 
+.showCompletedBtn {
+  @extend %flex_center;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: fit-content;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: $border_radius;
+  background-color: $actionize_gray;
+  color: white;
+  &:hover {
+    background-color: $actionize_gray;
+  }
+}
+
 .problemBox {
   @extend %box_duo;
   background-color: transparent;

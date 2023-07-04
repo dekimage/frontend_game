@@ -55,7 +55,7 @@ const OpenCard = ({ card }) => {
   );
 };
 
-const ClosedCard = ({ card }) => {
+const ClosedCard = ({ card, comingSoon }) => {
   return (
     <div className={styles.lockBox}>
       <img
@@ -64,6 +64,7 @@ const ClosedCard = ({ card }) => {
       />
       <div className={styles.name}>{card.name}</div>
       <div className={styles.costBox}>
+        {comingSoon && <div className={styles.comingSoon}>Coming Soon</div>}
         {card.streakreward && (
           <>
             {card.streakreward.streak_count}
@@ -97,7 +98,8 @@ const Card = ({ card }) => {
 
   const coming_soon = card.card?.coming_soon || card.coming_soon;
 
-  const isColored = !isPremiumLocked && (card.is_open || card.is_unlocked);
+  const isColored =
+    !isPremiumLocked && (card.is_open || card.is_unlocked) && !coming_soon;
 
   return (
     <Link
@@ -131,9 +133,12 @@ const Card = ({ card }) => {
           />
         </div>
         <div className={styles.card_body}>
-          {isColored ? <OpenCard card={card} /> : <ClosedCard card={card} />}
+          {isColored ? (
+            <OpenCard card={card} />
+          ) : (
+            <ClosedCard card={card} comingSoon={coming_soon} />
+          )}
         </div>
-        {coming_soon && <div className={styles.comingSoon}>Coming Soon</div>}
       </div>
     </Link>
   );

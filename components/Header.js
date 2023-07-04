@@ -110,7 +110,7 @@ const Header = () => {
   return (
     <>
       <div className={styles.header}>
-        <Link href="/home">
+        <Link href="/">
           <div className={styles.logo}>
             <img height="20px" src={iconLogo} />
             <div>Actionise</div>

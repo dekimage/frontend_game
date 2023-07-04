@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 
-import { Title } from "./cardPageComps";
+import { PlayerCtaFooter, Title } from "./cardPageComps";
 import styles from "@/styles/TabsData.module.scss";
-import { ImageUI } from "./reusableUI";
+import { Button, ImageUI } from "./reusableUI";
 import iconLock from "@/assets/lock-white-border.svg";
 import ProgressBar from "./ProgressBar";
 import { updateContentType } from "@/actions/action";
@@ -232,12 +232,18 @@ const TabsData = ({ card, usercard, programData }) => {
         actions: <ContentTypeCardMap contentTypes={card.exercises} />,
         questions: <ContentTypeCardMap contentTypes={card.questions} />,
         program: (
-          <Program
-            day={programData.day}
-            completedContents={programData.completedContents}
-            cardId={card.id}
-            isTicketPurchased={programData.isTicketPurchased}
-          />
+          <div>
+            <Program
+              day={programData.day}
+              completedContents={programData.completedContents}
+              cardId={card.id}
+              isTicketPurchased={programData.isTicketPurchased}
+            />
+            <PlayerCtaFooter
+              card={card}
+              isTicketPurchased={programData.isTicketPurchased}
+            />
+          </div>
         ),
       },
       support: {

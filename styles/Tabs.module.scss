@@ -11,6 +11,7 @@
   background-color: $actionize_black;
 }
 .tabsButton {
+  position: relative;
   text-transform: capitalize;
   width: 33.3%;
   cursor: pointer;
@@ -34,6 +35,8 @@
   }
 }
 .tabCounter {
+  position: absolute;
+  right: 10px;
   margin-left: 0.5rem;
   @extend %flex_center;
   color: white;

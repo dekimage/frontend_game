@@ -1,14 +1,10 @@
-import * as api from "../api";
-
 import React, { createContext, useEffect, useReducer } from "react";
-
 import Cookie from "js-cookie";
 import Reducer from "@/reducers/Reducer";
 import { fetchUser } from "@/actions/config";
 import { useRouter } from "next/router";
 
 const AUTH_TOKEN = Cookie.get("token");
-
 const GOOGLE_CALLBACK_ROUTE = "/auth/google/callback";
 const LOGIN_ROUTE = "/login";
 
@@ -37,7 +33,6 @@ const initialState = {
     achievements: 0,
   },
   coursePlayerSlides: [],
-  skippedTasks: 0,
   completedTasks: 0,
 };
 
@@ -45,11 +40,38 @@ const Store = ({ children }) => {
   const [store, dispatch] = useReducer(Reducer, initialState);
   const router = useRouter();
 
+  // useEffect(() => {
+  //   if (AUTH_TOKEN && !router.route.includes(GOOGLE_CALLBACK_ROUTE)) {
+  //     fetchUser(dispatch);
+  //   } else {
+  //     if (!router.pathname == "/") {
+  //       router.push(LOGIN_ROUTE);
+  //     }
+  //   }
+  // }, []);
   useEffect(() => {
-    if (AUTH_TOKEN && !router.route.includes(GOOGLE_CALLBACK_ROUTE)) {
+    // Function to check if the token is expired
+
+    const isTokenExpired = (token) => {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        return decoded.exp < Date.now() / 1000;
+      } catch (e) {
+        return true;
+      }
+    };
+
+    // Check if the AUTH_TOKEN is set and not expired
+    if (
+      AUTH_TOKEN &&
+      !isTokenExpired(AUTH_TOKEN) &&
+      !router.route.includes(GOOGLE_CALLBACK_ROUTE)
+    ) {
       fetchUser(dispatch);
     } else {
-      if (!router.pathname == "/") {
+      Cookie.remove("token"); // remove token from cookie if expired
+
+      if (router.pathname !== "/" && !router.pathname.includes("auth")) {
         router.push(LOGIN_ROUTE);
       }
     }
