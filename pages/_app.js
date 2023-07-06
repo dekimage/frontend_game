@@ -45,7 +45,6 @@ const MyApp = ({ Component, pageProps }) => {
     <Store>
       <Head>
         <title>Actionise</title>
-        {/* <link href="@/public/fonts/Bahnschrift.ttf" rel="stylesheet" /> */}
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
         <style>

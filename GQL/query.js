@@ -2,7 +2,7 @@ import { gql } from "apollo-boost";
 
 export const GET_CONTENT = gql`
   query {
-    cards {
+    cards(pagination: { limit: 100 }) {
       data {
         id
         attributes {
