@@ -1,20 +1,17 @@
-// @CALC
-export const maxProgressPerContentType = {
-  ideas: 3,
-  actions: 5,
-  stories: 1,
-  faq: 2,
-  program: 3,
-  casestudy: 1,
-  tips: 3,
-  metaphors: 3,
-  experiments: 2,
-  expertopinions: 3,
-  quotes: 5,
-  questions: 3,
+export const CONTENT_MAP = {
+  ideas: { max: 3, color: "#bde0fe", single: "idea" },
+  exercises: { max: 5, color: "#f4a261", single: "exercise" },
+  stories: { max: 1, color: "#80ed99", single: "story" },
+  faqs: { max: 2, color: "#415a77", single: "faq" },
+  casestudies: { max: 1, color: "#d4a373", single: "casestudy" },
+  tips: { max: 3, color: "#766153", single: "tip" },
+  metaphores: { max: 3, color: "#ecf39e", single: "metaphore" },
+  experiments: { max: 2, color: "#f7ede2", single: "experiment" },
+  expertopinions: { max: 3, color: "#e07a5f", single: "expert opinion" },
+  quotes: { max: 5, color: "#f2cc8f", single: "quote" },
+  questions: { max: 3, color: "#3d405b", single: "question" },
 };
 
-// { label: "Social", count: store.notifications.artifacts || -1 },
 export const rewardsMap = [
   {
     name: "Stars",
@@ -33,70 +30,8 @@ export const rewardsMap = [
   },
 ];
 
-export const questMap = {
-  ideas: {
-    name: "Idea Quest",
-  },
-  actions: {
-    name: "Action Quest",
-  },
-  stories: {
-    name: "Story Quest",
-  },
-  program: {
-    name: "Program Quest",
-  },
-  casestudy: {
-    name: "Case Study Quest",
-  },
-  tips: {
-    name: "Tips Quest",
-  },
-  faq: {
-    name: "FAQ Quest",
-  },
-  metaphors: {
-    name: "Metaphors Quest",
-  },
-  experiments: {
-    name: "Experiments Quest",
-  },
-  expertopinions: {
-    name: "Opinions Quest",
-  },
-  quotes: {
-    name: "Quotes Quest",
-  },
-  questions: {
-    name: "Questions Quest",
-  },
-};
-
-export const mainTabs = [
+export const tabs = [
+  { label: "program", count: -1 },
   { label: "content", count: -1 },
-  { label: "support", count: -1 },
-  { label: "research", count: -1 },
-
-  // { label: "social", count: -1 },
+  { label: "progress", count: -1 },
 ];
-
-export const subTabsMap = {
-  content: [
-    { label: "ideas", count: -1 },
-    { label: "actions", count: -1 },
-    { label: "questions", count: -1 },
-    { label: "program", count: -1 },
-  ],
-  support: [
-    { label: "stories", count: -1 },
-    { label: "metaphors", count: -1 },
-    { label: "tips", count: -1 },
-    { label: "faq", count: -1 },
-  ],
-  research: [
-    { label: "quotes", count: -1 },
-    { label: "experiments", count: -1 },
-    { label: "expertopinions", count: -1 },
-    { label: "casestudy", count: -1 },
-  ],
-};

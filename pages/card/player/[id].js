@@ -18,7 +18,7 @@ import { withUser } from "@/Hoc/withUser";
 
 const Player = (props) => {
   const router = useRouter();
-  const { user, data, dispatch } = props;
+  const { user, store, data, dispatch } = props;
 
   const [slides, setSlides] = useState(false);
   const [slide, setSlide] = useState(false);
@@ -39,9 +39,9 @@ const Player = (props) => {
     if (user && data) {
       const cardTickets = user.card_tickets || [];
 
-      if (!cardTickets?.find((c) => c?.id == data?.card?.id)) {
-        router.push("/learn");
-      }
+      // if (!cardTickets?.find((c) => c?.id == data?.card?.id)) {
+      //   router.push("/learn");
+      // }
     }
     dispatch({ type: "STOP_LOADING" });
 
@@ -61,7 +61,7 @@ const Player = (props) => {
       setSlides(slidesArray);
       setChatSlides([slidesArray[contentIndex]]);
     }
-  }, [data, user]);
+  }, [data, user, store.usercards]);
 
   // const isLatestLevel = false;
 
@@ -100,7 +100,6 @@ const Player = (props) => {
   const goNext = () => {
     const cardId = router.query.id;
     const index = slide.index;
-    updateCard(dispatch, cardId, "complete_contents", index);
     if (index === slides.length) {
       setIsRatingModalOpen(true);
       setIsSuccessModalOpen(true);
@@ -110,7 +109,7 @@ const Player = (props) => {
     }
   };
 
-  const usercard = user.usercards?.filter(
+  const usercard = store.usercards?.filter(
     (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
   )[0];
 

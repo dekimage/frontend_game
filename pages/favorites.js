@@ -1,5 +1,5 @@
 import { ImageUI } from "@/components/reusableUI";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BackButton } from "@/components/reusable/BackButton";
 
 import CardsMapper from "@/components/CardsMapper";
@@ -9,16 +9,35 @@ import { NotFoundContainer } from "@/components/Today/NotFoundContainer";
 import _ from "lodash";
 import styles from "@/styles/Realm.module.scss";
 import { withUser } from "@/Hoc/withUser";
+import { useLazyQuery } from "@apollo/react-hooks";
+import { Context } from "@/context/store";
+import { normalize } from "@/utils/calculations";
+import Loader from "@/components/reusable/Loader";
 
-const Favorites = (props) => {
-  const { data } = props;
-  const [favoriteCards, setFavoriteCards] = useState([]);
+const Favorites = () => {
+  const [store, dispatch] = useContext(Context);
+  const [getFavoriteCards, { data, loading, error }] = useLazyQuery(
+    GET_USER_FAVORITES,
+    {
+      variables: {
+        id: store.user.id,
+      },
+      fetchPolicy: "network-only",
+    }
+  );
 
   useEffect(() => {
-    if (data?.usersPermissionsUser.favorite_cards) {
-      setFavoriteCards(data.usersPermissionsUser.favorite_cards);
+    if (store?.user?.id) {
+      getFavoriteCards({
+        id: store?.user?.id,
+      });
     }
-  }, [data]);
+  }, [store.gqlRefetch, store.user.id]);
+
+  const favoriteCards =
+    data && normalize(data).usersPermissionsUser.favorite_cards;
+
+  console.log(favoriteCards);
 
   return (
     <div className="background_dark">
@@ -34,16 +53,20 @@ const Favorites = (props) => {
           </div>
         </div>
 
-        <div className="section">
-          <div>
-            {favoriteCards.length ? (
-              <CardsMapper cards={favoriteCards} />
-            ) : (
-              <NotFoundContainer
-                text={"You don't have any favorite cards yet"}
-              />
-            )}
-          </div>
+        {loading && <Loader />}
+
+        <div className="section-small">
+          {favoriteCards && (
+            <div>
+              {favoriteCards.length ? (
+                <CardsMapper cards={favoriteCards} />
+              ) : (
+                <NotFoundContainer
+                  text={"You don't have any favorite cards yet"}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -52,4 +75,4 @@ const Favorites = (props) => {
   );
 };
 
-export default withUser(Favorites, GET_USER_FAVORITES, _, true);
+export default Favorites;

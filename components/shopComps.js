@@ -1,10 +1,5 @@
 import { Button, ImageUI } from "./reusableUI";
-import {
-  openPack,
-  purchaseExpansion,
-  purchaseLootBox,
-  purchaseProduct,
-} from "@/actions/action";
+import { purchaseExpansion, purchaseProduct } from "@/actions/action";
 import { useContext, useState } from "react";
 
 import { CardType } from "@/components/Card";

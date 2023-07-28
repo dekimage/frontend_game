@@ -1,0 +1,213 @@
+@import "placeholders";
+@import "variables";
+
+.lockedContent {
+  @extend %flex_center;
+  height: 40px;
+  margin-bottom: 2rem;
+}
+
+.actionBarComplete {
+  @extend %flex_center;
+  background-color: $actionize_gray;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  border-radius: $border-radius;
+  // text-transform: uppercase;
+  font-size: 14px;
+}
+.actionBarTodo {
+  @extend %flex_center;
+  background-color: $primary;
+  padding: 0.5rem;
+  border-radius: $border-radius;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.contentTitle {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.progressIndicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 0.2rem 0.75rem;
+  background-color: gray;
+  font-weight: 700;
+  font-size: 12px;
+  border-radius: $border-radius;
+}
+
+.tabsDataContainer {
+  width: 100%;
+}
+
+.caseStudy {
+  @extend %box_duo;
+  margin: 1rem 0;
+}
+
+.tip {
+  position: relative;
+  color: white;
+  flex-direction: column;
+  padding: 0;
+  padding-top: 3rem;
+  width: 100%;
+  height: 100%;
+  background-color: $actionize_black;
+}
+
+.tipContent {
+  padding: 0 0.5rem;
+  font-size: 18px;
+  padding-bottom: 5rem;
+}
+
+.bookmarkButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: black;
+  border: 2px solid $actionize_gray;
+  @extend %flex_center;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  &:hover {
+    border: 2px solid $actionize_gray_light;
+  }
+}
+
+.dropdownSection {
+  // @extend %flex_center;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+// QUEST
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  // -webkit-box-align: stretch;
+  // place-items: stretch;
+}
+
+.quest {
+  position: relative;
+  @extend %box_duo;
+  padding: 0;
+  flex-direction: column;
+  border: none;
+  background-color: rgb(37, 37, 37);
+}
+.questTag {
+  @extend %flex_center;
+  border-radius: $border-radius;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  text-transform: capitalize;
+}
+.questTitle {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.questLevel {
+  width: fit-content;
+  padding: 0.2rem 0.75rem;
+  // background-color: $actionize_black;
+  font-weight: 700;
+  font-size: 18px;
+  border-radius: $border-radius;
+}
+
+.questRewardsMap {
+  @extend %flex_start;
+  margin-top: 0.5rem;
+}
+
+.questReward {
+  @extend %box_duo;
+  margin-right: 0.5rem;
+}
+
+.tableRow {
+  position: relative;
+  @extend %flex_between;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid $actionize_gray;
+  &_item {
+    @extend %flex_center;
+    width: 15%;
+  }
+  &_complete {
+    position: absolute;
+    @extend %flex_center;
+    left: 10px;
+  }
+  &:hover {
+    background-color: $actionize_gray;
+    cursor: pointer;
+    border-radius: $border-radius;
+  }
+}
+
+.tableHeader {
+  @extend %flex_between;
+  padding: 0.5rem;
+  font-weight: 700;
+  font-size: 14px;
+  &_item {
+    @extend %flex_center;
+    width: 15%;
+    max-width: 3rem;
+  }
+}
+
+.contentTypeTag {
+  width: fit-content;
+  color: black;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 0.25rem 0.5rem;
+  border-radius: $border-radius;
+}
+
+// ABOUT
+
+.description {
+  margin-top: 2.5rem;
+  width: 100%;
+  font-size: 18px;
+  margin-bottom: 1.5rem;
+}
+
+.hash {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.contentPageCta {
+  position: fixed;
+  background-color: $actionize_black;
+  border-top: 2px solid $actionize_gray;
+  bottom: 0;
+  width: 100%;
+  height: 4rem;
+  @extend %flex_center;
+  left: 0px;
+  position: fixed;
+  z-index: 10000;
+}

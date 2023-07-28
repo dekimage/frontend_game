@@ -8,6 +8,10 @@ import iconLock from "@/assets/lock-white.svg";
 import styles from "@/styles/LevelRewards.module.scss";
 import { useRouter } from "next/router";
 import { withUser } from "@/Hoc/withUser";
+import { useState } from "react";
+import Modal from "@/components/reusable/Modal";
+import RewardsModal from "@/components/RewardsModal";
+import useModal from "@/hooks/useModal";
 
 const LevelReward = ({
   level: {
@@ -55,7 +59,10 @@ const LevelReward = ({
 };
 
 const LevelRewardsTower = (props) => {
-  const { user, data, dispatch } = props;
+  const { store, user, data, dispatch } = props;
+  const { closeModal } = useModal();
+  const [isRewardModalShowing, setIsRewardModalShowing] = useState(false);
+
   const filterPremium = (levels, type) => {
     if (!levels) {
       return;
@@ -84,18 +91,18 @@ const LevelRewardsTower = (props) => {
     return levels;
   };
 
-  console.log(
-    data &&
-      joinArrays(filterPremium(data.levelrewards, "free")).sort(
-        (a, b) => a.level - b.level
-      )
-  );
-  console.log(
-    data &&
-      joinArrays(filterPremium(data.levelrewards, "premium")).sort(
-        (a, b) => a.level - b.level
-      )
-  );
+  // console.log(
+  //   data &&
+  //     joinArrays(filterPremium(data.levelrewards, "free")).sort(
+  //       (a, b) => a.level - b.level
+  //     )
+  // );
+  // console.log(
+  //   data &&
+  //     joinArrays(filterPremium(data.levelrewards, "premium")).sort(
+  //       (a, b) => a.level - b.level
+  //     )
+  // );
 
   return (
     <div className="background_dark">
@@ -205,6 +212,13 @@ const LevelRewardsTower = (props) => {
         </div> */}
         </div>
       </>
+      <Modal
+        isShowing={store.rewardsModal?.isOpen}
+        closeModal={closeModal}
+        showCloseButton={false}
+        jsx={<RewardsModal />}
+        isSmall
+      />
     </div>
   );
 };

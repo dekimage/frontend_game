@@ -1,5 +1,6 @@
 import { gql } from "apollo-boost";
 
+// FOR DASHBOARD ANALYTICS
 export const GET_CONTENT = gql`
   query {
     cards(pagination: { limit: 100 }) {
@@ -174,6 +175,61 @@ export const GET_OBJECTIVES_QUERY = gql`
   }
 `;
 
+export const GET_USERCARD_QUERY = gql`
+  query GetUserCards($userId: ID!, $cardId: ID!) {
+    usercards(
+      filters: { user: { id: { eq: $userId } }, card: { id: { eq: $cardId } } }
+    ) {
+      data {
+        id
+        attributes {
+          is_favorite
+          completed
+          is_new
+          rating
+          completed_at
+          is_unlocked
+          progressMap
+          progressQuest
+          card {
+            data {
+              id
+              attributes {
+                name
+                description
+                type
+                rarity
+                cost
+                coming_soon
+                is_open
+                relationCount
+                realm {
+                  data {
+                    id
+                    attributes {
+                      color
+                      name
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+// QUIZ
 export const GET_CARD_PLAYER = gql`
   query ($id: ID!) {
     card(id: $id) {
@@ -219,127 +275,6 @@ export const GET_CARD_PLAYER = gql`
             answers {
               text
               is_correct
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_USERCARD_QUERY = gql`
-  query ($id: ID!) {
-    usercard(id: $id) {
-      data {
-        id
-        attributes {
-          is_favorite
-          completed
-          completed_progress_max
-          quantity
-          is_new
-          rating
-          completed_at
-          is_unlocked
-          completed_contents
-          progressMap
-          progressQuest
-          card {
-            data {
-              id
-              attributes {
-                name
-                description
-                type
-                rarity
-                cost
-                coming_soon
-                is_open
-                realm {
-                  data {
-                    id
-                    attributes {
-                      color
-                      name
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_ACTION_ID = gql`
-  query ($id: ID!) {
-    action(id: $id) {
-      data {
-        id
-        attributes {
-          name
-          description
-          type
-          level
-          duration
-          tips
-          examples
-          steps {
-            content
-            timer
-            task
-          }
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          card {
-            data {
-              id
-              attributes {
-                name
-                cost
-                is_open
-                coming_soon
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-                realm {
-                  data {
-                    id
-                    attributes {
-                      name
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
             }
           }
         }
@@ -469,6 +404,7 @@ export const GET_CARD_ID = gql`
           rarity
           is_open
           coming_soon
+          relationCount
           friendreward {
             data {
               id
@@ -765,7 +701,7 @@ export const GET_REALM_ID = gql`
             }
           }
 
-          cards(pagination: { limit: 50 }) {
+          cards(pagination: { limit: 25 }) {
             data {
               id
               attributes {
@@ -775,6 +711,7 @@ export const GET_REALM_ID = gql`
                 rarity
                 cost
                 is_open
+                relationCount
                 coming_soon
                 friendreward {
                   data {
@@ -864,6 +801,7 @@ export const GET_STREAKS_QUERY = gql`
                 cost
                 is_open
                 coming_soon
+                relationCount
                 realm {
                   data {
                     id
@@ -942,6 +880,7 @@ export const GET_FRIENDS_QUERY = gql`
                 rarity
                 cost
                 is_open
+                relationCount
                 coming_soon
                 realm {
                   data {
@@ -985,69 +924,6 @@ export const GET_FRIENDS_QUERY = gql`
   }
 `;
 
-export const GET_COLLECTION = gql`
-  query ($id: ID!) {
-    usersPermissionsUser(id: $id) {
-      data {
-        id
-        attributes {
-          usercards {
-            data {
-              id
-              attributes {
-                is_new
-                is_favorite
-                completed
-                quantity
-                is_unlocked
-                completed_contents
-                card {
-                  data {
-                    id
-                    attributes {
-                      name
-                      rarity
-                      cost
-                      type
-                      is_open
-                      coming_soon
-                      image {
-                        data {
-                          id
-                          attributes {
-                            url
-                          }
-                        }
-                      }
-                      realm {
-                        data {
-                          id
-                          attributes {
-                            name
-                            color
-                            image {
-                              data {
-                                id
-                                attributes {
-                                  url
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 export const GET_USER_OPEN_TICKETS = gql`
   query ($id: ID!) {
     usersPermissionsUser(id: $id) {
@@ -1065,6 +941,7 @@ export const GET_USER_OPEN_TICKETS = gql`
                 cost
                 is_open
                 coming_soon
+                relationCount
                 image {
                   data {
                     id
@@ -1087,26 +964,6 @@ export const GET_USER_OPEN_TICKETS = gql`
                           }
                         }
                       }
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          action_tickets {
-            data {
-              id
-              attributes {
-                name
-                duration
-                type
-                level
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
                     }
                   }
                 }
@@ -1136,6 +993,7 @@ export const GET_USER_RECENTS = gql`
                 cost
                 is_open
                 coming_soon
+                relationCount
                 image {
                   data {
                     id
@@ -1159,25 +1017,6 @@ export const GET_USER_RECENTS = gql`
                           }
                         }
                       }
-                    }
-                  }
-                }
-              }
-            }
-          }
-          last_completed_actions {
-            data {
-              id
-              attributes {
-                name
-                duration
-                type
-                level
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
                     }
                   }
                 }
@@ -1207,6 +1046,7 @@ export const GET_USER_FAVORITES = gql`
                 cost
                 is_open
                 coming_soon
+                relationCount
                 image {
                   data {
                     id
@@ -1230,25 +1070,6 @@ export const GET_USER_FAVORITES = gql`
                           }
                         }
                       }
-                    }
-                  }
-                }
-              }
-            }
-          }
-          favorite_actions {
-            data {
-              id
-              attributes {
-                name
-                duration
-                type
-                level
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
                     }
                   }
                 }
@@ -1272,36 +1093,6 @@ export const GET_PROBLEM_ID = gql`
           source
           expected_time_amount
           expected_time_type
-          course {
-            data {
-              id
-              attributes {
-                name
-                students
-                price
-                discount
-                course_details {
-                  id
-                  duration
-                  actions
-                  concepts
-                  questions
-                  sessions
-                  days
-                }
-                last_updated
-                rating
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
 
           cards {
             data {
@@ -1314,6 +1105,7 @@ export const GET_PROBLEM_ID = gql`
                 cost
                 is_open
                 coming_soon
+                relationCount
                 image {
                   data {
                     id
@@ -1386,337 +1178,6 @@ export const GET_PROBLEM_ID = gql`
               }
             }
           }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_COURSES = gql`
-  query {
-    courses {
-      data {
-        id
-        attributes {
-          name
-          description
-          students
-          price
-          last_updated
-          full_price
-          rating
-          rating_amount
-          discount
-          course_details {
-            id
-            duration
-            actions
-            concepts
-            questions
-            sessions
-            days
-          }
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          total
-          pageCount
-        }
-      }
-    }
-  }
-`;
-
-export const GET_COURSE_ID = gql`
-  query ($id: ID!) {
-    course(id: $id) {
-      data {
-        id
-        attributes {
-          name
-          description
-          students
-          price
-          full_price
-          rating
-          rating_amount
-          discount
-          what_you_learn
-          requirements
-          who_is_for
-          what_you_complete
-          updatedAt
-          course_details {
-            id
-            duration
-            actions
-            concepts
-            questions
-            days
-          }
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          problems {
-            data {
-              id
-              attributes {
-                name
-              }
-            }
-          }
-          days {
-            id
-            index
-            contents {
-              id
-              index
-
-              storyline
-
-              type
-              title
-
-              duration
-              action {
-                data {
-                  id
-                  attributes {
-                    name
-                    type
-                    level
-                    duration
-                    tips
-                    examples
-
-                    steps {
-                      content
-                      timer
-                      task
-                    }
-                    image {
-                      data {
-                        id
-                        attributes {
-                          url
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              question {
-                data {
-                  id
-                  attributes {
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-// export const GET_USERCOURSE_ID = gql`
-//   query ($id: ID!) {
-//     usercourse(id: $id) {
-//       data {
-//         id
-//         attributes {
-//           user_permissions_user {
-//             data {
-//               id
-//               attributes {
-//                 username
-//               }
-//             }
-//           }
-//           username
-//           last_completed_day
-//           last_completed_content
-//           is_purchased
-//           rewards_claimed
-//           times_started
-//         }
-//       }
-//     }
-//   }
-// `;
-
-export const GET_BOOK_ID = gql`
-  query ($id: ID!) {
-    book(id: $id) {
-      data {
-        id
-        attributes {
-          name
-          author
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          cards {
-            data {
-              id
-              attributes {
-                name
-                rarity
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          course {
-            data {
-              id
-              attributes {
-                name
-                students
-                price
-                discount
-                course_details {
-                  id
-                  duration
-                  actions
-                  concepts
-                  questions
-                  sessions
-                  days
-                }
-                last_updated
-                rating
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          actions {
-            data {
-              id
-              attributes {
-                name
-                duration
-                type
-                level
-                tips
-                examples
-
-                steps {
-                  content
-                }
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-          realm {
-            data {
-              id
-              attributes {
-                name
-                color
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_BOOKS = gql`
-  query {
-    books {
-      data {
-        id
-        attributes {
-          name
-          author
-          image {
-            data {
-              id
-              attributes {
-                url
-              }
-            }
-          }
-          realm {
-            data {
-              id
-              attributes {
-                name
-                color
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      meta {
-        pagination {
-          page
-          pageSize
-          total
-          pageCount
         }
       }
     }
@@ -1742,24 +1203,7 @@ export const GET_PROBLEMS = gql`
               }
             }
           }
-          actions {
-            data {
-              id
-              attributes {
-                name
-                duration
-                type
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
+
           realm {
             data {
               id
@@ -1890,31 +1334,7 @@ export const GET_REWARDS_QUERY = gql`
     }
   }
 `;
-
-export const GET_BOX_ID = gql`
-  query ($id: ID!) {
-    box(id: $id) {
-      data {
-        id
-        attributes {
-          name
-          description
-          require
-          price
-          price_type
-          image {
-            data {
-              attributes {
-                url
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
+// BUDDY
 export const GET_USER_ID = gql`
   query ($id: ID) {
     usersPermissionsUser(id: $id) {
@@ -1924,7 +1344,7 @@ export const GET_USER_ID = gql`
           username
           level
           xp
-          gems
+
           stars
           streak
           energy
@@ -1932,6 +1352,31 @@ export const GET_USER_ID = gql`
           highest_buddy_shares
           is_subscribed
           stats
+
+          shared_buddies {
+            data {
+              id
+              attributes {
+                username
+                level
+                avatar {
+                  data {
+                    id
+                    attributes {
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
 
           avatar {
             data {
@@ -1982,6 +1427,7 @@ export const GET_USER_ID = gql`
                 cost
                 is_open
                 coming_soon
+                relationCount
                 image {
                   data {
                     id
@@ -2008,43 +1454,6 @@ export const GET_USER_ID = gql`
                     }
                   }
                 }
-              }
-            }
-          }
-
-          last_completed_actions {
-            data {
-              id
-              attributes {
-                name
-                duration
-                type
-                level
-                image {
-                  data {
-                    id
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          followedBy {
-            data {
-              id
-              attributes {
-                username
-              }
-            }
-          }
-          followers {
-            data {
-              id
-              attributes {
-                username
               }
             }
           }

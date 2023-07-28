@@ -16,6 +16,7 @@ import happyEmoji from "@/assets/3-emoji.svg";
 import mehEmoji from "@/assets/2-emoji.svg";
 import sadEmoji from "@/assets/1-emoji.svg";
 import FeatureSuggestion from "./FeatureSuggestion";
+import { PROGRAM_COMPLETED_MAX } from "@/data/config";
 
 //MAYBE IN CARD PLAYER?
 export const RatingModal = ({ closePlayer, cardId, usercard }) => {
@@ -74,12 +75,11 @@ export const SuccessModal = ({
   totalTasksCount,
 }) => {
   const [store, dispatch] = useContext(Context);
-  const suffix = getNumberSuffix(usercard.completed);
-
-  const day = card.days[card.last_day || 0];
-  const completedContents = usercard.completed_contents || [];
-  const contentsLength = day?.contents?.length;
-  const completedLength = completedContents.length;
+  const isProgramMastered = usercard.completed >= PROGRAM_COMPLETED_MAX;
+  const sessionCount = isProgramMastered
+    ? usercard.completed + 1 + usercard.glory_points
+    : usercard.completed + 1;
+  const suffix = getNumberSuffix(sessionCount);
 
   return (
     <div className={styles.cardPlayerSuccessModal}>
@@ -89,11 +89,7 @@ export const SuccessModal = ({
       <GenericScreen
         img={completedIcon}
         title={"Session Complete"}
-        content={
-          contentsLength == completedLength
-            ? `You have completed your ${usercard.completed}${suffix} session on ${card.name}`
-            : "It seems you skipped some actions."
-        }
+        content={`You have completed your ${sessionCount}${suffix} session on ${card.name}`}
         stats={[
           {
             img: "checked",
@@ -103,7 +99,12 @@ export const SuccessModal = ({
           {
             img: "mastery",
             label: "Mastery",
-            amount: `${usercard.completed}/${usercard.completed_progress_max}`,
+            amount: `${usercard.completed}/${PROGRAM_COMPLETED_MAX}`,
+          },
+          usercard.glory_points > 0 && {
+            img: "glory",
+            label: "Glory",
+            amount: `${usercard.glory_points}`,
           },
         ]}
       />
@@ -111,8 +112,7 @@ export const SuccessModal = ({
       <CompleteCardSection
         card={card}
         usercard={usercard}
-        contentsLength={contentsLength}
-        completedLength={completedLength}
+        isProgramMastered={isProgramMastered}
         closePlayer={closePlayer}
       />
     </div>
@@ -189,11 +189,8 @@ export const ChatResponses = ({ message, selectReply }) => {
 };
 
 const SkipAction = ({ isLastStep, goNext, goNextStep }) => {
-  const [store, dispatch] = useContext(Context);
-
   const freeSkipAction = () => {
     isLastStep ? goNext() : goNextStep();
-    dispatch({ type: "SKIP_TASK" });
   };
   return (
     <div

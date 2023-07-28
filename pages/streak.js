@@ -17,6 +17,7 @@ import { withUser } from "@/Hoc/withUser";
 import baseUrl from "@/utils/settings";
 import RewardsModal from "@/components/RewardsModal";
 import useModal from "@/hooks/useModal";
+import { joinCards } from "@/utils/joins";
 
 const calculateReward = (
   reward_type,
@@ -47,7 +48,8 @@ const calculateReward = (
   }
 };
 
-const Streak = ({ streak, user, dispatch }) => {
+const Streak = ({ streak, user }) => {
+  const [store, dispatch] = useContext(Context);
   const {
     reward_type,
     artifact,
@@ -57,9 +59,6 @@ const Streak = ({ streak, user, dispatch }) => {
     is_collected,
     is_ready,
   } = streak;
-
-  console.log("usercards{", user.usercards);
-  console.log({ reward_card });
 
   const reward = calculateReward(
     reward_type,
@@ -121,6 +120,7 @@ const Streak = ({ streak, user, dispatch }) => {
           )}
         </>
       )}
+
       <Modal
         isShowing={isRewardModalShowing}
         closeModal={() => setIsRewardModalShowing(false)}
@@ -136,7 +136,11 @@ const Streak = ({ streak, user, dispatch }) => {
             {reward_type === "card" && (
               <div className="flex_center">
                 <Card
-                  card={reward.reward}
+                  card={
+                    store.usercards
+                      ? joinCards([reward.reward], store.usercards)[0]
+                      : reward.reward
+                  }
                   openModal={() => setIsRewardModalShowing(true)}
                 />
               </div>
@@ -208,19 +212,13 @@ const StreakTower = (props) => {
               {mergeStreaks(data.streakrewards, user.streak_rewards)
                 .sort((a, b) => a.id - b.id)
                 .map((streak, i) => {
-                  return (
-                    <Streak
-                      streak={streak}
-                      user={user}
-                      dispatch={dispatch}
-                      key={i}
-                    />
-                  );
+                  return <Streak streak={streak} user={user} key={i} />;
                 })}
             </div>
           )}
         </>
       </div>
+
       <Modal
         isShowing={store.rewardsModal?.isOpen}
         closeModal={closeModal}

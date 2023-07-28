@@ -1,3 +1,14 @@
+export const isReadyToComplete = (timestamp) => {
+  const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  const currentTime = Date.now(); // Current timestamp in milliseconds
+
+  // Calculate the time difference in milliseconds
+  const timeDifference = currentTime - timestamp;
+
+  // Check if 24 hours have passed since the timestamp
+  return timeDifference >= twentyFourHours;
+};
+
 export const getTotalStepsInSlides = (slides) =>
   slides.reduce((total, slide) => {
     if (slide.action && slide.action.steps) {
@@ -103,10 +114,13 @@ export const calcLevelRewards = (
   allLevelRewards, // all objects
   is_subscribed
 ) => {
+  // console.log({ level_rewards, allLevelRewards, is_subscribed });
   if (!level_rewards) {
     return 0;
   }
-  const claimedLevels = level_rewards.map((lr) => lr.id);
+
+  const claimedLevels = Object.keys(level_rewards).map((id) => parseInt(id));
+
   const readyToClaimLevels = allLevelRewards.filter(
     (alr) => !claimedLevels.includes(alr.id)
   );

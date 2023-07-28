@@ -3,7 +3,7 @@ import baseUrl from "@/utils/settings";
 const dev = process.env.NODE_ENV == "development";
 
 export const ImageUI = ({
-  className = "",
+  className = "flex_center",
   url,
   isPublic = false,
   height = "auto",

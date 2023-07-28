@@ -105,17 +105,17 @@ const Objective = ({
             {progress >= requirement_amount ? (
               isPremium ? (
                 <div
-                  className={styles.btn_objective__active}
+                  className="btn btn-action"
                   onClick={() => Router.push(`/shop`)}
                 >
                   Upgrade
                 </div>
               ) : (
-                <div className={styles.btn_objective__active}>Claim!</div>
+                <div className="btn btn-action">Claim!</div>
               )
             ) : (
               <div
-                className={styles.btn_objective__disabled}
+                className="btn btn-disabled"
                 onClick={() => {
                   Router.push(`/${link ? link : "learn"}`);
                   event({

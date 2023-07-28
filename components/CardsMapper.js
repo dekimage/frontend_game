@@ -6,7 +6,7 @@ import styles from "@/styles/Realm.module.scss";
 
 const CardsMapper = ({ cards }) => {
   const [store, dispatch] = useContext(Context);
-  const usercards = store.user && store.user.usercards;
+  const usercards = store.usercards;
   return (
     <div className={styles.grid}>
       {cards.length &&

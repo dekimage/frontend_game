@@ -110,7 +110,7 @@ const ChangeAvatarModal = ({ closeModal }) => {
         </div>
       )}
       <div
-        className={`btn btn-${selected ? "success" : "disabled"} mt1`}
+        className={`btn btn-${selected ? "primary" : "disabled"} mt1`}
         onClick={() => {
           if (selected) {
             saveAvatar(dispatch, selected.id);
@@ -131,7 +131,7 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
   const maxLevel = user.xpLimit || 300;
   return (
     <div className={styles.profileHeader}>
-      <div className="ml1"></div>
+      <div style={{ width: "40px" }}></div>
       <div className={styles.profileHeader_box}>
         <div className={styles.avatarBox}>
           <div className={styles.avatar}>
@@ -145,19 +145,20 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
           </div>
 
           <div className={styles.username}>{user.username}</div>
-          <div className={styles.level_progress}>LEVEL {user.level}</div>
+          <div className={styles.level_progress}>Level {user.level}</div>
           <ProgressBar progress={user.xp} max={maxLevel} />
 
           <div className={styles.xp}>
             XP {user.xp}/{maxLevel}
           </div>
-          {/* <div className="btn btn-action" onClick={() => followBuddy()}>
-            Follow
-          </div> */}
         </div>
       </div>
-      <div style={{ width: "24px" }}>
-        {!isBuddy && <Icon href={"/settings"} src={settingsIcon} size="25px" />}
+      <div style={{ width: "24px", marginRight: "1rem" }}>
+        {!isBuddy && (
+          <div className={styles.settingsButton}>
+            <Icon href={"/settings"} src={settingsIcon} size="25px" />
+          </div>
+        )}
       </div>
       <Modal
         isShowing={isShowing}

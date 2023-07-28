@@ -16,7 +16,20 @@ const initialState = {
   player: {},
   isAuthenticated: false,
   response: {},
-  user: {},
+
+  user: {}, // NO RELATIONS,
+  // USER RELATIONS
+  usercards: [],
+  claimed_artifacts: [],
+  artifacts: [],
+  favorite_cards: [],
+  last_completed_cards: [],
+  last_unlocked_cards: [],
+  shared_buddies: [],
+  allLevelRewards: [],
+
+  refetch: false,
+
   modals: [],
   toasts: [],
   rewardsModal: {
@@ -40,18 +53,8 @@ const Store = ({ children }) => {
   const [store, dispatch] = useReducer(Reducer, initialState);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (AUTH_TOKEN && !router.route.includes(GOOGLE_CALLBACK_ROUTE)) {
-  //     fetchUser(dispatch);
-  //   } else {
-  //     if (!router.pathname == "/") {
-  //       router.push(LOGIN_ROUTE);
-  //     }
-  //   }
-  // }, []);
   useEffect(() => {
     // Function to check if the token is expired
-
     const isTokenExpired = (token) => {
       try {
         const decoded = JSON.parse(atob(token.split(".")[1]));

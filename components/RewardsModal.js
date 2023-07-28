@@ -6,16 +6,38 @@ import { ArtifactModal } from "@/pages/profile";
 import ProgressBar from "./ProgressBar";
 import baseUrl from "@/utils/settings";
 import Card from "./Card";
+import { ContentTypeTag } from "./CardContent/CardContentTab";
+import { CONTENT_MAP } from "@/data/contentTypesData";
+import { useRouter } from "next/router";
+import congratsLottie from "@/assets/lottie-animations/congrats.json";
+import Lottie from "lottie-react";
+import { ImageUI } from "./reusableUI";
+
+const META_DATA = ["usercard", "cardMeta"]; // KEYS IN REWARDS OBJECT HERE ARE IGNORED IN MODAL
 
 export const RewardsModal = () => {
+  const router = useRouter();
   const [store, dispatch] = useContext(Context);
   const rewards = store.rewardsModal.rewards;
-  const [pages, setPages] = useState(rewards ? Object.keys(rewards) : []);
+
+  const [pages, setPages] = useState(
+    rewards
+      ? Object.keys(rewards).filter(
+          (key) => !META_DATA.includes(key) && rewards[key]
+        )
+      : []
+  );
   const [currentPage, setCurrentPage] = useState(pages[0]);
   const [counter, setCounter] = useState(pages.length);
 
   useEffect(() => {
-    setPages(rewards ? Object.keys(rewards) : []);
+    setPages(
+      rewards
+        ? Object.keys(rewards).filter(
+            (key) => !META_DATA.includes(key) && !!key
+          )
+        : []
+    );
     setCurrentPage(pages[0]);
     setCounter(pages.length);
   }, [rewards]);
@@ -28,19 +50,21 @@ export const RewardsModal = () => {
     setCounter(counter - 1);
   };
 
-  const renderPage = () => {
-    if (rewards[currentPage]) {
-      const reward = rewards[currentPage];
+  const renderPage = (currPage) => {
+    if (rewards[currPage]) {
+      const reward = rewards[currPage];
 
-      if (currentPage === "xp") {
+      if (currPage === "xp") {
         const { xpGained, level, xp, xpLimit, isLevelnew } = reward;
+
         return (
           <div className={styles.rewardsBox}>
+            <div className={styles.level_progress}>Level {level}</div>
             <img height="60px" src={`${baseUrl}/xp.png`} />
             <div className={styles.xp}>+ {xpGained} XP</div>
 
             {isLevelnew && <div className={styles.levelUp}>LEVEL UP!</div>}
-            <div className={styles.level_progress}>Level {level}</div>
+
             {/* calc progress current */}
             <ProgressBar progress={xp} max={xpLimit} />
 
@@ -49,18 +73,14 @@ export const RewardsModal = () => {
             </div>
           </div>
         );
-      }
-
-      if (currentPage === "stars") {
+      } else if (currPage === "stars") {
         return (
           <div className={styles.rewardsBox}>
             <img height="50px" src={`${baseUrl}/stars.png`} />
             <div className={styles.stars}>+ {reward} Stars</div>
           </div>
         );
-      }
-
-      if (currentPage === "artifact") {
+      } else if (currPage === "artifact") {
         return (
           <div>
             <ArtifactModal
@@ -68,12 +88,51 @@ export const RewardsModal = () => {
             />
           </div>
         );
-      }
-
-      if (currentPage === "card") {
+      } else if (currPage === "card") {
         return (
-          <div>
+          <div className={styles.cardRewardBox}>
+            <div className={styles.newCardLabel}>New Card!</div>
             <Card card={{ ...reward, is_unlocked: true }} />
+          </div>
+        );
+      } else if (currPage === "content") {
+        const card = rewards.cardMeta;
+        const navigateToContent = () => {
+          closeRewardsModal(dispatch);
+          router.push({
+            pathname: `/card/${card.id}`,
+            query: { contentId: reward.id, contentType: reward.type },
+          });
+        };
+        const single = CONTENT_MAP[reward.type]?.single;
+        const maxProgress = CONTENT_MAP[reward.type]?.max;
+        return (
+          <div className={styles.cardRewardBox}>
+            <div className={styles.newCardLabel}>New {single}!</div>
+
+            <ImageUI
+              url={"/loot-box-2.png"}
+              isPublic
+              height="50px"
+              className="mb1"
+            />
+
+            <div
+              className={styles.newContent}
+              onClick={() => navigateToContent()}
+            >
+              <div className="new">new</div>
+              <div className="pb1">
+                #{reward.id} {reward.title}
+              </div>
+              <div className="flex_between wFull">
+                <ContentTypeTag type={reward.type} />
+                <div className="flex_center">0 / {maxProgress}</div>
+              </div>
+            </div>
+
+            {/* <div className={styles.newCardLabel}>From Card:</div>
+            <Card card={card} /> */}
           </div>
         );
       }
@@ -84,23 +143,28 @@ export const RewardsModal = () => {
 
   return (
     <div className={styles.rewardsModal}>
-      {renderPage()}
+      <div className={styles.lottiePosition}>
+        <Lottie
+          animationData={congratsLottie}
+          loop={3}
+          style={{ width: "220px" }}
+        />
+      </div>
+
+      {renderPage(currentPage)}
 
       <div className={styles.ctaBox}>
         {counter === 1 ? (
           <div
-            className="btn btn-primary m1"
+            className="btn btn-primary mt1"
             onClick={() => closeRewardsModal(dispatch)}
           >
-            Claim
+            Okay
           </div>
         ) : (
           <div className="btn btn-primary m1" onClick={nextPage}>
-            Next Reward
+            Next Reward ({counter - 1})
           </div>
-        )}
-        {!(rewards[currentPage]?.type === "artifact") && (
-          <div className="modal-close-button-lootbox ">{counter}</div>
         )}
       </div>
     </div>

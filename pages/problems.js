@@ -9,50 +9,13 @@ import { normalize } from "@/utils/calculations";
 import styles from "@/styles/Problems.module.scss";
 import { useQuery } from "@apollo/react-hooks";
 import { withUser } from "@/Hoc/withUser";
-
-export const GenericDropDown = ({ items, label, callback }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(false);
-
-  return (
-    <div
-      tabIndex={0}
-      onBlur={(e) => {
-        setIsOpen(false);
-      }}
-    >
-      <div className={styles.dropDown} onClick={() => setIsOpen(!isOpen)}>
-        <div className="mr5">{selectedItem ? selectedItem : label}</div>
-        {isOpen ? (
-          <ion-icon name="chevron-up-outline"></ion-icon>
-        ) : (
-          <ion-icon name="chevron-down-outline"></ion-icon>
-        )}
-      </div>
-      {isOpen && (
-        <div className={styles.dropDown_items}>
-          {items.map((item, i) => (
-            <div
-              className={styles.dropDown_item}
-              key={i}
-              onClick={() => {
-                setIsOpen(!isOpen);
-                setSelectedItem(item);
-                callback(item);
-              }}
-            >
-              {item}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+import { ImageUI } from "@/components/reusableUI";
 
 export const DropDown = ({ realms, filter, setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
   const filters = [{ name: "All" }, ...realms];
+
+  console.log(realms);
 
   return (
     <div
@@ -80,7 +43,7 @@ export const DropDown = ({ realms, filter, setFilter }) => {
               onClick={() => setFilter(realm.name)}
             >
               {realm?.image && (
-                <img src={realm?.image?.url} height="15px" className="mr5" />
+                <ImageUI url={realm.image.url} height="15px" className="mr5" />
               )}
 
               {realm?.name}
@@ -148,7 +111,12 @@ const Problems = ({ data }) => {
               placeholder="Search..."
             />
 
-            <DropDown realms={realms} filter={filter} setFilter={setFilter} />
+            <DropDown
+              realms={realms}
+              label="Category"
+              filter={filter}
+              setFilter={setFilter}
+            />
           </div>
         </div>
 

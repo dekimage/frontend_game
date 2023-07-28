@@ -15,14 +15,29 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
   : "";
 
 // LEGACY APIS (require customizations)
+
+export const refreshUserApi = () => axios.get("/usercard/refresh-user");
 export const fetchUserApi = () => axios.get("/usercard/me");
 export const rateCardApi = () => axios.put(`${userUrl}/rate-card`);
 export const updateEmailSettingsApi = (data) =>
   axios.put(`${userUrl}/update-settings`, { settings: data });
-export const updateCardApi = (cardId, action, contentIndex = 0) =>
-  axios.put(`${userUrl}/update-card/${cardId}`, {
+export const updateCardApi = (cardId, action) =>
+  axios.put(`${userUrl}/update-card`, {
+    cardId,
     action,
-    contentIndex,
+  });
+
+export const updateContentTypeApi = (
+  action,
+  cardId,
+  contentType,
+  contentTypeId
+) =>
+  axios.put(`${userUrl}/update-content-type`, {
+    action,
+    cardId,
+    contentType,
+    contentTypeId,
   });
 
 export const signupApi = (email, password, sharedByUserId) =>

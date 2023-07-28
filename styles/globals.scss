@@ -202,6 +202,17 @@ input:-webkit-autofill:active {
   }
 }
 
+.section-small {
+  margin: 0px auto;
+  max-width: 100%;
+  padding: 1rem;
+  width: 100%;
+  @include media_bg {
+    max-width: 45rem;
+    padding: 1.5rem;
+  }
+}
+
 .landing-section {
   @extend %flex_center;
   flex-direction: column;
@@ -228,6 +239,9 @@ input:-webkit-autofill:active {
 .p1 {
   padding: 1rem;
 }
+.p5 {
+  padding: 0.75rem;
+}
 .pu1 {
   padding: 1rem 0;
 }
@@ -245,6 +259,10 @@ input:-webkit-autofill:active {
 }
 .pr1 {
   padding-right: 1rem;
+}
+
+.pb5 {
+  padding-bottom: 0.5rem;
 }
 
 .m1 {
@@ -289,6 +307,10 @@ input:-webkit-autofill:active {
   margin-top: 0.5rem;
 }
 
+.mb5 {
+  margin-bottom: 0.5rem;
+}
+
 .ml5 {
   margin-left: 0.5rem;
 }
@@ -308,14 +330,16 @@ input:-webkit-autofill:active {
 
 /* BUTTONS */
 .btn {
-  min-width: 5rem;
+  min-width: 3.5rem;
+  // min-width: 5rem;
   font-weight: 700;
   @extend %flex_center;
   font-size: 14px;
   width: auto;
   width: 100%;
-  height: 2.5rem;
-  padding: 10px 30px;
+  // height: 2.5rem;
+  // padding: 10px 30px;
+  padding: 8px 24px;
 
   border-radius: $border_radius;
   background-color: $blue_headspace;
@@ -348,7 +372,6 @@ input:-webkit-autofill:active {
 }
 .btn-stretch {
   width: 100%;
-  max-width: 600px;
 }
 .btn-fullSize {
   width: 100%;
@@ -361,8 +384,15 @@ input:-webkit-autofill:active {
   background: $primary;
   // border-top: 4px solid #678de4;
   // border-bottom: 2px solid #1e4397;
-
-  // box-shadow: 0px 5px 0px -0.5px #1e4397;
+  border-bottom: 2px solid #152e69;
+  box-shadow: 0px 3px 0px -0.5px #1e4397;
+}
+.btn-warning {
+  background: $ux_red;
+  // border-top: 4px solid #678de4;
+  // border-bottom: 2px solid #1e4397;
+  border-bottom: 2px solid #810d0d;
+  box-shadow: 0px 3px 0px -0.5px #cf1313;
 }
 .btn-outline {
   border: 2px solid $actionize_gray_light;
@@ -370,6 +400,8 @@ input:-webkit-autofill:active {
 }
 .btn-green {
   background: $actionize_green;
+  border-bottom: 2px solid #4c8536;
+  box-shadow: 0px 3px 0px -0.5px #5d9e43;
 }
 .btn-correct {
   background: $ux_green;
@@ -388,12 +420,16 @@ input:-webkit-autofill:active {
 }
 .btn-action {
   background: $secondary;
+  border-bottom: 2px solid #a16e0e;
+  box-shadow: 0px 3px 0px -0.5px #c77430;
   // animation: jump 1s infinite;
 }
 
 .btn-disabled {
   color: rgb(218, 218, 218);
   background: darkgray;
+  box-shadow: 0px 3px 0px -0.5px #3d3834;
+  border-bottom: 2px solid #242322;
   cursor: not-allowed;
   @include hover-brightness(100%);
 }
@@ -552,7 +588,7 @@ ion-icon {
   width: 100vw;
   height: 100vh;
   background-color: #000;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .modal-wrapper {
@@ -570,7 +606,6 @@ ion-icon {
 
 .modal {
   z-index: 10000000000000;
-
   width: 100vw;
   height: 100vh;
 
@@ -581,17 +616,17 @@ ion-icon {
 
   // box-shadow: 0px 8px 0px 0px $black;
   background: $actionize_black;
-  border-top: 4px solid black;
+  // border-top: 4px solid black;
   position: relative;
-  border-radius: $border_radius;
+  // border-radius: $border_radius;
   // max-width: 600px;
   // min-width: 300px;
   // height: 100%;
   padding: 1rem;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   overflow-x: scroll;
   @include media_bg {
-    max-width: 45rem;
+    // max-width: 45rem;
     padding: 1.5rem;
   }
 }
@@ -609,6 +644,8 @@ ion-icon {
   padding: 1rem;
   @extend %subTitle;
   margin: 0 10%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border: 2px solid $actionize-gray;
 }
 
 .modal-header {
@@ -1011,4 +1048,20 @@ ion-icon {
   font-weight: 500;
   width: 56px;
   height: 24px;
+}
+
+.wFull {
+  width: 100%;
+}
+
+.new {
+  // position: absolute;
+  // top: -5px;
+  // right: -5px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  @extend %flex_center;
+  background-color: $ux_red;
 }

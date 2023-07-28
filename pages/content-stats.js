@@ -28,7 +28,7 @@ export const maxProgressPerContentType = {
   expertopinions: 3,
   quotes: 5,
   questions: 3,
-  actions: 3,
+  // actions: 3,
 };
 
 const CardTable = ({ cards, selectedProperty }) => {

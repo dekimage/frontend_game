@@ -6,7 +6,7 @@ import Timer from "./reusable/Timer";
 import { fetchUser } from "@/actions/config";
 import styles from "@/styles/Countdown.module.scss";
 
-export default function Countdown({ tab, isObjectives = false }) {
+export default function Countdown({ type, tab, timeLeft }) {
   const [store, dispatch] = useContext(Context);
   const onComplete = () => {
     fetchUser(dispatch);
@@ -29,9 +29,11 @@ export default function Countdown({ tab, isObjectives = false }) {
       : resetFutureTime - Date.now();
   }
 
-  return (
-    <>
-      {isObjectives ? (
+  let content;
+
+  switch (type) {
+    case "objectives":
+      content = (
         <div className={styles.countdown}>
           <div>Objectives reset in:</div>
 
@@ -53,7 +55,11 @@ export default function Countdown({ tab, isObjectives = false }) {
 
           {/* <div className={styles.countdown_timer}></div> */}
         </div>
-      ) : (
+      );
+      break;
+
+    case "energy":
+      content = (
         <div className={styles.timerEnergy}>
           <div className={styles.timerEnergy_inner}>
             + 10 <ImageUI url={"/energy.png"} height={"16px"} isPublic />
@@ -64,7 +70,14 @@ export default function Countdown({ tab, isObjectives = false }) {
             onComplete={onComplete}
           />
         </div>
-      )}
-    </>
-  );
+      );
+      break;
+
+    // Add more cases for additional scenarios
+
+    default:
+      content = null; // Or return a default component if needed
+  }
+
+  return <>{content}</>;
 }

@@ -4,4 +4,10 @@
 .energyModal {
   @extend %flex_center;
   flex-direction: column;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
 }

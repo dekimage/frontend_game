@@ -61,7 +61,8 @@ export const ArtifactModal = ({ artifact }) => {
         {/* {artifact.image && artifact.isClaimed && (
           <ImageUI url={artifact.image.url} className={styles.artifactImage} />
         )} */}
-        <div className={styles.artifactDetails_name}>
+        <div className={styles.artifactDetails_name}>{artifact.name}</div>
+        <div className={styles.artifactDetails}>
           {artifact.isCollected ? (
             <ImageUI
               url={artifact?.image?.url}
@@ -71,7 +72,7 @@ export const ArtifactModal = ({ artifact }) => {
             <ImageUI url={"/badge.png"} isPublic />
           )}
         </div>
-        <div className={styles.artifactDetails_name}>{artifact.name}</div>
+
         <div
           className={styles.artifactDetails_rarity}
           style={{ color: getColorByRarity(artifact.rarity) }}
@@ -79,9 +80,10 @@ export const ArtifactModal = ({ artifact }) => {
           {artifact.rarity}
         </div>
         <div className={styles.artifactDetails_obtainedBy}>
-          <div>Obtained by: </div>
+          {/* <div>Obtained by: </div> */}
           {artifact.obtained_by_description}
         </div>
+        {/* <div className="mt1"></div> */}
         {!artifact.isClaimed && (
           <div className={styles.artifactProgress}>
             <ArtifactProgress artifact={artifact} />
@@ -105,7 +107,7 @@ const ArtifactProgress = ({ artifact }) => {
           max={artifact.require || 1}
           isReadyToClaim
         />
-        <div>
+        <div className={styles.progressNumber}>
           {artifact.progress >= artifact.require
             ? artifact.require
             : artifact.progress}
@@ -149,9 +151,11 @@ export const Artifact = ({ artifact }) => {
 
             <div className={styles.artifact_name}>{artifact.name}</div>
 
-            {!(artifact.isCollected && !artifact.isClaimed) && (
+            <div className="mt5"></div>
+            {/* {!(artifact.isCollected && !artifact.isClaimed) && (
               <ArtifactProgress artifact={artifact} />
-            )}
+            )} */}
+            {!artifact.isClaimed && <ArtifactProgress artifact={artifact} />}
 
             {artifact.isCollected && !artifact.isClaimed && (
               <div className="btn btn-action">Claim</div>
@@ -163,7 +167,8 @@ export const Artifact = ({ artifact }) => {
 
             <div className={styles.artifact_name}>{artifact.name}</div>
 
-            <ArtifactProgress artifact={artifact} />
+            <div className="mt5"></div>
+            {!artifact.isClaimed && <ArtifactProgress artifact={artifact} />}
           </>
         )}
       </div>
@@ -255,10 +260,15 @@ const Profile = () => {
                   text={"Cards Unlocked"}
                   max={store.user.cards_count}
                 />
-                <Stat
+                {/* <Stat
                   number={store.user.stats.cards_complete}
                   img={`${baseUrl}/rise.png`}
                   text={"Sessions Completed"}
+                /> */}
+                <Stat
+                  number={store.user.stats.mastery}
+                  img={`${baseUrl}/mastery.png`}
+                  text={"Total Mastery"}
                 />
                 <Stat
                   number={store.user.highest_streak_count}
@@ -266,20 +276,15 @@ const Profile = () => {
                   text={"Highest Streak"}
                 />
                 <Stat
-                  number={store.user.stats.mastery}
-                  img={`${baseUrl}/mastery.png`}
-                  text={"Total Mastery"}
-                />
-                <Stat
                   number={store.user.stats.claimed_artifacts || 0}
                   img={`${baseUrl}/energy.png`}
                   text={"Achievements"}
                   max={store.user.artifacts_count}
                 />
-                <Stat
+                {/* <Stat
                   img={`${baseUrl}/user.png`}
                   text={store.user.is_subscribed ? "Pro User" : "Free User"}
-                />
+                /> */}
               </div>
             )}
           </div>
@@ -315,6 +320,23 @@ const Profile = () => {
 
           {tab === "buddies" && (
             <div className="section">
+              {store.user.shared_by && (
+                <>
+                  <div
+                    className={styles.header}
+                    style={{ justifyContent: "space-between" }}
+                  >
+                    <div>Shared By:</div>
+                  </div>
+                  <Buddy
+                    name={store.user.shared_by.username}
+                    link={`/users/${store.user.shared_by.id}`}
+                    img={store.user.shared_by.avatar?.image.url}
+                    level={store.user.shared_by.level}
+                  />
+                </>
+              )}
+
               <div
                 className={styles.header}
                 style={{ justifyContent: "space-between" }}
@@ -332,18 +354,6 @@ const Profile = () => {
                   key={b.id}
                 />
               ))}
-              {/* <div className={styles.header}>
-                <div>Following</div> {store.user.followers?.length || 0}/50
-              </div>
-              {store.user.followers?.map((b) => (
-                <Buddy
-                  name={b.username}
-                  link={`/users/${b.id}`}
-                  // img={b.profile.url}
-                  level={b.level}
-                  key={b.id}
-                />
-              ))} */}
               <div
                 className="btn btn-stretch btn-primary mt1 mb1"
                 onClick={openModal}
@@ -370,8 +380,8 @@ const Profile = () => {
               <div className={styles.artifactsWrapper}>
                 {transformArtifacts(
                   gql_data.artifacts,
-                  store.user.artifacts,
-                  store.user.claimed_artifacts,
+                  store.artifacts,
+                  store.claimed_artifacts,
                   store.user
                 ).map((artifact, i) => {
                   return <Artifact key={i} artifact={artifact} />;

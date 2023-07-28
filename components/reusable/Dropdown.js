@@ -2,9 +2,16 @@ import { useState } from "react";
 import baseUrl from "@/utils/settings";
 import styles from "@/styles/Dropdown.module.scss";
 
-export const DropDown = ({ realms, filter, setFilter }) => {
+export const DropDown = ({
+  data,
+  label,
+  filter,
+  setFilter,
+  fullWidth = false,
+  Jsx,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const filters = [{ name: "All" }, ...realms];
+  const filters = [{ name: "All" }, ...data];
 
   return (
     <div
@@ -14,9 +21,7 @@ export const DropDown = ({ realms, filter, setFilter }) => {
       }}
     >
       <div className={styles.dropDown} onClick={() => setIsOpen(!isOpen)}>
-        <div className="mr5">
-          {filter && filter != "All" ? filter : "Category"}
-        </div>
+        <div className="mr5">{filter && filter != "All" ? filter : label}</div>
         {isOpen ? (
           <ion-icon name="chevron-up-outline"></ion-icon>
         ) : (
@@ -24,22 +29,25 @@ export const DropDown = ({ realms, filter, setFilter }) => {
         )}
       </div>
       {isOpen && (
-        <div className={styles.dropDown_items}>
-          {filters.map((realm, i) => (
+        <div
+          className={styles.dropDown_items}
+          style={fullWidth && { width: "90%" }}
+        >
+          {filters.map((item, i) => (
             <div
               className={styles.dropDown_item}
               key={i}
-              onClick={() => setFilter(realm.name)}
+              onClick={() => setFilter(item.name)}
             >
-              {realm.image && (
+              {item.image && (
                 <img
-                  src={`${baseUrl}${realm.image.url}`}
+                  src={`${baseUrl}${item.image.url}`}
                   height="15px"
                   className="mr5"
                 />
               )}
-
-              {realm.name}
+              {/* {Jsx ? <Jsx type={item.name} /> : <div>{item.name}</div>} */}
+              {item.name}
             </div>
           ))}
         </div>

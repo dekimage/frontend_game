@@ -16,7 +16,6 @@ export const BackButton = ({
           className={styles.backButton}
           onClick={() => {
             if (callback) {
-              console.log(callback);
               callback();
             } else {
               router.back();

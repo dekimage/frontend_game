@@ -1,5 +1,7 @@
 @import "../mixins";
+@import "../placeholders";
 
 .iconContainer {
   @include hover-brightness(150%);
+  @extend %flex_center;
 }

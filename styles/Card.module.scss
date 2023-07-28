@@ -13,7 +13,7 @@
   position: relative;
 }
 .card {
-  height: 200px;
+  height: 225px;
   cursor: pointer;
   width: auto;
   min-width: 165px;
@@ -35,15 +35,19 @@
   &.notCollected {
     opacity: 80%;
   }
-  @include hover-brightness(125%);
+
+  &:hover {
+    border: 2px solid $actionize_gray_light;
+    transition: all 0.3s ease;
+  }
 }
 
 .image {
   z-index: 5;
-  margin-bottom: 0.5rem;
 
   img {
     height: 120px;
+    margin-top: 0.5rem;
   }
 }
 
@@ -73,7 +77,7 @@
 
 .openBox {
   position: absolute;
-  bottom: 0;
+  bottom: 0.5rem;
   @extend %flex_center;
   padding: 0.5rem 1rem;
   border-radius: 60%/ 80px 80px 0 0;
@@ -125,9 +129,7 @@
 
 .progress_box {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  @extend %flex_center;
   margin-bottom: 0.5rem;
 }
 
@@ -148,4 +150,18 @@
 
 .progressIcon {
   margin-right: 0.5rem;
+}
+
+.realmTag {
+  @extend %flex_center;
+  border-radius: $border-radius;
+  padding: 0.15rem 0.5rem;
+  color: black;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: capitalize;
+  background-color: var(--background);
+  position: absolute;
+  top: -10px;
+  z-index: 1000;
 }

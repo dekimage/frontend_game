@@ -10,6 +10,7 @@
   color: white;
   flex-direction: column;
   background-color: $actionize_black;
+  // margin-top: 1rem;
 }
 
 .rewardsBox {
@@ -20,23 +21,25 @@
 }
 
 .xp {
-  font-weight: 500;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 22px;
   margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
   color: #de93b9;
 }
 
 .xp_progress {
-  font-size: 12px;
-  font-weight: 500;
+  margin-top: 0.5rem;
+  font-size: 14px;
+  font-weight: 700;
   color: $actionize_gray_light;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .level_progress {
-  margin-top: 1rem;
-  margin-bottom: 0.25rem;
-  font-size: 16px;
+  margin-bottom: 2rem;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .levelUp {
@@ -45,8 +48,53 @@
   font-size: 24px;
 }
 
+.cardRewardBox {
+  @extend %flex_center;
+  flex-direction: column;
+}
+
+.newCardLabel {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  @extend %flex_center;
+}
+
 .stars {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 22px;
   color: #80ec98;
+}
+
+.nextCounter {
+  position: absolute;
+  right: 10px;
+  margin-left: 0.5rem;
+  @extend %flex_center;
+  color: white;
+  // background-color: $actionize_gray;
+  background-color: $ux_red;
+  border-radius: $border_radius;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.newContent {
+  position: relative;
+  @extend %box_duo;
+  @extend %flex_between;
+  flex-direction: column;
+  min-height: 100px;
+  min-width: 250px;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.lottiePosition {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
 }

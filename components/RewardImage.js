@@ -44,9 +44,7 @@ const RewardImage = ({
         {reward == "streak" && (
           <img height="8px" src={`${baseUrl}/streak.png`} />
         )}
-        {reward == "gems" && (
-          <img src={`${baseUrl}/gems.png`} height="12px" className="mb5" />
-        )}
+       
         {reward == "artifact" && artifact?.image && (
           <div
             className={styles.artifactImage}

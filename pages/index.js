@@ -16,7 +16,7 @@ import RewardLinkSection from "@/components/Today/RewardLinkSection";
 import { GET_OBJECTIVES_QUERY } from "@/GQL/query";
 
 // *** ACTIONS ***
-import { acceptReferral, resetUser } from "@/actions/action";
+import { acceptReferral } from "@/actions/action";
 
 // *** FUNCTIONS ***
 import { calculateNotifications, joinObjectives } from "@/functions/todayFunc";
@@ -27,6 +27,7 @@ import styles from "@/styles/Today.module.scss";
 // *** HOOKS ***
 import useModal from "@/hooks/useModal";
 import { withUser } from "@/Hoc/withUser";
+import { ImageUI } from "@/components/reusableUI";
 
 const Home = ({ user, data, dispatch, store }) => {
   const { isShowing, openModal, closeModal } = useModal();
@@ -72,7 +73,8 @@ const Home = ({ user, data, dispatch, store }) => {
             <div className={styles.acceptReferralBox}>
               <div className="header">Welcome Gift</div>
               <div className="pb1 pt1">
-                Gain 400 <img height="16px" src={`${baseUrl}/stars.png`} />{" "}
+                Gain 400
+                <ImageUI url={"/stars.png"} width={16} height={16} isPublic />
                 because a buddy shared you an invite
               </div>
               <div
@@ -80,23 +82,13 @@ const Home = ({ user, data, dispatch, store }) => {
                 onClick={() => acceptReferral(dispatch)}
               >
                 Claim 400
-                <img
-                  height="18px"
-                  src={`${baseUrl}/stars.png`}
-                  className="ml5"
-                />
+                <ImageUI url={"/stars.png"} width={16} height={16} isPublic />
               </div>
             </div>
           )}
 
           <div className="section">
             <div className={styles.objectivesHeadline}>
-              <div
-                onClick={() => resetUser(dispatch)}
-                className="btn btn-primary"
-              >
-                TEST
-              </div>
               <div className="header">Objectives</div>
 
               <span className={styles.objectivesHeadline_number}>
@@ -110,7 +102,7 @@ const Home = ({ user, data, dispatch, store }) => {
               setTab={setObjectivesTabOpen}
               tabs={tabsData}
             />
-            <Countdown tab={objectivesTabOpen} isObjectives />
+            <Countdown tab={objectivesTabOpen} type="objectives" />
           </div>
 
           <div className="section" style={{ paddingTop: 0 }}>

@@ -10,7 +10,6 @@ import { BackButton } from "@/components/reusable/BackButton";
 import { Context } from "@/context/store";
 import EnergyModal from "@/components/EnergyModal";
 import Modal from "@/components/reusable/Modal";
-import ProgressBar from "@/components/ProgressBar";
 import ReactMarkdown from "react-markdown";
 import { RewardsModal } from "@/components/RewardsModal";
 import _ from "lodash";
@@ -18,8 +17,11 @@ import { normalize } from "@/utils/calculations";
 import styles from "@/styles/CardPage.module.scss";
 import useModal from "@/hooks/useModal";
 import { useRouter } from "next/router";
-import TabsData from "@/components/TabsData";
+import CardContentTab from "@/components/CardContent/CardContentTab";
 import { ImageUI } from "@/components/reusableUI";
+import { calculateCardMaxProgress, calculateCardProgress } from "@/utils/joins";
+import ProgressBar from "@/components/ProgressBar";
+import { PROGRAM_COMPLETED_MAX } from "@/data/config";
 
 const CardPage = ({ dataUserCard, dataCard }) => {
   const [store, dispatch] = useContext(Context);
@@ -27,8 +29,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   const proxyUserCard = {
     completed: 0,
     proxy: true,
-    completed_progress_max: 3,
-    completed_contents: [],
     completed_at: false,
   };
   const usercard = dataUserCard ? dataUserCard : proxyUserCard;
@@ -38,9 +38,14 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   const isUnlocked = card.is_open || usercard.is_unlocked;
 
   const day = card.days[card.last_day || 0];
-  const completedContents = usercard.completed_contents || [];
   const cardTickets = store?.user?.card_tickets || [];
   const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
+
+  const maxProgress = calculateCardMaxProgress(
+    card.relationCount
+  ).totalMaxProgress;
+  const progress = calculateCardProgress(usercard.progressMap).totalProgress;
+  const isProgramMastered = usercard.completed >= PROGRAM_COMPLETED_MAX;
 
   const { isShowing, openModal, closeModal } = useModal();
 
@@ -86,20 +91,6 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </div>
         )}
 
-        {!card.coming_soon && (
-          <>
-            <ProgressBar
-              progress={usercard.completed}
-              max={usercard.completed_progress_max}
-              withNumber
-              withIcon={"mastery"}
-              fontSize={16}
-            />
-
-            <div className={styles.description}>{card.description}</div>
-          </>
-        )}
-
         {!isUnlocked && (
           <>
             <Title name="Benefits" />
@@ -109,13 +100,34 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </>
         )}
       </div>
+      <div className="section">
+        <div className={styles.description}>{card.description}</div>
+      </div>
+      <div className="section mb1">
+        <ProgressBar
+          progress={progress}
+          max={maxProgress}
+          isReadyToClaim={progress >= maxProgress}
+        />
+        <div className="flex_center mt5">
+          <div className={styles.cardStats}>
+            {progress}/{maxProgress}
+          </div>
+          <ImageUI
+            url={"/mastery.png"}
+            isPublic
+            height="20px"
+            className="ml5"
+          />
+        </div>
+      </div>
 
       <div className="section_container">
         {!card.coming_soon && usercard && card && isUnlocked && (
-          <TabsData
+          <CardContentTab
             card={card}
             usercard={usercard}
-            programData={{ day, completedContents, isTicketPurchased }}
+            programData={{ day, isTicketPurchased, isProgramMastered }}
           />
         )}
 
@@ -159,22 +171,24 @@ const Card = () => {
   const gql_card = card && normalize(card);
   const [getUserCard, { data, loading, error }] = useLazyQuery(
     GET_USERCARD_QUERY,
-    { fetchPolicy: "network-only" }
+    {
+      variables: {
+        userId: store.user.id,
+        cardId: parseInt(router.query.id),
+      },
+      fetchPolicy: "network-only",
+    }
   );
-  const gql_usercard = data && normalize(data);
+  const gql_usercard = data && normalize(data).usercards[0];
 
   useEffect(() => {
-    if (store.user.usercards) {
-      const usercard = store.user.usercards.filter((uc) => {
-        return uc.card.id === parseInt(router.query.id);
-      })[0];
-
-      if (!usercard) {
-        return;
-      }
-      getUserCard({ variables: { id: usercard.id } });
+    if (store.user?.id) {
+      getUserCard({
+        userId: store.user.id,
+        cardId: parseInt(router.query.id),
+      });
     }
-  }, [store.user]);
+  }, [store.gqlRefetch, store.user.id]);
 
   return (
     <div className="background_dark">
@@ -190,7 +204,7 @@ const Card = () => {
       {gql_card && store.user && (
         <CardPage
           dataCard={gql_card}
-          dataUserCard={gql_usercard && gql_usercard.usercard}
+          dataUserCard={gql_usercard}
           getUserCard={getUserCard}
         />
       )}

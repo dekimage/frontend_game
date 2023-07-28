@@ -6,27 +6,30 @@
   background-color: $actionize_gray;
   padding: 0.5rem 1rem;
   border-radius: $border_radius;
+
   font-size: 18px;
   font-weight: 500;
   width: 9rem;
+  width: 100%;
   @extend %flex_center;
+  text-transform: capitalize;
 
   &_item {
     @extend %flex_start;
-    padding: 0.7rem 0.5rem;
+    padding: 1rem 0.5rem;
     padding-left: 0.75rem;
-    border-bottom: 2px solid $actionize_gray;
+    // border-bottom: 2px solid $actionize_gray;
+    text-transform: capitalize;
   }
 
   &_items {
     border-radius: $border_radius;
     width: 144px;
+    width: 90%;
     z-index: 25;
     background-color: $actionize_black;
     position: absolute;
-    border-right: 2px solid $actionize_gray;
-    border-left: 2px solid $actionize_gray;
-    border-top: 2px solid $actionize_gray;
+    border: 2px solid $actionize_gray;
     border-bottom: none;
     margin-top: 0.25rem;
     // box-shadow: rgba(255, 255, 255, 0.1) 0px 4px 12px;

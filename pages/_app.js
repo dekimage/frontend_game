@@ -10,6 +10,7 @@ import { pageview } from "@/utils/ga";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import withData from "@/lib/withData";
+import TestLab from "@/components/TestLab";
 
 const MyApp = ({ Component, pageProps }) => {
   MyApp.getInitialProps = async ({ Component, router, ctx }) => {
@@ -56,7 +57,7 @@ const MyApp = ({ Component, pageProps }) => {
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
       </Head>
-
+      {/* <TestLab /> */}
       <Component {...pageProps} />
 
       <ToastContainer

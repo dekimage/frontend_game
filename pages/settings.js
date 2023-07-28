@@ -8,13 +8,18 @@ import router from "next/router";
 import styles from "@/styles/Settings.module.scss";
 import { updateEmailSettings, updateUserBasicInfo } from "@/actions/action";
 import { BackButton } from "@/components/reusable/BackButton";
+import { isEqual } from "lodash";
+import Modal from "@/components/reusable/Modal";
+import DeleteConfirmModal from "@/components/Modals/DeleteConfirmModal";
 
 const EmailSettings = ({ emailPreferences }) => {
   const [store, dispatch] = useContext(Context);
   const [settings, setSettings] = useState(emailPreferences);
 
+  const isSettingsSame = isEqual(emailPreferences, settings);
+
   const handleSubmit = () => {
-    updateEmailSettings(dispatch, settings);
+    !isSettingsSame && updateEmailSettings(dispatch, settings);
   };
   const handleToggle = (label) => {
     const newPreferences = {
@@ -39,7 +44,7 @@ const EmailSettings = ({ emailPreferences }) => {
         );
       })}
       <Button
-        type={"primary"}
+        type={isSettingsSame ? "disabled" : "primary"}
         onClick={handleSubmit}
         children={"Save"}
         isLoading={store.isLoading}
@@ -185,6 +190,9 @@ const EditAccount = ({
   const [input, setInput] = useState(inputValue);
   const isGender = inputName === "Gender";
   const [genderSelected, setGenderSelected] = useState(isGender && inputValue);
+
+  const isValueSame = inputValue === input;
+
   const getInputName = (inputName) => {
     if (inputName === "Name") {
       return "username";
@@ -236,9 +244,10 @@ const EditAccount = ({
       )}
 
       <Button
-        type={"primary"}
+        type={isValueSame ? "disabled" : "primary"}
         className="mb1 mt1"
         onClick={() =>
+          !isValueSame &&
           updateUserBasicInfo(dispatch, input, getInputName(inputName))
         }
         children={primaryBtn}
@@ -328,6 +337,7 @@ const handleBack = (activeSettings, setActiveSettings) => {
 const Settings = () => {
   const [store, dispatch] = useContext(Context);
   const [activeSettings, setActiveSettings] = useState("default");
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const user = store.user;
 
   if (!user) {
@@ -393,6 +403,12 @@ const Settings = () => {
                 >
                   Log Out
                 </div>
+                <div
+                  className="btn btn-warning btn-stretch mt1"
+                  onClick={() => setShowDeleteConfirmModal(true)}
+                >
+                  Delete Account
+                </div>
               </div>
             </div>
           )}
@@ -441,7 +457,35 @@ const Settings = () => {
           )}
 
           {activeSettings === "feature" && (
-            <FeatureSuggestion type={"feature request"} />
+            <FeatureSuggestion
+              type={"feature"}
+              afterSendMail={() => setActiveSettings("default")}
+            />
+          )}
+          {activeSettings === "bug" && (
+            <FeatureSuggestion
+              type={"bug"}
+              afterSendMail={() => setActiveSettings("default")}
+            />
+          )}
+          {activeSettings === "contact" && (
+            <FeatureSuggestion
+              type={"contact"}
+              afterSendMail={() => setActiveSettings("default")}
+            />
+          )}
+
+          {showDeleteConfirmModal && (
+            <Modal
+              isShowing={showDeleteConfirmModal}
+              closeModal={() => setShowDeleteConfirmModal(false)}
+              jsx={
+                <DeleteConfirmModal
+                  closeModal={() => setShowDeleteConfirmModal(false)}
+                />
+              }
+              isSmall
+            />
           )}
         </div>
       </div>

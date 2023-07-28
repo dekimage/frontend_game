@@ -9,9 +9,9 @@ import { withUser } from "@/Hoc/withUser";
 import { ImageUI } from "@/components/reusableUI";
 
 const Cards = (props) => {
-  const { user, data } = props;
+  const { store, data } = props;
 
-  const usercards = user && user.usercards;
+  const usercards = store.usercards;
 
   return (
     <div className="background_dark">
@@ -27,9 +27,9 @@ const Cards = (props) => {
           </div>
         </div>
 
-        <div className="section">
+        <div className="section-small">
           <div className={styles.grid}>
-            {user &&
+            {store.usercards &&
               joinCards(data.realm.cards, usercards)
                 .sort((a, b) => b.is_open - a.is_open)
                 .map((card, i) => <Card card={card} key={i} />)}

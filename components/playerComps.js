@@ -216,6 +216,9 @@ export const GenericScreen = ({ img, title, content, stats, jsx }) => {
       <div className={styles.genericStats}>
         {stats &&
           stats.map((s, i) => {
+            if (!s) {
+              return;
+            }
             return (
               <div className={styles.genericStat} key={i}>
                 <div className="flex_center">

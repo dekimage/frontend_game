@@ -19,8 +19,8 @@ export const withUser = (
     const [store, dispatch] = useContext(Context);
     const { user } = store;
     const router = useRouter();
+    const isLandingPage = router.query.isLandingPage;
 
-    
     useEffect(() => {
       if (!AUTH_TOKEN) {
         router.push("/");
@@ -39,6 +39,10 @@ export const withUser = (
 
     const gql_data = data && normalize(data);
 
+    if (isLandingPage) {
+      return <LandingPage />;
+    }
+
     if (loading) {
       return <Loader />;
     }
@@ -47,15 +51,15 @@ export const withUser = (
       return <div>Error Comp</div>;
     }
 
-    if (!AUTH_TOKEN) {
+    if (!AUTH_TOKEN && !store.isAuthenticated) {
       return <LandingPage />;
     }
 
-    if (!query) {
+    if (!query && AUTH_TOKEN && store.isAuthenticated) {
       return <WrappedComponent {...props} user={user} dispatch={dispatch} />;
     }
 
-    if (gql_data) {
+    if (gql_data && AUTH_TOKEN && store.isAuthenticated) {
       return (
         <WrappedComponent
           {...props}

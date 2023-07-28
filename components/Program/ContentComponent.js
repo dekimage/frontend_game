@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ContentStat } from "./ContentStat";
 
 import iconCheck from "@/assets/checkmark.svg";
@@ -16,11 +17,10 @@ const countMessages = (input) => input.split("\n\n").length;
 export const ContentComponent = ({
   content,
   cardId,
-  isCompleted,
   isLast,
   index,
   isTicketPurchased,
-  isSubscribed,
+  isProgramMastered,
 }) => {
   const contentStats =
     content.type == "action"
@@ -45,11 +45,11 @@ export const ContentComponent = ({
     <div className={styles.content}>
       <div
         className={`${styles.contentCounter} ${
-          isCompleted && styles.completed
+          isProgramMastered && styles.completed
         }`}
       >
         {!isLast && <div className={styles.contentDottedBorder}></div>}
-        {isCompleted ? (
+        {isProgramMastered ? (
           <img src={iconCheck} alt="" height="20px" />
         ) : (
           <div>{index}</div>
@@ -65,7 +65,7 @@ export const ContentComponent = ({
             >
               {content.type}
             </div>
-            {isCompleted && (
+            {isProgramMastered && (
               <div className={`${styles.contentTag} ${styles.completed}`}>
                 Completed
               </div>
@@ -85,7 +85,7 @@ export const ContentComponent = ({
           </div>
         </div>
         <div className="flex_center">
-          {isTicketPurchased || isSubscribed ? (
+          {isTicketPurchased || isProgramMastered ? (
             <Link
               href={`/card/player/${cardId}?contentIndex=${content.index}`}
               as={`/card/player/${cardId}?contentIndex=${content.index}`}

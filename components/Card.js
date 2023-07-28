@@ -47,9 +47,9 @@ const OpenCard = ({ card }) => {
       <div className={styles.name}>{card.name}</div>
       <ProgressBox
         icon={iconPlay}
-        progress={card.completed || 0}
-        // maxProgress={card.completed_progress_max}
-        maxProgress={card.completed_progress_max || 3}
+        progress={card.progress}
+        maxProgress={card.maxProgress}
+        // isPercent
       />
     </div>
   );
@@ -58,10 +58,7 @@ const OpenCard = ({ card }) => {
 const ClosedCard = ({ card, comingSoon }) => {
   return (
     <div className={styles.lockBox}>
-      <img
-        src={card.quantity >= 10 ? iconCheck : iconLock}
-        style={{ height: "18px" }}
-      />
+      <img src={iconLock} style={{ height: "18px" }} />
       <div className={styles.name}>{card.name}</div>
       <div className={styles.costBox}>
         {comingSoon && <div className={styles.comingSoon}>Coming Soon</div>}
@@ -122,6 +119,13 @@ const Card = ({ card }) => {
           style={{ "--background": card.realm.color }}
         ></div>
 
+        <div
+          className={styles.realmTag}
+          style={{ "--background": card.realm.color }}
+        >
+          {card.realm.name}
+        </div>
+
         <div className={styles.realmLogo}>
           {card.realm?.image && <ImageUI url={card.realm.image.url} />}
         </div>
@@ -132,6 +136,7 @@ const Card = ({ card }) => {
             style={{ filter: !isColored && "grayscale(100%)" }}
           />
         </div>
+
         <div className={styles.card_body}>
           {isColored ? (
             <OpenCard card={card} />

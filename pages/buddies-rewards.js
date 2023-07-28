@@ -1,7 +1,7 @@
 // *** REACT ***
 
 import { ImageUI } from "@/components/reusableUI";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BackButton } from "@/components/reusable/BackButton";
 import { ArtifactModal } from "./profile";
 import Card from "@/components/Card";
@@ -15,8 +15,11 @@ import useModal from "@/hooks/useModal";
 import { withUser } from "@/Hoc/withUser";
 import baseUrl from "@/utils/settings";
 import RewardsModal from "@/components/RewardsModal";
+import { joinCards } from "@/utils/joins";
+import { Context } from "@/context/store";
 
-const FriendReward = ({ friendReward, user, dispatch }) => {
+const FriendReward = ({ friendReward, user }) => {
+  const [store, dispatch] = useContext(Context);
   const {
     reward_type,
     reward_card,
@@ -107,7 +110,11 @@ const FriendReward = ({ friendReward, user, dispatch }) => {
             {reward_type === "card" && (
               <div className="flex_center">
                 <Card
-                  card={reward}
+                  card={
+                    store.usercards
+                      ? joinCards([reward], store.usercards)[0]
+                      : reward
+                  }
                   openModal={() => setIsRewardModalShowing(true)}
                 />
               </div>
@@ -199,7 +206,6 @@ const FriendsTower = (props) => {
                     <FriendReward
                       friendReward={friendReward}
                       user={user}
-                      dispatch={dispatch}
                       key={i}
                     />
                   );

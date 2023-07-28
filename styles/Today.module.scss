@@ -87,7 +87,7 @@
     border-radius: $border_radius;
     @extend %flex_center;
   }
-  // @include hover-brightness(200%);
+
   &:hover {
     background-color: $actionize_gray;
   }
@@ -234,26 +234,6 @@
     text-decoration-thickness: 2.5px;
     color: darkgray;
   }
-}
-
-%btn_objective {
-  font-weight: 600;
-  @extend %flex_center;
-  font-size: 14px;
-  width: 100%;
-  padding: 0.5rem 0;
-  color: white;
-  border-radius: $border_radius;
-  cursor: pointer;
-}
-
-.btn_objective__active {
-  @extend %btn_objective;
-  background-color: $secondary;
-}
-.btn_objective__disabled {
-  @extend %btn_objective;
-  background-color: $gray_headspace;
 }
 
 .progressCounter {

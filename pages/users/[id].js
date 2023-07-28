@@ -18,7 +18,7 @@ import baseUrl from "@/utils/settings";
 const tabsData = [
   { label: "activity", count: -1 },
   { label: "buddies", count: -1 },
-  { label: "artifacts", count: -1 },
+  { label: "achievements", count: -1 },
 ];
 
 const User = () => {
@@ -37,36 +37,15 @@ const User = () => {
   // const collectionProgress =
   //   user?.usercards && calcTotal(user.usercards, "collected", true);
 
-  const followers = store?.user?.followers;
-
   return (
     <div className="background_dark">
-      {user && followers && (
+      {user && (
         <>
           <Header />
 
           <div className="section-container">
             <div className="headerSpace"></div>
             <ProfileHeader buddy={user} isBuddy />
-
-            {/* FOLLOW */}
-            {/* <div className="flex_center mt1">
-            {followers.filter((b) => b.id == user.id).length > 0 ? (
-              <div
-                onClick={() => followBuddy(dispatch, user.id)}
-                className="btn btn-blank"
-              >
-                Unfollow
-              </div>
-            ) : (
-              <div
-                onClick={() => followBuddy(dispatch, user.id)}
-                className="btn btn-primary"
-              >
-                + Follow
-              </div>
-            )}
-          </div> */}
 
             <div className={styles.stats}>
               <Stat
@@ -76,9 +55,9 @@ const User = () => {
                 max={store.user.cards_count}
               />
               <Stat
-                number={user.stats?.cards_complete || 0}
-                img={`${baseUrl}/rise.png`}
-                text={"Sessions Completed"}
+                number={user.stats?.mastery || 0}
+                img={`${baseUrl}/mastery.png`}
+                text={"Total Mastery"}
               />
               <Stat
                 number={user.highest_streak_count || 0}
@@ -86,27 +65,24 @@ const User = () => {
                 text={"Highest Streak"}
               />
               <Stat
-                number={user.stats?.action_complete || 0}
-                img={`${baseUrl}/energy.png`}
-                text={"Actions Done"}
-              />
-              <Stat
-                number={user.stats?.claimed_artifacts || 0}
+                number={user.claimed_artifacts?.length || 0}
                 img={`${baseUrl}/energy.png`}
                 text={"Achievements"}
                 max={store.user.artifacts_count}
               />
-              <Stat
+              {/* <Stat
                 img={`${baseUrl}/user.png`}
                 text={user.is_subscribed ? "Pro User" : "Free User"}
-              />
+              /> */}
             </div>
 
             <Tabs tabState={tab} setTab={setTab} tabs={tabsData} />
 
             {tab === "activity" && (
               <div className="section">
-                <div>Last Completed Cards</div>
+                <div className={styles.header} style={{ marginBottom: "1rem" }}>
+                  <div>Last Completed Cards</div>
+                </div>
                 <CardsMapper cards={user.last_completed_cards} />
               </div>
             )}
@@ -114,9 +90,11 @@ const User = () => {
             {tab === "buddies" && (
               <div className="section">
                 <div className={styles.header}>
-                  <div>Following</div> {user.followers?.length || 0}/50
+                  <div>Shared Buddies</div>
+                  {store.user.shared_buddies?.length || 0}
+                  /10
                 </div>
-                {user.followers?.map((b) => (
+                {user.shared_buddies?.map((b) => (
                   <Buddy
                     name={b.username}
                     link={`/users/${b.id}`}
@@ -125,26 +103,33 @@ const User = () => {
                     key={b.id}
                   />
                 ))}
-                <div className="btn btn-stretch btn-primary mt1 mb1">
-                  <img
-                    src={`${baseUrl}/add-user.png`}
-                    height="20px"
-                    className="mr1"
-                  />
-                  Share Buddy Link
-                </div>
               </div>
             )}
 
-            {tab === "artifacts" && (
+            {tab === "achievements" && (
               <div className="section">
                 <div className={styles.header}>
-                  <div>Artifacts</div> {user.stats?.claimed_artifacts || 0}/
-                  {store.user.artifacts_count}
+                  <div>Achievements</div>
+                  <div>
+                    {user.claimed_artifacts?.length || 0}/
+                    {store.user.artifacts_count}
+                  </div>
                 </div>
-                <div className={styles.artifactsWrapper}>
-                  {store.user.artifacts.map((artifact, i) => {
-                    return <Artifact key={i} artifact={artifact} />;
+                <div
+                  className={styles.artifactsWrapper}
+                  style={{ marginTop: "1rem" }}
+                >
+                  {user.claimed_artifacts?.map((artifact, i) => {
+                    return (
+                      <Artifact
+                        key={i}
+                        artifact={{
+                          ...artifact,
+                          isClaimed: true,
+                          isCollected: true,
+                        }}
+                      />
+                    );
                   })}
                 </div>
               </div>

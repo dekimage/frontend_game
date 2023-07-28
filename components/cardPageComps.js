@@ -6,7 +6,8 @@ import Timer from "./reusable/Timer";
 import styles from "@/styles/CardPage.module.scss";
 import { useRouter } from "next/router";
 import baseUrl from "@/utils/settings";
-import { updateCard } from "@/actions/action";
+import { buyCardTicket, updateCard } from "@/actions/action";
+import { PROGRAM_COMPLETED_MAX } from "@/data/config";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -98,7 +99,7 @@ export const FavoriteButton = ({ isFavorite, id, type }) => {
   return (
     <div
       className={styles.favorite}
-      onClick={() => updateCard(dispatch, id, `favorite_${type}`)}
+      onClick={() => updateCard(dispatch, id, "favorite")}
     >
       {isFavorite ? (
         <img src={`${baseUrl}/favorite.png`} height="25px" />
@@ -126,12 +127,11 @@ export const Title = ({ name, rightText, rightSeparator }) => {
 export const CompleteCardSection = ({
   card,
   usercard,
-  contentsLength,
-  completedLength,
-
+  isProgramMastered,
   closePlayer = false,
 }) => {
   const [store, dispatch] = useContext(Context);
+  const router = useRouter();
 
   const [isMoreThan24HoursAgo, setIsMoreThan24HoursAgo] = useState(null);
 
@@ -157,10 +157,11 @@ export const CompleteCardSection = ({
     }
     return 86400000 - timeDiff;
   }
+  console.log(card.id);
 
   return (
     <div style={{ marginBottom: "2rem" }} className="flex_center">
-      {isMoreThan24HoursAgo ? (
+      {isMoreThan24HoursAgo && !isProgramMastered ? (
         <div
           className={`${styles.completeCardSection} flex_center flex_column`}
         >
@@ -187,37 +188,21 @@ export const CompleteCardSection = ({
             </div>
           )}
         </div>
-      ) : contentsLength === completedLength ? (
+      ) : (
         <div
           className="btn btn-primary"
           onClick={() => {
             updateCard(dispatch, card.id, "complete");
+            router.push(`/card/${card.id}`);
           }}
         >
-          Complete Card{" "}
+          Complete Card
           <ImageUI
-            url={`/mastery.png`}
+            url={usercard.glory_points > 0 ? `/glory.png` : `/mastery.png`}
             isPublic
             height="16px"
             className="ml5"
           />
-        </div>
-      ) : (
-        <div className="flex_center flex_column">
-          You must complete all sections to mark this card as completed.
-          <div className="btn btn-disabled mt1 mb1">
-            Complete {completedLength} / {contentsLength}
-          </div>
-          {closePlayer && (
-            <div
-              className="btn btn-success"
-              onClick={() => {
-                closePlayer();
-              }}
-            >
-              Back to Card
-            </div>
-          )}
         </div>
       )}
     </div>
@@ -229,8 +214,10 @@ export const PlayerCtaFooter = ({ card, isTicketPurchased }) => {
   const router = useRouter();
   const energy = store?.user?.energy;
   const openPlayerAfterTicket = () => {
+    buyCardTicket(dispatch, card.id);
     router.push(`${feUrl}/card/player/${card.id}`);
   };
+
   return (
     <div className={styles.fixed}>
       {isTicketPurchased ? (

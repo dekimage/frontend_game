@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useEffect } from "react";
+import cx from "classnames";
 
 const Modal = ({
   isShowing,
@@ -9,6 +10,7 @@ const Modal = ({
   jsx,
   showCloseButton = true,
   isSmall = false,
+  isAnimate = true,
 }) => {
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -19,10 +21,16 @@ const Modal = ({
 
     if (isShowing) {
       document.addEventListener("click", handleOutsideClick);
+      document.body.style.overflow = "hidden";
+    }
+
+    if (!isShowing) {
+      document.body.style.overflow = "auto";
     }
 
     return () => {
       document.removeEventListener("click", handleOutsideClick);
+      document.body.style.overflow = "auto";
     };
   }, [isShowing, closeModal]);
 
@@ -31,7 +39,9 @@ const Modal = ({
         <React.Fragment>
           <div className="modal-overlay" />
           <div
-            className="modal-wrapper scale-in-center"
+            className={cx("modal-wrapper", {
+              "scale-in-center": isAnimate,
+            })}
             aria-modal
             aria-hidden
             tabIndex={-1}
@@ -55,7 +65,7 @@ const Modal = ({
                   </button>
                 )}
               </div>
-              <div>{jsx}</div>
+              <div style={{ height: "100%" }}>{jsx}</div>
             </div>
           </div>
         </React.Fragment>,

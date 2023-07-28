@@ -1,21 +1,48 @@
 import * as api from "../api";
 import { toast } from "react-toastify";
-import { createAction } from "./config";
+import { createAction, fetchUser } from "./config";
 
-export const updateContentType = createAction("updateContentType"); // ADD CUSTOM REDUCER
+export const updateContentType = (
+  dispatch,
+  action,
+  cardId,
+  contentType,
+  contentTypeId
+) => {
+  api
+    .updateContentTypeApi(action, cardId, contentType, contentTypeId)
+    .then((res) => {
+      if (action == "claim") {
+        dispatch({ type: "REWARD_MODAL", data: res.data });
+      }
 
-export const resetUser = createAction("resetUser");
+      if (action == "complete" || action == "save" || action == "removeNew") {
+        dispatch({ type: "GQL_REFETCH", data: res.data });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-export const acceptReferral = createAction("acceptReferral", {
-  type: "REWARD_MODAL",
+export const resetUser = createAction("resetUser", { type: "FETCH_USER" });
+
+export const saveAvatar = createAction("saveAvatar", {
+  type: "SAVE_AVATAR",
+  reset: false,
 });
-export const saveAvatar = createAction("saveAvatar");
 
-export const claimArtifact = createAction("claimArtifact");
+export const claimArtifact = createAction("claimArtifact", {
+  type: "CLAIM_ARTIFACT",
+  reset: false,
+});
 
 export const claimObjective = createAction("claimObjective", {
   type: "REWARD_MODAL",
-  sMsg: false,
+});
+
+export const buyCardTicket = createAction("buyCardTicket", {
+  type: "ADD_USERCARD",
 });
 
 export const claimLevelReward = createAction("collectLevelReward", {
@@ -30,7 +57,13 @@ export const collectStreakReward = createAction("collectStreakReward", {
   type: "REWARD_MODAL",
 });
 
-export const updateTutorial = createAction("updateTutorial");
+export const updateTutorial = createAction("updateTutorial", {
+  type: "TUTORIAL",
+});
+
+export const acceptReferral = createAction("acceptReferral", {
+  type: "REWARD_MODAL",
+});
 
 export const purchaseExpansion = createAction("purchaseExpansion", {
   type: "REWARD_MODAL",
@@ -40,24 +73,24 @@ export const purchaseProduct = createAction("purchaseProduct", {
   type: "REWARD_MODAL",
 });
 
-// PROFILE
-export const updateEmailSettings = createAction("updateEmailSettings");
+export const deleteAccount = createAction("deleteAccount", {
+  type: "REMOVE_USER",
+});
 
-export const followBuddy = createAction("followBuddy");
+// PROFILE
+export const updateUserBasicInfo = createAction("updateUserBasicInfo", {
+  sMsg: (inputName) => `${inputName} updated successfully.`,
+});
+
+export const updateEmailSettings = createAction("updateEmailSettings");
 
 export const cancelSubscription = createAction("cancelSubscription");
 
 export const getRandomCard = createAction("getRandomCard", { reset: false });
 
-// updateCard: new_disable, favorite, complete, upgrade, play, unlock, complete_action (action_id)
-export const updateCard = createAction("updateCard");
-
-export const updateUserBasicInfo = createAction("updateUserBasicInfo", {
-  sMsg: (inputName) => `${inputName} updated successfully.`,
-});
-
 export const sendFeatureMail = createAction("sendFeatureMail", {
-  sMsg: "Thank you for your feedback.",
+  sMsg: () => "Thank you for your feedback.",
+  reset: false,
 });
 
 export const notifyMe = createAction("notifyMe", {
@@ -67,6 +100,49 @@ export const notifyMe = createAction("notifyMe", {
     }
   },
 });
+
+// updateCard: new_disable, favorite, complete, unlock
+
+export const updateCard = (dispatch, cardId, action) => {
+  console.log(cardId, action);
+  api
+    .updateCardApi(cardId, action)
+    .then((res) => {
+      switch (action) {
+        case "unlock":
+          dispatch({
+            type: "ADD_USERCARD",
+            data: res.data,
+          });
+          dispatch({
+            type: "GQL_REFETCH",
+            data: res.data,
+          });
+          break;
+
+        case "complete":
+          dispatch({
+            type: "ADD_USERCARD",
+            data: res.data,
+          });
+          break;
+
+        case "favorite":
+          dispatch({
+            type: "GQL_REFETCH",
+            data: res.data,
+          });
+
+          break;
+
+        default:
+          return;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 export const rateCard = (dispatch, rating, cardId, feedbackType) => {
   api
@@ -86,8 +162,3 @@ export const rateCard = (dispatch, rating, cardId, feedbackType) => {
 export const closeRewardsModal = (dispatch) => {
   dispatch({ type: "CLOSE_REWARDS_MODAL" });
 };
-
-// deprecated
-export const openPack = createAction("openPack");
-
-export const purchaseLootBox = createAction("purchaseLootBox");

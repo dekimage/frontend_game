@@ -17,10 +17,6 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
   : "";
 
 const STRAPI_CONFIG = {
-  updateContentType: {
-    route: "update-content-type",
-    inputs: ["action", "cardId", "contentType", "contentTypeId"],
-  },
   resetUser: {
     route: "reset-user",
   },
@@ -79,10 +75,6 @@ const STRAPI_CONFIG = {
     inputs: ["tutorialStep"],
   },
 
-  followBuddy: {
-    route: "follow-buddy",
-    inputs: ["id"],
-  },
   purchaseExpansion: {
     route: "purchase-expansion",
     inputs: ["id"],
@@ -92,11 +84,18 @@ const STRAPI_CONFIG = {
   },
   updateCard: {
     route: "update-card",
-    inputs: ["cardId", "action", "actionId"],
+    inputs: ["cardId", "action"],
   },
   updateEmailSettings: {
     route: "update-email-settings",
     inputs: ["settings"],
+  },
+  buyCardTicket: {
+    route: "buy-card-ticket",
+    inputs: ["cardId"],
+  },
+  deleteAccount: {
+    route: "delete-account",
   },
 };
 
@@ -109,6 +108,18 @@ const toastBuilder = (message, params = false) => {
     return message;
   }
   return "Saved";
+};
+
+export const refreshUser = (dispatch) => {
+  dispatch({ type: "LOADING" });
+  api
+    .refreshUserApi()
+    .then((response) => {
+      dispatch({ type: "REFRESH_USER", data: response.data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // Fetch User
@@ -153,7 +164,8 @@ export const createAction = (apiName, params) => {
   const fullParams = {
     reset: true,
     type: false,
-    sMsg: () => "Success!",
+    // sMsg: () => "Success!",
+    sMsg: false,
     eMsg: () => "Error!",
     ...params,
   };
@@ -163,26 +175,31 @@ export const createAction = (apiName, params) => {
     try {
       const apiFunc = createApiEndpoint(apiName);
       const response = await apiFunc(...params);
+      console.log({ response });
 
       if (reset) {
-        fetchUser(dispatch);
+        // fetchUser(dispatch);
+        refreshUser(dispatch);
       }
 
       if (type) {
         dispatch({ type, data: response.data });
       }
 
-      if (type == 0) {
+      if (sMsg) {
+        const successMessage = toastBuilder(sMsg, ...params);
+        toast(successMessage);
+      }
+
+      if (!type) {
         return response.data;
       }
+
       if (!sMsg) {
         return;
       }
-      const successMessage = toastBuilder(sMsg, ...params);
-      toast(successMessage);
     } catch (err) {
       console.error(err);
-      console.log(AUTH_TOKEN);
       dispatch && dispatch({ type: "API_ERROR", error: err });
       const errorMessage = toastBuilder(eMsg, ...params);
       toast(errorMessage);

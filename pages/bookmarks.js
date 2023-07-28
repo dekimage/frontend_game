@@ -12,7 +12,7 @@ import styles from "@/styles/Realm.module.scss";
 import { withUser } from "@/Hoc/withUser";
 
 const Bookmarks = (props) => {
-  const { user, data } = props;
+  const { store, data } = props;
 
   const [recentCards, setRecentCards] = useState([]);
 
@@ -22,7 +22,7 @@ const Bookmarks = (props) => {
     }
   }, [data]);
 
-  const usercards = user && user.usercards;
+  const usercards = store.usercards;
 
   return (
     <div className="background_dark">

@@ -25,14 +25,19 @@
   &.active {
     border-bottom: 3px solid white;
     color: white;
+    // background-color: $actionize_gray;
+    // border-radius: $border_radius;
+    // border-bottom-left-radius: 0;
+    // border-bottom-right-radius: 0;
   }
-  @include hover-brightness(250%);
+  @include hover-brightness(150%);
   &:hover {
-    background-color: $tw_dark;
+    background-color: $actionize_gray;
     border-radius: $border_radius;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
+  transition: all 0.3s ease;
 }
 .tabCounter {
   position: absolute;
