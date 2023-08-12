@@ -154,6 +154,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
     const isReadyToClaim = userQuest.progress >= CONTENT_MAP[type].max;
     const isInProgress = userQuest.progress >= 1;
     const color = CONTENT_MAP[type].color;
+    //test
 
     return (
       <div className={styles.quest}>
