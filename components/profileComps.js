@@ -72,11 +72,12 @@ const AvatarImage = ({ avatar, setSelected, selected }) => {
       })}
       onClick={() => setSelected(avatar)}
     >
-      <ImageUI
-        url={avatar.image.url}
+      <img
+        src={avatar.image.url}
         height="50px"
         className={styles.avatar_image}
       />
+
       {/* <div className={styles.avatar_name}>{avatar.name}</div> */}
       {/* <div className={styles.avatar_require}>{avatar.require_level}</div>
       <div className={styles.avatar_require}>{avatar.require_artifact}</div>
@@ -140,7 +141,7 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
                 !isBuddy && openModal();
               }}
             >
-              <ImageUI url={user.avatar?.image.url} height="66px" />
+              <img src={user.avatar?.image.url} height="66px" />
             </div>
           </div>
 

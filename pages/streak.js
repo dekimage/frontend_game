@@ -109,7 +109,7 @@ const Streak = ({ streak, user }) => {
               className={styles.image}
               onClick={() => setIsRewardModalShowing(true)}
             >
-              <img src={`${baseUrl}${reward.reward?.image?.url}`} />
+              <img src={`${reward.reward?.image?.url}`} />
 
               <div className={styles.streak_amount}>x{reward_amount || 1}</div>
             </div>

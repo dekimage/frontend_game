@@ -2,6 +2,8 @@ import cx from "classnames";
 import baseUrl from "@/utils/settings";
 const dev = process.env.NODE_ENV == "development";
 
+console.log(dev);
+
 export const ImageUI = ({
   className = "flex_center",
   url,
@@ -15,7 +17,8 @@ export const ImageUI = ({
       <img
         height={height}
         width={width}
-        src={dev || isPublic ? `${baseUrl}${url}` : `${url}`}
+        // src={dev || isPublic ? `${baseUrl}${url}` : `${url}`}
+        src={isPublic ? `${baseUrl}${url}` : `${url}`}
       />
     </div>
   );

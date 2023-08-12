@@ -44,7 +44,7 @@ const RewardImage = ({
         {reward == "streak" && (
           <img height="8px" src={`${baseUrl}/streak.png`} />
         )}
-       
+
         {reward == "artifact" && artifact?.image && (
           <div
             className={styles.artifactImage}
@@ -54,7 +54,7 @@ const RewardImage = ({
                 setIsRewardModalShowing(true);
             }}
           >
-            <ImageUI url={artifact?.image?.url} height="100px" width="100px" />
+            <img src={artifact?.image?.url} height="100px" width="100px" />
           </div>
         )}
       </div>

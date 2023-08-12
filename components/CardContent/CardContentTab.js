@@ -169,7 +169,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
           {/* {isReadyToClaim && ( */}
           <div>
             <ImageUI
-              url={"/loot-box-2.png"}
+              url={"/loot-box.png"}
               style={{
                 marginBottom: ".5rem",
                 filter: !isReadyToClaim && "grayscale(100%)",

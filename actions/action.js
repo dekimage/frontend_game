@@ -79,10 +79,12 @@ export const deleteAccount = createAction("deleteAccount", {
 
 // PROFILE
 export const updateUserBasicInfo = createAction("updateUserBasicInfo", {
-  sMsg: (inputName) => `${inputName} updated successfully.`,
+  sMsg: () => `Updated successfully.`,
 });
 
-export const updateEmailSettings = createAction("updateEmailSettings");
+export const updateEmailSettings = createAction("updateEmailSettings", {
+  sMsg: () => `Updated successfully.`,
+});
 
 export const cancelSubscription = createAction("cancelSubscription");
 

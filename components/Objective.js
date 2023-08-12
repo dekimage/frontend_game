@@ -115,7 +115,7 @@ const Objective = ({
               )
             ) : (
               <div
-                className="btn btn-disabled"
+                className="btn btn-blank"
                 onClick={() => {
                   Router.push(`/${link ? link : "learn"}`);
                   event({

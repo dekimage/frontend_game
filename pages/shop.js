@@ -1,5 +1,6 @@
 import {
   BenefitsTable,
+  Expansion,
   GemsProduct,
   PaymentSoonModal,
   PremiumSubscription,
@@ -35,7 +36,7 @@ const Shop = () => {
       <Header />
       <div className="headerSpace"></div>
 
-      {/* <div className="section">
+      <div className="section">
         <div className="header">Premium Subscription</div>
         <PremiumSubscription />
         <BenefitsTable />
@@ -45,9 +46,9 @@ const Shop = () => {
             Billed Monthly. Cancel anytime.
           </div>
         </div>
-      </div> */}
+      </div>
 
-      <div className="section">
+      {/* <div className="section">
         <div className={styles.header}>Subscription</div>
         <div className={styles.proxySubs}>
           <div className={styles.proxySubs_title}>
@@ -73,12 +74,12 @@ const Shop = () => {
               </div>
             </div>
           </div>
-          {/* <div className={styles.proxySubs_price}>$4.99 / Mo</div> */}
+
           <div onClick={openModal} className={styles.proCtaButton}>
             $4.99 / Mo
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="section">
         {/* *** GEMS *** */}

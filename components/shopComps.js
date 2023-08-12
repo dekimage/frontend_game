@@ -39,11 +39,21 @@ export const DropLabel = ({}) => {
 };
 
 const getHeight = (amount) => {
+  // const heights = {
+  //   10: 50,
+  //   20: 75,
+  //   60: 70,
+  //   80: 80,
+  // };
   const heights = {
-    10: 50,
-    20: 75,
+    15: 50,
+    25: 60,
+    40: 70,
     60: 70,
-    80: 80,
+    500: 40,
+    1000: 50,
+    2000: 80,
+    5000: 80,
   };
   return heights[amount];
 };
@@ -113,7 +123,7 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
     price,
   } = gems;
 
-  const height = getHeight(type === "gems" && amount);
+  const height = getHeight(amount);
 
   return (
     <div
@@ -125,7 +135,7 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
     >
       {/* <div className={styles.box_name}>{name}</div> */}
       <div className={styles.boxModal_amount}>
-        {gems.amount}
+        x {gems.amount}
         {gems.bonus_amount && (
           <span className={styles.boxModal_bonus}> + {gems.bonus_amount}</span>
         )}
@@ -133,7 +143,7 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
 
       <div className="mb1">
         {/* {image && <img src={image.url} alt="" height={`${height}px`} />} */}
-        {image && <ImageUI url={image.url} height="45px" />}
+        {image && <img src={image.url} height={height} />}
 
         {/* <ImageUI url={`/${gems.type}.png`} height="40px" /> */}
       </div>
@@ -350,7 +360,7 @@ const pricingData = [
   {
     name: "monthly",
     discount: false,
-    // valueTag: "Most Popular",
+    valueTag: "Most Popular",
     valueTag: false,
     duration: "1 Month",
     oldPrice: "",
@@ -378,9 +388,7 @@ const PricingBox = ({
       {discount && (
         <div className={styles.pricingBox_discount}>{discount}%</div>
       )}
-      {valueTag && (
-        <div className={styles.pricingBox_valueTag}> {valueTag}</div>
-      )}
+      {valueTag && <div className={styles.pricingBox_valueTag}>{valueTag}</div>}
       <div className={styles.pricingBox_duration}>{duration} </div>
       <div className={styles.pricingBox_oldPrice}>{oldPrice}</div>
       <div className={styles.pricingBox_price}>{price}</div>

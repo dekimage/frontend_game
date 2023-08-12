@@ -711,8 +711,8 @@ export const GET_REALM_ID = gql`
                 rarity
                 cost
                 is_open
-                relationCount
                 coming_soon
+                relationCount
                 friendreward {
                   data {
                     id
@@ -778,6 +778,7 @@ export const GET_STREAKS_QUERY = gql`
               id
               attributes {
                 name
+                obtained_by_description
                 short_name
                 rarity
                 require
@@ -1302,11 +1303,13 @@ export const GET_REWARDS_QUERY = gql`
           is_premium
           reward_type
           reward_amount
+
           artifact {
             data {
               id
               attributes {
                 name
+                obtained_by_description
                 short_name
                 rarity
                 require

@@ -64,10 +64,7 @@ export const ArtifactModal = ({ artifact }) => {
         <div className={styles.artifactDetails_name}>{artifact.name}</div>
         <div className={styles.artifactDetails}>
           {artifact.isCollected ? (
-            <ImageUI
-              url={artifact?.image?.url}
-              className={styles.artifactImage}
-            />
+            <img src={artifact?.image?.url} className={styles.artifactImage} />
           ) : (
             <ImageUI url={"/badge.png"} isPublic />
           )}
@@ -277,7 +274,7 @@ const Profile = () => {
                 />
                 <Stat
                   number={store.user.stats.claimed_artifacts || 0}
-                  img={`${baseUrl}/energy.png`}
+                  img={`${baseUrl}/award.png`}
                   text={"Achievements"}
                   max={store.user.artifacts_count}
                 />

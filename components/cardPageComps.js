@@ -7,7 +7,6 @@ import styles from "@/styles/CardPage.module.scss";
 import { useRouter } from "next/router";
 import baseUrl from "@/utils/settings";
 import { buyCardTicket, updateCard } from "@/actions/action";
-import { PROGRAM_COMPLETED_MAX } from "@/data/config";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -299,7 +298,7 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
       <div className={styles.fixed}>
         {hasStars ? (
           <div
-            className="btn btn-correct"
+            className="btn btn-primary"
             onClick={() => {
               updateCard(dispatch, card.id, "unlock");
             }}

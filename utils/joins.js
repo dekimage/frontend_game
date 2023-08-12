@@ -28,7 +28,14 @@ export const joinCards = (cards, usercards) => {
       };
       return mergedCard;
     }
-    return card;
+    const defaultCard = {
+      ...card,
+      maxProgress: calculateCardMaxProgress(card.relationCount)
+        .totalMaxProgress,
+      progress: 0,
+    };
+
+    return defaultCard;
   });
   return joinedCards;
 };

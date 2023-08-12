@@ -21,6 +21,7 @@ export const ProgressBox = ({
   maxProgress,
   isPercent = false,
 }) => {
+  console.log("progress", progress);
   return (
     <>
       <div className={styles.progress_box}>
@@ -33,7 +34,9 @@ export const ProgressBox = ({
 
         <div className={styles.progressTextBox}>
           <div className={styles.progress_text}>
-            {isPercent ? `${progress}%` : `${progress}/${maxProgress}`}
+            {isPercent
+              ? `${progress || 0}%`
+              : `${progress || 0}/${maxProgress || 0}`}
           </div>
         </div>
       </div>

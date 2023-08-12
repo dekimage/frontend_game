@@ -15,8 +15,6 @@ export const DropDown = ({ realms, filter, setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
   const filters = [{ name: "All" }, ...realms];
 
-  console.log(realms);
-
   return (
     <div
       tabIndex={0}

@@ -75,14 +75,21 @@ const CardPage = ({ dataUserCard, dataCard }) => {
             />
 
             <div className={styles.name}>{card.name}</div>
-            {!card.coming_soon && (
+            {!card.coming_soon && isUnlocked && (
               <FavoriteButton
                 isFavorite={usercard.is_favorite}
                 id={card.id}
                 type="card"
               />
             )}
+            {!isUnlocked && (
+              <div style={{ width: "25px", visibility: "hidden" }}>.</div>
+            )}
           </div>
+        </div>
+
+        <div className="section_container">
+          <div className={styles.description}>{card.description}</div>
         </div>
 
         {card.coming_soon && (
@@ -100,27 +107,27 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           </>
         )}
       </div>
-      <div className="section">
-        <div className={styles.description}>{card.description}</div>
-      </div>
-      <div className="section mb1">
-        <ProgressBar
-          progress={progress}
-          max={maxProgress}
-          isReadyToClaim={progress >= maxProgress}
-        />
-        <div className="flex_center mt5">
-          <div className={styles.cardStats}>
-            {progress}/{maxProgress}
+
+      {isUnlocked && (
+        <div className="section mb1">
+          <div className="flex_center mb5">
+            <div className={styles.cardStats}>
+              {progress}/{maxProgress}
+            </div>
+            <ImageUI
+              url={"/mastery.png"}
+              isPublic
+              height="20px"
+              className="ml5"
+            />
           </div>
-          <ImageUI
-            url={"/mastery.png"}
-            isPublic
-            height="20px"
-            className="ml5"
+          <ProgressBar
+            progress={progress}
+            max={maxProgress}
+            isReadyToClaim={progress >= maxProgress}
           />
         </div>
-      </div>
+      )}
 
       <div className="section_container">
         {!card.coming_soon && usercard && card && isUnlocked && (

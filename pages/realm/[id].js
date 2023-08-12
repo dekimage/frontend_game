@@ -13,6 +13,8 @@ const Cards = (props) => {
 
   const usercards = store.usercards;
 
+  console.log({ data });
+
   return (
     <div className="background_dark">
       <div>
@@ -29,7 +31,7 @@ const Cards = (props) => {
 
         <div className="section-small">
           <div className={styles.grid}>
-            {store.usercards &&
+            {usercards &&
               joinCards(data.realm.cards, usercards)
                 .sort((a, b) => b.is_open - a.is_open)
                 .map((card, i) => <Card card={card} key={i} />)}
