@@ -10,6 +10,7 @@ import iconPlay from "@/assets/progress-collection-dark.svg";
 import styles from "@/styles/Card.module.scss";
 import { useContext } from "react";
 import baseUrl from "@/utils/settings";
+import { ProLabel } from "@/pages/shop";
 
 export const CardType = ({ type }) => {
   return <div className={cx(styles.type, styles[type])}>{type}</div>;
@@ -21,7 +22,6 @@ export const ProgressBox = ({
   maxProgress,
   isPercent = false,
 }) => {
-  console.log("progress", progress);
   return (
     <>
       <div className={styles.progress_box}>
@@ -83,12 +83,13 @@ const ClosedCard = ({ card, comingSoon }) => {
             <img height="12px" className="ml25" src={`${baseUrl}/stars.png`} />
           </>
         )}
+        {card.type == "premium" && <ProLabel />}
       </div>
     </div>
   );
 };
 
-const Card = ({ card }) => {
+const Card = ({ card, isFromShop = false }) => {
   const [store, dispatch] = useContext(Context);
   const isCollected = card.card;
   const isPremiumLocked =
@@ -136,7 +137,13 @@ const Card = ({ card }) => {
         <div className={styles.image}>
           <ImageUI
             url={card.image.url}
-            style={{ filter: !isColored && "grayscale(100%)" }}
+            style={{
+              filter: isFromShop
+                ? "none"
+                : isColored
+                ? "none"
+                : "grayscale(100%)",
+            }}
           />
         </div>
 

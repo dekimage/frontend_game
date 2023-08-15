@@ -31,7 +31,7 @@ const getColorByRarity = (rarity) => {
     return "#246ee9";
   }
   if (rarity === "epic") {
-    return "#5c16c5";
+    return "#8338ec";
   }
   if (rarity === "legendary") {
     return "#eec402";
@@ -137,8 +137,6 @@ export const Artifact = ({ artifact }) => {
       >
         {artifact.isCollected ? (
           <>
-            <div>{artifact.short_name}</div>
-
             {artifact.image && (
               <ImageUI
                 url={artifact.image.url}

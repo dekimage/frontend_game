@@ -26,6 +26,7 @@
     color: $actionize_gray_light;
     font-weight: 500;
     font-size: 12px;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -37,7 +38,7 @@
 
 .boxes {
   display: grid;
-  gap: 1rem;
+  gap: 2rem 1rem;
   grid-template-columns: repeat(2, minmax(150px, 2fr));
   grid-template-rows: repeat(2, minmax(150px, 2fr));
 }
@@ -61,6 +62,12 @@
     text-align: center;
     font-weight: 500;
     padding-top: 0.5rem;
+  }
+  &_image {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   &_quantity {
     @extend %flex_center;
@@ -109,6 +116,8 @@
     // color: $actionize_black;
     width: 102%;
     @extend %flex_center;
+    position: absolute;
+    bottom: 0;
   }
   &_cta > *:first-child {
     margin-right: 0.25rem;
@@ -161,6 +170,8 @@
     background-color: $actionize_gray;
     padding: 0.15rem 1.25rem;
     border-radius: $border_radius;
+    position: absolute;
+    top: -1.5rem;
   }
   &_bonus {
     color: $green;
@@ -536,14 +547,24 @@
   margin-top: 1rem;
   flex-direction: column;
   padding: 0;
-  border-bottom: none;
+  padding-top: 1rem;
+  // border-bottom: none;
+  position: relative;
 
   &_title {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
     margin-bottom: 1rem;
     @extend %flex_center;
     margin-top: 1rem;
+    background-color: $actionize_gray;
+    padding: 0.75rem 1.25rem;
+    border-radius: $border_radius;
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
   }
   &_price {
     font-size: 24px;
@@ -554,6 +575,7 @@
   &_benefit {
     font-weight: 500;
     padding: 0.25rem 0;
+    height: 3rem;
     @extend %flex_center;
   }
   &_benefitsBox {
@@ -562,6 +584,7 @@
     @extend %flex_start;
     flex-direction: column;
     align-items: flex-start;
+    font-size: 18px;
   }
   &_infinity {
     position: absolute;
@@ -579,4 +602,20 @@
   color: #78e08f;
   margin-top: 1rem;
   @extend %flex_center;
+}
+
+.proCards {
+  // display: grid;
+  // grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
+  // gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.proCardsHeader {
+  @extend %header;
+  font-size: 22px;
+  margin-bottom: 2rem;
+  color: white;
 }

@@ -1,5 +1,243 @@
 import { gql } from "apollo-boost";
 
+export const GET_PRO_CARDS = gql`
+  query {
+    cards(pagination: { limit: 100 }, filters: { type: { eq: "premium" } }) {
+      data {
+        id
+        attributes {
+          name
+          type
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+          realm {
+            data {
+              id
+              attributes {
+                color
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_BOOKMARKS = gql`
+  query GetBookmarks($userId: ID!) {
+    usersPermissionsUser(id: $userId) {
+      data {
+        id
+        attributes {
+          savedCasestudies {
+            data {
+              id
+              attributes {
+                title
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedCasestudies {
+            data {
+              id
+              attributes {
+                title
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedExercises {
+            data {
+              id
+              attributes {
+                title
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedExperiments {
+            data {
+              id
+              attributes {
+                title
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedExpertopinions {
+            data {
+              id
+              attributes {
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedIdeas {
+            data {
+              id
+              attributes {
+                title
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedMetaphors {
+            data {
+              id
+              attributes {
+                title
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedQestions {
+            data {
+              id
+              attributes {
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedQuotes {
+            data {
+              id
+              attributes {
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedStories {
+            data {
+              id
+              attributes {
+                title
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+          savedTips {
+            data {
+              id
+              attributes {
+                card {
+                  data {
+                    id
+                    attributes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FAQS = gql`
+  query {
+    faqs {
+      data {
+        id
+        attributes {
+          question
+          answer
+          sortOrder
+          image {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 // FOR DASHBOARD ANALYTICS
 export const GET_CONTENT = gql`
   query {
@@ -29,11 +267,6 @@ export const GET_CONTENT = gql`
             }
           }
           expertopinions {
-            data {
-              id
-            }
-          }
-          faqs {
             data {
               id
             }
@@ -119,7 +352,6 @@ export const GET_ARTIFACTS_QUERY = gql`
         id
         attributes {
           name
-          short_name
           type
           require
           obtained_by_description
@@ -642,18 +874,6 @@ export const GET_CARD_ID = gql`
             }
           }
 
-          faqs {
-            data {
-              id
-              attributes {
-                question
-                answer
-                sortOrder
-                isOpen
-              }
-            }
-          }
-
           actions {
             data {
               id
@@ -779,7 +999,6 @@ export const GET_STREAKS_QUERY = gql`
               attributes {
                 name
                 obtained_by_description
-                short_name
                 rarity
                 require
                 image {
@@ -859,7 +1078,6 @@ export const GET_FRIENDS_QUERY = gql`
               id
               attributes {
                 name
-                short_name
                 rarity
                 require
                 image {
@@ -1310,7 +1528,6 @@ export const GET_REWARDS_QUERY = gql`
               attributes {
                 name
                 obtained_by_description
-                short_name
                 rarity
                 require
                 image {
@@ -1402,7 +1619,6 @@ export const GET_USER_ID = gql`
               id
               attributes {
                 name
-                short_name
                 type
                 require
                 obtained_by_description

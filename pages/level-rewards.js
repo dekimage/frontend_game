@@ -61,7 +61,6 @@ const LevelReward = ({
 const LevelRewardsTower = (props) => {
   const { store, user, data, dispatch } = props;
   const { closeModal } = useModal();
-  const [isRewardModalShowing, setIsRewardModalShowing] = useState(false);
 
   const filterPremium = (levels, type) => {
     if (!levels) {

@@ -2,8 +2,6 @@ import cx from "classnames";
 import baseUrl from "@/utils/settings";
 const dev = process.env.NODE_ENV == "development";
 
-console.log(dev);
-
 export const ImageUI = ({
   className = "flex_center",
   url,

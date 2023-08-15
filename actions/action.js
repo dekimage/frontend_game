@@ -1,6 +1,7 @@
 import * as api from "../api";
 import { toast } from "react-toastify";
-import { createAction, fetchUser } from "./config";
+import { createAction } from "./config";
+import { REDUCER_TYPES } from "@/data/reducerTypes";
 
 export const updateContentType = (
   dispatch,
@@ -13,11 +14,11 @@ export const updateContentType = (
     .updateContentTypeApi(action, cardId, contentType, contentTypeId)
     .then((res) => {
       if (action == "claim") {
-        dispatch({ type: "REWARD_MODAL", data: res.data });
+        dispatch({ type: REDUCER_TYPES.REWARD_MODAL, data: res.data });
       }
 
       if (action == "complete" || action == "save" || action == "removeNew") {
-        dispatch({ type: "GQL_REFETCH", data: res.data });
+        dispatch({ type: REDUCER_TYPES.GQL_REFETCH, data: res.data });
       }
     })
     .catch((err) => {
@@ -28,53 +29,53 @@ export const updateContentType = (
 export const resetUser = createAction("resetUser", { type: "FETCH_USER" });
 
 export const saveAvatar = createAction("saveAvatar", {
-  type: "SAVE_AVATAR",
+  type: REDUCER_TYPES.SAVE_AVATAR,
   reset: false,
 });
 
 export const claimArtifact = createAction("claimArtifact", {
-  type: "CLAIM_ARTIFACT",
+  type: REDUCER_TYPES.CLAIM_ARTIFACT,
   reset: false,
 });
 
 export const claimObjective = createAction("claimObjective", {
-  type: "REWARD_MODAL",
+  type: REDUCER_TYPES.REWARD_MODAL,
 });
 
 export const buyCardTicket = createAction("buyCardTicket", {
-  type: "ADD_USERCARD",
+  type: REDUCER_TYPES.ADD_USERCARD,
 });
 
 export const claimLevelReward = createAction("collectLevelReward", {
-  type: "REWARD_MODAL",
+  type: REDUCER_TYPES.REWARD_MODAL,
 });
 
 export const collectFriendsReward = createAction("collectFriendsReward", {
-  type: "REWARD_MODAL",
+  type: REDUCER_TYPES.REWARD_MODAL,
 });
 
 export const collectStreakReward = createAction("collectStreakReward", {
-  type: "REWARD_MODAL",
+  type: REDUCER_TYPES.REWARD_MODAL,
 });
 
 export const updateTutorial = createAction("updateTutorial", {
-  type: "TUTORIAL",
+  type: REDUCER_TYPES.TUTORIAL,
 });
 
 export const acceptReferral = createAction("acceptReferral", {
-  type: "REWARD_MODAL",
+  type: REDUCER_TYPES.REWARD_MODAL,
 });
 
 export const purchaseExpansion = createAction("purchaseExpansion", {
-  type: "REWARD_MODAL",
+  type: REDUCER_TYPES.REWARD_MODAL,
 });
 
 export const purchaseProduct = createAction("purchaseProduct", {
-  type: "REWARD_MODAL",
+  type: REDUCER_TYPES.REWARD_MODAL,
 });
 
 export const deleteAccount = createAction("deleteAccount", {
-  type: "REMOVE_USER",
+  type: REDUCER_TYPES.REMOVE_USER,
 });
 
 // PROFILE
@@ -89,6 +90,10 @@ export const updateEmailSettings = createAction("updateEmailSettings", {
 export const cancelSubscription = createAction("cancelSubscription");
 
 export const getRandomCard = createAction("getRandomCard", { reset: false });
+
+export const claimFaq = createAction("claimFaq", {
+  type: REDUCER_TYPES.REWARD_MODAL,
+});
 
 export const sendFeatureMail = createAction("sendFeatureMail", {
   sMsg: () => "Thank you for your feedback.",
@@ -113,25 +118,25 @@ export const updateCard = (dispatch, cardId, action) => {
       switch (action) {
         case "unlock":
           dispatch({
-            type: "ADD_USERCARD",
+            type: REDUCER_TYPES.ADD_USERCARD,
             data: res.data,
           });
           dispatch({
-            type: "GQL_REFETCH",
+            type: REDUCER_TYPES.GQL_REFETCH,
             data: res.data,
           });
           break;
 
         case "complete":
           dispatch({
-            type: "ADD_USERCARD",
+            type: REDUCER_TYPES.ADD_USERCARD,
             data: res.data,
           });
           break;
 
         case "favorite":
           dispatch({
-            type: "GQL_REFETCH",
+            type: REDUCER_TYPES.GQL_REFETCH,
             data: res.data,
           });
 
@@ -162,5 +167,5 @@ export const rateCard = (dispatch, rating, cardId, feedbackType) => {
 
 // STATIC ACTIONS - NO API
 export const closeRewardsModal = (dispatch) => {
-  dispatch({ type: "CLOSE_REWARDS_MODAL" });
+  dispatch({ type: REDUCER_TYPES.CLOSE_REWARDS_MODAL });
 };

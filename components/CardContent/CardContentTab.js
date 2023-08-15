@@ -78,6 +78,165 @@ export const ContentTypeTag = ({ type }) => {
   );
 };
 
+export const TableHeader = ({ isFromBookmark = false }) => {
+  return (
+    <div className={styles.tableHeader}>
+      {/* <div className={styles.tableHeader_item}>Index</div> */}
+      <div
+        className={styles.tableHeader_item}
+        style={{
+          flexGrow: 0.4,
+          justifyContent: "flex-start",
+          marginLeft: ".5rem",
+          maxWidth: "400px",
+        }}
+      >
+        Title
+      </div>
+      <div className={styles.tableHeader_item}>Type</div>
+      <div
+        className={styles.tableHeader_item}
+        style={{
+          flexGrow: 0.2,
+          marginRight: "1.75rem",
+        }}
+      >
+        {isFromBookmark ? "Card" : "Progress"}
+      </div>
+    </div>
+  );
+};
+
+export const ContentRow = ({
+  content,
+  setContentPage,
+  updateContentType,
+  setIsLockModalOpen,
+}) => {
+  const {
+    progress,
+    maxProgress,
+    isUnlocked,
+    id,
+    title: baseTitle,
+    isNew,
+    type,
+    // from bookmark
+    isFromBookmark = false,
+    card = false,
+  } = content;
+
+  const router = useRouter();
+
+  const transformedTitle = baseTitle
+    ? baseTitle
+    : content.content
+    ? content.content
+    : content.question;
+  const title =
+    (transformedTitle || "").length > 25
+      ? `${transformedTitle.slice(0, 25)}...`
+      : transformedTitle;
+
+  const cardName = isFromBookmark
+    ? card.name.length > 10
+      ? `${card.name.slice(0, 10)}...`
+      : card.name
+    : false;
+
+  // <div className={styles.rowWithBookmark}>
+  //   {isFromBookmark ? (
+  //     <div>
+  //       <Row />
+  //       {isFromBookmark && (
+  //         <div className={styles.fromCardLabel}>{card.name}</div>
+  //       )}
+  //     </div>
+  //   ) : (
+  //     <Row />
+  //   )}
+  // </div>
+
+  return (
+    <div
+      className={styles.tableRow}
+      onClick={() => {
+        if (isFromBookmark) {
+          router.push({
+            pathname: `/card/${card.id}`,
+            query: { contentId: id, contentType: type },
+          });
+        } else {
+          if (isUnlocked) {
+            setContentPage(content);
+            isNew &&
+              updateContentType(dispatch, "removeNew", card.id, type, id);
+          } else {
+            setIsLockModalOpen(true);
+          }
+        }
+      }}
+    >
+      {/* {isCompleted && (
+        <div className={styles.tableRow_complete}>
+          <ImageUI url="/checked.png" height="16px" isPublic />
+        </div>
+      )} */}
+      {/* <div className={styles.tableRow_item}>
+        <span className={styles.hash}>#</span>
+        {id}
+      </div> */}
+      <div
+        className={styles.tableRow_item}
+        style={{
+          flexGrow: 0.6,
+          justifyContent: "flex-start",
+          fontWeight: "500",
+        }}
+      >
+        {title}
+      </div>
+      <div
+        className={styles.tableRow_item}
+        style={{
+          maxWidth: "3.5rem",
+        }}
+      >
+        <ContentTypeTag type={type} />
+      </div>
+      <div
+        className={styles.tableRow_item}
+        style={{
+          flexGrow: 0.2,
+          maxWidth: "6rem",
+          fontSize: "14px",
+        }}
+      >
+        {isFromBookmark ? (
+          <div className="flex_center">
+            <div className={styles.fromCardLabel}>{cardName}</div>
+            {/* <ImageUI url={"/bookmark.png"} height="18px" isPublic /> */}
+          </div>
+        ) : isNew ? (
+          <div className="new">new</div>
+        ) : isUnlocked ? (
+          <div className="flex_center">
+            {progress} / {maxProgress}
+            <ImageUI
+              url={"/mastery.png"}
+              isPublic
+              height="12px"
+              className="ml5"
+            />
+          </div>
+        ) : (
+          <img src={iconLock} alt="locked" height="16px" />
+        )}
+      </div>
+    </div>
+  );
+};
+
 const CardContentTab = ({ card, usercard, programData }) => {
   const router = useRouter();
   const [store, dispatch] = useContext(Context);
@@ -213,6 +372,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
           </div>
         </div>
 
+        {/* TODO: add reward modal for lootbox icon */}
         {/* <div className="mt1 mb1"></div> */}
         {/* <div className={styles.questTitle}>Rewards:</div> */}
         {/* <div className={styles.questRewardsMap}>
@@ -324,105 +484,6 @@ const CardContentTab = ({ card, usercard, programData }) => {
     );
   };
 
-  const TableHeader = () => {
-    return (
-      <div className={styles.tableHeader}>
-        {/* <div className={styles.tableHeader_item}>Index</div> */}
-        <div
-          className={styles.tableHeader_item}
-          style={{
-            flexGrow: 0.7,
-            justifyContent: "flex-start",
-            marginLeft: ".5rem",
-            maxWidth: "400px",
-          }}
-        >
-          Title
-        </div>
-        <div className={styles.tableHeader_item}>Type</div>
-        <div
-          className={styles.tableHeader_item}
-          style={{
-            marginRight: ".5rem",
-          }}
-        >
-          Progress
-        </div>
-      </div>
-    );
-  };
-
-  const ContentRow = ({ content }) => {
-    const { progress, maxProgress, isUnlocked, id, title, isNew, type } =
-      content;
-
-    return (
-      <div
-        className={styles.tableRow}
-        onClick={() => {
-          if (isUnlocked) {
-            setContentPage(content);
-            isNew &&
-              updateContentType(dispatch, "removeNew", card.id, type, id);
-          } else {
-            setIsLockModalOpen(true);
-          }
-        }}
-      >
-        {/* {isCompleted && (
-          <div className={styles.tableRow_complete}>
-            <ImageUI url="/checked.png" height="16px" isPublic />
-          </div>
-        )} */}
-        {/* <div className={styles.tableRow_item}>
-          <span className={styles.hash}>#</span>
-          {id}
-        </div> */}
-        <div
-          className={styles.tableRow_item}
-          style={{
-            flexGrow: 0.7,
-            justifyContent: "flex-start",
-            fontWeight: "500",
-          }}
-        >
-          {title}
-        </div>
-        <div
-          className={styles.tableRow_item}
-          style={{
-            maxWidth: "3rem",
-          }}
-        >
-          <ContentTypeTag type={type} />
-        </div>
-        <div
-          className={styles.tableRow_item}
-          style={{
-            maxWidth: "5rem",
-            fontSize: "14px",
-          }}
-        >
-          {isNew ? (
-            <div className="new">new</div>
-          ) : isUnlocked ? (
-            <div className="flex_center">
-              {progress} / {maxProgress}
-              <ImageUI
-                url={"/mastery.png"}
-                isPublic
-                height="12px"
-                className="ml5"
-              />
-            </div>
-          ) : (
-            <img src={iconLock} alt="locked" height="16px" />
-          )}
-        </div>
-      </div>
-    );
-  };
-
   const ContentTable = () => {
     return (
       <div>
@@ -440,7 +501,13 @@ const CardContentTab = ({ card, usercard, programData }) => {
         <TableHeader />
 
         {contentData.map((content, i) => (
-          <ContentRow content={content} key={i} />
+          <ContentRow
+            content={content}
+            setContentPage={setContentPage}
+            updateContentType={updateContentType}
+            setIsLockModalOpen={setIsLockModalOpen}
+            key={i}
+          />
         ))}
 
         {contentPage && (

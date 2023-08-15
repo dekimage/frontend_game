@@ -141,7 +141,7 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
         )}
       </div>
 
-      <div className="mb1">
+      <div className={styles.box_image}>
         {/* {image && <img src={image.url} alt="" height={`${height}px`} />} */}
         {image && <img src={image.url} height={height} />}
 

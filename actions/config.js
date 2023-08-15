@@ -97,6 +97,10 @@ const STRAPI_CONFIG = {
   deleteAccount: {
     route: "delete-account",
   },
+  claimFaq: {
+    route: "claim-faq",
+    inputs: ["id"],
+  },
 };
 
 const toastBuilder = (message, params = false) => {

@@ -147,7 +147,6 @@
   position: relative;
   @extend %flex_between;
   padding: 1rem 0.5rem;
-  border-bottom: 1px solid $actionize_gray;
   &_item {
     @extend %flex_center;
     width: 15%;
@@ -157,11 +156,31 @@
     @extend %flex_center;
     left: 10px;
   }
+  border-bottom: 1px solid $actionize_gray;
   &:hover {
     background-color: $actionize_gray;
     cursor: pointer;
     border-radius: $border-radius;
   }
+}
+
+// .rowWithBookmark {
+//   border-bottom: 1px solid $actionize_gray;
+//   &:hover {
+//     background-color: $actionize_gray;
+//     cursor: pointer;
+//     border-radius: $border-radius;
+//   }
+// }
+
+.fromCardLabel {
+  padding: 0.25rem 0.5rem;
+  background-color: $actionize_gray;
+  border-radius: $border-radius;
+  font-weight: 700;
+  font-size: 12px;
+  width: fit-content;
+  display: flex;
 }
 
 .tableHeader {
