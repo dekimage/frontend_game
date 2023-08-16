@@ -92,14 +92,14 @@ const ClosedCard = ({ card, comingSoon }) => {
 const Card = ({ card, isFromShop = false }) => {
   const [store, dispatch] = useContext(Context);
   const isCollected = card.card;
-  const isPremiumLocked =
-    card.expansion &&
-    card.expansion.name === "Pro" &&
-    store.user.expansions.filter((e) => e.name === "Pro").length === 0;
+  const isPremiumLocked = card.type == "premium" && !store.user.pro;
+  // card.expansion &&
+  // card.expansion.name === "Pro" &&
+  // store.user.expansions.filter((e) => e.name === "Pro").length === 0;
 
   const coming_soon = card.card?.coming_soon || card.coming_soon;
 
-  const isColored =
+  const isUnlocked =
     !isPremiumLocked && (card.is_open || card.is_unlocked) && !coming_soon;
 
   return (
@@ -111,7 +111,7 @@ const Card = ({ card, isFromShop = false }) => {
       }}
     >
       <div
-        className={cx(styles.card, { [styles.notCollected]: !isColored })}
+        className={cx(styles.card, { [styles.notCollected]: !isUnlocked })}
         style={{ "--background": card.realm.color }}
       >
         <div
@@ -140,7 +140,7 @@ const Card = ({ card, isFromShop = false }) => {
             style={{
               filter: isFromShop
                 ? "none"
-                : isColored
+                : isUnlocked
                 ? "none"
                 : "grayscale(100%)",
             }}
@@ -148,7 +148,7 @@ const Card = ({ card, isFromShop = false }) => {
         </div>
 
         <div className={styles.card_body}>
-          {isColored ? (
+          {isUnlocked ? (
             <OpenCard card={card} />
           ) : (
             <ClosedCard card={card} comingSoon={coming_soon} />

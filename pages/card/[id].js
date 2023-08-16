@@ -35,7 +35,10 @@ const CardPage = ({ dataUserCard, dataCard }) => {
 
   const card = dataCard.card;
 
-  const isUnlocked = card.is_open || usercard.is_unlocked;
+  const isUnlocked =
+    card.is_open ||
+    usercard.is_unlocked ||
+    (card.type == "premium" && store.user.pro);
 
   const day = card.days[card.last_day || 0];
   const cardTickets = store?.user?.card_tickets || [];

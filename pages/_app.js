@@ -57,7 +57,7 @@ const MyApp = ({ Component, pageProps }) => {
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
       </Head>
-      <TestLab />
+      {/* <TestLab /> */}
       <Component {...pageProps} />
 
       <ToastContainer

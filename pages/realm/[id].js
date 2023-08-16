@@ -13,8 +13,6 @@ const Cards = (props) => {
 
   const usercards = store.usercards;
 
-  console.log({ data });
-
   return (
     <div className="background_dark">
       <div>
