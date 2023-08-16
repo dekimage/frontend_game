@@ -24,6 +24,12 @@ export const BackButton = ({
         >
           <ion-icon name="chevron-back-outline"></ion-icon>
         </div>
+      ) : routeStatic && !routeDynamic ? (
+        <Link href={routeStatic}>
+          <div className={styles.backButton}>
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </div>
+        </Link>
       ) : (
         <Link href={`${routeStatic}${routeDynamic}`}>
           <div className={styles.backButton}>

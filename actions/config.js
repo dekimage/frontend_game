@@ -74,14 +74,6 @@ const STRAPI_CONFIG = {
     route: "update-tutorial",
     inputs: ["tutorialStep"],
   },
-
-  purchaseExpansion: {
-    route: "purchase-expansion",
-    inputs: ["id"],
-  },
-  cancelSubscription: {
-    route: "cancel-subscription",
-  },
   updateCard: {
     route: "update-card",
     inputs: ["cardId", "action"],

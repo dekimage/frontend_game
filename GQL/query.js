@@ -1,5 +1,43 @@
 import { gql } from "apollo-boost";
 
+export const GET_ORDERS = gql`
+  query GetOrders($id: ID!) {
+    orders(filters: { user: { id: { eq: $id } } }) {
+      data {
+        id
+        attributes {
+          status
+          payment_env
+          amount
+          transaction_details
+          payment_details
+          createdAt
+          product {
+            data {
+              id
+              attributes {
+                name
+                amount
+                price
+                type
+                description
+                image {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_PRO_CARDS = gql`
   query {
     cards(pagination: { limit: 100 }, filters: { type: { eq: "premium" } }) {
@@ -1564,13 +1602,12 @@ export const GET_USER_ID = gql`
           username
           level
           xp
-
           stars
           streak
           energy
           highest_streak_count
           highest_buddy_shares
-          is_subscribed
+          pro
           stats
 
           shared_buddies {

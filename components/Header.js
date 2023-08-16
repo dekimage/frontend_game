@@ -90,13 +90,7 @@ const NavLink = ({ link, img, currency }) => {
         {currency !== "energy" && <div>{store.user[currency]}</div>}
         {currency === "energy" && (
           <div>
-            {store.user.is_subscribed ? (
-              <div>&#8734;</div>
-            ) : (
-              <div>
-                {store.user[currency]} / {store.user.max_energy}
-              </div>
-            )}
+            {store.user[currency]} / {store.user.max_energy}
           </div>
         )}
       </div>

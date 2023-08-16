@@ -120,7 +120,7 @@ const Reducer = (store, action) => {
           levels: calcLevelRewards(
             action.data.rewards_tower,
             action.data.levelRewards || store.allLevelRewards,
-            action.data.is_subscribed
+            action.data.pro
           ),
         },
       };
@@ -154,7 +154,7 @@ const Reducer = (store, action) => {
           levels: calcLevelRewards(
             action.data.rewards_tower,
             action.data.levelRewards,
-            action.data.is_subscribed
+            action.data.pro
           ),
           artifacts: calcArtifactsReady(
             action.data.artifacts,
@@ -168,8 +168,8 @@ const Reducer = (store, action) => {
     case "REMOVE_USER":
       // return { ...store, user: {}, isAuthenticated: false };
       return {
-        isAuthenticated: false
-      }
+        isAuthenticated: false,
+      };
 
     case "OPEN_ENERGY_MODAL":
       return {

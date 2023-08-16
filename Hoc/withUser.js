@@ -2,12 +2,28 @@ import { Context } from "@/context/store";
 import LandingPage from "@/components/LandingPage";
 import Loader from "@/components/reusable/Loader";
 import { normalize } from "@/utils/calculations";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useConditionalQuery } from "@/hooks/useConditionalQuery"; // Import the custom hook
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 
 const AUTH_TOKEN = Cookie.get("token");
+
+function FallbackComponent() {
+  const refreshPage = () => {
+    if (typeof window !== "undefined") {
+      // Check if the code runs in a browser environment
+      window.location.reload();
+    }
+  };
+
+  return (
+    <div className="background_dark">
+      Something went wrong. Please try again.
+      <button onClick={() => refreshPage()}>Refresh</button>
+    </div>
+  );
+}
 
 export const withUser = (
   WrappedComponent,
@@ -48,7 +64,7 @@ export const withUser = (
     }
 
     if (error) {
-      return <div>Error Comp</div>;
+      return <FallbackComponent />;
     }
 
     if (!AUTH_TOKEN && !store.isAuthenticated) {
@@ -61,16 +77,22 @@ export const withUser = (
 
     if (gql_data && AUTH_TOKEN && store.isAuthenticated) {
       return (
-        <WrappedComponent
-          {...props}
-          data={gql_data}
-          user={user}
-          dispatch={dispatch}
-          store={store}
-        />
+        <div className="background_dark">
+          <WrappedComponent
+            {...props}
+            data={gql_data}
+            user={user}
+            dispatch={dispatch}
+            store={store}
+          />
+        </div>
       );
     }
 
-    return null;
+    return (
+      <div className="background_dark">
+        <Loader />
+      </div>
+    );
   };
 };

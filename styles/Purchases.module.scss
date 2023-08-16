@@ -1,0 +1,46 @@
+@import "variables";
+@import "placeholders";
+@import "mixins";
+
+.ordersContainer {
+  margin-top: 1rem;
+}
+
+.orderItem {
+  background-color: #333;
+  color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderTitle {
+  font-size: 18px;
+  margin: 0;
+}
+
+.orderStatus {
+  font-size: 16px;
+  margin: 0;
+}
+
+.orderDetails {
+  margin-top: 12px;
+}
+
+.productName {
+  font-size: 14px;
+  margin: 0;
+}
+
+.amount {
+  font-size: 14px;
+  margin: 0;
+}

@@ -26,10 +26,11 @@ const Objective = ({
     is_premium,
   },
   dispatch,
-  isUserPremium,
+  isUserPro,
 }) => {
   const timeColor = time_type === "daily" ? "#009c68" : "#1e67ac";
-  const isPremium = is_premium && !isUserPremium;
+  const isPremium = is_premium && !isUserPro;
+
   return (
     <div
       className={cx(styles.objective, {
@@ -117,7 +118,10 @@ const Objective = ({
               <div
                 className="btn btn-blank"
                 onClick={() => {
-                  Router.push(`/${link ? link : "learn"}`);
+                  Router.push(
+                    isPremium ? `/shop` : `/${link ? link : "learn"}`
+                  );
+
                   event({
                     action: "search",
                     params: {
@@ -126,7 +130,7 @@ const Objective = ({
                   });
                 }}
               >
-                Go
+                {isPremium ? "Upgrade" : "Go"}
               </div>
             )}
           </>

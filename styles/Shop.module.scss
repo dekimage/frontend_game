@@ -152,7 +152,7 @@
   &_name {
     font-size: 28px;
     font-weight: 500;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
   }
   &_label {
     color: $actionize_gray_light;
@@ -180,7 +180,7 @@
     color: $green;
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
   }
   &_ctaRed {
     color: $eggHeadRed;

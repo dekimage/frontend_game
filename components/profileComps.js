@@ -19,6 +19,7 @@ import { useQuery } from "@apollo/react-hooks";
 import baseUrl from "@/utils/settings";
 import Loader from "@/components/reusable/Loader";
 import Icon from "./reusable/Icon";
+import { ProLabel } from "@/pages/shop";
 
 // *** COMPONENTS ***
 
@@ -130,6 +131,7 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
   const { isShowing, openModal, closeModal } = useModal();
   const user = isBuddy ? buddy : store.user;
   const maxLevel = user.xpLimit || 300;
+
   return (
     <div className={styles.profileHeader}>
       <div style={{ width: "40px" }}></div>
@@ -146,6 +148,9 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
           </div>
 
           <div className={styles.username}>{user.username}</div>
+
+          {user.pro && <ProLabel />}
+
           <div className={styles.level_progress}>Level {user.level}</div>
           <ProgressBar progress={user.xp} max={maxLevel} />
 

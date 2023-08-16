@@ -20,12 +20,12 @@
   @extend %absoluteButton;
   left: 1rem;
   top: 1rem;
-  @include media_sm {
-    left: auto;
-    right: 1rem;
-    top: auto;
-    bottom: 3.5rem;
-  }
+  // @include media_sm {
+  //   left: auto;
+  //   right: 1rem;
+  //   top: auto;
+  //   bottom: 3.5rem;
+  // }
 }
 
 .bookmarkButton {

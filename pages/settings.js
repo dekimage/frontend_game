@@ -86,12 +86,9 @@ const settings = [
   //   link: "notifications",
   // },
   {
-    label: "Subscription",
-    link: "subscription",
-  },
-  {
     label: "Purchases",
     link: "purchases",
+    external: true,
   },
   {
     label: "Feature Request",
@@ -275,8 +272,6 @@ const getTitle = (activeSettings) => {
       return "Notifications";
     case "email":
       return "Email Preference";
-    case "subscription":
-      return "Subscription";
     case "purchases":
       return "Purchases";
     case "faq":
@@ -310,8 +305,6 @@ const handleBack = (activeSettings, setActiveSettings) => {
     case "email":
       return setActiveSettings("default");
     case "notifications":
-      return setActiveSettings("default");
-    case "subscription":
       return setActiveSettings("default");
     case "purchases":
       return setActiveSettings("default");
@@ -376,7 +369,7 @@ const Settings = () => {
       <div className="section_container">
         <div className={styles.header}>
           <BackButton
-            isBack
+            routeStatic="/profile"
             callback={() => handleBack(activeSettings, setActiveSettings)}
           />
 

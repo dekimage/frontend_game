@@ -6,11 +6,12 @@ import styles from "@/styles/Realm.module.scss";
 
 const CardsMapper = ({ cards }) => {
   const [store, dispatch] = useContext(Context);
-  const usercards = store.usercards;
+  const usercards = store.user?.usercards || store.usercards;
+
   return (
     <div className={styles.grid}>
       {cards.length &&
-        store.user?.usercards &&
+        usercards &&
         joinCards(cards, usercards)
           .sort((a, b) => b.is_open - a.is_open)
           .map((card, i) => <Card card={card} key={i} />)}

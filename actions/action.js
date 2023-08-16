@@ -66,14 +66,6 @@ export const acceptReferral = createAction("acceptReferral", {
   type: REDUCER_TYPES.REWARD_MODAL,
 });
 
-export const purchaseExpansion = createAction("purchaseExpansion", {
-  type: REDUCER_TYPES.REWARD_MODAL,
-});
-
-export const purchaseProduct = createAction("purchaseProduct", {
-  type: REDUCER_TYPES.REWARD_MODAL,
-});
-
 export const deleteAccount = createAction("deleteAccount", {
   type: REDUCER_TYPES.REMOVE_USER,
 });
@@ -87,7 +79,7 @@ export const updateEmailSettings = createAction("updateEmailSettings", {
   sMsg: () => `Updated successfully.`,
 });
 
-export const cancelSubscription = createAction("cancelSubscription");
+export const purchaseProduct = createAction("purchaseProduct");
 
 export const getRandomCard = createAction("getRandomCard", { reset: false });
 

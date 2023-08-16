@@ -111,7 +111,7 @@ const Home = ({ user, data, dispatch, store }) => {
                 <Objective
                   objective={obj}
                   dispatch={dispatch}
-                  isUserPremium={user.is_subscribed}
+                  isUserPro={user.pro}
                   key={obj.id}
                 />
               ))}
@@ -143,7 +143,7 @@ const Home = ({ user, data, dispatch, store }) => {
                 <Objective
                   objective={obj}
                   dispatch={dispatch}
-                  isUserPremium={user.is_subscribed}
+                  isUserPro={user.pro}
                   key={obj.id}
                 />
               ))}

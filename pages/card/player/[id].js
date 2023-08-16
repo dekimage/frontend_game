@@ -100,6 +100,7 @@ const Player = (props) => {
   const goNext = () => {
     const cardId = router.query.id;
     const index = slide.index;
+
     if (index === slides.length) {
       setIsRatingModalOpen(true);
       setIsSuccessModalOpen(true);
@@ -117,8 +118,6 @@ const Player = (props) => {
     slides && slides.findIndex((s) => s.id === slide.id) === slides.length - 1;
 
   const totalTasksCount = slides && getTotalStepsInSlides(slides);
-
-  console.log("usercard", usercard);
 
   return (
     <div className="background_dark">

@@ -39,8 +39,8 @@
   font-weight: 500;
 }
 .username {
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
+
   text-transform: capitalize;
   font-size: 24px;
   @extend %title;
@@ -64,7 +64,7 @@
 .level_progress {
   font-size: 14px;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 }
 .escape {
   cursor: pointer;

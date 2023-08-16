@@ -44,7 +44,7 @@ const LevelReward = ({
         isCollected={isCollected}
         isReadyToCollect={isReadyToCollect}
         isPremiumLock={isPremiumLock}
-        isUserPremium={user.is_subscribed}
+        isUserPremium={user.pro}
         isPremium={is_premium}
         artifact={artifact}
         userLevel={user?.level}
@@ -80,7 +80,7 @@ const LevelRewardsTower = (props) => {
         !!user.rewards_tower && !!user.rewards_tower[level.id];
       const isReadyToCollect = user.level >= level.level && !isCollected;
 
-      const isPremiumLock = !user.is_subscribed && level.is_premium;
+      const isPremiumLock = !user.pro && level.is_premium;
       level.isCollected = isCollected;
       level.isReadyToCollect = isReadyToCollect;
       level.isPremiumLock = isPremiumLock;
@@ -119,7 +119,7 @@ const LevelRewardsTower = (props) => {
               <div className={styles.freeLabel} style={{ marginRight: "1rem" }}>
                 Free Tier
               </div>
-              {user.is_subscribed ? (
+              {user.pro ? (
                 <div
                   className={styles.freeLabel}
                   style={{ marginLeft: "1rem" }}

@@ -72,7 +72,7 @@ const User = () => {
               />
               {/* <Stat
                 img={`${baseUrl}/user.png`}
-                text={user.is_subscribed ? "Pro User" : "Free User"}
+                text={user.pro ? "Pro User" : "Free User"}
               /> */}
             </div>
 

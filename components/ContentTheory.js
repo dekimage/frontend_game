@@ -133,6 +133,7 @@ export const ContentTheory = ({
 
   // fix bug of multiple cta's
   const showCtaStep = i + 1 === lastSlideIndex;
+
   // removed after fixing multiple elements mapping
   const [currentIdea, setCurrentIdea] = useState(1);
   const [showResponses, setShowResponses] = useState(true);

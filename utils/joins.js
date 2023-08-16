@@ -37,6 +37,7 @@ export const joinCards = (cards, usercards) => {
 
     return defaultCard;
   });
+
   return joinedCards;
 };
 

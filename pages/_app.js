@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import Store from "@/context/store";
 import { pageview } from "@/utils/ga";
 import { useEffect } from "react";
@@ -23,6 +23,12 @@ const MyApp = ({ Component, pageProps }) => {
       pageProps,
     };
   };
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const router = useRouter();
   // GOOGLE ANALYTICS SETUP
@@ -59,21 +65,22 @@ const MyApp = ({ Component, pageProps }) => {
       </Head>
       {/* <TestLab /> */}
       <Component {...pageProps} />
-
-      <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-        className="toastBig"
-        bodyClassName="toast"
-      />
+      {isClient && (
+        <ToastContainer
+          position="bottom-center"
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          className="toastBig"
+          bodyClassName="toast"
+        />
+      )}
     </Store>
   );
 };

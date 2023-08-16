@@ -278,7 +278,7 @@ const Profile = () => {
                 />
                 {/* <Stat
                   img={`${baseUrl}/user.png`}
-                  text={store.user.is_subscribed ? "Pro User" : "Free User"}
+                  text={store.user.pro ? "Pro User" : "Free User"}
                 /> */}
               </div>
             )}

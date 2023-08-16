@@ -1,5 +1,5 @@
 import { Button, ImageUI } from "./reusableUI";
-import { purchaseExpansion, purchaseProduct } from "@/actions/action";
+import { purchaseProduct } from "@/actions/action";
 import { useContext, useState } from "react";
 
 import { CardType } from "@/components/Card";
@@ -109,7 +109,7 @@ export const PaymentSoonModal = ({ closeModal }) => {
   );
 };
 
-export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
+export const Product = ({ product, setSelectedProduct, openModal }) => {
   const {
     amount,
     appleID,
@@ -121,7 +121,8 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
     image,
     name,
     price,
-  } = gems;
+    id,
+  } = product;
 
   const height = getHeight(amount);
 
@@ -129,16 +130,18 @@ export const GemsProduct = ({ gems, setSelectedProduct, openModal }) => {
     <div
       className={styles.box}
       onClick={() => {
-        setSelectedProduct(gems);
+        setSelectedProduct(product);
         openModal(true);
       }}
     >
       {/* <div className={styles.box_name}>{name}</div> */}
       <div className={styles.boxModal_amount}>
-        x {gems.amount}
-        {gems.bonus_amount && (
-          <span className={styles.boxModal_bonus}> + {gems.bonus_amount}</span>
-        )}
+        x {product.amount}{" "}
+        {/* {product.bonus_amount && (
+          <span className={styles.boxModal_bonus}>
+            + {product.bonus_amount}
+          </span>
+        )} */}
       </div>
 
       <div className={styles.box_image}>
@@ -197,27 +200,42 @@ export const Pack = ({ box, setSelectedProduct, openModal }) => {
 
 export const BoxModal = ({ product, closeModal }) => {
   const [store, dispatch] = useContext(Context);
-
+  const isFirstBonus = !store.user.stats.first_bonus;
   return (
     <div>
       <div className={styles.boxModal}>
         <div className={styles.boxModal_name}>{product.name}</div>
         {product.image && (
-          <img src={product.image.url} height={"100px"} alt="" />
+          <img src={product.image.url} height={"75px"} className="mb2" alt="" />
         )}
         <div className={styles.boxModal_amount}>
           {product.amount}
-          <span className={styles.boxModal_bonus}>
-            {" "}
-            + {product.bonus_amount}
-          </span>
-          <img height="14px" src={`${baseUrl}/gems.png`} className="ml5" />
+          {isFirstBonus && (
+            <>
+              <span className={styles.boxModal_bonus}>
+                {" "}
+                + {product.bonus_amount}
+              </span>
+              <img
+                height="14px"
+                src={`${baseUrl}/${product.type}.png`}
+                className="ml5"
+              />
+            </>
+          )}
         </div>
-        <span className={styles.boxModal_bonusLabel}>First Purchase Bonus</span>
+        {isFirstBonus && (
+          <div className={styles.boxModal_bonusLabel}>
+            {/* <div>First Purchase Bonus</div> */}
+            <div className="flex_center">100% bonus for 1st purchase only</div>
+            <div className="flex_center">(1/1 Available)</div>
+          </div>
+        )}
+
         <div
           className="btn btn-primary"
           onClick={() => {
-            // purchaseProduct(dispatch, gems.id, "android");
+            purchaseProduct(dispatch, product.id, "android");
             closeModal();
           }}
         >
@@ -324,10 +342,10 @@ export const Expansion = ({ gql_data }) => {
           <>
             <div
               className="btn btn-stretch btn-primary"
-              onClick={() => {
-                store.user.gems >= gql_data.expansion.price &&
-                  purchaseExpansion(dispatch, gql_data.expansion.id);
-              }}
+              // onClick={() => {
+              //   store.user.gems >= gql_data.expansion.price &&
+              //     purchaseExpansion(dispatch, gql_data.expansion.id);
+              // }}
             >
               <img height="18px" src={`${baseUrl}/gems.png`} className="mr5" />
               {gql_data.expansion.price}

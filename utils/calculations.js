@@ -112,9 +112,9 @@ export const calcArtifactsReady = (artifacts, claimedArtifacts) => {
 export const calcLevelRewards = (
   level_rewards, // users json
   allLevelRewards, // all objects
-  is_subscribed
+  pro
 ) => {
-  // console.log({ level_rewards, allLevelRewards, is_subscribed });
+  // console.log({ level_rewards, allLevelRewards, pro });
   if (!level_rewards) {
     return 0;
   }
@@ -127,7 +127,7 @@ export const calcLevelRewards = (
 
   let notificationsCount;
 
-  if (is_subscribed) {
+  if (pro) {
     notificationsCount = readyToClaimLevels.length;
   } else {
     notificationsCount = readyToClaimLevels.filter((l) => !l.is_premium).length;

@@ -32,7 +32,7 @@ const SearchBar = () => {
 
   const onSearch = (value) => {
     setShowNothing(false);
-    const query = `?filters[name][$contains]=${capitalizeFirstLetter(
+    const query = `?filters[name][$containsi]=${capitalizeFirstLetter(
       value
     )}&populate=%2A`;
 

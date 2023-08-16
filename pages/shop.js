@@ -1,11 +1,5 @@
-import {
-  BenefitsTable,
-  Expansion,
-  GemsProduct,
-  PaymentSoonModal,
-  PremiumSubscription,
-} from "@/components/shopComps";
-import { useEffect, useState } from "react";
+import { Product, PaymentSoonModal, BoxModal } from "@/components/shopComps";
+import { useContext, useEffect, useState } from "react";
 import { GET_PRODUCTS, GET_PRO_CARDS } from "@/GQL/query";
 import Header from "@/components/Header";
 import Modal from "@/components/reusable/Modal";
@@ -19,6 +13,8 @@ import iconCheckmark from "@/assets/checkmark.svg";
 import CardsMapper from "@/components/CardsMapper";
 import Card from "@/components/Card";
 import { BackButton } from "@/components/reusable/BackButton";
+import { purchaseProduct } from "@/actions/action";
+import { Context } from "@/context/store";
 
 const MaxEnergyModal = ({ closeModal }) => {
   return (
@@ -32,8 +28,8 @@ const MaxEnergyModal = ({ closeModal }) => {
       upgrading your max energy you will permanently increase your max energy to
       20. Also you will receive up to 20 energy immediately to fill your energy
       bar to maximum. */}
-      10 Max Energy >>> 20 Max Energy. Max energy defines your daily energy
-      allowance. Every day, your energy renews to match your max energy.
+      10 Max Energy arrows --- 20 Max Energy. Max energy defines your daily
+      energy allowance. Every day, your energy renews to match your max energy.
       Whenever you play a card's program or advance its content, you consume
       energy. Upgrading your max energy boosts this limit to 20, providing you
       with an immediate energy refill to reach the maximum level of 20.
@@ -82,10 +78,83 @@ export const ProLabel = () => {
   );
 };
 
+const ProItem = ({ setModal, dispatch, id }) => {
+  return (
+    <div className="section">
+      {/* <div className={styles.header}>Subscription</div> */}
+      <div className={styles.proxySubs}>
+        <div className={styles.proxySubs_title}>
+          ACTIONISE
+          <div className="proLabel ml5">PRO</div>
+        </div>
+        <div className={styles.proxySubs_benefits}>
+          {/* <div className={styles.proxySubs_image}>
+          <ImageUI url={"/energy.png"} isPublic height="60px" />
+          <div className={styles.proxySubs_infinity}>&#8734;</div>
+        </div> */}
+          <div className={styles.proxySubs_benefitsBox}>
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />
+              {/* + 20&nbsp;
+            <ProLabel /> New Cards */}
+              + 20 New Cards
+              <div
+                className="btn btn-outline ml5"
+                style={{ padding: ".25rem .5rem" }}
+                onClick={() => setModal("cards")}
+              >
+                View All
+              </div>
+            </div>
+
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />
+              {/* + 5&nbsp;
+            <ProLabel /> Objectives */}
+              + 5 New Objectives
+            </div>
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />
+              {/* + 30&nbsp;
+            <ProLabel /> Level Rewards */}
+              + 30 Level Rewards
+            </div>
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />
+              <ImageUI url={"/energy.png"} isPublic height="20px" />
+              20/20 Max Energy{" "}
+              <div
+                className="btn btn-outline ml5"
+                style={{ padding: ".25rem .5rem" }}
+                onClick={() => setModal("maxEnergy")}
+              >
+                i
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="btn btn-primary"
+          onClick={() => purchaseProduct(dispatch, id, "apple")}
+        >
+          Buy Pro $20
+        </div>
+        <div className={styles.subscription_monthly}>(Lifetime Access)</div>
+
+        {/* <div onClick={openModal} className={styles.proCtaButton}>
+        $20
+      </div> */}
+      </div>
+    </div>
+  );
+};
+
 const Shop = () => {
   const { loading, error, data } = useQuery(GET_PRODUCTS);
   const { isShowing, openModal, closeModal } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [store, dispatch] = useContext(Context);
 
   const [modal, setModal] = useState(null);
 
@@ -97,6 +166,12 @@ const Shop = () => {
   const getStars = (products) => {
     return products.filter((p) => p.type === "stars");
   };
+
+  const getPro = (products) => {
+    return products.filter((p) => p.type === "subscription");
+  };
+
+  const proId = gql_data && getPro(gql_data.products)[0].id;
 
   return (
     <div className="background_dark">
@@ -117,71 +192,12 @@ const Shop = () => {
         </div>
       </div> */}
 
-      <div className="section">
-        {/* <div className={styles.header}>Subscription</div> */}
-        <div className={styles.proxySubs}>
-          <div className={styles.proxySubs_title}>
-            ACTIONISE
-            <div className="proLabel ml5">PRO</div>
-          </div>
-          <div className={styles.proxySubs_benefits}>
-            {/* <div className={styles.proxySubs_image}>
-              <ImageUI url={"/energy.png"} isPublic height="60px" />
-              <div className={styles.proxySubs_infinity}>&#8734;</div>
-            </div> */}
-            <div className={styles.proxySubs_benefitsBox}>
-              <div className={styles.proxySubs_benefit}>
-                <img src={iconCheckmark} height="18px" className="mr5" />
-                {/* + 20&nbsp;
-                <ProLabel /> New Cards */}
-                + 20 New Cards
-                <div
-                  className="btn btn-outline ml5"
-                  style={{ padding: ".25rem .5rem" }}
-                  onClick={() => setModal("cards")}
-                >
-                  View All
-                </div>
-              </div>
-
-              <div className={styles.proxySubs_benefit}>
-                <img src={iconCheckmark} height="18px" className="mr5" />
-                {/* + 5&nbsp;
-                <ProLabel /> Objectives */}
-                + 5 New Objectives
-              </div>
-              <div className={styles.proxySubs_benefit}>
-                <img src={iconCheckmark} height="18px" className="mr5" />
-                {/* + 30&nbsp;
-                <ProLabel /> Level Rewards */}
-                + 30 Level Rewards
-              </div>
-              <div className={styles.proxySubs_benefit}>
-                <img src={iconCheckmark} height="18px" className="mr5" />
-                <ImageUI url={"/energy.png"} isPublic height="20px" />
-                20/20 Max Energy{" "}
-                <div
-                  className="btn btn-outline ml5"
-                  style={{ padding: ".25rem .5rem" }}
-                  onClick={() => setModal("maxEnergy")}
-                >
-                  i
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="btn btn-primary">Buy Pro $20</div>
-          <div className={styles.subscription_monthly}>(Lifetime Access)</div>
-
-          {/* <div onClick={openModal} className={styles.proCtaButton}>
-            $20
-          </div> */}
-        </div>
-      </div>
+      {!store.user.pro && (
+        <ProItem setModal={setModal} dispatch={dispatch} id={proId} />
+      )}
 
       <div className="section">
-        {/* *** GEMS *** */}
+        {/* *** Energy *** */}
         <div className={styles.header}>Energy</div>
         <div className={styles.boxes}>
           {gql_data &&
@@ -189,8 +205,8 @@ const Shop = () => {
               .sort((a, b) => a.amount - b.amount)
               .map((product, i) => {
                 return (
-                  <GemsProduct
-                    gems={product}
+                  <Product
+                    product={product}
                     setSelectedProduct={setSelectedProduct}
                     openModal={openModal}
                     key={i}
@@ -201,7 +217,7 @@ const Shop = () => {
       </div>
 
       <div className="section">
-        {/* *** GEMS *** */}
+        {/* *** Stars *** */}
         <div className={styles.header}>Stars</div>
         <div className={styles.boxes}>
           {gql_data &&
@@ -209,8 +225,8 @@ const Shop = () => {
               .sort((a, b) => a.amount - b.amount)
               .map((product, i) => {
                 return (
-                  <GemsProduct
-                    gems={product}
+                  <Product
+                    product={product}
                     setSelectedProduct={setSelectedProduct}
                     openModal={openModal}
                     key={i}
@@ -220,12 +236,12 @@ const Shop = () => {
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         isShowing={isShowing}
         closeModal={closeModal}
         jsx={<PaymentSoonModal closeModal={closeModal} />}
         isSmall
-      />
+      /> */}
 
       <Modal
         isShowing={modal === "maxEnergy"}
@@ -242,12 +258,12 @@ const Shop = () => {
         jsx={<ProCardsModal closeModal={() => setModal(null)} />}
       />
 
-      {/* <Modal
+      <Modal
         isShowing={isShowing}
         closeModal={closeModal}
         jsx={<BoxModal product={selectedProduct} closeModal={closeModal} />}
         isSmall
-      /> */}
+      />
 
       <NavBar />
     </div>
