@@ -386,7 +386,7 @@ const pricingData = [
   },
 ];
 
-const PricingBox = ({
+export const PricingBox = ({
   name,
   discount,
   valueTag,

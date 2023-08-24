@@ -1,6 +1,6 @@
 import * as api from "../api";
 import { toast } from "react-toastify";
-import { createAction } from "./config";
+import { createAction, refreshUser } from "./config";
 import { REDUCER_TYPES } from "@/data/reducerTypes";
 
 export const updateContentType = (
@@ -19,6 +19,7 @@ export const updateContentType = (
 
       if (action == "complete" || action == "save" || action == "removeNew") {
         dispatch({ type: REDUCER_TYPES.GQL_REFETCH, data: res.data });
+        refreshUser(dispatch);
       }
     })
     .catch((err) => {
@@ -27,6 +28,10 @@ export const updateContentType = (
 };
 
 export const resetUser = createAction("resetUser", { type: "FETCH_USER" });
+
+export const claimTutorialStep = createAction("claimTutorialStep", {
+  type: REDUCER_TYPES.REWARD_MODAL,
+});
 
 export const saveAvatar = createAction("saveAvatar", {
   type: REDUCER_TYPES.SAVE_AVATAR,
@@ -58,10 +63,6 @@ export const collectStreakReward = createAction("collectStreakReward", {
   type: REDUCER_TYPES.REWARD_MODAL,
 });
 
-export const updateTutorial = createAction("updateTutorial", {
-  type: REDUCER_TYPES.TUTORIAL,
-});
-
 export const acceptReferral = createAction("acceptReferral", {
   type: REDUCER_TYPES.REWARD_MODAL,
 });
@@ -79,11 +80,17 @@ export const updateEmailSettings = createAction("updateEmailSettings", {
   sMsg: () => `Updated successfully.`,
 });
 
-export const purchaseProduct = createAction("purchaseProduct");
+export const purchaseProduct = createAction("purchaseProduct", {
+  type: REDUCER_TYPES.REWARD_MODAL,
+});
 
 export const getRandomCard = createAction("getRandomCard", { reset: false });
 
 export const claimFaq = createAction("claimFaq", {
+  type: REDUCER_TYPES.REWARD_MODAL,
+});
+
+export const claimCalendarReward = createAction("claimCalendarReward", {
   type: REDUCER_TYPES.REWARD_MODAL,
 });
 

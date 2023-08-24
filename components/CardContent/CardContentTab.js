@@ -22,6 +22,7 @@ import RewardsModal from "../RewardsModal";
 import { useRouter } from "next/router";
 import Timer from "../reusable/Timer";
 import ContentLockedModal from "../Modals/ContentLockedModal";
+import ObjectivesModal from "../Modals/ObjectivesModal";
 
 const mergeCardProperties = (card, usercard) => {
   const mergedArray = [];
@@ -251,6 +252,24 @@ const CardContentTab = ({ card, usercard, programData }) => {
   const [selectedType, setSelectedType] = useState(null);
   const [contentPage, setContentPage] = useState(null);
 
+  // calculate quests count for notification in tab!
+  const [questsReadyToClaimCount, setQuestsReadyToClaimCount] = useState(-1);
+
+  useEffect(() => {
+    const { progressQuest } = usercard;
+
+    const readyToClaimArray = Object.keys(CONTENT_MAP).map((type) => {
+      const userQuest = progressQuest?.[type] || {
+        progress: 0,
+        level: 1,
+      };
+      return userQuest.progress >= CONTENT_MAP[type].max;
+    });
+    const readyToClaimCount = readyToClaimArray.filter(Boolean).length;
+
+    setQuestsReadyToClaimCount(readyToClaimCount);
+  }, [usercard]);
+
   const onStart = (type) => {
     setActiveTab("content");
     setSelectedType(type);
@@ -299,7 +318,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
       <Tabs
         tabState={activeTab}
         setTab={(tab) => setActiveTab(tab)}
-        tabs={tabs}
+        tabs={tabs(questsReadyToClaimCount)}
       />
     );
   };
@@ -313,7 +332,6 @@ const CardContentTab = ({ card, usercard, programData }) => {
     const isReadyToClaim = userQuest.progress >= CONTENT_MAP[type].max;
     const isInProgress = userQuest.progress >= 1;
     const color = CONTENT_MAP[type].color;
-    //test
 
     return (
       <div className={styles.quest}>
@@ -560,7 +578,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
       </div>
     );
   };
-
+  // console.log({ questsProgress });
   return (
     <div className={styles.tabsDataContainer}>
       {renderTabs()}
@@ -601,6 +619,13 @@ const CardContentTab = ({ card, usercard, programData }) => {
         isShowing={store.rewardsModal?.isOpen}
         showCloseButton={false}
         jsx={<RewardsModal />}
+        isSmall
+      />
+
+      <Modal
+        isShowing={store.objectivesModal?.isOpen}
+        closeModal={() => dispatch({ type: "CLOSE_OBJECTIVES_MODAL" })}
+        jsx={<ObjectivesModal />}
         isSmall
       />
     </div>

@@ -36,6 +36,7 @@ const initialState = {
     isOpen: false,
     results: [],
   },
+  showCalendar: false,
   energyModal: false,
   notifications: {
     streaks: 0,

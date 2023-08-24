@@ -372,7 +372,7 @@ const LandingPage = () => {
     });
   }
   return (
-    <div className={styles.landingPage}>
+    <div className="background_dark">
       <SEO
         title={SEO_CONFIG.landingPage.title}
         description={SEO_CONFIG.landingPage.description}

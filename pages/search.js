@@ -67,6 +67,12 @@ const SearchBar = () => {
     setResult([]);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      onSearch(search);
+    }
+  };
+
   const SearchCard = ({ card }) => {
     return (
       <Link
@@ -94,6 +100,7 @@ const SearchBar = () => {
             type="text"
             value={search}
             onChange={onChange}
+            onKeyPress={handleKeyPress}
             placeholder={`Search Cards...`}
           />
 

@@ -5,7 +5,6 @@ import { Context } from "@/context/store";
 
 import styles from "@/styles/Today.module.scss";
 import { tutorialSlides } from "@/data/todayData";
-import { updateTutorial } from "@/actions/action";
 
 export const TutorialModal = ({}) => {
   const [store, dispatch] = useContext(Context);
@@ -30,7 +29,7 @@ export const TutorialModal = ({}) => {
       </div>
       <div
         className="btn btn-primary"
-        onClick={() => updateTutorial(dispatch, 0)}
+        // onClick={() => updateTutorial(dispatch, 0)}
       >
         Skip Tutorial
       </div>

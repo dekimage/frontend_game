@@ -42,8 +42,8 @@ export const rewardsMap = [
   },
 ];
 
-export const tabs = [
+export const tabs = (programNotifications) => [
   { label: "program", count: -1 },
   { label: "content", count: -1 },
-  { label: "progress", count: -1 },
+  { label: "progress", count: programNotifications || -1 },
 ];

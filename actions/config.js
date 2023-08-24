@@ -70,10 +70,6 @@ const STRAPI_CONFIG = {
     route: "purchase-product",
     inputs: ["productId", "payment_env"],
   },
-  updateTutorial: {
-    route: "update-tutorial",
-    inputs: ["tutorialStep"],
-  },
   updateCard: {
     route: "update-card",
     inputs: ["cardId", "action"],
@@ -92,6 +88,13 @@ const STRAPI_CONFIG = {
   claimFaq: {
     route: "claim-faq",
     inputs: ["id"],
+  },
+  claimTutorialStep: {
+    route: "claim-tutorial-step",
+    inputs: ["step"],
+  },
+  claimCalendarReward: {
+    route: "claim-calendar-reward",
   },
 };
 

@@ -69,6 +69,10 @@ const Reducer = (store, action) => {
         usercards: action.data.rewards.usercard
           ? [...store.usercards, action.data.rewards.usercard]
           : store.usercards,
+        objectivesModal: {
+          isOpen: action.data.objectivesForNotification?.length > 0,
+          data: action.data.objectivesForNotification,
+        },
 
         isLoading: false,
       };
@@ -77,6 +81,14 @@ const Reducer = (store, action) => {
       return {
         ...store,
         usercards: [...store.usercards, action.data],
+        rewardsModal: {
+          isOpen: action.data?.rewards?.artifact,
+          rewards: action.data?.rewards,
+        },
+        objectivesModal: {
+          isOpen: action.data.objectivesForNotification.length > 0,
+          data: action.data.objectivesForNotification,
+        },
       };
 
     // try to handle all relations on user via refetch GQL
@@ -84,6 +96,14 @@ const Reducer = (store, action) => {
       return {
         ...store,
         gqlRefetch: action.data,
+        rewardsModal: {
+          isOpen: action.data?.rewards?.artifact,
+          rewards: action.data?.rewards,
+        },
+        objectivesModal: {
+          isOpen: action.data.objectivesForNotification.length > 0,
+          data: action.data.objectivesForNotification,
+        },
       };
 
     case "TUTORIAL":
@@ -100,6 +120,9 @@ const Reducer = (store, action) => {
 
     case "STOP_LOADING":
       return { ...store, isLoading: false };
+
+    case "CLOSE_CALENDAR":
+      return { ...store, showCalendar: false };
 
     case "REFRESH_USER":
       return {
@@ -138,6 +161,7 @@ const Reducer = (store, action) => {
         user: action.data,
         allLevelRewards: action.data.levelRewards,
 
+        showCalendar: !action.data.tutorial?.calendar?.isFinished,
         isAuthenticated: true,
         isLoading: false,
         notifications: {
@@ -169,6 +193,15 @@ const Reducer = (store, action) => {
       // return { ...store, user: {}, isAuthenticated: false };
       return {
         isAuthenticated: false,
+      };
+
+    case "CLOSE_OBJECTIVES_MODAL":
+      return {
+        ...store,
+        objectivesModal: {
+          isOpen: false,
+          data: [],
+        },
       };
 
     case "OPEN_ENERGY_MODAL":

@@ -22,6 +22,7 @@ import { ImageUI } from "@/components/reusableUI";
 import { calculateCardMaxProgress, calculateCardProgress } from "@/utils/joins";
 import ProgressBar from "@/components/ProgressBar";
 import { PROGRAM_COMPLETED_MAX } from "@/data/config";
+import ObjectivesModal from "@/components/Modals/ObjectivesModal";
 
 const CardPage = ({ dataUserCard, dataCard }) => {
   const [store, dispatch] = useContext(Context);
@@ -154,6 +155,13 @@ const CardPage = ({ dataUserCard, dataCard }) => {
           closeModal={closeModal}
           showCloseButton={false}
           jsx={<RewardsModal defaultPage={"artifact"} />}
+          isSmall
+        />
+
+        <Modal
+          isShowing={store.objectivesModal?.isOpen}
+          closeModal={() => dispatch({ type: "CLOSE_OBJECTIVES_MODAL" })}
+          jsx={<ObjectivesModal />}
           isSmall
         />
 

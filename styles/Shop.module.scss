@@ -566,6 +566,41 @@
     transform: translate(-50%, -50%);
     z-index: 1000;
   }
+
+  &_title_coaching {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    @extend %flex_center;
+    margin-top: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: $border_radius;
+    position: absolute;
+    color: black;
+    top: -1rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
+    background: hsla(152, 100%, 50%, 1);
+
+    background: linear-gradient(
+      90deg,
+      hsla(152, 100%, 50%, 1) 0%,
+      hsla(186, 100%, 69%, 1) 100%
+    );
+
+    background: -moz-linear-gradient(
+      90deg,
+      hsla(152, 100%, 50%, 1) 0%,
+      hsla(186, 100%, 69%, 1) 100%
+    );
+
+    background: -webkit-linear-gradient(
+      90deg,
+      hsla(152, 100%, 50%, 1) 0%,
+      hsla(186, 100%, 69%, 1) 100%
+    );
+  }
   &_price {
     font-size: 24px;
     font-weight: 500;

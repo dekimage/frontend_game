@@ -83,7 +83,9 @@ const FriendReward = ({ friendReward, user }) => {
       <div className="flex_center">
         <div
           className={styles.image}
-          onClick={() => setIsRewardModalShowing(true)}
+          onClick={() => {
+            !(is_ready && !is_collected) && setIsRewardModalShowing(true);
+          }}
         >
           <ImageUI url={reward?.image?.url} />
 
@@ -195,7 +197,7 @@ const FriendsTower = (props) => {
           </div>
           <div className="flex_between">
             <div className="title">Shared Buddies </div>
-            <div className="title">{user.highest_buddy_shares}/10</div>
+            <div className="title">{user.highest_buddy_shares}/5</div>
           </div>
           {data && user && (
             <div>

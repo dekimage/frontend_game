@@ -27,6 +27,7 @@ const Objective = ({
   },
   dispatch,
   isUserPro,
+  fromNotification = false,
 }) => {
   const timeColor = time_type === "daily" ? "#009c68" : "#1e67ac";
   const isPremium = is_premium && !isUserPro;
@@ -82,10 +83,14 @@ const Objective = ({
       <div
         className={styles.objective_checkmark}
         onClick={() => {
-          !isCollected &&
-            progress >= requirement_amount &&
-            !isPremium &&
-            claimObjective(dispatch, id);
+          if (fromNotification) {
+            Router.push("/");
+          } else {
+            !isCollected &&
+              progress >= requirement_amount &&
+              !isPremium &&
+              claimObjective(dispatch, id);
+          }
 
           event({
             action: "search",
@@ -118,9 +123,13 @@ const Objective = ({
               <div
                 className="btn btn-blank"
                 onClick={() => {
-                  Router.push(
-                    isPremium ? `/shop` : `/${link ? link : "learn"}`
-                  );
+                  if (fromNotification) {
+                    Router.push("/");
+                  } else {
+                    Router.push(
+                      isPremium ? `/shop` : `/${link ? link : "learn"}`
+                    );
+                  }
 
                   event({
                     action: "search",

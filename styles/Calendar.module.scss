@@ -1,0 +1,66 @@
+// Calendar.module.scss
+@import "variables";
+@import "placeholders";
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.dayBox {
+  cursor: pointer;
+  border-radius: $border_radius;
+  border: 2px solid $actionize_gray;
+  padding: 10px;
+  text-align: center;
+  width: calc(33.33% - 10px);
+  margin-bottom: 20px;
+  position: relative;
+
+  &.readyToClaim {
+    background-color: #ffc74e;
+    box-shadow: 0px 0px 8px 1.5px rgba($color: #ffc74e, $alpha: 1);
+    cursor: pointer;
+  }
+
+  &.claimed {
+    background-color: $actionize_gray;
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &.big {
+    width: 100%;
+  }
+
+  .dayLabel {
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+  }
+
+  .rewardInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+
+    img {
+      max-width: 50px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .claimedIcon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: green;
+  }
+}
+
+.checkmark {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}

@@ -7,15 +7,16 @@ const Timer = ({ timeLeftProp, onComplete, jsxComplete }) => {
 
   useEffect(() => {
     let intervalId;
-    if (timeLeft > 0) {
+    if (timeLeftProp > 0) {
       intervalId = setInterval(() => {
         setTimeLeft(timeLeft - 1000);
       }, 1000);
-    } else {
-      onComplete && onComplete();
     }
+    // else {
+    //   onComplete && onComplete();
+    // }
     return () => clearInterval(intervalId);
-  }, [timeLeft, onComplete]);
+  }, [timeLeftProp]);
 
   const seconds = ("0" + Math.floor((timeLeft / 1000) % 60)).slice(-2);
   const minutes = ("0" + Math.floor((timeLeft / 1000 / 60) % 60)).slice(-2);

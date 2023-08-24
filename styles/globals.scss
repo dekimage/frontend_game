@@ -629,6 +629,7 @@ ion-icon {
     // max-width: 45rem;
     padding: 1.5rem;
   }
+  overflow: hidden;
 }
 
 .modal-small {
@@ -1064,4 +1065,8 @@ ion-icon {
   padding: 0.25rem 0.5rem;
   @extend %flex_center;
   background-color: $ux_red;
+}
+
+.w-full {
+  width: 100%;
 }

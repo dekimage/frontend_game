@@ -13,7 +13,7 @@ export default function Countdown({ type, tab, timeLeft }) {
   };
 
   const dailyTime = Date.parse(store?.user?.reset_date || 0);
-  const weeklyTime = parseInt(store?.user?.reset_week_date);
+  const weeklyTime = parseInt(store?.user?.reset_week_date || 0);
 
   function getTimeUntilMidnight() {
     const now = new Date();
@@ -23,10 +23,11 @@ export default function Countdown({ type, tab, timeLeft }) {
   }
 
   function calculateTimeLeftProp(timeType) {
-    const resetFutureTime = timeType == "daily" ? dailyTime : weeklyTime;
+    // const resetFutureTime = timeType == "daily" ? dailyTime : weeklyTime;
+
     return timeType == "daily"
       ? getTimeUntilMidnight()
-      : resetFutureTime - Date.now();
+      : weeklyTime - Date.now();
   }
 
   let content;
@@ -41,14 +42,22 @@ export default function Countdown({ type, tab, timeLeft }) {
             <>
               <Timer
                 timeLeftProp={calculateTimeLeftProp("daily")}
-                jsxComplete={<div className="btn btn-correct">Refresh</div>}
+                jsxComplete={
+                  <div className="btn btn-correct" onClick={() => onComplete()}>
+                    Refresh
+                  </div>
+                }
                 onComplete={onComplete}
               />
             </>
           ) : (
             <Timer
               timeLeftProp={calculateTimeLeftProp("weekly")}
-              jsxComplete={<div className="btn btn-correct">Refresh</div>}
+              jsxComplete={
+                <div className="btn btn-correct" onClick={() => onComplete()}>
+                  Refresh
+                </div>
+              }
               onComplete={onComplete}
             />
           )}

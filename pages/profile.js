@@ -338,7 +338,7 @@ const Profile = () => {
               >
                 <div>Shared Buddies</div>
                 {store.user.shared_buddies?.length || 0}
-                /10
+                /5
               </div>
               {store.user.shared_buddies?.map((b) => (
                 <Buddy

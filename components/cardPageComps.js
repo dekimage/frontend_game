@@ -259,6 +259,8 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
   const canBuddyUnlock =
     store?.user?.highest_buddy_shares >= card.friendreward?.friends_count;
 
+  const canProUnlock = store?.user?.pro;
+
   if (card.streakreward && !isUnlocked) {
     return (
       <div className={styles.fixed}>
@@ -288,6 +290,25 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
             {card.friendreward.friends_count}
             <img height="12px" className="ml25" src={`${baseUrl}/user.png`} />
           </div>
+        )}
+      </div>
+    );
+  }
+
+  if (card.type == "premium" && !isUnlocked) {
+    return (
+      <div className={styles.fixed}>
+        {canProUnlock ? (
+          <div
+            className="btn btn-action"
+            onClick={() => updateCard(dispatch, card.id, "unlock")}
+          >
+            Claim Card
+          </div>
+        ) : (
+          <Link href="/shop">
+            <div className="btn btn-action">Purchase Pro</div>
+          </Link>
         )}
       </div>
     );

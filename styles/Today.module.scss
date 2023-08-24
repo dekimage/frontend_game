@@ -374,3 +374,13 @@
     text-align: center;
   }
 }
+.tutorialStep {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  font-size: 10px;
+  font-weight: 500;
+  background-color: gray;
+  border-radius: $border_radius;
+  padding: 0.25rem 0.5rem;
+}

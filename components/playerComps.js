@@ -1,4 +1,4 @@
-import { updateCard, updateTutorial } from "@/actions/action";
+import { updateCard } from "@/actions/action";
 
 import { Context } from "@/context/store";
 import Link from "next/link";

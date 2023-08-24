@@ -92,7 +92,7 @@ const User = () => {
                 <div className={styles.header}>
                   <div>Shared Buddies</div>
                   {store.user.shared_buddies?.length || 0}
-                  /10
+                  /5
                 </div>
                 {user.shared_buddies?.map((b) => (
                   <Buddy

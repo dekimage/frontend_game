@@ -1,4 +1,9 @@
-import { Product, PaymentSoonModal, BoxModal } from "@/components/shopComps";
+import {
+  Product,
+  PaymentSoonModal,
+  BoxModal,
+  PricingBox,
+} from "@/components/shopComps";
 import { useContext, useEffect, useState } from "react";
 import { GET_PRODUCTS, GET_PRO_CARDS } from "@/GQL/query";
 import Header from "@/components/Header";
@@ -150,6 +155,80 @@ const ProItem = ({ setModal, dispatch, id }) => {
   );
 };
 
+const Coaching = ({ setModal, dispatch }) => {
+  const [selectedPricing, setSelectedPricing] = useState("monthly");
+  return (
+    <div className="section">
+      {/* <div className={styles.header}>Subscription</div> */}
+      <div className={styles.proxySubs}>
+        <div className={styles.proxySubs_title_coaching}>COACHING</div>
+        <div className="flex_center w-full">
+          <PricingBox
+            isSelected={selectedPricing === "monthly"}
+            setSelectedPrice={() => setSelectedPricing("monthly")}
+            name={"1 Month"}
+            discount={10}
+            valueTag={false}
+            duration={"1 Month"}
+            oldPrice={"$1000"}
+            price={"$950"}
+          />
+          <PricingBox
+            isSelected={selectedPricing === "quarterly"}
+            setSelectedPrice={() => setSelectedPricing("quarterly")}
+            name={"3 Months"}
+            discount={20}
+            valueTag={false}
+            duration={"3 Months"}
+            oldPrice={"$3000"}
+            price={"$2700"}
+          />
+        </div>
+        <div className={styles.proxySubs_benefits}>
+          <div className={styles.proxySubs_benefitsBox}>
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />
+              60 minutes sessions
+            </div>
+
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />2
+              sessions per week
+            </div>
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />1 on 1
+              private call on Zoom
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="btn btn-outline"
+          onClick={() => setModal("coachingDetails")}
+        >
+          View Details
+        </div>
+        <div
+          className="btn btn-primary"
+          onClick={() => setModal("coachingDetails")}
+        >
+          Buy Coaching Package{" "}
+          {selectedPricing === "monthly" ? "$950" : "$2700"}
+        </div>
+        <div
+          className="btn btn-primary"
+          onClick={() => setModal("coachingDetails")}
+        >
+          Book Free Session
+        </div>
+        <div className={styles.subscription_monthly}>
+          (Free 15 minutes test session)
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Shop = () => {
   const { loading, error, data } = useQuery(GET_PRODUCTS);
   const { isShowing, openModal, closeModal } = useModal();
@@ -235,6 +314,8 @@ const Shop = () => {
               })}
         </div>
       </div>
+
+      <Coaching dispatch={dispatch} setModal={setModal} />
 
       {/* <Modal
         isShowing={isShowing}

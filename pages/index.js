@@ -28,6 +28,9 @@ import styles from "@/styles/Today.module.scss";
 import useModal from "@/hooks/useModal";
 import { withUser } from "@/Hoc/withUser";
 import { ImageUI } from "@/components/reusableUI";
+import TutorialObjective from "@/components/TutorialObjective";
+import { tutorialData } from "@/data/tutorial";
+import CalendarRewards from "@/components/CalendarRewards";
 
 const Home = ({ user, data, dispatch, store }) => {
   const { isShowing, openModal, closeModal } = useModal();
@@ -66,6 +69,13 @@ const Home = ({ user, data, dispatch, store }) => {
     <div className="background_dark">
       <Header />
       <div className="headerSpace"></div>
+
+      {!user.tutorial?.isCompleted && (
+        <div className="section" style={{ paddingBottom: 0 }}>
+          <div className="header">Tutorial</div>
+          <TutorialObjective tutorialStep={tutorialData["1"]} />
+        </div>
+      )}
 
       <div>
         <div>
@@ -153,6 +163,12 @@ const Home = ({ user, data, dispatch, store }) => {
 
       <RewardLinkSection />
 
+      <Modal
+        isShowing={user.tutorial.calendar && store.showCalendar}
+        closeModal={() => dispatch({ type: "CLOSE_CALENDAR" })}
+        jsx={<CalendarRewards />}
+      />
+
       {user.tutorial_step > 0 && (
         <Modal
           isShowing={isShowing}
@@ -168,6 +184,7 @@ const Home = ({ user, data, dispatch, store }) => {
         jsx={<RewardsModal />}
         isSmall
       />
+
       <NavBar />
     </div>
   );
