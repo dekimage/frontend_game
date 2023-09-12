@@ -49,16 +49,17 @@ const CardTable = ({ cards, selectedProperty }) => {
       totalCount,
       maxEntries,
       `${progress.toFixed(0)}%`,
-      <span style={{ backgroundColor }}>
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      <span style={{ backgroundColor, width: "50px" }}>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
       </span>,
+      card?.realm?.name,
     ];
   });
 
   return (
     <div>
       <div className="flex_center">
-        <h3>{selectedProperty}</h3>
+        <h1>{selectedProperty.toUpperCase()}</h1>
       </div>
       <table className={styles.table}>
         <tbody>
@@ -68,14 +69,17 @@ const CardTable = ({ cards, selectedProperty }) => {
             <th>Max Entries</th>
             <th>Progress</th>
             <th>Alert</th>
+            <th>Realm</th>
           </tr>
-          {tableData.map((row, index) => (
-            <tr key={index}>
-              {row.map((cell, cellIndex) => (
-                <td key={cellIndex}>{cell}</td>
-              ))}
-            </tr>
-          ))}
+          {tableData
+            .sort((a, b) => b[1] - a[1])
+            .map((row, index) => (
+              <tr key={index}>
+                {row.map((cell, cellIndex) => (
+                  <td key={cellIndex}>{cell}</td>
+                ))}
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
@@ -107,7 +111,7 @@ const ContentStats = ({ data }) => {
     setSelectedProperty(property.toLowerCase());
     // Perform any other actions based on the selected property
   };
-  console.log(data);
+
   const { cards } = data;
   const tableData = [];
   const ignoredAttributes = ["id", "name", "__typename", "expansion"];
@@ -153,8 +157,6 @@ const ContentStats = ({ data }) => {
     return `${progress.toFixed(0)}%`;
   });
   tableData.push(progressRow);
-
-  console.log(tableData);
 
   // Output:
   // [

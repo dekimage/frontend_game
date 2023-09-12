@@ -283,6 +283,14 @@ export const GET_CONTENT = gql`
       data {
         id
         attributes {
+          realm {
+            data {
+              id
+              attributes {
+                name
+              }
+            }
+          }
           name
           expansion {
             data {
