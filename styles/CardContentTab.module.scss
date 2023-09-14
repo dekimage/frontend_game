@@ -230,3 +230,86 @@
   position: fixed;
   z-index: 10000;
 }
+
+.typeGroup {
+  height: 5rem;
+  @extend %flex_start;
+  margin: 1rem;
+
+  border-radius: $border-radius;
+  background-color: $actionize_gray;
+  &_image {
+    width: 4rem;
+    height: 5rem;
+    @extend %flex_center;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+  &_title {
+    font-size: 20px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  &_body {
+    padding: 0 1rem;
+    @extend %flex_start;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: space-around;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  &_arrow {
+    flex-grow: 0.1;
+  }
+}
+
+.contentItem {
+  position: relative;
+  @extend %flex_start;
+  align-items: space-between;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 500;
+  height: 7rem;
+  margin: 1rem;
+  padding: 1rem;
+  border: 2px solid $actionize_gray;
+  border-radius: $border-radius;
+  &_title {
+    @extend %flex_start;
+
+    font-weight: 500;
+  }
+  &_body {
+    display: flex;
+    align-items: space-between;
+    justify-content: space-around;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-right: 1rem;
+    height: 100%;
+    padding-top: 1rem;
+  }
+
+  &_action {
+    @extend %flex_center;
+    height: 100%;
+  }
+}
+
+.typeAbsolute {
+  position: absolute;
+  top: -5px;
+  // left: 50%;
+  left: 0;
+  // transform: translateX(-50%);
+}
+
+.btnPlay {
+  @extend %flex_center;
+  background-color: $primary;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}

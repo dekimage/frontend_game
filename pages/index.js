@@ -36,7 +36,7 @@ const Home = ({ user, data, dispatch, store }) => {
   const { isShowing, openModal, closeModal } = useModal();
 
   const [objectivesTabOpen, setObjectivesTabOpen] = useState("daily");
-  const [showCompleted, setShowCompleted] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   useEffect(() => {
     if (user.tutorial_step > 0) {
@@ -64,6 +64,12 @@ const Home = ({ user, data, dispatch, store }) => {
     (o) => !o.isCollected
   );
   const totalObjetivesCount = filteredObjectives.length;
+
+  // Calendar check
+  const daysSinceStart =
+    Math.floor(
+      (new Date() - user.tutorial?.calendar?.startDate) / (1000 * 60 * 60 * 24)
+    ) + 1;
 
   return (
     <div className="background_dark">
@@ -164,9 +170,11 @@ const Home = ({ user, data, dispatch, store }) => {
       <RewardLinkSection />
 
       <Modal
-        isShowing={user.tutorial.calendar && store.showCalendar}
+        isShowing={
+          user.tutorial.calendar && store.showCalendar && daysSinceStart <= 7
+        }
         closeModal={() => dispatch({ type: "CLOSE_CALENDAR" })}
-        jsx={<CalendarRewards />}
+        jsx={<CalendarRewards daysSinceStart={daysSinceStart} />}
       />
 
       {user.tutorial_step > 0 && (

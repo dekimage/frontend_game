@@ -1469,6 +1469,32 @@ export const GET_PROBLEMS = gql`
             }
           }
 
+          cards {
+            data {
+              id
+              attributes {
+                name
+                realm {
+                  data {
+                    id
+                    attributes {
+                      name
+                      color
+                      image {
+                        data {
+                          id
+                          attributes {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
           realm {
             data {
               id

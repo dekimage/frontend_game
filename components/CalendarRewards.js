@@ -39,10 +39,14 @@ const CalendarDay = ({ day, rewardCalendarData, isBig = false }) => {
   const isClaimed = rewardCalendarData[dayNumber]?.isClaimed;
   const isReadyToClaim = rewardInfo.isReadyToClaim && dayNumber <= currentDay;
 
+  const isMissed = dayNumber < currentDay && !isClaimed;
+  console.log({ isMissed });
+
   const boxClassName = cx(styles.dayBox, {
     [styles.readyToClaim]: isReadyToClaim && !isClaimed,
     [styles.claimed]: isClaimed,
     [styles.big]: isBig,
+    [styles.missed]: isMissed,
   });
 
   return (
@@ -55,6 +59,7 @@ const CalendarDay = ({ day, rewardCalendarData, isBig = false }) => {
         }
       }}
     >
+      {isMissed && <div className={styles.missedDay}>missed</div>}
       <div className={styles.dayLabel}>Day {dayNumber}</div>
       <div className={styles.rewardInfo}>
         <ImageUI url={"/stars.png"} isPublic alt="Reward" />
@@ -67,7 +72,7 @@ const CalendarDay = ({ day, rewardCalendarData, isBig = false }) => {
   );
 };
 
-const CalendarRewards = () => {
+const CalendarRewards = (daysSinceStart) => {
   const [store, dispatch] = useContext(Context);
   const user = store.user;
 
@@ -76,12 +81,6 @@ const CalendarRewards = () => {
     rewardsCalendar,
     new Date(user.tutorial.calendar.startDate)
   );
-
-  // Calendar check
-  const daysSinceStart =
-    Math.floor(
-      (new Date() - user.tutorial?.calendar?.startDate) / (1000 * 60 * 60 * 24)
-    ) + 1;
 
   const daysArray = Object.keys(rewardCalendarData);
   const lastDay = daysArray.pop();

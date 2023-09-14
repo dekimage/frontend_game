@@ -8,6 +8,7 @@ const ProgressBar = ({
   max,
   isReadyToClaim,
   withNumber,
+  isComplete,
   withIcon = false,
   fontSize = 12,
 }) => {
@@ -19,7 +20,11 @@ const ProgressBar = ({
   return (
     <div className={styles.empty}>
       <div
-        className={cx([styles.filled], { [styles.action]: isReadyToClaim })}
+        className={cx(
+          [styles.filled],
+          { [styles.action]: isReadyToClaim },
+          { [styles.complete]: isComplete }
+        )}
         style={{ "--progress": (progressCapped / max) * 100 }}
       ></div>
       {withNumber && (

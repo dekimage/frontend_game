@@ -71,6 +71,37 @@ export const Problem = ({ problem, isInside = false }) => {
   );
 };
 
+const ProblemV2 = ({ problem }) => {
+  const { id, name, realm } = problem;
+
+  return (
+    <Link href={`/problem/${id}`}>
+      <div className={styles.problemV2}>
+        <div className="flex_column w-full">
+          <div className={styles.problemV2_name}>{name}</div>
+
+          <div className={styles.problemV2_footer}>
+            {/* <div className={styles.problemV2_cardsCount}>
+              {problem.cards?.length} Cards
+            </div> */}
+            {problem.cards.map((card, i) => (
+              <div className={styles.problemV2_cardsCount}>
+                {card.realm?.image && (
+                  <ImageUI url={card.realm?.image.url} height="15px" />
+                )}
+                {/* {card.realm?.name} */}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={styles.iconRight}>
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
 const Problems = ({ data }) => {
   const realms = data.realms;
   const problems = data.problems;
@@ -88,7 +119,9 @@ const Problems = ({ data }) => {
       return problems;
     }
 
-    return problems.filter((p) => p.realm.name === filter);
+    return problems.filter((problem) =>
+      problem.cards.some((card) => card.realm.name === filter)
+    );
   };
 
   return (
@@ -100,27 +133,25 @@ const Problems = ({ data }) => {
         <div className="header">Solve Your Problems</div>
       </div>
 
-      <div className="section">
-        <div className="section" style={{ padding: "0 1rem" }}>
-          <div className={styles.filters}>
-            <input
-              onChange={(e) => setQuery(e.target.value)}
-              className={styles.searchInput}
-              placeholder="Search..."
-            />
+      <div className="section pt0">
+        <div className={styles.filters}>
+          <input
+            onChange={(e) => setQuery(e.target.value)}
+            className={styles.searchInput}
+            placeholder="Search..."
+          />
 
-            <DropDown
-              realms={realms}
-              label="Category"
-              filter={filter}
-              setFilter={setFilter}
-            />
-          </div>
+          <DropDown
+            realms={realms}
+            label="Category"
+            filter={filter}
+            setFilter={setFilter}
+          />
         </div>
 
         <div>
           {filterProblems(problems, filter, query).map((problem, i) => (
-            <Problem problem={problem} key={i} />
+            <ProblemV2 problem={problem} key={i} />
           ))}
         </div>
       </div>

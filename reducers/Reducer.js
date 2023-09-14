@@ -70,8 +70,8 @@ const Reducer = (store, action) => {
           ? [...store.usercards, action.data.rewards.usercard]
           : store.usercards,
         objectivesModal: {
-          isOpen: action.data.objectivesForNotification?.length > 0,
-          data: action.data.objectivesForNotification,
+          isOpen: action.data.objectivesForNotification?.length > 0 || false,
+          data: action.data.objectivesForNotification || [],
         },
 
         isLoading: false,
@@ -86,8 +86,8 @@ const Reducer = (store, action) => {
           rewards: action.data?.rewards,
         },
         objectivesModal: {
-          isOpen: action.data.objectivesForNotification.length > 0,
-          data: action.data.objectivesForNotification,
+          isOpen: action.data.objectivesForNotification?.length > 0 || false,
+          data: action.data.objectivesForNotification || [],
         },
       };
 
@@ -101,8 +101,8 @@ const Reducer = (store, action) => {
           rewards: action.data?.rewards,
         },
         objectivesModal: {
-          isOpen: action.data.objectivesForNotification.length > 0,
-          data: action.data.objectivesForNotification,
+          isOpen: action.data.objectivesForNotification?.length > 0 || false,
+          data: action.data.objectivesForNotification || [],
         },
       };
 

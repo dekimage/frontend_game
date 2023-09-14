@@ -135,8 +135,8 @@ export const ContentRow = ({
     ? content.content
     : content.question;
   const title =
-    (transformedTitle || "").length > 25
-      ? `${transformedTitle.slice(0, 25)}...`
+    (transformedTitle || "").length > 35
+      ? `${transformedTitle.slice(0, 35)}...`
       : transformedTitle;
 
   const cardName = isFromBookmark
@@ -502,10 +502,164 @@ const CardContentTab = ({ card, usercard, programData }) => {
     );
   };
 
+  // NEW V2 !!
+  const ContentItem = ({
+    content,
+    setContentPage,
+    updateContentType,
+    setIsLockModalOpen,
+    index,
+  }) => {
+    const {
+      progress,
+      maxProgress,
+      isUnlocked,
+      id,
+      title: baseTitle,
+      isNew,
+      type,
+      // from bookmark
+      isFromBookmark = false,
+      card = false,
+    } = content;
+
+    const router = useRouter();
+
+    const transformedTitle = baseTitle
+      ? baseTitle
+      : content.content
+      ? content.content
+      : content.question;
+    const title =
+      (transformedTitle || "").length > 30
+        ? `${transformedTitle.slice(0, 30)}...`
+        : transformedTitle;
+
+    const cardName = isFromBookmark
+      ? card.name.length > 10
+        ? `${card.name.slice(0, 10)}...`
+        : card.name
+      : false;
+
+    return (
+      <div
+        className={styles.contentItem}
+        onClick={() => {
+          if (isFromBookmark) {
+            router.push({
+              pathname: `/card/${card.id}`,
+              query: { contentId: id, contentType: type },
+            });
+          } else {
+            if (isUnlocked) {
+              setContentPage(content);
+              isNew &&
+                updateContentType(dispatch, "removeNew", card.id, type, id);
+            } else {
+              setIsLockModalOpen(true);
+            }
+          }
+        }}
+      >
+        <div className={styles.contentItem_body}>
+          <div className={styles.contentItem_title}>{title}</div>
+          <div className={styles.typeAbsolute}>
+            <ContentTypeTag type={type} />
+          </div>
+          {isNew && <div className="new">new</div>}
+          {isUnlocked && (
+            <div className="flex_center">
+              <ProgressBar
+                isComplete={progress == maxProgress}
+                progress={progress}
+                max={maxProgress}
+                withNumber
+                withIcon="mastery"
+              />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.contentItem_action}>
+          {isUnlocked ? (
+            <div className={styles.btnPlay}>
+              <ion-icon size="medium" name="play"></ion-icon>
+            </div>
+          ) : (
+            <img src={iconLock} alt="locked" height="24px" />
+          )}
+        </div>
+
+        {isFromBookmark && (
+          <div className="flex_center">
+            <div className={styles.fromCardLabel}>{cardName}</div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // NEW V2 !!!
+  const ContentTypeContainer = ({ type }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const totalProgressForType = contentData
+      .filter((content) => content.type === type)
+      .reduce((acc, content) => acc + content.progress, 0);
+
+    const totalProgressMaxForType =
+      contentData.filter((content) => content.type === type).length *
+      CONTENT_MAP[type].max;
+    return (
+      <div className={styles.typeGroupContainer}>
+        <div className={styles.typeGroup} onClick={() => setIsOpen(!isOpen)}>
+          <div
+            className={styles.typeGroup_image}
+            style={{ backgroundColor: CONTENT_MAP[type].color }}
+          >
+            <ImageUI url={`/${type}.png`} height="30px" isPublic />
+          </div>
+          <div className={styles.typeGroup_body}>
+            <div className={styles.typeGroup_title}>
+              {CONTENT_MAP[type].plural}
+              {/* {contentData.filter((content) => content.type === type).length}  */}
+            </div>
+            <ProgressBar
+              isComplete={totalProgressForType == totalProgressMaxForType}
+              progress={totalProgressForType}
+              max={totalProgressMaxForType}
+            />
+          </div>
+          <div className={styles.typeGroup_arrow}>
+            {isOpen ? (
+              <ion-icon name="caret-up-outline"></ion-icon>
+            ) : (
+              <ion-icon name="caret-down-outline"></ion-icon>
+            )}
+          </div>
+        </div>
+        {isOpen && (
+          <div className={styles.typeGroup_content}>
+            {contentData
+              .filter((content) => content.type === type)
+              .map((content, i) => (
+                <ContentItem
+                  content={content}
+                  setContentPage={setContentPage}
+                  updateContentType={updateContentType}
+                  key={i}
+                  index={i}
+                />
+              ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const ContentTable = () => {
     return (
       <div>
-        <div className={styles.dropdownSection}>
+        {/* <div className={styles.dropdownSection}>
           <DropDown
             data={typesDataForDropdown}
             label="Type"
@@ -514,11 +668,11 @@ const CardContentTab = ({ card, usercard, programData }) => {
             fullWidth
             // Jsx={ContentTypeTag}
           />
-        </div>
+        </div> */}
 
-        <TableHeader />
+        {/* <TableHeader /> */}
 
-        {contentData.map((content, i) => (
+        {/* {contentData.map((content, i) => (
           <ContentRow
             content={content}
             setContentPage={setContentPage}
@@ -526,7 +680,11 @@ const CardContentTab = ({ card, usercard, programData }) => {
             setIsLockModalOpen={setIsLockModalOpen}
             key={i}
           />
-        ))}
+        ))} */}
+
+        {Object.keys(CONTENT_MAP).map((type, i) => {
+          return <ContentTypeContainer type={type} key={i} />;
+        })}
 
         {contentPage && (
           <Modal
@@ -578,14 +736,14 @@ const CardContentTab = ({ card, usercard, programData }) => {
       </div>
     );
   };
-  // console.log({ questsProgress });
+
   return (
     <div className={styles.tabsDataContainer}>
       {renderTabs()}
 
       {activeTab == "progress" && (
         <div className="section">
-          <div className={styles.contentTitle}>Quests</div>
+          {/* <div className={styles.contentTitle}>Quests</div> */}
           <div className={styles.grid}>
             {Object.keys(CONTENT_MAP).map((type, i) => (
               <Quest type={type} onStart={onStart} key={i} />

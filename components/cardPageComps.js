@@ -7,6 +7,7 @@ import styles from "@/styles/CardPage.module.scss";
 import { useRouter } from "next/router";
 import baseUrl from "@/utils/settings";
 import { buyCardTicket, updateCard } from "@/actions/action";
+import { ProLabel } from "@/pages/shop";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -307,7 +308,10 @@ export const CardCtaFooter = ({ isUnlocked, card }) => {
           </div>
         ) : (
           <Link href="/shop">
-            <div className="btn btn-action">Purchase Pro</div>
+            <div className="btn btn-action">
+              <div className="mr5">Unlock with </div>
+              <ProLabel />
+            </div>
           </Link>
         )}
       </div>

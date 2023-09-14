@@ -43,7 +43,7 @@ const Order = ({ order }) => {
       </div>
       <div className={styles.orderDetails}>
         <p className={styles.productName}>Product: {product.name}</p>
-        <p className={styles.amount}>Amount: {amount}</p>
+        <p className={styles.amount}>Amount: ${amount}</p>
         <p className={styles.createdAt}>Date: {date}</p>
       </div>
     </div>

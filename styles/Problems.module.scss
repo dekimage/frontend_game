@@ -115,3 +115,29 @@
     // box-shadow: rgba(255, 255, 255, 0.1) 0px 4px 12px;
   }
 }
+
+.problemV2 {
+  @extend %box_duo;
+  width: 100%;
+  margin: 1rem 0;
+  &_footer {
+    @extend %flex_start;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  &_name {
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  &_cardsCount {
+    margin-top: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background-color: $actionize-gray;
+    font-size: 12px;
+    border-radius: $border_radius;
+    width: fit-content;
+    @extend %flex_center;
+    margin-right: 0.25rem;
+  }
+}

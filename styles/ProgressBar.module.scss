@@ -23,6 +23,9 @@
   &.action {
     background-color: $secondary;
   }
+  &.complete {
+    background-color: $actionize_green;
+  }
 }
 
 .progressNumber {

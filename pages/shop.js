@@ -116,7 +116,7 @@ const ProItem = ({ setModal, dispatch, id }) => {
               <img src={iconCheckmark} height="18px" className="mr5" />
               {/* + 5&nbsp;
             <ProLabel /> Objectives */}
-              + 5 New Objectives
+              + 5 Pro Objectives
             </div>
             <div className={styles.proxySubs_benefit}>
               <img src={iconCheckmark} height="18px" className="mr5" />
@@ -162,12 +162,13 @@ const Coaching = ({ setModal, dispatch }) => {
       {/* <div className={styles.header}>Subscription</div> */}
       <div className={styles.proxySubs}>
         <div className={styles.proxySubs_title_coaching}>COACHING</div>
+        <h3 className="mt1">Need personalized training?</h3>
         <div className="flex_center w-full">
           <PricingBox
             isSelected={selectedPricing === "monthly"}
             setSelectedPrice={() => setSelectedPricing("monthly")}
             name={"1 Month"}
-            discount={10}
+            discount={5}
             valueTag={false}
             duration={"1 Month"}
             oldPrice={"$1000"}
@@ -177,7 +178,7 @@ const Coaching = ({ setModal, dispatch }) => {
             isSelected={selectedPricing === "quarterly"}
             setSelectedPrice={() => setSelectedPricing("quarterly")}
             name={"3 Months"}
-            discount={20}
+            discount={10}
             valueTag={false}
             duration={"3 Months"}
             oldPrice={"$3000"}
@@ -188,33 +189,37 @@ const Coaching = ({ setModal, dispatch }) => {
           <div className={styles.proxySubs_benefitsBox}>
             <div className={styles.proxySubs_benefit}>
               <img src={iconCheckmark} height="18px" className="mr5" />
-              60 minutes sessions
+              60 min live sessions
             </div>
 
             <div className={styles.proxySubs_benefit}>
               <img src={iconCheckmark} height="18px" className="mr5" />2
-              sessions per week
+              Sessions per week
             </div>
             <div className={styles.proxySubs_benefit}>
               <img src={iconCheckmark} height="18px" className="mr5" />1 on 1
-              private call on Zoom
+              Private calls on Zoom
+            </div>
+            <div className={styles.proxySubs_benefit}>
+              <img src={iconCheckmark} height="18px" className="mr5" />
+              All inclusive coaching & tracking
             </div>
           </div>
         </div>
 
-        <div
+        {/* <div
           className="btn btn-outline"
           onClick={() => setModal("coachingDetails")}
         >
           View Details
-        </div>
-        <div
+        </div> */}
+        {/* <div
           className="btn btn-primary"
           onClick={() => setModal("coachingDetails")}
         >
           Buy Coaching Package{" "}
           {selectedPricing === "monthly" ? "$950" : "$2700"}
-        </div>
+        </div> */}
         <div
           className="btn btn-primary"
           onClick={() => setModal("coachingDetails")}

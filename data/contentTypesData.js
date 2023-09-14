@@ -1,27 +1,43 @@
 export const CONTENT_MAP = {
-  ideas: { max: 3, color: "#bde0fe", single: "idea" },
-  exercises: { max: 5, color: "#f4a261", single: "exercise" },
-  stories: { max: 1, color: "#80ed99", single: "story" },
-  casestudies: { max: 1, color: "#d4a373", single: "casestudy" },
-  tips: { max: 3, color: "#766153", single: "tip" },
-  metaphores: { max: 3, color: "#ecf39e", single: "metaphore" },
-  experiments: { max: 2, color: "#f7ede2", single: "experiment" },
-  expertopinions: { max: 3, color: "#e07a5f", single: "expert opinion" },
-  quotes: { max: 5, color: "#f2cc8f", single: "quote" },
-  questions: { max: 3, color: "#415a77", single: "question" },
+  ideas: { max: 3, color: "#bde0fe", single: "idea", plural: "ideas" },
+  exercises: {
+    max: 5,
+    color: "#f4a261",
+    single: "exercise",
+    plural: "exercises",
+  },
+  stories: { max: 1, color: "#80ed99", single: "example", plural: "examples" }, // examples
+  casestudies: {
+    max: 1,
+    color: "#d4a373",
+    single: "casestudy",
+    plural: "casestudies",
+  },
+  metaphores: {
+    max: 3,
+    color: "#ecf39e",
+    single: "metaphore",
+    plural: "metaphores",
+  },
+  questions: {
+    max: 3,
+    color: "#415a77",
+    single: "question",
+    plural: "questions",
+  },
+  // quotes: { max: 5, color: "#f2cc8f", single: "quote" },
+  // tips: { max: 3, color: "#766153", single: "tip" },
+  // experiments: { max: 2, color: "#f7ede2", single: "experiment" },
+  // expertopinions: { max: 3, color: "#e07a5f", single: "expert opinion" },
 };
 
 export const SAVED_TYPES = {
   savedCasestudies: "casestudies",
   savedExercises: "exercises",
-  savedExperiments: "experiments",
   savedIdeas: "ideas",
   savedMetaphors: "metaphores",
   savedQestions: "questions",
-  savedQuotes: "quotes",
   savedStories: "stories",
-  savedTips: "tips",
-  savedExpertOpinions: "expertopinions",
 };
 
 export const rewardsMap = [
