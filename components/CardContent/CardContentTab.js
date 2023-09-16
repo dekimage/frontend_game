@@ -615,7 +615,9 @@ const CardContentTab = ({ card, usercard, programData }) => {
       <div className={styles.typeGroupContainer}>
         <div
           className={styles.typeGroup}
-          onClick={() => setOpenTypeContainer(type)}
+          onClick={() =>
+            setOpenTypeContainer(openTypeContainer == type ? null : type)
+          }
         >
           <div
             className={styles.typeGroup_image}
