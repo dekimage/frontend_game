@@ -628,8 +628,8 @@ const CardContentTab = ({ card, usercard, programData }) => {
           </div>
           <div className={styles.typeGroup_body}>
             <div className={styles.typeGroup_title}>
-              {CONTENT_MAP[type].plural}
-              {/* {contentData.filter((content) => content.type === type).length}  */}
+              {CONTENT_MAP[type].plural} (
+              {contentData.filter((content) => content.type === type).length})
             </div>
             <ProgressBar
               isComplete={totalProgressForType == totalProgressMaxForType}
