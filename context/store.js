@@ -68,14 +68,15 @@ const Store = ({ children }) => {
     // Check if the AUTH_TOKEN is set and not expired
     if (
       AUTH_TOKEN &&
-      !isTokenExpired(AUTH_TOKEN) &&
+      // !isTokenExpired(AUTH_TOKEN) &&
       !router.route.includes(GOOGLE_CALLBACK_ROUTE)
     ) {
       fetchUser(dispatch);
     } else {
       Cookie.remove("token"); // remove token from cookie if expired
 
-      if (router.pathname !== "/" && !router.pathname.includes("auth")) {
+      // if (router.pathname !== "/" && !router.pathname.includes("auth")) {
+      if (!router.pathname.includes("auth")) {
         router.push(LOGIN_ROUTE);
       }
     }
