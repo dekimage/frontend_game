@@ -68,6 +68,7 @@ export const withUser = (
     }
 
     if (!AUTH_TOKEN && !store.isAuthenticated) {
+      console.log(AUTH_TOKEN, store.isAuthenticated);
       return <LandingPage />;
     }
 
