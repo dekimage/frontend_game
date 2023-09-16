@@ -251,6 +251,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
   const [activeTab, setActiveTab] = useState("program");
   const [selectedType, setSelectedType] = useState(null);
   const [contentPage, setContentPage] = useState(null);
+  const [openTypeContainer, setOpenTypeContainer] = useState(null);
 
   // calculate quests count for notification in tab!
   const [questsReadyToClaimCount, setQuestsReadyToClaimCount] = useState(-1);
@@ -272,7 +273,8 @@ const CardContentTab = ({ card, usercard, programData }) => {
 
   const onStart = (type) => {
     setActiveTab("content");
-    setSelectedType(type);
+    // setSelectedType(type);
+    setOpenTypeContainer(type);
   };
 
   useEffect(() => {
@@ -601,7 +603,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
 
   // NEW V2 !!!
   const ContentTypeContainer = ({ type }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
     const totalProgressForType = contentData
       .filter((content) => content.type === type)
       .reduce((acc, content) => acc + content.progress, 0);
@@ -611,7 +613,10 @@ const CardContentTab = ({ card, usercard, programData }) => {
       CONTENT_MAP[type].max;
     return (
       <div className={styles.typeGroupContainer}>
-        <div className={styles.typeGroup} onClick={() => setIsOpen(!isOpen)}>
+        <div
+          className={styles.typeGroup}
+          onClick={() => setOpenTypeContainer(type)}
+        >
           <div
             className={styles.typeGroup_image}
             style={{ backgroundColor: CONTENT_MAP[type].color }}
@@ -630,14 +635,14 @@ const CardContentTab = ({ card, usercard, programData }) => {
             />
           </div>
           <div className={styles.typeGroup_arrow}>
-            {isOpen ? (
+            {openTypeContainer == type ? (
               <ion-icon name="caret-up-outline"></ion-icon>
             ) : (
               <ion-icon name="caret-down-outline"></ion-icon>
             )}
           </div>
         </div>
-        {isOpen && (
+        {openTypeContainer == type && (
           <div className={styles.typeGroup_content}>
             {contentData
               .filter((content) => content.type === type)

@@ -109,9 +109,9 @@ const Player = (props) => {
       setChatSlides([...chatSlides, slides[index]]);
     }
   };
-
+  console.log({ usercards: store.usercards });
   const usercard = store.usercards?.filter(
-    (uc) => parseInt(uc.card.id) == parseInt(router.query.id)
+    (uc) => parseInt(uc.card?.id) == parseInt(router.query.id)
   )[0];
 
   const isLastSlide =

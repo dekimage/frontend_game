@@ -6,7 +6,7 @@ export const joinCards = (cards, usercards) => {
   }
   const joinedCards = cards.map((card) => {
     let collectionCard = usercards.filter(
-      (c) => c.card.id === parseInt(card.id)
+      (c) => c?.card?.id === parseInt(card?.id)
     )[0];
 
     if (collectionCard) {

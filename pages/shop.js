@@ -15,11 +15,38 @@ import useModal from "@/hooks/useModal";
 import { useQuery } from "@apollo/react-hooks";
 import { ImageUI } from "@/components/reusableUI";
 import iconCheckmark from "@/assets/checkmark.svg";
-import CardsMapper from "@/components/CardsMapper";
+
 import Card from "@/components/Card";
 import { BackButton } from "@/components/reusable/BackButton";
 import { purchaseProduct } from "@/actions/action";
 import { Context } from "@/context/store";
+
+const ThankYouModal = ({ closeModal }) => {
+  return (
+    <div className=" flex_center flex_column">
+      <ImageUI isPublic url={"/thanks.png"} height={100} width={100} />
+      <span
+        style={{
+          fontSize: "18px",
+          fontWeight: "bold",
+          justifyContent: "center",
+        }}
+      >
+        Congratulations on Your Purchase!
+      </span>
+      <br />
+      Your support means the world to us. With your recent purchase, you've
+      taken a big step in enhancing your experience with Actionise.
+      <br />
+      <br />
+      If you ever have questions or need assistance, don't hesitate to reach out
+      to us. We're here to help you make the most of your Actionise journey.
+      <div className="btn btn-primary mt1" onClick={closeModal}>
+        Got it
+      </div>
+    </div>
+  );
+};
 
 const MaxEnergyModal = ({ closeModal }) => {
   return (
@@ -128,13 +155,13 @@ const ProItem = ({ setModal, dispatch, id }) => {
               <img src={iconCheckmark} height="18px" className="mr5" />
               <ImageUI url={"/energy.png"} isPublic height="20px" />
               20/20 Max Energy{" "}
-              <div
+              {/* <div
                 className="btn btn-outline ml5"
                 style={{ padding: ".25rem .5rem" }}
                 onClick={() => setModal("maxEnergy")}
               >
                 i
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -328,6 +355,18 @@ const Shop = () => {
         jsx={<PaymentSoonModal closeModal={closeModal} />}
         isSmall
       /> */}
+
+      <Modal
+        isShowing={store.rewardsModal?.isOpen}
+        closeModal={() => dispatch({ type: "CLOSE_REWARDS_MODAL" })}
+        showCloseButton={true}
+        jsx={
+          <ThankYouModal
+            closeModal={() => dispatch({ type: "CLOSE_REWARDS_MODAL" })}
+          />
+        }
+        isSmall
+      />
 
       <Modal
         isShowing={modal === "maxEnergy"}

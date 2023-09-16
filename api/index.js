@@ -18,7 +18,12 @@ axios.defaults.headers.common["Authorization"] = AUTH_TOKEN
 
 export const refreshUserApi = () => axios.get("/usercard/refresh-user");
 export const fetchUserApi = () => axios.get("/usercard/me");
-export const rateCardApi = () => axios.put(`${userUrl}/rate-card`);
+export const rateCardApi = (rating, cardId, feedbackType) =>
+  axios.put(`${userUrl}/rate-card`, {
+    rating,
+    cardId,
+    feedbackType,
+  });
 export const updateEmailSettingsApi = (data) =>
   axios.put(`${userUrl}/update-settings`, { settings: data });
 export const updateCardApi = (cardId, action) =>
