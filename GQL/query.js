@@ -1068,6 +1068,14 @@ export const GET_STREAKS_QUERY = gql`
                 is_open
                 coming_soon
                 relationCount
+                streakreward {
+                  data {
+                    id
+                    attributes {
+                      streak_count
+                    }
+                  }
+                }
                 realm {
                   data {
                     id
@@ -1155,14 +1163,7 @@ export const GET_FRIENDS_QUERY = gql`
                     }
                   }
                 }
-                streakreward {
-                  data {
-                    id
-                    attributes {
-                      streak_count
-                    }
-                  }
-                }
+
                 realm {
                   data {
                     id
