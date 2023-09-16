@@ -76,7 +76,10 @@ const Store = ({ children }) => {
       Cookie.remove("token"); // remove token from cookie if expired
 
       // if (router.pathname !== "/" && !router.pathname.includes("auth")) {
-      if (!router.pathname.includes("auth")) {
+      if (
+        !router.pathname.includes("auth") &&
+        router.pathname !== "/login/ref"
+      ) {
         router.push(LOGIN_ROUTE);
       }
     }

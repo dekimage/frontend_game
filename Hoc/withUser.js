@@ -38,7 +38,7 @@ export const withUser = (
     const isLandingPage = router.query.isLandingPage;
 
     useEffect(() => {
-      if (!AUTH_TOKEN) {
+      if (!AUTH_TOKEN && router.pathname !== "/login/ref") {
         router.push("/");
       }
     }, []);
