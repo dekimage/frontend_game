@@ -1147,6 +1147,22 @@ export const GET_FRIENDS_QUERY = gql`
                 is_open
                 relationCount
                 coming_soon
+                friendreward {
+                  data {
+                    id
+                    attributes {
+                      friends_count
+                    }
+                  }
+                }
+                streakreward {
+                  data {
+                    id
+                    attributes {
+                      streak_count
+                    }
+                  }
+                }
                 realm {
                   data {
                     id
