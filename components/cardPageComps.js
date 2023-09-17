@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import baseUrl from "@/utils/settings";
 import { buyCardTicket, updateCard } from "@/actions/action";
 import { ProLabel } from "@/pages/shop";
+import { MASTERY_PER_PROGRAM_COMPLETE } from "@/data/config";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -196,7 +197,10 @@ export const CompleteCardSection = ({
             router.push(`/card/${card.id}`);
           }}
         >
-          Complete Card
+          {usercard.glory_points > 0
+            ? "Claim Glory"
+            : `Complete Card + ${MASTERY_PER_PROGRAM_COMPLETE}`}
+
           <ImageUI
             url={usercard.glory_points > 0 ? `/glory.png` : `/mastery.png`}
             isPublic

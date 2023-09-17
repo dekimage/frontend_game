@@ -16,7 +16,10 @@ import happyEmoji from "@/assets/3-emoji.svg";
 import mehEmoji from "@/assets/2-emoji.svg";
 import sadEmoji from "@/assets/1-emoji.svg";
 import FeatureSuggestion from "./FeatureSuggestion";
-import { PROGRAM_COMPLETED_MAX } from "@/data/config";
+import {
+  MASTERY_PER_PROGRAM_COMPLETE,
+  PROGRAM_COMPLETED_MAX,
+} from "@/data/config";
 
 //MAYBE IN CARD PLAYER?
 export const RatingModal = ({ closePlayer, cardId, usercard }) => {
@@ -99,7 +102,9 @@ export const SuccessModal = ({
           {
             img: "mastery",
             label: "Mastery",
-            amount: `${usercard.completed}/${PROGRAM_COMPLETED_MAX}`,
+            amount: `${usercard.completed * MASTERY_PER_PROGRAM_COMPLETE}/${
+              PROGRAM_COMPLETED_MAX * MASTERY_PER_PROGRAM_COMPLETE
+            }`,
           },
           usercard.glory_points > 0 && {
             img: "glory",

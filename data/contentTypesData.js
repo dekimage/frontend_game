@@ -52,8 +52,8 @@ export const rewardsMap = [
     amount: 100,
   },
   {
-    name: "Random",
-    icon: "/streak.png",
+    name: "Random Content",
+    icon: "/legendary-cards.png",
     amount: 1,
   },
 ];

@@ -80,12 +80,12 @@ const Home = ({ user, data, dispatch, store }) => {
       <Header />
       <div className="headerSpace"></div>
 
-      {!user.tutorial?.isCompleted && (
+      {/* {!user.tutorial?.isCompleted && (
         <div className="section" style={{ paddingBottom: 0 }}>
           <div className="header">Tutorial</div>
           <TutorialObjective tutorialStep={tutorialData["1"]} />
         </div>
-      )}
+      )} */}
 
       <div>
         <div>

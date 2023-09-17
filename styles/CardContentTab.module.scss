@@ -120,6 +120,9 @@
   text-transform: capitalize;
 }
 .questTitle {
+  @extend %flex_center;
+
+  margin-top: 2rem;
   font-size: 18px;
   font-weight: 500;
 }
@@ -133,13 +136,25 @@
   border-radius: $border-radius;
 }
 
+.questRewardText {
+  margin-top: 1rem;
+  font-size: 16px;
+  text-align: center;
+}
+
 .questRewardsMap {
-  @extend %flex_start;
+  @extend %flex_center;
+  align-items: flex-start;
   margin-top: 0.5rem;
 }
 
 .questReward {
-  @extend %box_duo;
+  width: 33%;
+  // @extend %box_duo;
+  @extend %flex_center;
+  flex-direction: column;
+  padding: 1rem;
+
   margin-right: 0.5rem;
 }
 
@@ -234,7 +249,7 @@
 .typeGroup {
   height: 5rem;
   @extend %flex_start;
-  margin: 1rem;
+  margin: 1rem 0;
 
   border-radius: $border-radius;
   background-color: $actionize_gray;

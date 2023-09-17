@@ -130,7 +130,15 @@ const Objective = ({
                     if (isPremium) {
                       Router.push(`/shop`);
                     } else {
-                      setRecommendedCardsModalOpen(requirement);
+                      if (
+                        requirement == "mastery_card" ||
+                        requirement == "program" ||
+                        requirement == "action"
+                      ) {
+                        setRecommendedCardsModalOpen(requirement);
+                      } else {
+                        Router.push("/learn");
+                      }
                     }
                   }
 

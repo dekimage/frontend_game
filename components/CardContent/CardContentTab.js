@@ -23,6 +23,12 @@ import { useRouter } from "next/router";
 import Timer from "../reusable/Timer";
 import ContentLockedModal from "../Modals/ContentLockedModal";
 import ObjectivesModal from "../Modals/ObjectivesModal";
+import {
+  MASTERY_PER_PROGRAM_COMPLETE,
+  PROGRAM_COMPLETED_MAX,
+} from "@/data/config";
+import { calculateCardMaxProgress, calculateCardProgress } from "@/utils/joins";
+import LootBoxHelperModal from "../Modals/LootBoxHelperModal";
 
 const mergeCardProperties = (card, usercard) => {
   const mergedArray = [];
@@ -256,6 +262,8 @@ const CardContentTab = ({ card, usercard, programData }) => {
   // calculate quests count for notification in tab!
   const [questsReadyToClaimCount, setQuestsReadyToClaimCount] = useState(-1);
 
+  const [isLootboxModalopen, setIsLootboxModalOpen] = useState(false);
+
   useEffect(() => {
     const { progressQuest } = usercard;
 
@@ -316,11 +324,11 @@ const CardContentTab = ({ card, usercard, programData }) => {
     setContentData(newMergedData);
   }, [usercard]);
 
-  const typesDataForDropdown = Object.keys(CONTENT_MAP).map((type) => {
-    return {
-      name: type,
-    };
-  });
+  // const typesDataForDropdown = Object.keys(CONTENT_MAP).map((type) => {
+  //   return {
+  //     name: type,
+  //   };
+  // });
 
   const renderTabs = () => {
     return (
@@ -332,7 +340,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
     );
   };
 
-  const Quest = ({ type, onStart }) => {
+  const Quest = ({ type, onStart, setIsLootboxModalOpen }) => {
     const { progressQuest } = usercard;
     const userQuest = progressQuest?.[type] || {
       progress: 0,
@@ -353,7 +361,10 @@ const CardContentTab = ({ card, usercard, programData }) => {
           </div>
 
           {/* {isReadyToClaim && ( */}
-          <div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => setIsLootboxModalOpen(true)}
+          >
             <ImageUI
               url={"/loot-box.png"}
               style={{
@@ -398,19 +409,6 @@ const CardContentTab = ({ card, usercard, programData }) => {
             )}
           </div>
         </div>
-
-        {/* TODO: add reward modal for lootbox icon */}
-        {/* <div className="mt1 mb1"></div> */}
-        {/* <div className={styles.questTitle}>Rewards:</div> */}
-        {/* <div className={styles.questRewardsMap}>
-          {rewardsMap.map((reward, i) => (
-            <div className={styles.questReward} key={i}>
-              <ImageUI url={reward.icon} height="20px" isPublic />
-              <div className={styles.questRewardText}>{reward.name}</div>
-              <div className={styles.questRewardText}>{reward.amount}</div>
-            </div>
-          ))}
-        </div> */}
       </div>
     );
   };
@@ -678,8 +676,15 @@ const CardContentTab = ({ card, usercard, programData }) => {
   };
 
   const ContentTable = () => {
+    const maxProgressContent = calculateCardMaxProgress(
+      card.relationCount
+    ).totalMaxProgress;
+    const progressContent = calculateCardProgress(
+      usercard.progressMap
+    ).totalProgress;
+
     return (
-      <div>
+      <div className="section">
         {/* <div className={styles.dropdownSection}>
           <DropDown
             data={typesDataForDropdown}
@@ -702,6 +707,16 @@ const CardContentTab = ({ card, usercard, programData }) => {
             key={i}
           />
         ))} */}
+
+        <div className="flex_center mt5 mb5">
+          Content Completed &nbsp; {progressContent}/{maxProgressContent}
+          <ImageUI
+            url={"/mastery.png"}
+            isPublic
+            height="20px"
+            className="ml5"
+          />
+        </div>
 
         {Object.keys(CONTENT_MAP).map((type, i) => {
           return <ContentTypeContainer type={type} key={i} />;
@@ -764,10 +779,14 @@ const CardContentTab = ({ card, usercard, programData }) => {
 
       {activeTab == "progress" && (
         <div className="section">
-          {/* <div className={styles.contentTitle}>Quests</div> */}
           <div className={styles.grid}>
             {Object.keys(CONTENT_MAP).map((type, i) => (
-              <Quest type={type} onStart={onStart} key={i} />
+              <Quest
+                type={type}
+                onStart={onStart}
+                setIsLootboxModalOpen={setIsLootboxModalOpen}
+                key={i}
+              />
             ))}
           </div>
         </div>
@@ -781,6 +800,17 @@ const CardContentTab = ({ card, usercard, programData }) => {
 
       {activeTab == "program" && (
         <div className="section">
+          <div className="flex_center mt5 mb5">
+            Program Completed &nbsp;{" "}
+            {usercard.completed * MASTERY_PER_PROGRAM_COMPLETE}/
+            {PROGRAM_COMPLETED_MAX * MASTERY_PER_PROGRAM_COMPLETE}
+            <ImageUI
+              url={"/mastery.png"}
+              isPublic
+              height="20px"
+              className="ml5"
+            />
+          </div>
           <Program
             day={programData.day}
             cardId={card.id}
@@ -793,6 +823,14 @@ const CardContentTab = ({ card, usercard, programData }) => {
           />
         </div>
       )}
+
+      <Modal
+        isShowing={isLootboxModalopen}
+        closeModal={() => setIsLootboxModalOpen(false)}
+        showCloseButton={true}
+        jsx={<LootBoxHelperModal />}
+        isSmall
+      />
 
       <Modal
         isShowing={store.rewardsModal?.isOpen}

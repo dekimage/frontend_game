@@ -29,7 +29,7 @@ export const ProgressBox = ({
         <ProgressBar
           progress={progress}
           max={maxProgress}
-          isReadyToClaim={progress >= maxProgress}
+          isComplete={progress >= maxProgress}
         />
 
         <div className={styles.progressTextBox}>
@@ -93,9 +93,6 @@ const Card = ({ card, setCardTabTo = false, isFromShop = false }) => {
   const [store, dispatch] = useContext(Context);
   const isCollected = card.card;
   const isPremiumLocked = card.type == "premium" && !store.user.pro;
-  // card.expansion &&
-  // card.expansion.name === "Pro" &&
-  // store.user.expansions.filter((e) => e.name === "Pro").length === 0;
 
   const coming_soon = card.card?.coming_soon || card.coming_soon;
 
@@ -104,12 +101,11 @@ const Card = ({ card, setCardTabTo = false, isFromShop = false }) => {
 
   return (
     <Link
-      // key={card.id}
       href={{
         pathname: "/card/[id]",
         query: {
           id: isCollected ? card.card.id : card.id,
-          tab: setCardTabTo && setCardTabTo,
+          ...(setCardTabTo ? { tab: setCardTabTo } : {}),
         },
       }}
     >

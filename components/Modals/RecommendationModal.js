@@ -15,22 +15,23 @@ const objRequirementToPrioritize = {
 const RecommendationModal = ({ objectiveRequirement, closeModal }) => {
   const [store, dispatch] = useContext(Context);
   let prioritize = objRequirementToPrioritize[objectiveRequirement];
+  const [cardsTab, setCardsTab] = useState("Continue");
 
   const [continueList, setContinueList] = useState([]);
   const [newCardsList, setNewCardsList] = useState([]);
   useEffect(async () => {
-    // const programCards = await getRecommendedCards(dispatch, "program");
-    // const masteryCards = await getRecommendedCards(dispatch, "mastery");
-    // const questCards = await getRecommendedCards(dispatch, "quest");
     const { continueList, newCardsList } = await getRecommendedCards(
       dispatch,
       prioritize
     );
+
     setContinueList(continueList);
     setNewCardsList(newCardsList);
-  }, []);
 
-  const [cardsTab, setCardsTab] = useState("Continue");
+    if (continueList.length === 0) {
+      setCardsTab("New Cards");
+    }
+  }, []);
 
   const tabsData = [
     { label: "Continue", count: -1 },
@@ -40,14 +41,22 @@ const RecommendationModal = ({ objectiveRequirement, closeModal }) => {
   return (
     <div className="recommendModal">
       <div className={styles.title}>Recommended for you:</div>
-      <Tabs tabState={cardsTab} setTab={setCardsTab} tabs={tabsData} />
+      {prioritize != "progress" && (
+        <Tabs tabState={cardsTab} setTab={setCardsTab} tabs={tabsData} />
+      )}
       <div className="mt2">
-        {cardsTab === "Continue" && continueList.length && (
+        {cardsTab === "Continue" && continueList.length ? (
           <CardsMapper cards={continueList} setCardTabTo={prioritize} />
+        ) : (
+          <div className={styles.title}>
+            No cards in progress. Please check out new cards.
+          </div>
         )}
-        {cardsTab === "New Cards" && newCardsList.length && (
-          <CardsMapper cards={newCardsList} setCardTabTo={prioritize} />
-        )}
+        {prioritize != "progress" &&
+          cardsTab === "New Cards" &&
+          newCardsList.length && (
+            <CardsMapper cards={newCardsList} setCardTabTo={prioritize} />
+          )}
         <div className={styles.title}>Looking for something different?</div>
         <Link href={"/learn"}>
           <div className="flex_center mb1 pb1">

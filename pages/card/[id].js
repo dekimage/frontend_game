@@ -21,7 +21,10 @@ import CardContentTab from "@/components/CardContent/CardContentTab";
 import { ImageUI } from "@/components/reusableUI";
 import { calculateCardMaxProgress, calculateCardProgress } from "@/utils/joins";
 import ProgressBar from "@/components/ProgressBar";
-import { PROGRAM_COMPLETED_MAX } from "@/data/config";
+import {
+  MASTERY_PER_PROGRAM_COMPLETE,
+  PROGRAM_COMPLETED_MAX,
+} from "@/data/config";
 import ObjectivesModal from "@/components/Modals/ObjectivesModal";
 
 const CardPage = ({ dataUserCard, dataCard }) => {
@@ -45,10 +48,12 @@ const CardPage = ({ dataUserCard, dataCard }) => {
   const cardTickets = store?.user?.card_tickets || [];
   const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
 
-  const maxProgress = calculateCardMaxProgress(
-    card.relationCount
-  ).totalMaxProgress;
-  const progress = calculateCardProgress(usercard.progressMap).totalProgress;
+  const maxProgress =
+    calculateCardMaxProgress(card.relationCount).totalMaxProgress +
+    PROGRAM_COMPLETED_MAX * MASTERY_PER_PROGRAM_COMPLETE;
+  const progress =
+    calculateCardProgress(usercard.progressMap).totalProgress +
+    usercard.completed * MASTERY_PER_PROGRAM_COMPLETE;
   const isProgramMastered = usercard.completed >= PROGRAM_COMPLETED_MAX;
 
   const { isShowing, openModal, closeModal } = useModal();
