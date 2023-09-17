@@ -96,6 +96,10 @@ const STRAPI_CONFIG = {
   claimCalendarReward: {
     route: "claim-calendar-reward",
   },
+  getRecommendedCards: {
+    route: "get-recommended-cards",
+    inputs: ["prioritize"],
+  },
 };
 
 const toastBuilder = (message, params = false) => {
@@ -174,7 +178,7 @@ export const createAction = (apiName, params) => {
     try {
       const apiFunc = createApiEndpoint(apiName);
       const response = await apiFunc(...params);
-      console.log({ response });
+      // console.log({ response });
 
       if (reset) {
         // fetchUser(dispatch);

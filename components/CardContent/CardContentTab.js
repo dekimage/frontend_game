@@ -290,6 +290,13 @@ const CardContentTab = ({ card, usercard, programData }) => {
   }, [router.query]);
 
   useEffect(() => {
+    const tabOpen = router.query.tab;
+    if (tabOpen) {
+      setActiveTab(tabOpen);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
     const newMergedData = contentData.filter(
       (content) => content.type == selectedType
     );
@@ -544,6 +551,9 @@ const CardContentTab = ({ card, usercard, programData }) => {
         : card.name
       : false;
 
+    const timeLeft =
+      content.lastTimeMS && 86400000 - (Date.now() - content.lastTimeMS);
+
     return (
       <div
         className={styles.contentItem}
@@ -569,6 +579,9 @@ const CardContentTab = ({ card, usercard, programData }) => {
           <div className={styles.typeAbsolute}>
             <ContentTypeTag type={type} />
           </div>
+          {timeLeft && timeLeft > 0 && (
+            <div className={styles.doneToday}>Done Today</div>
+          )}
           {isNew && <div className="new">new</div>}
           {isUnlocked && (
             <div className="flex_center">

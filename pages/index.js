@@ -31,6 +31,7 @@ import { ImageUI } from "@/components/reusableUI";
 import TutorialObjective from "@/components/TutorialObjective";
 import { tutorialData } from "@/data/tutorial";
 import CalendarRewards from "@/components/CalendarRewards";
+import RecommendationModal from "@/components/Modals/RecommendationModal";
 
 const Home = ({ user, data, dispatch, store }) => {
   const { isShowing, openModal, closeModal } = useModal();
@@ -43,6 +44,9 @@ const Home = ({ user, data, dispatch, store }) => {
       openModal(dispatch);
     }
   }, [user]);
+
+  const [recommendedCardsModalOpen, setRecommendedCardsModalOpen] =
+    useState("");
 
   const objectivesData = useMemo(
     () => joinObjectives(data.objectives, user.objectives_json || []),
@@ -128,6 +132,7 @@ const Home = ({ user, data, dispatch, store }) => {
                   objective={obj}
                   dispatch={dispatch}
                   isUserPro={user.pro}
+                  setRecommendedCardsModalOpen={setRecommendedCardsModalOpen}
                   key={obj.id}
                 />
               ))}
@@ -160,6 +165,7 @@ const Home = ({ user, data, dispatch, store }) => {
                   objective={obj}
                   dispatch={dispatch}
                   isUserPro={user.pro}
+                  setRecommendedCardsModalOpen={setRecommendedCardsModalOpen}
                   key={obj.id}
                 />
               ))}
@@ -168,6 +174,19 @@ const Home = ({ user, data, dispatch, store }) => {
       </div>
 
       <RewardLinkSection />
+
+      <Modal
+        isShowing={recommendedCardsModalOpen}
+        closeModal={() => setRecommendedCardsModalOpen("")}
+        showCloseButton={true}
+        jsx={
+          <RecommendationModal
+            objectiveRequirement={recommendedCardsModalOpen}
+            closeModal={closeModal}
+          />
+        }
+        // isSmall
+      />
 
       <Modal
         isShowing={

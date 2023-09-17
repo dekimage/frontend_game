@@ -29,6 +29,8 @@ export const updateContentType = (
 
 export const resetUser = createAction("resetUser", { type: "FETCH_USER" });
 
+export const getRecommendedCards = createAction("getRecommendedCards");
+
 export const claimTutorialStep = createAction("claimTutorialStep", {
   type: REDUCER_TYPES.REWARD_MODAL,
 });

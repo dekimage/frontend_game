@@ -298,6 +298,17 @@
   }
 }
 
+.doneToday {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.2rem 0.75rem;
+  background-color: $actionize_green;
+  font-weight: 700;
+  font-size: 12px;
+  border-radius: $border-radius;
+}
+
 .typeAbsolute {
   position: absolute;
   top: -5px;

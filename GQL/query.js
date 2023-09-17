@@ -426,7 +426,7 @@ export const GET_ARTIFACTS_QUERY = gql`
 
 export const GET_OBJECTIVES_QUERY = gql`
   query {
-    objectives {
+    objectives(pagination: { limit: 25 }) {
       data {
         id
         attributes {

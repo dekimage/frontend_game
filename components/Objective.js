@@ -25,6 +25,7 @@ const Objective = ({
     progress,
     is_premium,
   },
+  setRecommendedCardsModalOpen,
   dispatch,
   isUserPro,
   fromNotification = false,
@@ -121,14 +122,16 @@ const Objective = ({
               )
             ) : (
               <div
-                className="btn btn-blank"
+                className="btn btn-action"
                 onClick={() => {
                   if (fromNotification) {
                     Router.push("/");
                   } else {
-                    Router.push(
-                      isPremium ? `/shop` : `/${link ? link : "learn"}`
-                    );
+                    if (isPremium) {
+                      Router.push(`/shop`);
+                    } else {
+                      setRecommendedCardsModalOpen(requirement);
+                    }
                   }
 
                   event({
@@ -139,7 +142,7 @@ const Objective = ({
                   });
                 }}
               >
-                {isPremium ? "Upgrade" : "Go"}
+                {isPremium ? "Upgrade" : "Start"}
               </div>
             )}
           </>

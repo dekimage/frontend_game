@@ -89,7 +89,7 @@ const ClosedCard = ({ card, comingSoon }) => {
   );
 };
 
-const Card = ({ card, isFromShop = false }) => {
+const Card = ({ card, setCardTabTo = false, isFromShop = false }) => {
   const [store, dispatch] = useContext(Context);
   const isCollected = card.card;
   const isPremiumLocked = card.type == "premium" && !store.user.pro;
@@ -107,7 +107,10 @@ const Card = ({ card, isFromShop = false }) => {
       // key={card.id}
       href={{
         pathname: "/card/[id]",
-        query: { id: isCollected ? card.card.id : card.id },
+        query: {
+          id: isCollected ? card.card.id : card.id,
+          tab: setCardTabTo && setCardTabTo,
+        },
       }}
     >
       <div
