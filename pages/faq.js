@@ -37,9 +37,7 @@ function Faq({ faq, dispatch }) {
       {isOpen && (
         <div className={styles.answer}>
           <div>
-            <div>
-              <img src={image.url} height="30px" />
-            </div>
+            <div>{image && <img src={image.url} height="30px" />}</div>
             <ReactMarkdown children={answer} />
           </div>
           <div>
