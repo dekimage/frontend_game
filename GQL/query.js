@@ -255,7 +255,7 @@ export const GET_BOOKMARKS = gql`
 
 export const GET_FAQS = gql`
   query {
-    faq(pagination: { limit: 50 }) {
+    faqs(pagination: { limit: 50 }) {
       data {
         id
         attributes {
