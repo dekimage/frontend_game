@@ -100,6 +100,10 @@ const STRAPI_CONFIG = {
     route: "get-recommended-cards",
     inputs: ["prioritize"],
   },
+  submitTutorial: {
+    route: "submit-tutorial",
+    inputs: ["favoriteRealms", "friendCode"],
+  },
 };
 
 const toastBuilder = (message, params = false) => {

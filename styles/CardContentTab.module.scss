@@ -250,6 +250,7 @@
   height: 5rem;
   @extend %flex_start;
   margin: 1rem 0;
+  cursor: pointer;
 
   border-radius: $border-radius;
   background-color: $actionize_gray;
@@ -338,4 +339,14 @@
   height: 40px;
   width: 40px;
   border-radius: 50%;
+}
+
+.programOpen {
+  @extend %flex_center;
+  border-radius: $border_radius;
+  background-color: rgb(125, 177, 153);
+  padding: 0.25rem 1rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+  width: fit-content;
 }

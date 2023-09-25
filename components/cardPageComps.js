@@ -245,8 +245,8 @@ export const PlayerCtaFooter = ({ card, isTicketPurchased }) => {
           children={
             <div>
               Play
-              <span className="ml5 md">1</span>
-              <img src={`${baseUrl}/energy.png`} height="20px" />
+              <span className="ml5  md">5</span>
+              <img src={`${baseUrl}/energy.png`} height="16px" />
             </div>
           }
         />

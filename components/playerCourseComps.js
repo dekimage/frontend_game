@@ -42,6 +42,7 @@ export const RatingModal = ({ closePlayer, cardId, usercard }) => {
         {[sadEmoji, mehEmoji, happyEmoji].map((emotion, i) => (
           <div
             key={i}
+            style={{ cursor: "pointer" }}
             onClick={() => {
               setEmoji(i + 1);
             }}

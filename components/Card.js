@@ -11,6 +11,10 @@ import styles from "@/styles/Card.module.scss";
 import { useContext } from "react";
 import baseUrl from "@/utils/settings";
 import { ProLabel } from "@/pages/shop";
+import {
+  MASTERY_PER_PROGRAM_COMPLETE,
+  PROGRAM_COMPLETED_MAX,
+} from "@/data/config";
 
 export const CardType = ({ type }) => {
   return <div className={cx(styles.type, styles[type])}>{type}</div>;
@@ -98,6 +102,8 @@ const Card = ({ card, setCardTabTo = false, isFromShop = false }) => {
 
   const isUnlocked =
     !isPremiumLocked && (card.is_open || card.is_unlocked) && !coming_soon;
+  const cardTickets = store?.user?.card_tickets || [];
+  const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
 
   return (
     <Link
@@ -128,6 +134,12 @@ const Card = ({ card, setCardTabTo = false, isFromShop = false }) => {
         >
           {card.realm.name}
         </div>
+
+        {isTicketPurchased && (
+          <div className={styles.programOpen}>
+            <ImageUI isPublic url={"/energy.png"} height={18} width={18} />
+          </div>
+        )}
 
         <div className={styles.realmLogo}>
           {card.realm?.image && <ImageUI url={card.realm.image.url} />}

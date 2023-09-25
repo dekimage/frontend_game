@@ -62,6 +62,11 @@ const MyApp = ({ Component, pageProps }) => {
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script>
+        <script
+          src="https://assets.calendly.com/assets/external/widget.js"
+          type="text/javascript"
+          async
+        ></script>
       </Head>
       {/* <TestLab /> */}
       <Component {...pageProps} />

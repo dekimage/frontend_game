@@ -80,7 +80,12 @@ const Reducer = (store, action) => {
     case "ADD_USERCARD":
       return {
         ...store,
-        usercards: [...store.usercards, action.data],
+        // [...store.usercards, action.data.userCardWithCard]
+        usercards: store.usercards.map((usercard) =>
+          usercard.id === action.data.userCardWithCard.id
+            ? action.data.userCardWithCard
+            : usercard
+        ),
         rewardsModal: {
           isOpen: action.data?.rewards?.artifact,
           rewards: action.data?.rewards,
@@ -123,6 +128,8 @@ const Reducer = (store, action) => {
 
     case "CLOSE_CALENDAR":
       return { ...store, showCalendar: false };
+    case "CLOSE_TUTORIAL":
+      return { ...store, showTutorial: false };
 
     case "REFRESH_USER":
       return {
@@ -160,7 +167,7 @@ const Reducer = (store, action) => {
         shared_buddies: action.data.shared_buddies,
         user: action.data,
         allLevelRewards: action.data.levelRewards,
-
+        showTutorial: !action.data.tutorial?.isCompleted,
         showCalendar: !action.data.tutorial?.calendar?.isFinished,
         isAuthenticated: true,
         isLoading: false,

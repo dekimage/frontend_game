@@ -38,8 +38,6 @@ const Player = (props) => {
   useEffect(() => {
     if (user && data) {
       const cardTickets = user.card_tickets || [];
-      console.log({ store });
-      console.log({ cardTickets });
 
       // if (!cardTickets?.find((c) => c?.id == data?.card?.id)) {
       //   router.push("/learn");
@@ -111,7 +109,7 @@ const Player = (props) => {
       setChatSlides([...chatSlides, slides[index]]);
     }
   };
-  console.log({ usercards: store.usercards });
+
   const usercard = store.usercards?.filter(
     (uc) => parseInt(uc.card?.id) == parseInt(router.query.id)
   )[0];

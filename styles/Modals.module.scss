@@ -17,6 +17,7 @@
 }
 
 .ctaLink {
+  cursor: pointer;
   @extend %flex_center;
   flex-direction: row;
   margin: 2rem 0;

@@ -4,6 +4,7 @@ import {
   BoxModal,
   PricingBox,
 } from "@/components/shopComps";
+import iconLock from "@/assets/lock-white-border.svg";
 import { useContext, useEffect, useState } from "react";
 import { GET_PRODUCTS, GET_PRO_CARDS } from "@/GQL/query";
 import Header from "@/components/Header";
@@ -20,6 +21,7 @@ import Card from "@/components/Card";
 import { BackButton } from "@/components/reusable/BackButton";
 import { purchaseProduct } from "@/actions/action";
 import { Context } from "@/context/store";
+import { CALENDY_LINK_URL } from "@/data/config";
 
 const ThankYouModal = ({ closeModal }) => {
   return (
@@ -182,7 +184,7 @@ const ProItem = ({ setModal, dispatch, id }) => {
   );
 };
 
-const Coaching = ({ setModal, dispatch }) => {
+const Coaching = ({ setModal, user, dispatch }) => {
   const [selectedPricing, setSelectedPricing] = useState("monthly");
   return (
     <div className="section">
@@ -225,7 +227,7 @@ const Coaching = ({ setModal, dispatch }) => {
             </div>
             <div className={styles.proxySubs_benefit}>
               <img src={iconCheckmark} height="18px" className="mr5" />1 on 1
-              Private calls on Zoom
+              Private calls on Google Meet
             </div>
             <div className={styles.proxySubs_benefit}>
               <img src={iconCheckmark} height="18px" className="mr5" />
@@ -240,19 +242,23 @@ const Coaching = ({ setModal, dispatch }) => {
         >
           View Details
         </div> */}
-        {/* <div
-          className="btn btn-primary"
-          onClick={() => setModal("coachingDetails")}
-        >
-          Buy Coaching Package{" "}
-          {selectedPricing === "monthly" ? "$950" : "$2700"}
-        </div> */}
         <div
           className="btn btn-primary"
-          onClick={() => setModal("coachingDetails")}
+          // onClick={() => setModal("coachingDetails")}
+          // onclick -> open calendly??
+        >
+          Purchase Coaching Pack{" "}
+          {/* {selectedPricing === "monthly" ? "$950" : "$2700"} */}
+        </div>
+        <div className="mt1 mb1 ">OR</div>
+
+        <div
+          className="btn btn-primary"
+          onClick={() => window.open(CALENDY_LINK_URL, "_blank")}
         >
           Book Free Session
         </div>
+
         <div className={styles.subscription_monthly}>
           (Free 15 minutes test session)
         </div>
@@ -347,7 +353,7 @@ const Shop = () => {
         </div>
       </div>
 
-      <Coaching dispatch={dispatch} setModal={setModal} />
+      <Coaching dispatch={dispatch} user={store.user} setModal={setModal} />
 
       {/* <Modal
         isShowing={isShowing}

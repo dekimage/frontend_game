@@ -28,6 +28,7 @@ import {
 import ObjectivesModal from "@/components/Modals/ObjectivesModal";
 
 const CardPage = ({ dataUserCard, dataCard }) => {
+  const router = useRouter();
   const [store, dispatch] = useContext(Context);
 
   const proxyUserCard = {
@@ -58,10 +59,14 @@ const CardPage = ({ dataUserCard, dataCard }) => {
 
   const { isShowing, openModal, closeModal } = useModal();
 
+  const handleBack = () => {
+    console.log(card.realm.id);
+    router.push(`/realm/${card.realm?.id}`);
+  };
   return (
     <div className={styles.cardContainer}>
       <div className={styles.card}>
-        <BackButton isBack />
+        <BackButton callback={() => handleBack()} isBack />
 
         <ImageUI url={card.image.url} height={225} className={styles.image} />
 

@@ -124,6 +124,7 @@ const Objective = ({
               <div
                 className="btn btn-action"
                 onClick={() => {
+                  console.log(requirement);
                   if (fromNotification) {
                     Router.push("/");
                   } else {
@@ -131,9 +132,10 @@ const Objective = ({
                       Router.push(`/shop`);
                     } else {
                       if (
-                        requirement == "mastery_card" ||
-                        requirement == "program" ||
-                        requirement == "action"
+                        requirement == "master_card" ||
+                        requirement == "action" ||
+                        requirement == "energy" ||
+                        requirement == "complete"
                       ) {
                         setRecommendedCardsModalOpen(requirement);
                       } else {

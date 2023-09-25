@@ -359,11 +359,15 @@
 }
 
 .btnPlay {
+  cursor: pointer;
   @extend %flex_center;
   background-color: $primary;
   height: 40px;
   width: 40px;
   border-radius: 50%;
+  &:hover {
+    @include hover-brightness(150%);
+  }
 }
 
 .btnPlayDisabled {

@@ -811,6 +811,21 @@ const CardContentTab = ({ card, usercard, programData }) => {
               className="ml5"
             />
           </div>
+          <div className="flex_center">
+            {programData.isTicketPurchased && (
+              <div className={styles.programOpen}>
+                <ImageUI
+                  isPublic
+                  url={"/energy.png"}
+                  height={24}
+                  width={24}
+                  className="mr5"
+                />
+                Active
+              </div>
+            )}
+          </div>
+
           <Program
             day={programData.day}
             cardId={card.id}

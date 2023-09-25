@@ -9,6 +9,7 @@ export const BackButton = ({
   callback = false,
 }) => {
   const router = useRouter();
+
   return (
     <>
       {isBack ? (

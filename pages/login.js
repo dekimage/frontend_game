@@ -206,7 +206,7 @@ const Login = () => {
 
                   <br />
 
-                  <div>
+                  <div className="mb1">
                     <div className="input-label">Password</div>
                     <Field
                       type="password"

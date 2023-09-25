@@ -1,3 +1,7 @@
+import {
+  MASTERY_PER_PROGRAM_COMPLETE,
+  PROGRAM_COMPLETED_MAX,
+} from "@/data/config";
 import { CONTENT_MAP } from "@/data/contentTypesData";
 export const joinCards = (cards, usercards) => {
   // remove as user will always have at least 1 usercard
@@ -21,10 +25,12 @@ export const joinCards = (cards, usercards) => {
         cost: card.cost,
         name: card.name,
         expansion: card.expansion,
-        maxProgress: calculateCardMaxProgress(card.relationCount)
-          .totalMaxProgress,
-        progress: calculateCardProgress(collectionCard.progressMap)
-          .totalProgress,
+        maxProgress:
+          calculateCardMaxProgress(card.relationCount).totalMaxProgress +
+          PROGRAM_COMPLETED_MAX * MASTERY_PER_PROGRAM_COMPLETE,
+        progress:
+          calculateCardProgress(collectionCard.progressMap).totalProgress +
+          collectionCard.completed * MASTERY_PER_PROGRAM_COMPLETE,
       };
       return mergedCard;
     }

@@ -4,3 +4,5 @@ export const ALLOWED_EMAILS = [
   "dejan.gavrilovikk@gmail.com",
   "denar@gmail.com",
 ];
+
+export const CALENDY_LINK_URL = "https://calendly.com/actionise/15min";

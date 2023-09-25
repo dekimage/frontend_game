@@ -1,0 +1,75 @@
+@import "variables.scss";
+@import "placeholders.scss";
+
+.slider-content {
+  @extend %flex_center;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    color: #666;
+  }
+}
+
+.cta {
+  margin-bottom: 2rem;
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+
+.slideIndicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.circle {
+  width: 12px;
+  height: 12px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+}
+
+.active {
+  background-color: #007bff; /* Blue color for the active circle */
+}

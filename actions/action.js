@@ -35,6 +35,8 @@ export const claimTutorialStep = createAction("claimTutorialStep", {
   type: REDUCER_TYPES.REWARD_MODAL,
 });
 
+export const submitTutorial = createAction("submitTutorial");
+
 export const saveAvatar = createAction("saveAvatar", {
   type: REDUCER_TYPES.SAVE_AVATAR,
   reset: false,
@@ -113,9 +115,11 @@ export const notifyMe = createAction("notifyMe", {
 
 export const updateCard = (dispatch, cardId, action) => {
   console.log(cardId, action);
+
   api
     .updateCardApi(cardId, action)
     .then((res) => {
+      console.log({ backend_response: res.data });
       switch (action) {
         case "unlock":
           dispatch({

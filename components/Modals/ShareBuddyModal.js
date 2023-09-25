@@ -37,19 +37,28 @@ const ShareBuddyModal = ({ id }) => {
           return <Perk key={i} i={i + 1} content={p.content} />;
         })}
       </div>
+      <div style={{ fontSize: "14px", color: "gray" }}>
+        *If they use Google for Login they need to paste your buddy code: {id}
+      </div>
 
-      <div className={styles.ctaLink}>
-        <input value={`https://actionise.com/login?ref=${id}`} readOnly></input>
+      <div
+        className={styles.ctaLink}
+        onClick={() => {
+          navigator.clipboard.writeText(
+            `https://actionise.com/login?ref=${id}`
+          );
+          setCopyButton("Copied!");
+        }}
+      >
+        <input
+          style={{ fontSize: "14px", textAlign: "center" }}
+          value={`https://actionise.com/login?ref=${id}`}
+          readOnly
+        ></input>
         <div
           className={cx([styles.ctaLink_copy], {
             [styles.green]: copyButton == "Copied!",
           })}
-          onClick={() => {
-            navigator.clipboard.writeText(
-              `https://actionise.com/login?ref=${id}`
-            );
-            setCopyButton("Copied!");
-          }}
         >
           {copyButton}
         </div>

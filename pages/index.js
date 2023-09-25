@@ -32,6 +32,7 @@ import TutorialObjective from "@/components/TutorialObjective";
 import { tutorialData } from "@/data/tutorial";
 import CalendarRewards from "@/components/CalendarRewards";
 import RecommendationModal from "@/components/Modals/RecommendationModal";
+import OnboardingSlider from "@/components/TutorialSlides/TutorialSlide";
 
 const Home = ({ user, data, dispatch, store }) => {
   const { isShowing, openModal, closeModal } = useModal();
@@ -93,8 +94,16 @@ const Home = ({ user, data, dispatch, store }) => {
             <div className={styles.acceptReferralBox}>
               <div className="header">Welcome Gift</div>
               <div className="pb1 pt1">
-                Gain 400
-                <ImageUI url={"/stars.png"} width={16} height={16} isPublic />
+                <div className="flex_center">
+                  <div>Gain 400</div>
+                  <ImageUI
+                    url={"/stars.png"}
+                    className="ml5"
+                    width={16}
+                    height={16}
+                    isPublic
+                  />
+                </div>
                 because a buddy shared you an invite
               </div>
               <div
@@ -102,7 +111,13 @@ const Home = ({ user, data, dispatch, store }) => {
                 onClick={() => acceptReferral(dispatch)}
               >
                 Claim 400
-                <ImageUI url={"/stars.png"} width={16} height={16} isPublic />
+                <ImageUI
+                  url={"/stars.png"}
+                  className="ml5"
+                  width={16}
+                  height={16}
+                  isPublic
+                />
               </div>
             </div>
           )}
@@ -210,6 +225,16 @@ const Home = ({ user, data, dispatch, store }) => {
         showCloseButton={false}
         jsx={<RewardsModal />}
         isSmall
+      />
+
+      <Modal
+        isShowing={!user.tutorial?.isCompleted && store.showTutorial}
+        showCloseButton={false}
+        jsx={
+          <OnboardingSlider
+            closeModal={() => dispatch({ type: "CLOSE_TUTORIAL" })}
+          />
+        }
       />
 
       <NavBar />
