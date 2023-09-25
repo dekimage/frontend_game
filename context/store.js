@@ -55,30 +55,15 @@ const Store = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    // Function to check if the token is expired
-    const isTokenExpired = (token) => {
-      try {
-        const decoded = JSON.parse(atob(token.split(".")[1]));
-        return decoded.exp < Date.now() / 1000;
-      } catch (e) {
-        return true;
-      }
-    };
-
-    // Check if the AUTH_TOKEN is set and not expired
-    if (
-      AUTH_TOKEN &&
-      // !isTokenExpired(AUTH_TOKEN) &&
-      !router.route.includes(GOOGLE_CALLBACK_ROUTE)
-    ) {
+    if (AUTH_TOKEN && !router.route.includes(GOOGLE_CALLBACK_ROUTE)) {
       fetchUser(dispatch);
     } else {
-      Cookie.remove("token"); // remove token from cookie if expired
+      Cookie.remove("token");
 
-      // if (router.pathname !== "/" && !router.pathname.includes("auth")) {
       if (
         !router.pathname.includes("auth") &&
-        router.pathname !== "/login/ref"
+        !router.pathname == "/" &&
+        !router.pathname.includes("/login/ref")
       ) {
         router.push(LOGIN_ROUTE);
       }

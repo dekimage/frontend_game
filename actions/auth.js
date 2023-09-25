@@ -31,6 +31,9 @@ export const signup = (
       setSubmitting(false);
       resetForm(true);
       Router.push("/");
+      if (window) {
+        window.location.reload();
+      }
     })
 
     .catch((err) => {
@@ -71,6 +74,9 @@ export const login = (
         .then(({ data }) => {
           dispatch({ type: "FETCH_USER", data });
           Router.push("/");
+          if (window) {
+            window.location.reload();
+          }
         });
     })
 

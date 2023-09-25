@@ -7,7 +7,7 @@ import { useConditionalQuery } from "@/hooks/useConditionalQuery"; // Import the
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 
-const AUTH_TOKEN = Cookie.get("token");
+// const authToken = Cookie.get("token");
 
 function FallbackComponent() {
   const refreshPage = () => {
@@ -35,13 +35,16 @@ export const withUser = (
     const [store, dispatch] = useContext(Context);
     const { user } = store;
     const router = useRouter();
+    const [authToken, setAuthToken] = useState(null);
     const isLandingPage = router.query.isLandingPage;
 
     useEffect(() => {
-      if (!AUTH_TOKEN && router.pathname !== "/login/ref") {
-        router.push("/");
-      }
-    }, []);
+      const token = Cookie.get("token");
+      setAuthToken(token);
+      // if (!authToken && router.pathname.includes("/login")) {
+      //   router.push("/");
+      // }
+    }, [router, authToken]);
 
     const { loading, error, data } = useConditionalQuery(
       query,
@@ -67,16 +70,15 @@ export const withUser = (
       return <FallbackComponent />;
     }
 
-    if (!AUTH_TOKEN && !store.isAuthenticated) {
-      console.log(AUTH_TOKEN, store.isAuthenticated);
+    if (!store.isAuthenticated) {
       return <LandingPage />;
     }
 
-    if (!query && AUTH_TOKEN && store.isAuthenticated) {
+    if (!query && authToken && store.isAuthenticated) {
       return <WrappedComponent {...props} user={user} dispatch={dispatch} />;
     }
 
-    if (gql_data && AUTH_TOKEN && store.isAuthenticated) {
+    if (gql_data && authToken && store.isAuthenticated) {
       return (
         <div className="background_dark">
           <WrappedComponent
