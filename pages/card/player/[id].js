@@ -118,6 +118,8 @@ const Player = (props) => {
     slides && slides.findIndex((s) => s.id === slide.id) === slides.length - 1;
 
   const totalTasksCount = slides && getTotalStepsInSlides(slides);
+  console.log(store.usercards);
+  console.log(usercard, slide);
 
   return (
     <div className="background_dark">

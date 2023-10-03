@@ -44,20 +44,34 @@ const OnboardingSlider = ({ closeModal }) => {
   const [buddyCode, setBuddyCode] = useState("");
   const [store, dispatch] = useContext(Context);
 
-  const REALM_SLIDE_INDEX = 2;
+  const REALM_SLIDE_INDEX = 3;
 
   const slides = [
     {
-      title: "Welcome to Actionise",
-      description: "description ...1",
-
-      imageUrl: "image1.jpg",
+      title: `Welcome Friend!!`,
+      imageUrl:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/just_do_it_554ead2616.png?updated_at=2022-06-03T12:39:22.558Z",
+      content: "Let's explore Actionise together!",
+      button: "Start",
     },
     {
-      title: "Get Smarter!",
-      description: "description ...2",
-      imageUrl: "image2.jpg",
+      title: `Why Actionise?`,
+      imageUrl:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/tutorial_change_78980f7d25.png?updated_at=2022-06-10T14:42:05.164Z",
+      content:
+        "Our mission is to provide you with Ideas, Tools & Actions that will help you become the best version of yourself. ",
+      button: "Next",
     },
+    {
+      title: `What's Inside?`,
+      imageUrl:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/tutorial_value_0b41c88c71.png?updated_at=2022-06-10T14:42:05.512Z",
+      content: "Actionise contains:",
+      content_2:
+        "• 150 mini interactive lessons • 100 questions • 200 actions & tasks • 100 books worth of wisdom",
+      button: "Next",
+    },
+
     {
       title: "Select 3 Categories of Interest",
       description: "You can change this later",
@@ -71,7 +85,7 @@ const OnboardingSlider = ({ closeModal }) => {
     },
     {
       title: "Got a Buddy Code?",
-      description: "",
+      description: "You can skip this if you don't have a code",
       imageUrl: "",
       component: (
         <>
@@ -85,6 +99,14 @@ const OnboardingSlider = ({ closeModal }) => {
           />
         </>
       ),
+    },
+    {
+      title: `Let's Start`,
+      imageUrl:
+        "https://backendactionise.s3.eu-west-1.amazonaws.com/digital_declutter_fc71581fd2.png?updated_at=2022-06-04T10:10:04.811Z",
+      content:
+        "Before you start your journey, remember to have fun and enjoy the learning process!",
+      button: "Let's Begin!",
     },
   ];
 
@@ -100,6 +122,8 @@ const OnboardingSlider = ({ closeModal }) => {
   const description = slides[slideIndex].description;
   const imageUrl = slides[slideIndex].imageUrl;
   const component = slides[slideIndex].component;
+  const content = slides[slideIndex].content;
+  const content_2 = slides[slideIndex].content_2;
 
   return (
     <div className={styles["onboarding-slider"]}>
@@ -109,6 +133,8 @@ const OnboardingSlider = ({ closeModal }) => {
           <h2 className={styles.title}>{title}</h2>
           {description && <p className={styles.description}>{description}</p>}
           {component && <>{component}</>}
+          {content && <p className={styles.content}>{content}</p>}
+          {content_2 && <p className={styles.content}>{content_2}</p>}
         </div>
 
         <div className={styles.cta}>

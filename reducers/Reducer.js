@@ -55,7 +55,7 @@ const Reducer = (store, action) => {
         claimed_artifacts: [...store.claimed_artifacts, action.data],
         notifications: {
           ...store.notifications,
-          streaks: store.notifications.streaks - 1,
+          artifacts: store.notifications.artifacts - 1,
         },
       };
 
@@ -82,14 +82,25 @@ const Reducer = (store, action) => {
       };
 
     case "ADD_USERCARD":
+      const updateUserCards = (store) => {
+        if (
+          store.usercards.filter(
+            (uc) => uc.id == action.data.userCardWithCard.id
+          ).length > 0
+        ) {
+          return store.usercards.map((usercard) =>
+            usercard.id == action.data.userCardWithCard.id
+              ? action.data.userCardWithCard
+              : usercard
+          );
+        } else {
+          return [...store.usercards, action.data.userCardWithCard];
+        }
+      };
+
       return {
         ...store,
-        // [...store.usercards, action.data.userCardWithCard]
-        usercards: store.usercards.map((usercard) =>
-          usercard.id === action.data.userCardWithCard.id
-            ? action.data.userCardWithCard
-            : usercard
-        ),
+        usercards: updateUserCards(store),
         rewardsModal: {
           isOpen: action.data?.rewards?.artifact,
           rewards: action.data?.rewards,
@@ -155,6 +166,10 @@ const Reducer = (store, action) => {
             action.data.rewards_tower,
             action.data.levelRewards || store.allLevelRewards,
             action.data.pro
+          ),
+          artifacts: calcArtifactsReady(
+            action.data.artifacts,
+            action.data.claimed_artifacts
           ),
         },
       };

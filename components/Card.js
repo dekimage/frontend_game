@@ -11,10 +11,6 @@ import styles from "@/styles/Card.module.scss";
 import { useContext } from "react";
 import baseUrl from "@/utils/settings";
 import { ProLabel } from "@/pages/shop";
-import {
-  MASTERY_PER_PROGRAM_COMPLETE,
-  PROGRAM_COMPLETED_MAX,
-} from "@/data/config";
 
 export const CardType = ({ type }) => {
   return <div className={cx(styles.type, styles[type])}>{type}</div>;
@@ -101,7 +97,8 @@ const Card = ({ card, setCardTabTo = false, isFromShop = false }) => {
   const coming_soon = card.card?.coming_soon || card.coming_soon;
 
   const isUnlocked =
-    !isPremiumLocked && (card.is_open || card.is_unlocked) && !coming_soon;
+    (!isPremiumLocked && (card.is_open || card.is_unlocked) && !coming_soon) ||
+    (card.type == "premium" && store.user.pro);
   const cardTickets = store?.user?.card_tickets || [];
   const isTicketPurchased = !!cardTickets.find((c) => c.id == card.id);
 

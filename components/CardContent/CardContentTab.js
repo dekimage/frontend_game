@@ -849,6 +849,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
 
       <Modal
         isShowing={store.rewardsModal?.isOpen}
+        closeModal={() => dispatch({ type: "CLOSE_REWARDS_MODAL" })}
         showCloseButton={false}
         jsx={<RewardsModal />}
         isSmall

@@ -160,9 +160,6 @@ export const rateCard = (dispatch, rating, cardId, feedbackType) => {
     .rateCardApi(rating, cardId, feedbackType)
     .then((res) => {
       feedbackType === "message" && toast("Thank you for your feedback.");
-      feedbackType === "message" &&
-        res.data.hasRated &&
-        toast("You gained 25 Stars");
     })
     .catch((err) => {
       console.log(err);

@@ -4,6 +4,11 @@ import Countdown from "./Countdown";
 import Link from "next/link";
 
 export default function EnergyModal({ closeModal }) {
+  useEffect(() => {
+    return () => {
+      closeModal();
+    };
+  }, []);
   return (
     <div className={styles.energyModal}>
       <div className="mt1"> Sorry, you don't have enough energy.</div>
