@@ -9,6 +9,7 @@ import baseUrl from "@/utils/settings";
 import { buyCardTicket, updateCard } from "@/actions/action";
 import { ProLabel } from "@/pages/shop";
 import { MASTERY_PER_PROGRAM_COMPLETE } from "@/data/config";
+import { formatDuration } from "@/utils/calculations";
 
 const feUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -17,7 +18,8 @@ export const ChatAction = ({ action }) => {
     <div className={styles.action}>
       <div className={styles.action_closed}>
         <div className={styles.action_img}>
-          {action.image?.url && <img src={`${baseUrl}${action.image.url}`} />}
+          {/* {action.image?.url && <img src={`${baseUrl}${action.image.url}`} />} */}
+          <ImageUI isPublic height={30} width={30} url={"/action.png"} />
         </div>
         <div className={styles.action_box}>
           <div className={styles.action_header}>
@@ -28,7 +30,7 @@ export const ChatAction = ({ action }) => {
             <div className={styles.action_grouper}>
               <div className={styles.action_type}>{action.type}</div>
               <div className={styles.action_duration}>
-                {action.duration} min
+                {formatDuration(action.duration)}
               </div>
             </div>
           </div>
@@ -158,7 +160,6 @@ export const CompleteCardSection = ({
     }
     return 86400000 - timeDiff;
   }
-  console.log(card.id);
 
   return (
     <div style={{ marginBottom: "2rem" }} className="flex_center">

@@ -260,7 +260,7 @@ const Coaching = ({ setModal, user, dispatch }) => {
         </div>
 
         <div className={styles.subscription_monthly}>
-          (Free 15 minutes test session)
+          (Free 15 minutes session)
         </div>
       </div>
     </div>

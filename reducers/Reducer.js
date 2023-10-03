@@ -53,6 +53,10 @@ const Reducer = (store, action) => {
       return {
         ...store,
         claimed_artifacts: [...store.claimed_artifacts, action.data],
+        notifications: {
+          ...store.notifications,
+          streaks: store.notifications.streaks - 1,
+        },
       };
 
     case "REWARD_MODAL":

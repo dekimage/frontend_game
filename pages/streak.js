@@ -196,10 +196,9 @@ const StreakTower = (props) => {
           <div className={styles.streakTitle}>
             <div style={{ position: "relative" }}>
               <img src={`${baseUrl}/streak.png`} height="60px" />
-            </div>
-
-            <div className={styles.streakTitle_amount}>
-              {user.highest_streak_count}
+              <div className={styles.streakTitle_amount}>
+                {user.highest_streak_count}
+              </div>
             </div>
           </div>
           <div className={styles.subTitle}>Log in daily to unlock rewards.</div>

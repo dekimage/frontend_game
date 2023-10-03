@@ -20,6 +20,7 @@ import {
   MASTERY_PER_PROGRAM_COMPLETE,
   PROGRAM_COMPLETED_MAX,
 } from "@/data/config";
+import { ImageUI } from "./reusableUI";
 
 //MAYBE IN CARD PLAYER?
 export const RatingModal = ({ closePlayer, cardId, usercard }) => {
@@ -152,16 +153,18 @@ export const CatReply = ({ message }) => {
   );
 };
 
-export const CatContent = ({ message }) => {
+export const CatContent = ({ message, cardImg }) => {
   return (
     <div className="chat-thread">
       <div className="message ">
         <div
           className="avatar"
           style={{
-            backgroundImage: `url(${baseUrl}/cat.png`,
+            backgroundImage: `url (${cardImg})`,
+            // ` url(${baseUrl}/cat.png`,
           }}
         >
+          <ImageUI url={cardImg} height={50} width={50} />
           avatar
         </div>
         <div className="message-content">
@@ -267,7 +270,7 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
       <div className={styles.ctaStepInfobar}>
         <div className={styles.ctaStepInfobar_nameAndGreen}>
           <div className="flex_center">
-            You are now doing {lastMessage.action.name}
+            {lastMessage.action.name}
             <div className={styles.greenCircle}></div>
           </div>
         </div>
@@ -277,11 +280,11 @@ const ButtonWithTimer = ({ lastMessage, openNextIdea, goNext }) => {
         </div>
       </div>
 
-      <TodoItem
+      {/* <TodoItem
         todo={lastMessage.task}
         isChecked={isChecked}
         setIsChecked={setIsChecked}
-      />
+      /> */}
 
       <div className={styles.ctaButtonWrapper}>
         {!isTimerCompleted ? (
@@ -386,7 +389,7 @@ export const ChatCta = ({
                     <div>{lastMessage.title}</div>
                   ) : (
                     <div className="flex_center">
-                      You are now doing {lastMessage.action.name}
+                      {lastMessage.action.name}
                       <div className={styles.greenCircle}></div>
                     </div>
                   )}

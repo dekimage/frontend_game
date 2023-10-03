@@ -183,10 +183,9 @@ const FriendsTower = (props) => {
           <div className={styles.streakTitle}>
             <div style={{ position: "relative" }}>
               <img src={`${baseUrl}/user.png`} height="60px" />
-            </div>
-
-            <div className={styles.streakTitle_amount}>
-              {user.highest_buddy_shares}
+              <div className={styles.streakTitle_amount}>
+                {user.highest_buddy_shares}
+              </div>
             </div>
           </div>
           <div className={styles.subTitle}>

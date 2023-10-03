@@ -14,6 +14,7 @@ import DeleteConfirmModal from "@/components/Modals/DeleteConfirmModal";
 
 const EmailSettings = ({ emailPreferences }) => {
   const [store, dispatch] = useContext(Context);
+
   const [settings, setSettings] = useState(emailPreferences);
 
   const isSettingsSame = isEqual(emailPreferences, settings);
@@ -188,7 +189,7 @@ const EditAccount = ({
   const isGender = inputName === "Gender";
   const [genderSelected, setGenderSelected] = useState(isGender && inputValue);
 
-  const isValueSame = inputValue === input;
+  const isValueSame = inputValue == input;
 
   const getInputName = (inputName) => {
     if (inputName === "Name") {
@@ -235,6 +236,7 @@ const EditAccount = ({
             type={inputType}
             name={inputName}
             placeholder={inputValue}
+            value={input}
             className="input mt5"
           />
         </div>
@@ -254,7 +256,7 @@ const EditAccount = ({
       <Button
         type={"outline"}
         onClick={() => handleBack(activeSettings, setActiveSettings)}
-        children={"Cancel"}
+        children={"Back"}
         isLoading={store.isLoading}
         autofit
       />
@@ -369,6 +371,7 @@ const Settings = () => {
       <div className="section_container">
         <div className={styles.header}>
           <BackButton
+            isBack
             routeStatic="/profile"
             callback={() => handleBack(activeSettings, setActiveSettings)}
           />

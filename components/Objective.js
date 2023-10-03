@@ -85,7 +85,11 @@ const Objective = ({
         className={styles.objective_checkmark}
         onClick={() => {
           if (fromNotification) {
-            Router.push("/");
+            // Router.push("/");
+            !isCollected &&
+              progress >= requirement_amount &&
+              !isPremium &&
+              claimObjective(dispatch, id);
           } else {
             !isCollected &&
               progress >= requirement_amount &&

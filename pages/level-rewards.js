@@ -90,19 +90,6 @@ const LevelRewardsTower = (props) => {
     return levels;
   };
 
-  // console.log(
-  //   data &&
-  //     joinArrays(filterPremium(data.levelrewards, "free")).sort(
-  //       (a, b) => a.level - b.level
-  //     )
-  // );
-  // console.log(
-  //   data &&
-  //     joinArrays(filterPremium(data.levelrewards, "premium")).sort(
-  //       (a, b) => a.level - b.level
-  //     )
-  // );
-
   return (
     <div className="background_dark">
       <>

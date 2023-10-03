@@ -140,6 +140,7 @@ const Player = (props) => {
             {chatSlides.map((slide, i) => {
               return (
                 <ContentTheory
+                  card={data.card}
                   slide={slide}
                   goNext={goNext}
                   lastSlideIndex={chatSlides.length}

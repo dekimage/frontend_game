@@ -114,8 +114,6 @@ export const notifyMe = createAction("notifyMe", {
 // updateCard: new_disable, favorite, complete, unlock
 
 export const updateCard = (dispatch, cardId, action) => {
-  console.log(cardId, action);
-
   api
     .updateCardApi(cardId, action)
     .then((res) => {
@@ -137,6 +135,7 @@ export const updateCard = (dispatch, cardId, action) => {
             type: REDUCER_TYPES.ADD_USERCARD,
             data: res.data,
           });
+          refreshUser(dispatch);
           break;
 
         case "favorite":

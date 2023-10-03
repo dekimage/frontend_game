@@ -12,6 +12,7 @@ import _ from "lodash";
 import styles from "@/styles/Player.module.scss";
 
 export const ContentTheory = ({
+  card,
   slide,
   goNext,
   lastSlideIndex,
@@ -186,10 +187,10 @@ export const ContentTheory = ({
         return (
           <div className={styles.chatWrapper} key={i}>
             {message.type === "idea" && (
-              <CatContent message={message} key={i} />
+              <CatContent message={message} cardImg={card.image?.url} key={i} />
             )}
             {message.type === "step" && (
-              <CatContent message={message} key={i} />
+              <CatContent message={message} cardImg={card.image?.url} key={i} />
             )}
             {message.type === "action" && (
               <ChatAction action={message} startAction={openNextIdea} />

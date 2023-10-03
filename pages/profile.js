@@ -40,7 +40,6 @@ const getColorByRarity = (rarity) => {
 };
 
 export const ArtifactModal = ({ artifact }) => {
-  // console.log(111, artifact);
   let className;
   switch (artifact.rarity) {
     case "rare":
@@ -227,7 +226,17 @@ const Profile = () => {
         progress: user.stats[artifact.type] || progress || 0,
       };
     });
-    return progressArray;
+
+    const progressArrayWithPercentage = progressArray.map((artifact) => {
+      const changedArtifact = {
+        ...artifact,
+        progressPercentage: (artifact.progress / artifact.require) * 100 || 0,
+      };
+
+      return changedArtifact;
+    });
+
+    return progressArrayWithPercentage;
   };
 
   const tabsData = [
@@ -378,9 +387,16 @@ const Profile = () => {
                   store.artifacts,
                   store.claimed_artifacts,
                   store.user
-                ).map((artifact, i) => {
-                  return <Artifact key={i} artifact={artifact} />;
-                })}
+                )
+                  .sort((a, b) => {
+                    if (a.isClaimed && !b.isClaimed) return -1;
+                    if (!a.isClaimed && b.isClaimed) return 1;
+
+                    return b.progressPercentage - a.progressPercentage;
+                  })
+                  .map((artifact, i) => {
+                    return <Artifact key={i} artifact={artifact} />;
+                  })}
               </div>
             </div>
           )}

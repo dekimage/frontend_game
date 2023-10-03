@@ -110,10 +110,22 @@
   position: relative;
   &_amount {
     position: absolute;
-    color: white;
-    font-size: 26px;
+    bottom: 0;
+    right: -5px;
+    @extend %flex_center;
+    background-color: $actionize_gray;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
     font-weight: 500;
-    @extend %absolute_center;
+    font-size: 12px;
+
+    // position: absolute;
+
+    // color: white;
+    // font-size: 26px;
+    // font-weight: 500;
+    // @extend %absolute_center;
   }
 }
 

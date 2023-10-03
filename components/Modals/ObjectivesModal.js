@@ -1,10 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "@/context/store";
 import Objective from "../Objective";
 
 export const ObjectivesModal = () => {
   const [store, dispatch] = useContext(Context);
   const objectives = store.objectivesModal.data;
+
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "CLOSE_OBJECTIVES_MODAL" });
+    };
+  }, []);
 
   return (
     <div>
@@ -23,7 +29,7 @@ export const ObjectivesModal = () => {
           className="btn btn-primary"
           onClick={() => dispatch({ type: "CLOSE_OBJECTIVES_MODAL" })}
         >
-          Great!
+          Back to Card
         </div>
       </div>
     </div>

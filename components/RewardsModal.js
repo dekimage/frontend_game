@@ -31,6 +31,12 @@ export const RewardsModal = () => {
   const [counter, setCounter] = useState(pages.length);
 
   useEffect(() => {
+    return () => {
+      dispatch({ type: "CLOSE_REWARDS_MODAL" });
+    };
+  }, []);
+
+  useEffect(() => {
     setPages(
       rewards
         ? Object.keys(rewards).filter(
@@ -159,7 +165,7 @@ export const RewardsModal = () => {
             className="btn btn-primary mt1"
             onClick={() => closeRewardsModal(dispatch)}
           >
-            Okay
+            Claim
           </div>
         ) : (
           <div className="btn btn-primary m1" onClick={nextPage}>

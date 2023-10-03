@@ -749,7 +749,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
           <Modal
             isShowing={isEnergyModalOpen}
             closeModal={() => setIsEnergyModalOpen(false)}
-            jsx={<EnergyModal />}
+            jsx={<EnergyModal closeModal={() => setIsEnergyModalOpen(false)} />}
             isSmall
           />
         )}
@@ -821,7 +821,7 @@ const CardContentTab = ({ card, usercard, programData }) => {
                   width={24}
                   className="mr5"
                 />
-                Active
+                Open Today
               </div>
             )}
           </div>

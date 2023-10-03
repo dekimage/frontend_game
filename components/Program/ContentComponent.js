@@ -10,9 +10,10 @@ import iconTasks from "@/assets/iconTasks.svg";
 
 import styles from "@/styles/Course.module.scss";
 
-const countTasks = (content) =>
-  content?.action?.steps.filter((item) => item.task).length;
+const countSteps = (content) => content.action?.steps?.length;
 const countMessages = (input) => input.split("\n\n").length;
+// const actionDuration = (content) =>
+//   content.action?.steps?.map((step) => step.timer).reduce((a, b) => a + b, 0);
 
 export const ContentComponent = ({
   content,
@@ -25,11 +26,11 @@ export const ContentComponent = ({
   const contentStats =
     content.type == "action"
       ? [
-          { icon: iconClock, amount: content.duration, label: "min" },
+          { icon: iconClock, amount: content.action?.duration, label: "min" },
           {
             icon: iconTasks,
-            amount: countTasks(content),
-            label: "tasks",
+            amount: countSteps(content),
+            label: "action steps",
           },
         ]
       : [
@@ -74,14 +75,19 @@ export const ContentComponent = ({
 
           <div className={styles.contentTitle}>{content.title}</div>
           <div className={styles.contentFooter}>
-            {contentStats.map((cs, i) => (
+            <ContentStat
+              icon={contentStats[1].icon}
+              amount={contentStats[1].amount}
+              label={contentStats[1].label}
+            />
+            {/* {contentStats.map((cs, i) => (
               <ContentStat
                 icon={cs.icon}
                 amount={cs.amount}
                 label={cs.label}
                 key={i}
               />
-            ))}
+            ))} */}
           </div>
         </div>
         <div className="flex_center">

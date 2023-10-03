@@ -1,3 +1,12 @@
+export const formatDuration = (durationInSeconds) => {
+  if (durationInSeconds < 60) {
+    return `${durationInSeconds} sec`;
+  } else {
+    const minutes = Math.floor(durationInSeconds / 60);
+    return `${minutes} min`;
+  }
+};
+
 export const isReadyToComplete = (timestamp) => {
   const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   const currentTime = Date.now(); // Current timestamp in milliseconds

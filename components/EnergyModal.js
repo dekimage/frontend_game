@@ -3,7 +3,7 @@ import styles from "@/styles/EnergyModal.module.scss";
 import Countdown from "./Countdown";
 import Link from "next/link";
 
-export default function EnergyModal() {
+export default function EnergyModal({ closeModal }) {
   return (
     <div className={styles.energyModal}>
       <div className="mt1"> Sorry, you don't have enough energy.</div>
@@ -13,7 +13,12 @@ export default function EnergyModal() {
         <Countdown tab={"daily"} type="energy" />
       </div>
       <div className={styles.title}> or </div>
-      <Link href={`/shop`}>
+      <Link
+        href={`/shop`}
+        onClick={() => {
+          closeModal();
+        }}
+      >
         <div className="btn btn-action mt1">Purchase Energy</div>
       </Link>
     </div>
