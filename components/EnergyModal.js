@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "@/styles/EnergyModal.module.scss";
 import Countdown from "./Countdown";
 import Link from "next/link";
