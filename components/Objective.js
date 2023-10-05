@@ -129,7 +129,6 @@ const Objective = ({
               <div
                 className="btn btn-action"
                 onClick={() => {
-                  console.log(requirement);
                   if (fromNotification) {
                     Router.push("/");
                   } else {
