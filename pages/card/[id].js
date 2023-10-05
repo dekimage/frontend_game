@@ -177,10 +177,10 @@ const CardPage = ({ dataUserCard, dataCard }) => {
 
         <Modal
           isShowing={store.energyModal}
-          closeModal={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
+          closeModal={() => dispatch({ type: "CLOSE_ENERGY_MODAL" })}
           jsx={
             <EnergyModal
-              closeModal={() => dispatch({ type: "OPEN_ENERGY_MODAL" })}
+              closeModal={() => dispatch({ type: "CLOSE_ENERGY_MODAL" })}
             />
           }
           isSmall

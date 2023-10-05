@@ -66,14 +66,6 @@ export const withUser = (
       return <Loader />;
     }
 
-    if (error) {
-      return <FallbackComponent />;
-    }
-
-    if (!store.isAuthenticated) {
-      return <LandingPage />;
-    }
-
     if (!query && authToken && store.isAuthenticated) {
       return <WrappedComponent {...props} user={user} dispatch={dispatch} />;
     }
@@ -90,6 +82,14 @@ export const withUser = (
           />
         </div>
       );
+    }
+
+    if (error) {
+      return <FallbackComponent />;
+    }
+
+    if (!store.isAuthenticated) {
+      return <LandingPage />;
     }
 
     return (

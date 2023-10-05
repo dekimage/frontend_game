@@ -126,58 +126,68 @@ const OnboardingSlider = ({ closeModal }) => {
   const content_2 = slides[slideIndex].content_2;
 
   return (
-    <div className={styles["onboarding-slider"]}>
-      <div className={styles["slider-content"]}>
-        <div className={styles.slide}>
-          {imageUrl && <img src={imageUrl} alt="Onboarding Slide" />}
-          <h2 className={styles.title}>{title}</h2>
-          {description && <p className={styles.description}>{description}</p>}
-          {component && <>{component}</>}
-          {content && <p className={styles.content}>{content}</p>}
-          {content_2 && <p className={styles.content}>{content_2}</p>}
-        </div>
+    <div className="section">
+      <div className={styles["onboarding-slider"]}>
+        <div className={styles["slider-content"]}>
+          <div className={styles.slide}>
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Onboarding Slide"
+                height="200px"
+                width="200px"
+              />
+            )}
+            <h2 className={styles.title}>{title}</h2>
+            {description && <p className={styles.description}>{description}</p>}
+            {component && <>{component}</>}
+            {content && <p className={styles.content}>{content}</p>}
+            {content_2 && <p className={styles.content}>{content_2}</p>}
+          </div>
 
-        <div className={styles.cta}>
-          {slideIndex == REALM_SLIDE_INDEX && (
-            <>
-              <div className="mb1">
-                {favoriteRealms.length}/{3} Selected Categories
-              </div>
-              {favoriteRealms.length > 3 && (
-                <div className="input-error">
-                  Please Select Maximum 3 Categories
+          <div className={styles.cta}>
+            {slideIndex == REALM_SLIDE_INDEX && (
+              <>
+                <div className="mb1">
+                  {favoriteRealms.length}/{3} Selected Categories
                 </div>
-              )}
-            </>
-          )}
-          <SlideIndicator
-            totalSlides={slides.length}
-            currentSlideIndex={slideIndex}
-          />
+                {favoriteRealms.length > 3 && (
+                  <div className="input-error">
+                    Please Select Maximum 3 Categories
+                  </div>
+                )}
+              </>
+            )}
+            <SlideIndicator
+              totalSlides={slides.length}
+              currentSlideIndex={slideIndex}
+            />
 
-          <button onClick={prevSlide} disabled={slideIndex === 0}>
-            Back
-          </button>
-          {slideIndex === slides.length - 1 ? (
-            <button
-              onClick={() => {
-                submitTutorial(dispatch, favoriteRealms, buddyCode);
-                closeModal();
-              }}
-            >
-              Finish
+            <button onClick={prevSlide} disabled={slideIndex === 0}>
+              Back
             </button>
-          ) : (
-            <button
-              onClick={nextSlide}
-              disabled={
-                slideIndex === slides.length - 1 ||
-                (slideIndex == REALM_SLIDE_INDEX && favoriteRealms.length !== 3)
-              }
-            >
-              Next
-            </button>
-          )}
+            {slideIndex === slides.length - 1 ? (
+              <button
+                onClick={() => {
+                  submitTutorial(dispatch, favoriteRealms, buddyCode);
+                  closeModal();
+                }}
+              >
+                Finish
+              </button>
+            ) : (
+              <button
+                onClick={nextSlide}
+                disabled={
+                  slideIndex === slides.length - 1 ||
+                  (slideIndex == REALM_SLIDE_INDEX &&
+                    favoriteRealms.length !== 3)
+                }
+              >
+                Next
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

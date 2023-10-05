@@ -29,9 +29,9 @@ export const ChatAction = ({ action }) => {
           <div className={styles.action_header}>
             <div className={styles.action_grouper}>
               <div className={styles.action_type}>{action.type}</div>
-              <div className={styles.action_duration}>
+              {/* <div className={styles.action_duration}>
                 {formatDuration(action.duration)}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

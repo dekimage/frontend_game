@@ -233,7 +233,13 @@ const Reducer = (store, action) => {
     case "OPEN_ENERGY_MODAL":
       return {
         ...store,
-        energyModal: !store.energyModal,
+        energyModal: true,
+      };
+
+    case "CLOSE_ENERGY_MODAL":
+      return {
+        ...store,
+        energyModal: false,
       };
 
     case "CLOSE_REWARDS_MODAL":

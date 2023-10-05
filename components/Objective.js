@@ -67,7 +67,8 @@ const Objective = ({
           {description}
         </div>
         <div className={styles.objective_progress}>
-          {progress || 0}/{requirement_amount}
+          {(progress > requirement_amount ? requirement_amount : progress) || 0}
+          /{requirement_amount}
         </div>
 
         {/* COMPONENT PROGRESS */}

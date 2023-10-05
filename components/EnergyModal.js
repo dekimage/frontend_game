@@ -8,7 +8,7 @@ export default function EnergyModal({ closeModal }) {
     return () => {
       closeModal();
     };
-  }, []);
+  }, [closeModal]);
   return (
     <div className={styles.energyModal}>
       <div className="mt1"> Sorry, you don't have enough energy.</div>
