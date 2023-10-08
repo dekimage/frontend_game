@@ -402,9 +402,10 @@ const LandingPage = () => {
       <HeroSection navigateSignup={navigateSignup} />
       <FunnelSection />
       <div className={styles.divider}></div>
-      <ValuesSection />
-      <ReviewSection />
       <ScreensSection />
+      {/* <ValuesSection /> */}
+      <ReviewSection />
+
       <Footer />
       <FixedCta navigateSignup={navigateSignup} />
     </div>
