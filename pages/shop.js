@@ -156,7 +156,7 @@ const ProItem = ({ setModal, dispatch, id }) => {
             <div className={styles.proxySubs_benefit}>
               <img src={iconCheckmark} height="18px" className="mr5" />
               <ImageUI url={"/energy.png"} isPublic height="20px" />
-              20/20 Max Energy{" "}
+              50/50 Max Energy{" "}
               {/* <div
                 className="btn btn-outline ml5"
                 style={{ padding: ".25rem .5rem" }}
@@ -313,8 +313,8 @@ const Shop = () => {
         <ProItem setModal={setModal} dispatch={dispatch} id={proId} />
       )}
 
-      <div className="section">
-        {/* *** Energy *** */}
+      {/* <div className="section">
+ 
         <div className={styles.header}>Energy</div>
         <div className={styles.boxes}>
           {gql_data &&
@@ -334,7 +334,7 @@ const Shop = () => {
       </div>
 
       <div className="section">
-        {/* *** Stars *** */}
+     
         <div className={styles.header}>Stars</div>
         <div className={styles.boxes}>
           {gql_data &&
@@ -351,7 +351,7 @@ const Shop = () => {
                 );
               })}
         </div>
-      </div>
+      </div> */}
 
       <Coaching dispatch={dispatch} user={store.user} setModal={setModal} />
 
