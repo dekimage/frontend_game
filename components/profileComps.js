@@ -146,8 +146,9 @@ export const ProfileHeader = ({ buddy, isBuddy = false }) => {
               <img src={user.avatar?.image.url} height="66px" />
             </div>
           </div>
-
-          <div className={styles.username}>{user.username}</div>
+          <Link href="/settings?editName=true">
+            <div className={styles.username}>{user.username}</div>
+          </Link>
 
           {user.pro && <ProLabel />}
 

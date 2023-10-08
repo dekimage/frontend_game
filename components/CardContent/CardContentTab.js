@@ -565,7 +565,13 @@ const CardContentTab = ({ card, usercard, programData }) => {
             if (isUnlocked) {
               setContentPage(content);
               isNew &&
-                updateContentType(dispatch, "removeNew", card.id, type, id);
+                updateContentType(
+                  dispatch,
+                  "removeNew",
+                  router.query.id,
+                  type,
+                  id
+                );
             } else {
               setIsLockModalOpen(true);
             }

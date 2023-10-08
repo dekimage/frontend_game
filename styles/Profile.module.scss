@@ -41,9 +41,18 @@
 .username {
   margin: 0.5rem 0;
 
+  // background-color: $actionize_gray;
+  padding: 0.25rem 0.5rem;
+  border-radius: $border_radius;
+
   text-transform: capitalize;
   font-size: 24px;
   @extend %title;
+  cursor: pointer;
+  &:hover {
+    background-color: $actionize_gray_light;
+    transition: all 0.3s ease;
+  }
 }
 
 .level {

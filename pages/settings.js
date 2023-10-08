@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button } from "@/components/reusableUI";
 import { Context } from "@/context/store";
 import FeatureSuggestion from "@/components/FeatureSuggestion";
 import Switch from "@/components/reusable/SwitchThumb";
 import { logout } from "@/actions/auth";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import styles from "@/styles/Settings.module.scss";
 import { updateEmailSettings, updateUserBasicInfo } from "@/actions/action";
 import { BackButton } from "@/components/reusable/BackButton";
@@ -334,6 +334,13 @@ const Settings = () => {
   const [activeSettings, setActiveSettings] = useState("default");
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const user = store.user;
+  const router = useRouter();
+  useEffect(() => {
+    console.log(router.query);
+    if (router.query?.editName) {
+      setActiveSettings("editName");
+    }
+  }, [router.query]);
 
   if (!user) {
     return <div>loading...</div>;

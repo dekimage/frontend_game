@@ -14,7 +14,9 @@ export const updateContentType = (
     .updateContentTypeApi(action, cardId, contentType, contentTypeId)
     .then((res) => {
       if (action == "claim") {
+        dispatch({ type: REDUCER_TYPES.GQL_REFETCH, data: res.data });
         dispatch({ type: REDUCER_TYPES.REWARD_MODAL, data: res.data });
+        refreshUser(dispatch);
       }
 
       if (action == "complete" || action == "save" || action == "removeNew") {
