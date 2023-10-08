@@ -75,11 +75,12 @@ const Login = () => {
   return (
     <div className="background_dark">
       <div className="section">
-        <div className={styles.logo}>
-          <img src={iconLogo} />
-          <div>Actionise</div>
-        </div>
-
+        <Link href="/">
+          <div className={styles.logo}>
+            <img src={iconLogo} />
+            <div>Actionise</div>
+          </div>
+        </Link>
         {isLogin ? (
           <div>
             <div className={styles.label}>Login</div>
@@ -134,7 +135,7 @@ const Login = () => {
                   >
                     {error && error}
                   </div>
-
+                  <div className={styles.divider}></div>
                   <Button
                     type={"primary"}
                     className="mb1 mt1"

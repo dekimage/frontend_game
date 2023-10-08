@@ -68,6 +68,7 @@
   flex-grow: 1;
   height: 25%;
   justify-content: center;
+  margin-bottom: 3rem;
 }
 
 .dTitle {
@@ -94,6 +95,7 @@
   font-weight: 500;
   color: $actionize_gray_light;
   text-align: center;
+  margin: 1rem 0;
 }
 
 .valueTitle {
@@ -178,6 +180,9 @@
 .screenshot {
   // height: 500px;
   // max-width: 300px;
+  &_header {
+    height: 100px;
+  }
 }
 
 .footerLink {
@@ -200,4 +205,8 @@
   background-color: black;
   z-index: 1500;
   padding: 1rem;
+}
+
+.divider {
+  margin-top: 10rem;
 }

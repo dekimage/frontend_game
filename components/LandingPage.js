@@ -80,19 +80,21 @@ const Rating = ({ stars }) => {
 const descriptions = [
   {
     title: "1. Collect",
-    description: "We first collect data from 150+ books all around...",
+    description: "We first collect knowledge from 150+ books and videos...",
   },
   {
     title: "2. Process",
-    description: "We first collect data from 150+ books all around...",
+    description:
+      "We break down this knowledge into bite-sized pieces, making it digestible and easy to understand...",
   },
   {
     title: "3. Refine",
-    description: "We first collect data from 150+ books all around...",
+    description: "We filter the 20% essential gems and remove all FAT...",
   },
   {
     title: "4. Create",
-    description: "We first collect data from 150+ books all around...",
+    description:
+      "We pack all this goodness into our app, making your personal development journey fun and user-friendly!    ",
   },
 ];
 
@@ -126,38 +128,38 @@ const values = [
 const reviews = [
   {
     profileImg: "img",
-    name: "Dejan",
-    level: 21,
+    name: "Ana S.",
+    level: 18,
     comment:
-      "“I have learned a lot with Actionise on my daily life and improved myself”",
-    at: "8:35 PM - Mar 8, 2023",
+      "“I'm a visual learner, and this app simply hits the mark. The images help me remember the concepts and make my learning journey so much more enjoyable. Love it!“",
+    at: "6:24 PM - October 03, 2023",
     stars: 5,
   },
   {
     profileImg: "img",
-    name: "Robert",
+    name: "Neno B.",
+    level: 22,
+    comment:
+      "“I like the gamification aspect of it. It really motivates me to play & learn a bit every day.”",
+    at: "8:35 PM - September 19, 2023",
+    stars: 4,
+  },
+  {
+    profileImg: "img",
+    name: "Robert T.",
     level: 33,
     comment:
-      "“I have learned a lot with Actionise on my daily life and improved myself”",
-    at: "4:34 PM - April 15, 2022",
+      "“I was looking for a way to apply the theory to real life, and this app does exactly that. The practical actions bring the concepts home. Fantastic job!”",
+    at: "4:34 PM - September 04, 2023",
     stars: 5,
   },
   {
     profileImg: "img",
-    name: "Smiki",
-    level: 14,
+    name: "Senad R.",
+    level: 16,
     comment:
-      "“I have learned a lot with Actionise on my daily life and improved myself”",
-    at: "8:35 PM - Mar 8, 2023",
-    stars: 5,
-  },
-  {
-    profileImg: "img",
-    name: "Smiki",
-    level: 14,
-    comment:
-      "“I have learned a lot with Actionise on my daily life and improved myself”",
-    at: "8:35 PM - Mar 8, 2023",
+      "“The user-friendly design is easy to navigate, and the content is spot on! This app provides practical self-development lessons in a digestible format. Can't recommend it enough!”",
+    at: "9:35 AM - August 08, 2023",
     stars: 5,
   },
 ];
@@ -203,7 +205,20 @@ const HeroSection = ({ navigateSignup }) => {
 const FunnelSection = () => {
   return (
     <div className="landing-section" style={{ flexDirection: "row" }}>
-      <div className={styles.funnelImg}>funnel img</div>
+      <div className={styles.funnelDescriptionList}>
+        {descriptions.map((d, i) => {
+          return (
+            <div className={styles.dContainer} key={i}>
+              <ImageUI
+                isPublic
+                url={`/p${i + 1}.png`}
+                height={150}
+                width={150}
+              />
+            </div>
+          );
+        })}
+      </div>
       <div className={styles.funnelDescriptionList}>
         {descriptions.map((d, i) => {
           return (
@@ -220,8 +235,8 @@ const FunnelSection = () => {
 
 const ValuesSection = () => {
   return (
-    <div className="landing-section  ">
-      <div className={styles.title}>Application Values</div>
+    <div className="landing-section">
+      <div className={styles.title}>Actionise Values</div>
       <div className={styles.valuesList}>
         {values.map((v, i) => {
           return (
@@ -243,40 +258,41 @@ const ValuesSection = () => {
 const images = [
   {
     url: "https://backendactionise.s3.eu-west-1.amazonaws.com/today_screenshot_459189a002.png?updated_at=2023-03-22T12:56:10.375Z",
-    title: "Title random 1",
-    description: "description longer text what you can do on the app here",
+    title: "Objectives",
+    description:
+      "Learn a tiny bit every day to complete objectives and earn rewards",
   },
   {
     url: "https://backendactionise.s3.eu-west-1.amazonaws.com/learn_screenshot_531b26c31d.png?updated_at=2023-03-22T15:17:32.754Z",
-    title: "Title random 1",
-    description: "description longer text what you can do on the app here",
+    title: "Categories",
+    description: "We offer multiple areas of self-development to explore",
   },
   {
     url: "https://backendactionise.s3.eu-west-1.amazonaws.com/realms_screenshot_84eb532dbe.png?updated_at=2023-03-22T15:18:19.705Z",
-    title: "Title random 1",
-    description: "description longer text what you can do on the app here",
+    title: "Concept Cards",
+    description: "Explore 100+ concepts visualized as collectable cards.",
   },
   {
     url: "https://backendactionise.s3.eu-west-1.amazonaws.com/cardscreenshot_e229e1641b.png?updated_at=2023-03-22T15:18:07.319Z",
-    title: "Title random 1",
-    description: "description longer text what you can do on the app here",
+    title: "Card Details",
+    description: "Each concept card has detailed program and actions to take.",
   },
   {
     url: "https://backendactionise.s3.eu-west-1.amazonaws.com/profile_screenshot_9a10fefb95.png?updated_at=2023-03-22T15:17:47.165Z",
-    title: "Title random 1",
-    description: "description longer text what you can do on the app here",
+    title: "Profile",
+    description: "Track your progress and collect rewards as you learn.",
   },
 ];
 
 const imagesJsx = images.map((img, i) => {
   return (
     <div className={styles.screenshot} key={i}>
-      <div className="p1">
+      <div className={styles.screenshot_header}>
         <div className={styles.title}>{img.title}</div>
         <div className={styles.subTitle}>{img.description}</div>
       </div>
 
-      <img src={img.url} height="500px" />
+      <img style={{ marginTop: "1.5rem" }} src={img.url} height="500px" />
     </div>
   );
 });
@@ -305,7 +321,7 @@ const reviewsJsx = reviews.map((r, i) => {
 const ReviewSection = () => {
   return (
     <div className="landing-section">
-      <div className={styles.title}>See What Others Say About Us</div>
+      <div className={styles.title}>See What Others Say About Actionise</div>
       <div className={styles.reviewsList}>
         <SwipeableContainer children={reviewsJsx} />
       </div>
@@ -316,7 +332,7 @@ const ReviewSection = () => {
 const ScreensSection = () => {
   return (
     <div className="landing-section">
-      <div className={styles.title}>See What Others Say About Us</div>
+      <div className={styles.title}>Peak Inside The App</div>
       <div className={styles.reviewsList}>
         <SwipeableContainer children={imagesJsx} />
       </div>
@@ -381,6 +397,7 @@ const LandingPage = () => {
       <Header navigateSignup={navigateSignup} />
       <HeroSection navigateSignup={navigateSignup} />
       <FunnelSection />
+      <div className={styles.divider}></div>
       <ValuesSection />
       <ReviewSection />
       <ScreensSection />

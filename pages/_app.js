@@ -68,7 +68,7 @@ const MyApp = ({ Component, pageProps }) => {
           async
         ></script>
       </Head>
-      {/* <TestLab /> */}
+      <TestLab />
       <Component {...pageProps} />
       {isClient && (
         <ToastContainer
