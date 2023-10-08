@@ -347,8 +347,12 @@ const Footer = () => {
     <div className={styles.header} style={{ flexDirection: "column" }}>
       <div className="flex_between mt1">
         <div className={styles.footerLink}>@ 2023 Actionise Inc.</div>
-        <div className={styles.footerLink}>Terms & Conditions</div>
-        <div className={styles.footerLink}>Privacy Policy</div>
+        <Link href="/terms-of-service">
+          <div className={styles.footerLink}>Terms & Conditions</div>
+        </Link>
+        <Link href="/privacy-policy">
+          <div className={styles.footerLink}>Privacy Policy</div>
+        </Link>
       </div>
       <div className="flex_between">
         {icons.map((icon, i) => {
