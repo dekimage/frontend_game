@@ -112,7 +112,7 @@ export const ProLabel = () => {
   );
 };
 
-const ProItem = ({ setModal, dispatch, id }) => {
+const ProItem = ({ setModal, dispatch, id, openModal }) => {
   return (
     <div className="section">
       {/* <div className={styles.header}>Subscription</div> */}
@@ -169,8 +169,10 @@ const ProItem = ({ setModal, dispatch, id }) => {
         </div>
 
         <div
-          className="btn btn-primary"
-          onClick={() => purchaseProduct(dispatch, id, "apple")}
+          className="btn btn-action"
+          onClick={openModal}
+          style={{ fontSize: "18px", fontWeight: "bold" }}
+          // onClick={() => purchaseProduct(dispatch, id, "apple")}
         >
           Buy Pro $20
         </div>
@@ -184,7 +186,7 @@ const ProItem = ({ setModal, dispatch, id }) => {
   );
 };
 
-const Coaching = ({ setModal, user, dispatch }) => {
+const Coaching = ({ setModal, user, dispatch, openModal }) => {
   const [selectedPricing, setSelectedPricing] = useState("monthly");
   return (
     <div className="section">
@@ -243,17 +245,19 @@ const Coaching = ({ setModal, user, dispatch }) => {
           View Details
         </div> */}
         <div
-          className="btn btn-primary"
+          className="btn btn-action"
           // onClick={() => setModal("coachingDetails")}
           // onclick -> open calendly??
+          style={{ fontSize: "18px", fontWeight: "bold" }}
+          onClick={() => openModal()}
         >
-          Purchase Coaching Pack{" "}
-          {/* {selectedPricing === "monthly" ? "$950" : "$2700"} */}
+          Buy Coaching {selectedPricing === "monthly" ? "$950" : "$2700"}
         </div>
         <div className="mt1 mb1 ">OR</div>
 
         <div
-          className="btn btn-primary"
+          className="btn btn-green"
+          style={{ fontSize: "18px", fontWeight: "bold" }}
           onClick={() => window.open(CALENDY_LINK_URL, "_blank")}
         >
           Book Free Session
@@ -310,7 +314,12 @@ const Shop = () => {
       </div> */}
 
       {!store.user.pro && (
-        <ProItem setModal={setModal} dispatch={dispatch} id={proId} />
+        <ProItem
+          setModal={setModal}
+          dispatch={dispatch}
+          id={proId}
+          openModal={openModal}
+        />
       )}
 
       {/* <div className="section">
@@ -327,6 +336,7 @@ const Shop = () => {
                     setSelectedProduct={setSelectedProduct}
                     openModal={openModal}
                     key={i}
+
                   />
                 );
               })}
@@ -353,14 +363,19 @@ const Shop = () => {
         </div>
       </div> */}
 
-      <Coaching dispatch={dispatch} user={store.user} setModal={setModal} />
+      <Coaching
+        dispatch={dispatch}
+        user={store.user}
+        setModal={setModal}
+        openModal={openModal}
+      />
 
-      {/* <Modal
+      <Modal
         isShowing={isShowing}
         closeModal={closeModal}
         jsx={<PaymentSoonModal closeModal={closeModal} />}
         isSmall
-      /> */}
+      />
 
       <Modal
         isShowing={store.rewardsModal?.isOpen}
@@ -389,12 +404,12 @@ const Shop = () => {
         jsx={<ProCardsModal closeModal={() => setModal(null)} />}
       />
 
-      <Modal
+      {/* <Modal
         isShowing={isShowing}
         closeModal={closeModal}
         jsx={<BoxModal product={selectedProduct} closeModal={closeModal} />}
         isSmall
-      />
+      /> */}
 
       <NavBar />
     </div>

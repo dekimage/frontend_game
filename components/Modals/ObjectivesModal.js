@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Context } from "@/context/store";
 import Objective from "../Objective";
+import { useRouter } from "next/router";
 
 export const ObjectivesModal = () => {
   const [store, dispatch] = useContext(Context);
@@ -11,6 +12,8 @@ export const ObjectivesModal = () => {
       dispatch({ type: "CLOSE_OBJECTIVES_MODAL" });
     };
   }, []);
+
+  const router = useRouter();
 
   return (
     <div>
@@ -26,10 +29,13 @@ export const ObjectivesModal = () => {
       ))}
       <div className="flex_center">
         <div
-          className="btn btn-primary"
+          className="btn btn-primary mr5"
           onClick={() => dispatch({ type: "CLOSE_OBJECTIVES_MODAL" })}
         >
           Back to Card
+        </div>
+        <div className="btn btn-primary" onClick={() => router.push("/")}>
+          Go to Objectives
         </div>
       </div>
     </div>

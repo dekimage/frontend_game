@@ -82,56 +82,47 @@ const Objective = ({
         </div>
       </div>
 
-      <div
-        className={styles.objective_checkmark}
-        onClick={() => {
-          if (fromNotification) {
-            // Router.push("/");
+      {!fromNotification && (
+        <div
+          className={styles.objective_checkmark}
+          onClick={() => {
             !isCollected &&
               progress >= requirement_amount &&
               !isPremium &&
               claimObjective(dispatch, id);
-          } else {
-            !isCollected &&
-              progress >= requirement_amount &&
-              !isPremium &&
-              claimObjective(dispatch, id);
-          }
 
-          event({
-            action: "search",
-            params: {
-              search_term: "test",
-            },
-          });
-        }}
-      >
-        <div className={styles.progressCounter}></div>
-        {isCollected ? (
-          <img
-            src={isCollected ? iconCheckmark : iconCheckmarkFill}
-            style={{ width: "40px" }}
-          />
-        ) : (
-          <>
-            {progress >= requirement_amount ? (
-              isPremium ? (
-                <div
-                  className="btn btn-action"
-                  onClick={() => Router.push(`/shop`)}
-                >
-                  Upgrade
-                </div>
+            event({
+              action: "search",
+              params: {
+                search_term: "test",
+              },
+            });
+          }}
+        >
+          <div className={styles.progressCounter}></div>
+
+          {isCollected ? (
+            <img
+              src={isCollected ? iconCheckmark : iconCheckmarkFill}
+              style={{ width: "40px" }}
+            />
+          ) : (
+            <>
+              {progress >= requirement_amount ? (
+                isPremium ? (
+                  <div
+                    className="btn btn-action"
+                    onClick={() => Router.push(`/shop`)}
+                  >
+                    Upgrade
+                  </div>
+                ) : (
+                  <div className="btn btn-action">Claim!</div>
+                )
               ) : (
-                <div className="btn btn-action">Claim!</div>
-              )
-            ) : (
-              <div
-                className="btn btn-action"
-                onClick={() => {
-                  if (fromNotification) {
-                    Router.push("/");
-                  } else {
+                <div
+                  className="btn btn-green"
+                  onClick={() => {
                     if (isPremium) {
                       Router.push(`/shop`);
                     } else {
@@ -146,22 +137,22 @@ const Objective = ({
                         Router.push("/learn");
                       }
                     }
-                  }
 
-                  event({
-                    action: "search",
-                    params: {
-                      search_term: "test",
-                    },
-                  });
-                }}
-              >
-                {isPremium ? "Upgrade" : "Start"}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+                    event({
+                      action: "search",
+                      params: {
+                        search_term: "test",
+                      },
+                    });
+                  }}
+                >
+                  {isPremium ? "Upgrade" : "Start"}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };

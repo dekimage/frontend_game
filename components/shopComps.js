@@ -67,22 +67,40 @@ export const PaymentSoonModal = ({ closeModal }) => {
 
   return (
     <div className="flex_center flex_column">
+      <div style={{ fontWeight: "700" }} className="title mb1">
+        Purchases Not Available
+      </div>
       <Lottie
         animationData={boxLottie}
         loop={true}
         style={{ width: "150px" }}
       />
-      <div className="title mb1">Purchases Not Available</div>
-      <div style={{ fontSize: "14px", textAlign: "center" }}>
-        Hey! Thanks for being here! <br />
-        Currently the app is in Testing Beta. <br />
-        Payments will be avialable once it launches on Playstore (Android) & App
-        Store (IOS). <br />
-        If you are interested in purchasing stars or becoming a pro member, we
-        can send you an email once it's available.
-      </div>
 
-      {store.user?.is_notify_me ? (
+      <div style={{ fontSize: "14px", textAlign: "center" }}>
+        Hey! Thank you for being here! <br />
+        <div>&nbsp;</div>
+        Official payments will be available soon, but for now, you can support
+        us by buying us a coffee! :)
+        <div>&nbsp;</div>
+        You can also buy Actionise PRO through the link, as well as Stars, or
+        Energy.
+        <div>&nbsp;</div>
+        (Rewards gained via buying a coffee will be available within 24 hours on
+        your profile)
+      </div>
+      <a
+        href="https://www.buymeacoffee.com/actionise"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button
+          type={"primary"}
+          children={"Buy Us a Coffee"}
+          className="mb1 mt2"
+        />
+      </a>
+
+      {/* {store.user?.is_notify_me ? (
         <div className={styles.notifiedLabel}>
           We'll notify you{" "}
           <img
@@ -104,7 +122,7 @@ export const PaymentSoonModal = ({ closeModal }) => {
             children={"Not Interested"}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

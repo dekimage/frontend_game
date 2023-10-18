@@ -483,7 +483,11 @@ const CardContentTab = ({ card, usercard, programData }) => {
               }}
             >
               Mark as{" "}
-              {type == "exercise" || type == "question" ? "Complete" : "Read"}
+              {type == "exercises"
+                ? "Complete"
+                : type == "questions"
+                ? "Answered"
+                : "Read"}
               <ImageUI
                 url="/energy.png"
                 height="20px"

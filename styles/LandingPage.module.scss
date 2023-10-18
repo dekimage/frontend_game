@@ -72,7 +72,7 @@
 }
 
 .dTitle {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
@@ -80,11 +80,18 @@
 .dDescription {
   font-size: 14px;
   font-weight: 500;
-  color: $actionize_gray_light;
+  // color: $actionize_gray_light;
+}
+
+.iTitle {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .title {
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 500;
   text-align: center;
   // max-width: 50%;
@@ -159,7 +166,6 @@
 .swipeableContainer {
   overflow-x: hidden;
   overflow-y: auto;
-  // height: 200px;
   height: auto;
   width: 95vw;
   margin: 0 auto;

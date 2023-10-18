@@ -288,7 +288,7 @@ const imagesJsx = images.map((img, i) => {
   return (
     <div className={styles.screenshot} key={i}>
       <div className={styles.screenshot_header}>
-        <div className={styles.title}>{img.title}</div>
+        <div className={styles.iTitle}>{img.title}</div>
         <div className={styles.subTitle}>{img.description}</div>
       </div>
 
@@ -332,7 +332,7 @@ const ReviewSection = () => {
 const ScreensSection = () => {
   return (
     <div className="landing-section">
-      <div className={styles.title}>Peak Inside The App</div>
+      <div className={styles.title}>Peek Inside The App</div>
       <div className={styles.reviewsList}>
         <SwipeableContainer children={imagesJsx} />
       </div>
