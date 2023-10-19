@@ -66,6 +66,9 @@
   padding: 0 0.5rem;
   font-size: 18px;
   padding-bottom: 5rem;
+  li {
+    margin-bottom: 10px;
+  }
 }
 
 .bookmarkButton {
@@ -287,9 +290,10 @@
   justify-content: space-between;
   font-size: 16px;
   font-weight: 500;
-  height: 7rem;
-  margin: 1rem;
+  height: 8rem;
+  margin: 1rem 0;
   padding: 1rem;
+  padding-bottom: 1.5rem;
   border: 2px solid $actionize_gray;
   border-radius: $border-radius;
   &_title {
@@ -316,8 +320,8 @@
 
 .doneToday {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -5px;
+  right: -5px;
   padding: 0.2rem 0.75rem;
   background-color: $actionize_green;
   font-weight: 700;

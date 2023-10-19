@@ -428,8 +428,26 @@ const CardContentTab = ({ card, usercard, programData }) => {
     } = content;
 
     //attempt to make reusable - maybe change
-    const contentText = content.content || content.question;
+    const contentText = content.content || content.question || "empty";
     const timeLeft = 86400000 - (Date.now() - lastTimeMS);
+
+    const [exerciseTitle, stepsText] = contentText.split("\nSteps:\n\n");
+
+    // EXERCISE markdown
+    const processedSteps =
+      type === "exercises"
+        ? stepsText
+            .split("\n")
+            .map((line, index) => {
+              // Skip empty lines
+              if (line.trim() === "") {
+                return null;
+              }
+              return `${index + 1}. ${line}`;
+            })
+            .filter(Boolean)
+            .join("\n")
+        : contentText;
 
     return (
       <div className={styles.tip} key={id}>
@@ -454,7 +472,16 @@ const CardContentTab = ({ card, usercard, programData }) => {
         <ContentTypeTag type={type} />
 
         <div className={styles.tipContent}>
-          <ReactMarkdown children={contentText} />
+          {type == "exercises" ? (
+            <div>
+              <p>{exerciseTitle}</p>
+              <p>Steps:</p>
+
+              <ReactMarkdown>{processedSteps}</ReactMarkdown>
+            </div>
+          ) : (
+            <ReactMarkdown>{processedSteps}</ReactMarkdown>
+          )}
         </div>
 
         <div className={styles.contentPageCta}>
