@@ -82,8 +82,7 @@ export const PaymentSoonModal = ({ closeModal }) => {
         Official payments will be available soon, but for now, you can support
         us by buying us a coffee! :)
         <div>&nbsp;</div>
-        You can also buy Actionise PRO through the link, as well as Stars, or
-        Energy.
+        You can also buy Actionise PRO through the link.
         <div>&nbsp;</div>
         (Rewards gained via buying a coffee will be available within 24 hours on
         your profile)
