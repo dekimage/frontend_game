@@ -4,7 +4,7 @@ import { Context } from "@/context/store";
 import { GET_REALMS } from "@/GQL/query";
 import { Realm } from "@/components/Realm";
 import { withUser } from "@/Hoc/withUser";
-import { submitTutorial } from "@/actions/action";
+import { submitTutorial, updateUserBasicInfo } from "@/actions/action";
 
 const SlideIndicator = ({ totalSlides, currentSlideIndex }) => {
   const circles = Array.from({ length: totalSlides }, (_, index) => (
@@ -42,9 +42,10 @@ const OnboardingSlider = ({ closeModal }) => {
   const [slideIndex, setSlideIndex] = useState(0);
   const [favoriteRealms, setFavoriteRealms] = useState([]);
   const [buddyCode, setBuddyCode] = useState("");
+  const [username, setUsername] = useState("");
   const [store, dispatch] = useContext(Context);
 
-  const REALM_SLIDE_INDEX = 3;
+  const REALM_SLIDE_INDEX = 4;
 
   const slides = [
     {
@@ -71,7 +72,23 @@ const OnboardingSlider = ({ closeModal }) => {
         "• 150 mini interactive lessons • 100 questions • 200 actions & tasks • 100 books worth of wisdom",
       button: "Next",
     },
-
+    {
+      title: "How should we call you?",
+      description: "This will be your avatar's name",
+      imageUrl: "",
+      component: (
+        <>
+          <input
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+            placeholder="Jonny"
+            id="enter user"
+            type="text"
+            className="input"
+          />
+        </>
+      ),
+    },
     {
       title: "Select 3 Categories of Interest",
       description: "You can change this later",
@@ -168,8 +185,9 @@ const OnboardingSlider = ({ closeModal }) => {
             </button>
             {slideIndex === slides.length - 1 ? (
               <button
-                onClick={() => {
-                  submitTutorial(dispatch, favoriteRealms, buddyCode);
+                onClick={async () => {
+                  await updateUserBasicInfo(dispatch, username, "username");
+                  await submitTutorial(dispatch, favoriteRealms, buddyCode);
                   closeModal();
                 }}
               >
@@ -181,7 +199,8 @@ const OnboardingSlider = ({ closeModal }) => {
                 disabled={
                   slideIndex === slides.length - 1 ||
                   (slideIndex == REALM_SLIDE_INDEX &&
-                    favoriteRealms.length !== 3)
+                    favoriteRealms.length !== 3) ||
+                  (slideIndex === 3 && !username)
                 }
               >
                 Next
