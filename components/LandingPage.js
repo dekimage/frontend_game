@@ -301,7 +301,7 @@ const reviewsJsx = reviews.map((r, i) => {
   return (
     <div className={styles.review} key={i}>
       <div className="flex_start mb1">
-        <div className={styles.reviewImg}></div>
+        {/* <div className={styles.reviewImg}></div> */}
         <div className="flex_column ml5">
           <div className={styles.reviewName}>{r.name}</div>
           <div className={styles.reviewLvl}>Lvl {r.level}</div>
