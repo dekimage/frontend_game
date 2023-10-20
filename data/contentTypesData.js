@@ -44,12 +44,12 @@ export const rewardsMap = [
   {
     name: "Stars",
     icon: "/stars.png",
-    amount: 50,
+    amount: 10,
   },
   {
     name: "Xp",
     icon: "/xp.png",
-    amount: 100,
+    amount: 50,
   },
   {
     name: "Random Content",
