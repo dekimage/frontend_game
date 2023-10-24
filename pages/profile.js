@@ -387,16 +387,9 @@ const Profile = () => {
                   store.artifacts,
                   store.claimed_artifacts,
                   store.user
-                )
-                  .sort((a, b) => {
-                    if (a.isClaimed && !b.isClaimed) return -1;
-                    if (!a.isClaimed && b.isClaimed) return 1;
-
-                    return b.progressPercentage - a.progressPercentage;
-                  })
-                  .map((artifact, i) => {
-                    return <Artifact key={i} artifact={artifact} />;
-                  })}
+                ).map((artifact, i) => {
+                  return <Artifact key={i} artifact={artifact} />;
+                })}
               </div>
             </div>
           )}
@@ -409,3 +402,12 @@ const Profile = () => {
 };
 
 export default Profile;
+
+// sort artifacts:
+
+// .sort((a, b) => {
+//   if (a.isClaimed && !b.isClaimed) return -1;
+//   if (!a.isClaimed && b.isClaimed) return 1;
+
+//   return b.progressPercentage - a.progressPercentage;
+// })
