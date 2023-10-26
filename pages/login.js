@@ -240,26 +240,26 @@ const Login = () => {
               )}
             </Formik>
 
-            <div className={styles.description}>
+            {/* <div className={styles.description}>
               Link an account to log in faster in the future
-            </div>
+            </div> */}
           </div>
         )}
 
-        <div className={styles.oauthSection}>
+        {/* <div className={styles.oauthSection}>
           <div className="btn btn-stretch btn-google">
             <a href={`${baseUrl}/api/connect/google`}>
               <img height="18px" src={`${baseUrl}/google.png`} />
             </a>
           </div>
 
-          {/* <div className="btn btn-facebook">
+         <div className="btn btn-facebook">
             <img height="18px" src={`${baseUrl}/facebook.png`} />
           </div>
           <div className="btn btn-apple">
             <img height="18px" src={`${baseUrl}/apple.png`} />
-          </div> */}
-        </div>
+          </div> 
+        </div> */}
       </div>
     </div>
   );
